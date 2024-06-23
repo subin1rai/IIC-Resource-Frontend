@@ -47,7 +47,11 @@
     width: 100%;
     max-width: 300px;
   }
-  
+
+  .small-logo{
+    width: 100px;
+  }
+
   label {
     display: flex;
     flex-direction: column;
