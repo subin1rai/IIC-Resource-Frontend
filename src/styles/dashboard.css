@@ -2,9 +2,11 @@
   background-color: #f0f1f3;
   display: flex;
   justify-content: space-between;
-  gap: 5px;
 
   .dashboard-main {
     margin: 0 auto;
   }
+}
+
+.backbtn {
 }

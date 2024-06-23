@@ -2,93 +2,90 @@
   display: flex;
   height: 100vh;
   font-family: Arial, sans-serif;
-}
+  background-color: #fff;
 
-.left-side {
-  background-color: #ffffff;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  .left-side {
+    background-color: #ffffff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
-.logo {
-  width: 80px;
-}
+  .right-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.logos {
-  width: 250px;
-}
-.right-side {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .login-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 
-.login-container {
-  width: 300px;
-  text-align: center;
-}
+    img {
+      width: 120px;
+    }
+  }
 
-.small-logo {
-  width: 50px;
-  margin-bottom: 20px;
-}
+  .login-container h2 {
+    margin-bottom: 10px;
+    font-size: 27px;
+  }
 
-.login-container h2 {
-  margin-bottom: 10px;
-  font-size: 27px;
-}
+  .login-container p {
+    color: #888888;
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
 
-.login-container p {
-  color: #888888;
-  margin-bottom: 20px;
-  font-size: 15px;
-}
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
 
-.input-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
 
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+  }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #dddddd;
-  border-radius: 5px;
-}
+  .forgot-password {
+    width: 108%;
+    text-align: right;
+    margin-bottom: 20px;
+  }
 
-.forgot-password {
-  width: 108%;
-  text-align: right;
-  margin-bottom: 20px;
-}
+  .forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+  }
 
-.forgot-password a {
-  color: #007bff;
-  text-decoration: none;
-}
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
 
-.forgot-password a:hover {
-  text-decoration: underline;
-}
-
-button {
-  width: 110%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  button {
+    width: 110%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
 }
 
 button:hover {
