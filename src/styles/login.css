@@ -1,12 +1,13 @@
 .login {
   display: flex;
   height: 100vh;
-  font-family: Arial, sans-serif;
+  width: 100vw;
   background-color: #fff;
+  justify-content: space-around;
+  align-items: center;
 
   .left-side {
     background-color: #ffffff;
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,14 +15,12 @@
   }
 
   .right-side {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .login-container {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,6 +46,7 @@
   .input-group {
     margin-bottom: 15px;
     text-align: left;
+    width: 100%;
   }
 
   .input-group label {
@@ -55,7 +55,7 @@
   }
 
   .input-group input {
-    width: 100%;
+    width: 300px;
     padding: 10px;
     border: 1px solid #dddddd;
     border-radius: 5px;
@@ -77,7 +77,7 @@
   }
 
   button {
-    width: 110%;
+    width: 100%;
     padding: 10px;
     background-color: #007bff;
     color: #ffffff;
@@ -92,17 +92,84 @@ button:hover {
   background-color: #0056b3;
 }
 
-@media (min-width: 576px) {
-  .container {
-    max-width: 540px;
+@media (max-width: 392px) {
+  .left-side {
+    display: none;
+    flex: 0;
+    img {
+      display: none;
+    }
+  }
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container h2 {
+    margin-bottom: 5px;
+    font-size: 27px;
+  }
+
+  .login-container p {
+    color: #888888;
+    margin-bottom: 5px;
+    font-size: 10px;
+  }
+
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .input-group label {
+      font-size: 12px;
+    }
+
+    .input-group input {
+      width: 200px;
+    }
   }
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 720px;
+@media (max-width: 576px) {
+  .left-side {
+    display: none;
+    flex: 0;
+    img {
+      display: none;
+    }
+  }
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    button {
+      width: 100%;
+    }
   }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 768px) {
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .left-side {
+    display: none;
+
+    img {
+      display: none;
+    }
+  }
 }

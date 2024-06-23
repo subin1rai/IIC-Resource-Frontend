@@ -1,14 +1,13 @@
 .sign-up-page {
   display: flex;
   min-height: 100vh;
-  width: 100%;
+  width: 100vw;
+  justify-content: space-around;
+  align-items: center;
   background-color: #fff;
   color: #333;
-  font-family: Arial, sans-serif;
 
   .left-side {
-    flex: 1;
-    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +17,6 @@
   }
 
   .right-side {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,36 +28,36 @@
     }
   }
 
-  form {
+  .right-side form {
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 300px;
-    gap: 10px;
+    gap: 20px;
   }
 
   label {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-size: 14px;
     gap: 5px;
   }
 
-  input {
+  .input-group input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 300px;
   }
 
   .password-hint {
     font-size: 12px;
     color: #666;
-    margin-top: -10px;
-    margin-bottom: 20px;
   }
 
   button {
+    width: 325px;
     padding: 10px 15px;
     color: #fff;
     background-color: #007bff;
@@ -72,5 +70,68 @@
   button:hover {
     background-color: #0056b3;
     color: white;
+  }
+}
+@media (max-width: 392px) {
+  .left-side {
+    display: none;
+    flex: 0;
+    img {
+      display: none;
+    }
+  }
+  .sign-up-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right-side h2 {
+    margin-bottom: 5px;
+    font-size: 27px;
+  }
+
+  .right-side form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .left-side {
+    display: none;
+    flex: 0;
+    img {
+      display: none;
+    }
+  }
+  .sign-up-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right-side form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .sign-up-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .left-side {
+    display: none;
+
+    img {
+      display: none;
+    }
   }
 }
