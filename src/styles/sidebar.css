@@ -1,9 +1,10 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 230px;
   justify-content: space-between;
   height: 100vh;
+  background-color: #fff;
 
   .sidebar-top {
     display: flex;
@@ -13,7 +14,7 @@
     width: 100%;
 
     .sidebar-logo {
-      width: 207px;
+      width: 190px;
       height: 63px;
     }
 
@@ -33,11 +34,18 @@
         font-weight: 300;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
 
         img {
           width: 15px;
           height: 15px;
         }
+      }
+
+      .item:hover {
+        color: #1570ef;
+        transition: 0.3s;
+        transform: translateX(10px);
       }
     }
   }
