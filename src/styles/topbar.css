@@ -1,0 +1,31 @@
+.topbar {
+  background-color: #fff;
+  height: 90px;
+  display: flex;
+  justify-content: space-between;
+  width: 84vw;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+  .topbar-left {
+    margin: 20px;
+
+    input {
+      height: 15px;
+      width: 300px;
+    }
+  }
+
+  .topbar-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 20px;
+
+    img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
