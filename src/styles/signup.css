@@ -1,12 +1,11 @@
 .sign-up-page {
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
-    background-color: #fff;
-    color: #333;
-    font-family: Arial, sans-serif;
-  }
-  
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+
   .left-side {
     flex: 1;
     width: 50%;
@@ -17,15 +16,6 @@
     background-color: #fff;
     padding: 20px;
   }
-  
-  .logo {
-    width: 400px;
-  }
-  
-  .left-side h1 {
-    margin-top: 20px;
-    color: #007bff;
-  }
 
   .right-side {
     flex: 1;
@@ -33,56 +23,53 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px;
+    gap: 20px;
+
+    img {
+      width: 120px;
+    }
   }
-  
-  .right-side h2 {
-    margin: 20px 0;
-  }
-  
+
   form {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
+    gap: 10px;
   }
 
-  .small-logo{
-    width: 200px;
-  }
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
 
-  label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    font-size: 14px;
-  }
-  
-  input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .password-hint {
-    font-size: 12px;
-    color: #666;
-    margin-top: -10px;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    padding: 10px 15px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    width: 100%;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color:light blue;
-  }
+input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.password-hint {
+  font-size: 12px;
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 15px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #ff0000;
+  color: white;
+}
