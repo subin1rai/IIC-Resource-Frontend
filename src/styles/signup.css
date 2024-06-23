@@ -19,14 +19,14 @@
   }
   
   .logo {
-    width: 80px;
+    width: 150px;
   }
   
   .left-side h1 {
     margin-top: 20px;
     color: #007bff;
   }
-  
+
   .right-side {
     flex: 1;
     display: flex;
@@ -80,8 +80,7 @@
   }
   
   button:hover {
-    background-color: #ff0b0b;
-    color: white;
+    background-color:light blue;
     
   }
   
