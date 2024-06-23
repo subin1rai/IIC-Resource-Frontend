@@ -24,8 +24,16 @@ const Sidebar = () => {
             <div className="item-text">Inventory</div>
           </div>
           <div className="item">
+            <img src={inventory} alt="" />
+            <div className="item-text">Orders</div>
+          </div>
+          <div className="item">
             <img src={dashboard} alt="" />
             <div className="item-text">Vendors</div>
+          </div>
+          <div className="item">
+            <img src={dashboard} alt="" />
+            <div className="item-text">Vendor Details</div>
           </div>
         </div>
       </div>

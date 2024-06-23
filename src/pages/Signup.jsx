@@ -1,9 +1,9 @@
 import React from 'react';
 import '../styles/signup.css';
-import logo from '../assets/logo.png';
+import logo from '../assets/Logo.png';
 
 
-const SignUp = () => {
+const Signup = () => {
   return (
     <div className="sign-up-page">
       <div className="left-side">
@@ -41,4 +41,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;

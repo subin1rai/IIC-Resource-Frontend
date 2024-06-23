@@ -31,7 +31,7 @@
         display: flex;
         gap: 20px;
         color: #5d6679;
-        font-weight: 300;
+
         justify-content: center;
         align-items: center;
         cursor: pointer;
@@ -70,14 +70,20 @@
         display: flex;
         gap: 20px;
         color: #5d6679;
-        font-weight: 300;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
 
         img {
           width: 15px;
           height: 15px;
         }
+      }
+
+      .item:hover {
+        color: #1570ef;
+        transition: 0.3s;
+        transform: translateX(10px);
       }
     }
   }
