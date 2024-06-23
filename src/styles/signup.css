@@ -67,10 +67,13 @@
     font-size: 16px;
   }
 
-  button:hover {
-    background-color: #0056b3;
-    color: white;
-  }
+
+
+button:hover {
+  background-color: #ff0000;
+  color: white;
+
+}
 }
 @media (max-width: 392px) {
   .left-side {
