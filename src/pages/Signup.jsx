@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/signup.css';
 import logo from '../assets/Logo.png';
-import Logo1 from '.../assets/logo1.png';
+import Logo1 from '../assets/logo1.png';
 
 const Signup = () => {
   return (
