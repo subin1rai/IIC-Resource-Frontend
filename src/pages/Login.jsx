@@ -1,8 +1,7 @@
 import React from "react";
 import "../styles/login.css";
-import Logo from '../assets/Logo.png'
-import logo1 from '../assets/logo1.png'
-
+import Logo from "../assets/Logo.png";
+import Logo1 from "../assets/Logo.png";
 
 const Login = () => {
   return (
@@ -12,7 +11,7 @@ const Login = () => {
       </div>
       <div className="right-side">
         <div className="login-container">
-          <img src={logo1} alt="Logo" className="logo" />
+          <img src={Logo1} alt="Logo" className="logo" />
           <h2>Log in to your account</h2>
           <p>Welcome back! Please enter your details.</p>
           <form>
