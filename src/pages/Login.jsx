@@ -1,15 +1,16 @@
 import React from "react";
 import "../styles/login.css";
+import Logo from '../assets/Logo.png'
 
 const Login = () => {
   return (
-    <div>
+    <div className="login">
       <div className="left-side">
-        <img src="images/logo.png" alt="Logo" className="logos" />
+        <img src={Logo} alt="Logo" className="logos" />
       </div>
       <div className="right-side">
         <div className="login-container">
-          <img src="/images/logo1.png" alt="Logo" className="logo" />
+          <img src={Logo} alt="Logo" className="logo" />
           <h2>Log in to your account</h2>
           <p>Welcome back! Please enter your details.</p>
           <form>
