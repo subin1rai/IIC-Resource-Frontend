@@ -8,11 +8,18 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 
   .topbar-left {
-    margin: 20px;
-
     input {
-      height: 15px;
+      height: 10px;
+      padding: 10px;
       width: 300px;
+    }
+
+    .slogan {
+      display: flex;
+      align-self: start;
+      margin-left: 20px;
+      font-size: 14px;
+      color: #7d7d7d;
     }
   }
 
@@ -27,5 +34,13 @@
       width: 60px;
       height: 60px;
     }
+  }
+
+  .greetings {
+    display: flex;
+    align-self: start;
+    margin-left: 20px;
+    font-size: 24px;
+    font-weight: 600;
   }
 }

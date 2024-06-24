@@ -2,14 +2,29 @@ import React from "react";
 import "../styles/topbar.css";
 
 const Topbar = () => {
+  let currentTime = new Date();
+
+  let currentHour = currentTime.getHours();
+
+  const morningStart = 5;
+  const afternoonStart = 12;
+  const eveningStart = 17;
+
+  let greeting;
+  if (currentHour >= morningStart && currentHour < afternoonStart) {
+    greeting = "Good Morning";
+  } else if (currentHour >= afternoonStart && currentHour < eveningStart) {
+    greeting = "Good afternoon";
+  } else {
+    greeting = "Good evening";
+  }
   return (
     <div className="topbar">
       <div className="topbar-left">
-        <input
-          type="text"
-          className="serachbar"
-          placeholder="Search vendors, items"
-        />
+        <p className="greetings">{greeting}, Admin</p>
+        <p className="slogan">
+          Efficiently allocate, monitor and manage your resources
+        </p>
       </div>
       <div className="topbar-right">
         icon

@@ -49,8 +49,8 @@ const Signup = () => {
         />
         <h2>Create an account</h2>
         <form onSubmit={handleSubmit}>
-          <label>
-            Name
+          <div className="input-group">
+            <label htmlFor="user_name">Name</label>
             <input
               type="text"
               placeholder="Enter your name"
@@ -59,9 +59,9 @@ const Signup = () => {
               value={user.user_name}
               onChange={handleChange}
             />
-          </label>
-          <label>
-            Email
+          </div>
+          <div className="input-group">
+            <label htmlFor="user_email">Email</label>
             <input
               type="email"
               placeholder="Enter your email"
@@ -70,9 +70,9 @@ const Signup = () => {
               value={user.user_email}
               onChange={handleChange}
             />
-          </label>
-          <label>
-            Password
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               placeholder="Create a password"
@@ -81,7 +81,7 @@ const Signup = () => {
               value={user.password}
               onChange={handleChange}
             />
-          </label>
+          </div>
           <p className="password-hint">Must be at least 8 characters.</p>
           <button type="submit">Get started</button>
         </form>
