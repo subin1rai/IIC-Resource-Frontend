@@ -5,7 +5,7 @@
   background-color: #fff;
   color: #333;
   font-family: Arial, sans-serif;
-
+}
   .left-side {
     flex: 1;
     width: 50%;
@@ -70,6 +70,6 @@ button {
 }
 
 button:hover {
-  background-color: #ff0000;
+  background-color: blue;
   color: white;
 }
