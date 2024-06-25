@@ -89,7 +89,7 @@
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: blue;
 }
 
 @media (max-width: 392px) {
