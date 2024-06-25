@@ -36,6 +36,11 @@
         align-items: center;
         cursor: pointer;
 
+        .item-text {
+          color: #5d6679;
+          text-decoration: none;
+        }
+
         img {
           width: 15px;
           height: 15px;
@@ -43,9 +48,12 @@
       }
 
       .item:hover {
-        color: #1570ef;
         transition: 0.3s;
         transform: translateX(10px);
+
+        .item-text {
+          color: #1570ef;
+        }
       }
     }
   }
@@ -74,6 +82,11 @@
         align-items: center;
         cursor: pointer;
 
+        .item-text {
+          color: #5d6679;
+          text-decoration: none;
+        }
+
         img {
           width: 15px;
           height: 15px;
@@ -81,9 +94,12 @@
       }
 
       .item:hover {
-        color: #1570ef;
         transition: 0.3s;
         transform: translateX(10px);
+
+        .item-text {
+          color: #1570ef;
+        }
       }
     }
   }

@@ -7,6 +7,7 @@ import dashboard from "../assets/dashboard.png";
 import inventory from "../assets/inventory.png";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -17,23 +18,34 @@ const Sidebar = () => {
         <div className="sidebar-items">
           <div className="item">
             <img src={dashboard} alt="" />
-            <div className="item-text">Dashboard</div>
+
+            <Link to="/dashboard" className="item-text">
+              Dashboard
+            </Link>
           </div>
           <div className="item">
             <img src={inventory} alt="" />
-            <div className="item-text">Inventory</div>
+            <Link to="/inventory" className="item-text">
+              Inventory
+            </Link>
           </div>
           <div className="item">
             <img src={inventory} alt="" />
-            <div className="item-text">Orders</div>
+            <Link to="/billRecords" className="item-text">
+              Bill Records
+            </Link>
           </div>
           <div className="item">
             <img src={dashboard} alt="" />
-            <div className="item-text">Vendors</div>
+            <Link to="/vendors" className="item-text">
+              Vendors
+            </Link>
           </div>
           <div className="item">
             <img src={dashboard} alt="" />
-            <div className="item-text">Vendor Details</div>
+            <Link to="/issue" className="item-text">
+              Issue
+            </Link>
           </div>
         </div>
       </div>
@@ -42,11 +54,15 @@ const Sidebar = () => {
         <div className="sidebar-items">
           <div className="item">
             <img src={settings} alt="" />
-            <div className="item-text">Settings</div>
+            <Link to="/settings" className="item-text">
+              Settings
+            </Link>
           </div>
           <div className="item">
             <img src={logout} alt="" />
-            <div className="item-text">Log out</div>
+            <Link to="/" className="item-text">
+              Log out
+            </Link>
           </div>
         </div>
       </div>
