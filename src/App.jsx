@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Inventory from "./pages/Inventory";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/inventory" element={<Inventory />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
