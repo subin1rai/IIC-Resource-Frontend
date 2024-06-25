@@ -1,0 +1,52 @@
+.inventory {
+    background-color: #f0f1f3;
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+  
+    .inventory-main {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      align-items: center;
+    }
+  
+    .inventory-summary {
+      display: flex;
+      flex-wrap: wrap;
+      width: 82vw;
+      gap: 25px;
+    }
+  
+    .overall-inventory {
+      background-color: #fff;
+      width: 77vw;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      gap: 20px;
+    }
+
+  
+    .title {
+      display: flex;
+      margin-left: 20px;
+    }
+    .inventory-container {
+      display: flex;
+      justify-content: space-around;
+  
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+  }
+  
