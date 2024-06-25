@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import '../styles/signup.css';
-import logo from '../assets/Logo.png';
-import Logo11 from '../assets/logo1.png';
+import "../styles/signup.css";
+import logo from "../assets/logo.png";
+import Logo11 from "../assets/logo1.png";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -11,7 +11,7 @@ const Signup = () => {
     user_email: "",
     password: "",
   });
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,18 +35,10 @@ const Signup = () => {
   return (
     <div className="sign-up-page">
       <div className="left-side">
-        <img
-          src={logo}
-          alt="Resource Department Logo"
-          className="logo"
-        />
+        <img src={logo} alt="Resource Department Logo" className="logo" />
       </div>
       <div className="right-side">
-        <img
-          src={Logo11}
-          alt="Small Logo"
-          className="small-logo"
-        />
+        <img src={Logo11} alt="Small Logo" className="small-logo" />
         <h2>Create an account</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
