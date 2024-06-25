@@ -6,6 +6,7 @@
   align-items: center;
   background-color: #fff;
   color: #333;
+  font-family: Arial, sans-serif;
 
   .left-side {
     display: flex;
@@ -36,20 +37,20 @@
     gap: 20px;
   }
 
-  label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    font-size: 14px;
-    gap: 5px;
-  }
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
 
-  .input-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.input-group input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
     width: 300px;
-  }
+}
 
   .password-hint {
     font-size: 12px;
@@ -67,71 +68,11 @@
     font-size: 16px;
   }
 
-  button:hover {
-    background-color: #ff0000;
-    color: white;
-  }
+
+
+button:hover {
+  background-color: #ff0000;
+  color: white;
+
 }
-@media (max-width: 392px) {
-  .left-side {
-    display: none;
-    flex: 0;
-    img {
-      display: none;
-    }
-  }
-  .sign-up-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .right-side h2 {
-    margin-bottom: 5px;
-    font-size: 27px;
-  }
-
-  .right-side form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 576px) {
-  .left-side {
-    display: none;
-    flex: 0;
-    img {
-      display: none;
-    }
-  }
-  .sign-up-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .right-side form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .sign-up-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .left-side {
-    display: none;
-
-    img {
-      display: none;
-    }
-  }
 }
