@@ -17,7 +17,7 @@ const Signup = () => {
   const handleChange = (e) => {
     setUser((prev) => {
       const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser); // Log the updated state
+      console.log(updatedUser);
       return updatedUser;
     });
   };
