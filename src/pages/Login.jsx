@@ -16,7 +16,7 @@ const Login = () => {
   const handleChange = (e) => {
     setUser((prev) => {
       const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser); // Log the updated state
+      console.log(updatedUser); 
       return updatedUser;
     });
   };
@@ -29,7 +29,7 @@ const Login = () => {
         user
       );
       console.log("Login successful:", response.data);
-      navigate("/dashboard"); // Navigate to the dashboard or any other page after successful login
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
     }
