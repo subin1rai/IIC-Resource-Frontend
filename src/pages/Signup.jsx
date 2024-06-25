@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../styles/signup.css";
-import logo from "../assets/Logo.png";
+import logo from "../assets/logo.png";
 import logo1 from "../assets/logo1.png";
 
 const Signup = () => {
