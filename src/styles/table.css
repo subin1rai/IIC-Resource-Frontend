@@ -29,15 +29,19 @@
   .vendor-table tr:hover {
     background-color: #f1f1f1;
   }
-  .head{
+   
+  .up{
+    width: 84vw;
+  }
+  .top{
     display: flex;
     justify-content: space-between;
     background-color: #fff;
-    width: 82.5vw;
+    padding-left: 30px;
     margin-top: 20px;
     height:60px;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     
 
@@ -48,7 +52,7 @@
      
      input{
       padding:5px;
-      
+      width: 250px;
     } 
   }
 
@@ -57,7 +61,8 @@
     margin-left: 20px;
     border-radius: 3px;
     border-color: lightgrey;
-    color: grey;
+    background-color: white;
+    width: 140px;
   }
   
    .add button{
@@ -66,6 +71,31 @@
     padding: 5px;
     border-radius: 3px;
     margin-left: 27px;
+    margin-right: 30px;
+    width: 140px;
    }
+  }
+  
+  .last{
+    display: flex;
+    justify-content: space-between;
+    
+    .previous button{
+      padding: 10px;
+      width: 120px;
+      margin-left: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      border-width: 1px;
+    }
+
+    .next button{
+      padding: 10px;
+      width: 120px;
+      margin-right: 30px;
+      background-color: #fff;
+      border-radius: 5px;
+      border-width: 1px;
+    }
   }
   
