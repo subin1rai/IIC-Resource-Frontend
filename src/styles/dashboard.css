@@ -18,7 +18,7 @@
     display: flex;
     flex-wrap: wrap;
     width: 85vw;
-    gap: 25px;
+    gap: 35px;
   }
 
   .inventory-overwiew {
@@ -34,13 +34,13 @@
 
   .vendor-overview {
     background-color: #fff;
-    width: 40.7vw;
+    width: 40.5vw;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    gap: 10px;
+    gap: 5px;
   }
 
   .summary-title {
