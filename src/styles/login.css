@@ -30,6 +30,21 @@
     img {
       width: 120px;
     }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+
+      &:hover {
+        background-color: blue;
+      }
+    }
   }
 
   .login-container h2 {
@@ -75,21 +90,6 @@
   .forgot-password a:hover {
     text-decoration: underline;
   }
-
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-}
-
-button:hover {
-  background-color: blue;
 }
 
 @media (max-width: 392px) {

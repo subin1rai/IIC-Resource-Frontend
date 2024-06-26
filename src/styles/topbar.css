@@ -1,9 +1,9 @@
 .topbar {
   background-color: #fff;
-  height: 90px;
+  height: 75px;
   display: flex;
   justify-content: space-between;
-  width: 84vw;
+  width: 83.5vw;
   align-items: center;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 
@@ -12,14 +12,6 @@
       height: 10px;
       padding: 10px;
       width: 300px;
-    }
-
-    .slogan {
-      display: flex;
-      align-self: start;
-      margin-left: 20px;
-      font-size: 14px;
-      color: #7d7d7d;
     }
   }
 
@@ -31,8 +23,8 @@
     margin: 20px;
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
     }
   }
 
@@ -40,7 +32,7 @@
     display: flex;
     align-self: start;
     margin-left: 20px;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
   }
 }
