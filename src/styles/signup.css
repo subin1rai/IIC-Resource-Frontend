@@ -37,20 +37,20 @@
     gap: 20px;
   }
 
-label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
 
-.input-group input {
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  .input-group input {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     width: 300px;
-}
+  }
 
   .password-hint {
     font-size: 12px;
@@ -68,11 +68,8 @@ label {
     font-size: 16px;
   }
 
-
-
-button:hover {
-  background-color: #ff0000;
-  color: white;
-
-}
+  button:hover {
+    background-color: #ff0000;
+    color: white;
+  }
 }
