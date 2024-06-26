@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/signup.css";
 import logo from "../assets/logo.png";
-import Logo11 from "../assets/logo1.png";
+import Logo1 from "../assets/logo1.png";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -38,7 +38,7 @@ const Signup = () => {
         <img src={logo} alt="Resource Department Logo" className="logo" />
       </div>
       <div className="right-side">
-        <img src={Logo11} alt="Small Logo" className="small-logo" />
+        <img src={Logo1} alt="Small Logo" className="small-logo" />
         <h2>Create an account</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
