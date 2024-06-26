@@ -22,9 +22,6 @@ const Topbar = () => {
     <div className="topbar">
       <div className="topbar-left">
         <p className="greetings">{greeting}, Admin</p>
-        <p className="slogan">
-          Efficiently allocate, monitor and manage your resources
-        </p>
       </div>
       <div className="topbar-right">
         icon
