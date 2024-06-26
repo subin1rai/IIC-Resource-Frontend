@@ -1,0 +1,70 @@
+.vendor-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    margin-top: 0px;
+  }
+  
+  .vendor-table th, .vendor-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .vendor-table th {
+    background-color: white;
+    font-weight:500;
+  }
+  
+  .complete {
+    color: green;
+  }
+  
+  .pending {
+    color: red;
+  }
+  
+  .vendor-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  .head{
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-top: 20px;
+    height:60px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    
+
+  .right{
+     margin-left: 40px;
+     display:flex;
+     
+     
+     input{
+      padding:5px;
+      
+    } 
+  }
+
+  .category button{
+    padding: 5px;
+    border-radius: 3px;
+    border-color: lightgrey;
+    color: grey;
+  }
+  
+   .add button{
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    margin-left: 40px;
+    
+   }
+  }
+  

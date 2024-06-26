@@ -22,6 +22,7 @@
       .vendor-Summary {
         background-color: #fff;
         width: 77vw;
+        height: 150px;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
