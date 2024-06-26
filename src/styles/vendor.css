@@ -21,30 +21,31 @@
     gap: 25px;
   }
 
-  .vendor-Summary {
-    background-color: #fff;
-    width: 86.5vw;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    gap: 20px;
-  }
-  .summary-title {
-    display: flex;
-    margin-left: 20px;
-  }
-  .summary-container {
-    display: flex;
-    justify-content: space-around;
-
-    .summary {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      .vendor-Summary {
+        background-color: #fff;
+        width: 83vw;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        gap: 20px;
+        height: 160px;
+      }
+      .summary-title {
+        display: flex;
+        margin-left: 20px;
+      }
+      .summary-container {
+        display: flex;
+        justify-content: space-around;
+    
+        .summary{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+      }
     }
-  }
-}
