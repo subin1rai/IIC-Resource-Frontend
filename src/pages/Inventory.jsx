@@ -11,7 +11,7 @@ const Inventory = () => {
       <Sidebar />
 
       <div className="inventory-main">
-        {/* <Topbar />   */}
+        {<Topbar /> }
         {/* Status */}
         <div className="inventory-summary">
           <div className="overall-inventory">

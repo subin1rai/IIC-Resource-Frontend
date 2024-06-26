@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/login.css";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/Logo.png";
 import Logo1 from "../assets/logo1.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +16,7 @@ const Login = () => {
   const handleChange = (e) => {
     setUser((prev) => {
       const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser);
+      console.log(updatedUser); 
       return updatedUser;
     });
   };
