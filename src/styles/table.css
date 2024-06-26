@@ -1,5 +1,5 @@
 .vendor-table {
-    width: 83.5vw;
+    width:100%;
     border-collapse: collapse;
     background-color: white;
     margin: 20px 0;
@@ -9,8 +9,7 @@
   }
   
   .vendor-table th, .vendor-table td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
+    padding: 7px;
   }
   
   .vendor-table th {
@@ -25,19 +24,24 @@
   .pending {
     color: red;
   }
-  
+
   .vendor-table tr:hover {
     background-color: #f1f1f1;
+    padding:20px;
   }
-  .head{
+
+  .up{
+    width: 84vw;
+  }
+  .top{
     display: flex;
     justify-content: space-between;
     background-color: #fff;
-    width: 82.5vw;
+    padding-left: 30px;
     margin-top: 20px;
     height:60px;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     
 
@@ -48,7 +52,7 @@
      
      input{
       padding:5px;
-      
+      width: 250px;
     } 
   }
 
@@ -57,15 +61,45 @@
     margin-left: 20px;
     border-radius: 3px;
     border-color: lightgrey;
-    color: grey;
+    background-color: white;
+    width: 140px;
   }
   
    .add button{
-    background-color: blue;
+    background-color: #1570ef;
     color: white;
     padding: 5px;
     border-radius: 3px;
     margin-left: 27px;
+    margin-right: 30px;
+    width: 140px;
    }
+  }
+  
+  .last{
+    display: flex;
+    justify-content: space-between;
+    
+    .previous button{
+      padding: 10px;
+      width: 120px;
+      margin-left: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      border-width: 1px;
+    }
+
+    .middle{
+      padding-top: 10px;
+    }
+
+    .next button{
+      padding: 10px;
+      width: 120px;
+      margin-right: 40px;
+      background-color: #fff;
+      border-radius: 5px;
+      border-width: 1px;
+    }
   }
   

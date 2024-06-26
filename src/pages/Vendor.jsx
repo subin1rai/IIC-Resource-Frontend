@@ -36,8 +36,8 @@ const Vendor = () => {
                 <p>Payment Remaining</p>
               </div>
             </div>
-            <Table />
-          </div> 
+          </div>
+          <Table /> 
         </div>
         </div>
         </div>

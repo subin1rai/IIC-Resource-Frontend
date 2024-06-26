@@ -37,8 +37,8 @@ const Table = () => {
       // }, []);
     
       return (
-        <div>
-          <div className = "head">
+        <div className = "up">
+          <div className = "top">
             <h3> Vendors </h3>
             <div className ="right">
             <input type="text" placeholder="Search Items..."/>
@@ -79,6 +79,17 @@ const Table = () => {
               ))}
             </tbody>
           </table>
+          <div className="last">
+          <div className="previous">
+            <button type="button">Previous </button>
+            </div>
+            <div className="middle">
+              Page 1
+            </div>
+            <div className="next">
+            <button type="button"> Next </button>
+            </div>
+        </div>
         </div>
       );
     };
