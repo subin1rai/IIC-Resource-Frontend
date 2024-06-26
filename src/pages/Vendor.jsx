@@ -2,6 +2,7 @@ import React from 'react';
 import "../styles/vendor.css";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import Table from "../components/Table";
 import validVendor from "../assets/user.svg"
 
 const Vendor = () => {
@@ -35,10 +36,11 @@ const Vendor = () => {
                 <p>Payment Remaining</p>
               </div>
             </div>
-          </div>  
+            <Table />
+          </div> 
         </div>
-       </div>
-       </div>  
-    );
+        </div>
+        </div>
+        );
 };
 export default Vendor;

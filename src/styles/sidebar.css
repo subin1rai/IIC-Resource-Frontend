@@ -1,7 +1,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 16vw;
+  width: 13vw;
   justify-content: space-between;
   height: 100vh;
   background-color: #fff;
@@ -21,7 +21,7 @@
     .sidebar-items {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 25px;
       padding: 20px;
 
       justify-content: center;
@@ -39,6 +39,7 @@
         .item-text {
           color: #5d6679;
           text-decoration: none;
+          font-size: 18px;
         }
 
         img {
@@ -85,6 +86,7 @@
         .item-text {
           color: #5d6679;
           text-decoration: none;
+          font-size: 18px;
         }
 
         img {

@@ -9,9 +9,8 @@ const Inventory = () => {
   return (
     <div className="inventory">
       <Sidebar />
-
       <div className="inventory-main">
-        {<Topbar /> }
+        {/* <Topbar />   */}
         {/* Status */}
         <div className="inventory-summary">
           <div className="overall-inventory">
