@@ -1,5 +1,5 @@
 .vendor-table {
-    width: 100%;
+    width: 83.5vw;
     border-collapse: collapse;
     background-color: white;
     margin: 20px 0;
@@ -33,6 +33,7 @@
     display: flex;
     justify-content: space-between;
     background-color: #fff;
+    width: 82.5vw;
     margin-top: 20px;
     height:60px;
     align-items: center;
@@ -53,6 +54,7 @@
 
   .category button{
     padding: 5px;
+    margin-left: 20px;
     border-radius: 3px;
     border-color: lightgrey;
     color: grey;
@@ -63,8 +65,7 @@
     color: white;
     padding: 5px;
     border-radius: 3px;
-    margin-left: 40px;
-    
+    margin-left: 27px;
    }
   }
   

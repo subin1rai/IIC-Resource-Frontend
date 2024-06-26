@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/table.css";
+import filterIcon from "../assets/filter.svg";
 
 const Table = () => {
     const [data, setData] = useState([
@@ -42,7 +43,8 @@ const Table = () => {
             <div className ="right">
             <input type="text" placeholder="Search Items..."/>
               <div className="category">
-            <button type="button">Category</button>
+            <button type="button"><img src={filterIcon} alt="" />
+            Category </button>
             </div>
             <div className="add">
             <button type="button"> Add Vendor </button>
