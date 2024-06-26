@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/inventory.css";
 import Topbar from "../components/Topbar";
@@ -6,10 +6,18 @@ import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
 
 const Inventory = () => {
+  var [addFormVisiblity, setAddFormVisiblity] = useState(false);
+
+  const displayAddPopup = () => {
+    setAddFormVisiblity(true);
+  };
+  const closeAddItemForm = () => {
+    setAddFormVisiblity(false);
+  };
+
   return (
     <div className="inventory">
       <Sidebar />
-
       <div className="inventory-main">
         <Topbar />
         {/* Status */}
@@ -57,7 +65,9 @@ const Inventory = () => {
                 Filter
               </button>
 
-              <button className="add-btn">Add Item</button>
+              <button className="add-btn" onClick={displayAddPopup}>
+                Add Item
+              </button>
             </div>
           </div>
 
@@ -191,7 +201,49 @@ const Inventory = () => {
         </div>
 
         {/* Items table closed */}
+
+        {addFormVisiblity && (
+          <form action="" className="filter-form">
+            <p className="title">Add Item</p>
+            <div className="field">
+              <label htmlFor="">Item Name</label>
+              <input
+                type="text"
+                placeholder="Enter product name"
+                name=""
+                id=""
+              />
+            </div>
+            <div className="field">
+              <label htmlFor=""> Category</label>
+              <input type="text" placeholder="Choose Category" name="" id="" />
+            </div>
+            <div className="field">
+              <label htmlFor="">Item Category</label>
+              <input type="text" placeholder="Choose Category" name="" id="" />
+            </div>
+            <div className="field">
+              <label htmlFor="">Item Name</label>
+              <input
+                type="text"
+                placeholder="Enter product name"
+                name=""
+                id=""
+              />
+            </div>
+            <div className="buttons">
+              <button className="discard-btn" onClick={closeAddItemForm}>
+                Discard
+              </button>
+              <button className="add-btn">Add Item </button>
+            </div>
+          </form>
+        )}
       </div>
+
+      {addFormVisiblity && (
+        <div className="overlay" onClick={closeAddItemForm}></div>
+      )}
     </div>
   );
 };
