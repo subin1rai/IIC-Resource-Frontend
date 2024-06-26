@@ -10,7 +10,6 @@
   
   .vendor-table th, .vendor-table td {
     padding: 7px;
-    border-bottom: 1px solid #ddd;
   }
   
   .vendor-table th {
@@ -31,9 +30,6 @@
     padding:20px;
   }
 
-  .vendor-table tr{
-    padding:0px;
-  } 
   .up{
     width: 84vw;
   }
