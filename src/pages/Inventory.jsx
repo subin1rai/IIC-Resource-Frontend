@@ -73,7 +73,6 @@ const Inventory = () => {
                 <th>Total Purchased</th>
                 <th>Recent Purchased</th>
                 <th>Item Status</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -87,7 +86,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -99,7 +97,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -111,7 +108,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -123,7 +119,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -135,7 +130,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -147,7 +141,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -159,7 +152,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -171,7 +163,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -183,7 +174,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
               <tr>
                 <td>Item 1</td>
@@ -195,7 +185,6 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-                <td>Edit | Delete</td>
               </tr>
             </tbody>
           </table>
