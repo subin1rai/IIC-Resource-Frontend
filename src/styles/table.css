@@ -6,15 +6,19 @@
     font-size: 18px;
     text-align: left;
     margin-top: 0px;
+    border-radius: 10px;
   }
   
   .vendor-table th, .vendor-table td {
     padding: 7px;
+    padding-left: 30px;
+    text-align:start;
   }
   
   .vendor-table th {
     background-color: white;
-    font-weight:500;
+    font-weight:600;
+    padding-top: 0px;
   }
   
   .complete {
@@ -44,6 +48,9 @@
     padding: 20px;
     border-radius: 10px;
     
+    h3{
+      padding-left: 12px;
+    }
 
   .right{
      margin-left: 40px;
@@ -58,11 +65,13 @@
 
   .category button{
     padding: 5px;
-    margin-left: 20px;
+    margin-left: 28px;
     border-radius: 3px;
     border-color: lightgrey;
     background-color: white;
     width: 140px;
+    border-width: 1px;
+    height: 40px;
   }
   
    .add button{
@@ -70,9 +79,11 @@
     color: white;
     padding: 5px;
     border-radius: 3px;
+    border-width: 0px;
     margin-left: 27px;
-    margin-right: 30px;
+    margin-right: 5px;
     width: 140px;
+    height: 40px;
    }
   }
   
@@ -83,7 +94,7 @@
     .previous button{
       padding: 10px;
       width: 120px;
-      margin-left: 20px;
+      margin-left: 30px;
       background-color: #fff;
       border-radius: 5px;
       border-width: 1px;

@@ -84,7 +84,7 @@ const Table = () => {
             <button type="button">Previous </button>
             </div>
             <div className="middle">
-              Page 1
+              Page 1 of 10
             </div>
             <div className="next">
             <button type="button"> Next </button>
