@@ -83,6 +83,9 @@ const Table = () => {
           <div className="previous">
             <button type="button">Previous </button>
             </div>
+            <div className="middle">
+              Page 1
+            </div>
             <div className="next">
             <button type="button"> Next </button>
             </div>
