@@ -1,43 +1,42 @@
 .vendor-table {
-    width:100%;
-    border-collapse: collapse;
-    background-color: white;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: left;
-    margin-top: 0px;
-    border-radius: 10px;
-  }
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
   
   .vendor-table th, .vendor-table td {
-    padding: 7px;
-    padding-left: 30px;
-    text-align:start;
+  padding: 7px;
+  padding-left: 30px;
   }
   
   .vendor-table th {
-    background-color: white;
-    font-weight:600;
-    padding-top: 0px;
+  background-color: white;
+  font-weight:600;
+  margin-right: 0px;
   }
   
   .complete {
-    color: green;
+  color: green;
   }
   
   .pending {
-    color: red;
+  color: red;
   }
-
-.vendor-table tr:hover {
+  
+  .vendor-table tr:hover {
   background-color: #f1f1f1;
   padding: 20px;
-}
-
+  }
   .up{
     width: 84vw;
   }
-  .top{
+    
+    .top{
     display: flex;
     justify-content: space-between;
     background-color: #fff;
@@ -46,24 +45,25 @@
     height:60px;
     align-items: center;
     padding: 20px;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     
     h3{
-      padding-left: 12px;
+    padding-left: 12px;
     }
-
-  .right{
-     margin-left: 40px;
-     display:flex;
-     
-     
-     input{
-      padding:5px;
-      width: 250px;
+    
+    .right{
+    margin-left: 40px;
+    display:flex;
+    
+    input{
+    padding:5px;
+    width: 250px;
     }
   }
-
-  .category button {
+}
+    
+    .category button{
     padding: 5px;
     margin-left: 28px;
     border-radius: 3px;
@@ -73,45 +73,47 @@
     border-width: 1px;
     height: 40px;
     cursor: pointer;
-  }
-
-  .add button {
-    background-color: #1570ef;
-    color: white;
-    padding: 5px;
-    border-radius: 3px;
-    border-width: 0px;
-    margin-left: 27px;
-    margin-right: 10px;
-    width: 140px;
-    height: 40px;
-   }
-  }
-  
-  .last{
-    display: flex;
-    justify-content: space-between;
-    
-    .previous button{
+    }
+    .add button{
+      background-color: #1570ef;
+      color: white;
+      padding: 5px;
+      border-radius: 3px;
+      border-width: 0px;
+      margin-left: 27px;
+      margin-right: 10px;
+      width: 140px;
+      height: 40px;
+      cursor: pointer;
+    }
+      
+      .last{
+      display: flex;
+      justify-content: space-between;
+      background-color: #fff;
+      margin-top: 0px;
+      padding: 10px;
+      
+      .previous button{
       padding: 10px;
       width: 120px;
-      margin-left: 30px;
+      margin-left: 20px;
       background-color: #fff;
       border-radius: 5px;
       border-width: 1px;
-    }
-
-  .middle {
-    padding-top: 10px;
-  }
-
-    .next button{
+      cursor: pointer;
+      }
+      .middle{
+      padding-top: 10px;
+      }
+      
+      .next button{
       padding: 10px;
       width: 120px;
       margin-right: 40px;
       background-color: #fff;
       border-radius: 5px;
       border-width: 1px;
+      cursor: pointer;
+      }
     }
-  }
-  
