@@ -71,6 +71,7 @@
     width: 140px;
     border-width: 1px;
     height: 40px;
+    cursor: pointer;
   }
   
    .add button{
@@ -83,6 +84,7 @@
     margin-right: 10px;
     width: 140px;
     height: 40px;
+    cursor: pointer;
    }
   }
   
@@ -100,6 +102,7 @@
       background-color: #fff;
       border-radius: 5px;
       border-width: 1px;
+      cursor: pointer;
     }
 
     .middle{
@@ -113,6 +116,7 @@
       background-color: #fff;
       border-radius: 5px;
       border-width: 1px;
+      cursor: pointer;
     }
   }
   
