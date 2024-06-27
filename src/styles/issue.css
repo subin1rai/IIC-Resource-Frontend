@@ -13,21 +13,7 @@
       align-items: center;
       position: relative;
     }
-    .search-bar {
-        display: flex;
-        margin-left:5%;
-        background-color: #fff;
-        border: 1px solid #e0e0e0;
-        
-      }
-      
-      .search-bar input {
-        border: none;
-        font-size: 14px;
-        height: 30px;
-        width:500px;
-       
-      }
+    
   
    
       .issue-container {
@@ -69,7 +55,7 @@
               border: 1px solid #d0d3d9;
               outline: none;
               cursor: pointer;
-              border-radius: 4px;
+              border-radius: 6px;
             }
     
           }
@@ -80,10 +66,29 @@
     
           tr {
             height: 40px;
-            margin-right:145px;
-         
           
           }
         }
+
+          
+          .previous{
+            display: inline;
+            justify-items: start; 
+            background-color: #fff;
+            border-width: 1px;
+          }
+      
+          .button{
+            padding-top: 10px;
+            width: 120px;
+            display:left;
+            background-color: #fff;
+            border-radius: 5px;
+            border-width: 1px;
+          }
+        
+      
+        
+
       }
     }    
