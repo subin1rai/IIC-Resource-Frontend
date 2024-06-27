@@ -39,19 +39,7 @@ const Issue = () => {
                 <th>Remarks</th>
               </tr>
             </thead>
-            <tbody>
-            <tr>
-                <th>#1002</th>
-                <th>Book</th>
-                <th>2024/06/02</th>
-                <th>100</th>
-                <th>Academics</th>
-                <th>Taking Return</th>
-                <th>Mausami Niraula</th>
-                <th>Event</th>
-              </tr>
-        
-            </tbody>
+            
           </table>
           <div className="last">
           <div className="previous">
