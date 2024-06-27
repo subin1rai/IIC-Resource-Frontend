@@ -43,11 +43,11 @@ const Table = () => {
             <div className ="right">
             <input type="text" placeholder="Search Items..."/>
               <div className="category">
-            <button type="button"><img src={filterIcon} alt="" />
+            <button> <img src={filterIcon} alt="" />
             Category </button>
             </div>
             <div className="add">
-            <button type="button"> Add Vendor </button>
+            <button> Add Vendor </button>
             </div>
           </div>
           </div>
@@ -81,13 +81,13 @@ const Table = () => {
           </table>
           <div className="last">
           <div className="previous">
-            <button type="button">Previous </button>
+            <button>Previous </button>
             </div>
             <div className="middle">
               Page 1 of 10
             </div>
             <div className="next">
-            <button type="button"> Next </button>
+            <button> Next </button>
             </div>
         </div>
         </div>

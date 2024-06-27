@@ -38,7 +38,7 @@ const Vendor = () => {
             </div>
           </div>
           <Table /> 
-        </div>
+        </div>      
         </div>
         </div>
         );
