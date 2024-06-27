@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import "../styles/inventory.css";
+import "../styles/issue.css";
 import Topbar from "../components/Topbar";
 import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
+import back from "../assets/arrow-left.svg";
+import front from "../assets/arrow-right.svg";
+import close from "../assets/close.svg";
+
 import axios from "axios";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  MenuTrigger,
+  Popover,
+} from "react-aria-components";
+import { Link } from "react-router-dom";
 
 const Inventory = () => {
   const [itemData, setItemData] = useState({
@@ -87,18 +99,20 @@ const Inventory = () => {
 
             <div className="icon-actions">
               <input type="text" placeholder="Search items" />
-              <button className="filter-btn">
+
+              <burtton className="filter-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Filter
-              </button>
+              </burtton>
+
               <button className="add-btn" onClick={displayAddPopup}>
                 Add Item
               </button>
             </div>
           </div>
 
-          <table>
-            <thead>
+          <table className="item-table">
+            <thead className="item-table-head">
               <tr>
                 <th>Items</th>
                 <th>Category</th>
@@ -112,7 +126,7 @@ const Inventory = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <Link to={"/singleItem"} className="single-row">
                 <td>Item 1</td>
                 <td>Electronics</td>
                 <td>Gadgets</td>
@@ -122,9 +136,124 @@ const Inventory = () => {
                 <td>500</td>
                 <td>2024-06-20</td>
                 <td>In Stock</td>
-              </tr>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In Stock</td>
+              </Link>
+              <Link to={"/singleItem"} className="single-row">
+                <td>Item 1</td>
+                <td>Electronics</td>
+                <td>Gadgets</td>
+                <td>50</td>
+                <td>Pcs</td>
+                <td>$10</td>
+                <td>500</td>
+                <td>2024-06-20</td>
+                <td>In StockIn Stock </td>
+              </Link>
             </tbody>
           </table>
+
+          <div className="page-controller">
+            <button className="prev-btn">
+              {" "}
+              <img src={back} alt="" /> Previous
+            </button>
+            <div className="page-details">
+              <p>
+                page <span>1</span> of <span>12</span>{" "}
+              </p>
+            </div>
+            <button className="next-btn">
+              {" "}
+              Next <img src={front} alt="" />
+            </button>
+          </div>
         </div>
 
         {/* Items table closed */}
@@ -132,6 +261,13 @@ const Inventory = () => {
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSUbmit} className="filter-form">
+          <button
+            type="button"
+            className="discard-btn"
+            onClick={closeAddItemForm}
+          >
+            <img src={close} alt="" />
+          </button>
           <p className="title">Add Item</p>
           <div className="field">
             <label htmlFor="item_name">Item Name</label>
@@ -174,13 +310,6 @@ const Inventory = () => {
             />
           </div>
           <div className="buttons">
-            <button
-              type="button"
-              className="discard-btn"
-              onClick={closeAddItemForm}
-            >
-              Discard
-            </button>
             <button type="submit" className="add-btn">
               Add Item
             </button>
