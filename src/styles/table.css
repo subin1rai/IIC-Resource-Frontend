@@ -1,24 +1,24 @@
 .vendor-table {
-    width:100%;
+    width: 100%;
     border-collapse: collapse;
     background-color: white;
     margin: 20px 0;
     font-size: 18px;
     text-align: left;
     margin-top: 0px;
-    border-radius: 10px;
     margin-bottom: 0px;
   }
   
   .vendor-table th, .vendor-table td {
     padding: 7px;
     padding-left: 30px;
-    text-align:start;
+  
   }
   
   .vendor-table th {
     background-color: white;
     font-weight:600;
+    margin-right: 0px;
   }
   
   .complete {
@@ -46,7 +46,8 @@
     height:60px;
     align-items: center;
     padding: 20px;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     
     h3{
       padding-left: 12px;

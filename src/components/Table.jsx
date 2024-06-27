@@ -79,7 +79,7 @@ const Table = () => {
               ))}
             </tbody>
           </table>
-          <div className="last">
+           <div className="last">
           <div className="previous">
             <button>Previous </button>
             </div>

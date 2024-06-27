@@ -14,11 +14,7 @@
 
     align-items: center;
   }
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 85vw;
-  }
+  
 
       .vendor-Summary {
         background-color: #fff;
