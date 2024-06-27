@@ -11,7 +11,6 @@ const Vendor = () => {
        <Sidebar />
        <div className="vendor-main">
         <Topbar />
-        <div className="container">
           <div className =" vendor-Summary">
             <h3 className="summary-title">Summary</h3>
             <div className="summary-container">
@@ -38,8 +37,7 @@ const Vendor = () => {
             </div>
           </div>
           <Table /> 
-        </div>
-        </div>
+        </div>      
         </div>
         );
 };
