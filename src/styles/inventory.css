@@ -23,15 +23,14 @@
   }
   .filter-form {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 25%;
+    left: 25%;
     background-color: #fff;
     z-index: 99;
     padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 30px;
 
     .title {
       font-size: 18px;
@@ -39,8 +38,7 @@
       margin-left: -10px;
     }
 
-    input,
-    select {
+    input {
       width: 250px;
       padding: 5px 10px;
     }
@@ -56,7 +54,6 @@
         font-size: 14px;
         border-radius: 4px;
         cursor: pointer;
-        color: #1570ef;
       }
 
       .add-btn {
@@ -127,7 +124,6 @@
     align-items: center;
     width: 84vw;
     padding: 10px;
-
     gap: 25px;
     border-radius: 10px;
 
@@ -191,6 +187,8 @@
       tr {
         height: 40px;
       }
+
+      
     }
   }
 }
