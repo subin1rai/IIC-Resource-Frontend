@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "../components/Sidebar";
 import "../styles/inventory.css";
-import Icon from "../assets/Icon.png";
+import filterIcon from "../assets/filter.svg";
 
 const Issue = () => {
     return (
@@ -11,12 +11,10 @@ const Issue = () => {
       <div className="topbar">
       <div className="topbar-left">
       <div class="search-bar">
-      <p>icon</p>
-          <input type="text" placeholder="Search product, supplier, order"></input>
-         
-
-        </div>
-        </div>
+      icon
+        <input type="text" placeholder="Search product, supplier, order"></input>
+      </div>
+      </div>
       <div className="topbar-right">
         icon
         <img
@@ -30,19 +28,29 @@ const Issue = () => {
 
         {/* Items table */}
 
-        <div className="items-container">
+        <div className="issue-container">
+          <div className="issue-container-top">
+            <div className="issue-title">
+              <p>Issues</p>
+              </div>
+              <div className="icon-action">
+              <button className="filter">
+                {" "}
+                <img src={filterIcon} alt="" />
+                Filters
+              </button>
+              </div>
+            </div>
           <table>
             <thead>
               <tr>
-                <th>Items</th>
-                <th>Category</th>
-                <th>Product Category</th>
+                <th>Issue ID</th>
+                <th>Issued Item</th>
+                <th>Issue Date</th>
                 <th>Quantity</th>
-                <th>Unit</th>
-                <th>Unit Price</th>
-                <th>Total Purchased</th>
-                <th>Recent Purchased</th>
-                <th>Item Status</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Issued By</th>
               </tr>
             </thead>
             <tbody>
