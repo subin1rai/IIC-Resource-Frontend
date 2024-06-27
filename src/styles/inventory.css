@@ -264,7 +264,7 @@
         border: 1px solid #d0d3d9;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 18px;
+        font-size: 16px;
         padding: 5px 10px;
         display: flex;
         justify-content: center;
@@ -272,7 +272,7 @@
         gap: 5px;
 
         img {
-          width: 20px;
+          width: 16px;
         }
       }
     }
