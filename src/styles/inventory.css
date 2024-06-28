@@ -17,7 +17,6 @@
   .overlay {
     background: #3756828e;
     position: absolute;
-
     width: 100vw;
     height: 100vh;
   }
@@ -33,6 +32,7 @@
     flex-direction: column;
     gap: 35px;
     border-radius: 8px;
+
     transition: all ease-in-out 0.5s;
     .title {
       font-size: 18px;
