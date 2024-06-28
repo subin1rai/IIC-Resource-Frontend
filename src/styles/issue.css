@@ -45,6 +45,7 @@
     
             .filter{
               display: flex;
+              
               justify-content: center;
               align-items: center;
               width: fit-content;
@@ -68,27 +69,33 @@
             height: 40px;
           
           }
-        }
+        } 
 
-          
-          .previous{
-            display: inline;
-            justify-items: start; 
+        .page-controller {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          margin-top: 20px;
+          margin-bottom: 10px;
+    
+          button {
             background-color: #fff;
-            border-width: 1px;
+            border: 1px solid #d0d3d9;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+    
+            img {
+              width: 16px;
+            }
           }
-      
-          .button{
-            padding-top: 10px;
-            width: 120px;
-            display:left;
-            background-color: #fff;
-            border-radius: 5px;
-            border-width: 1px;
-          }
-        
-      
-        
+        }
+               
 
       }
     }    
