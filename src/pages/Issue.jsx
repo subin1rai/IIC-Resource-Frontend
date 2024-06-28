@@ -1,8 +1,10 @@
 import React from 'react';
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import "../styles/inventory.css";
+import "../styles/issue.css";
 import filterIcon from "../assets/filter.svg";
+import back from "../assets/arrow-left.svg";
+import front from "../assets/arrow-right.svg";
 
 const Issue = () => {
     return (
@@ -39,19 +41,24 @@ const Issue = () => {
                 <th>Remarks</th>
               </tr>
             </thead>
-            
+        
           </table>
-          <div className="last">
-          <div className="previous">
-            <button type="button">Previous </button>
+          <div className="page-controller">
+            <button className="prev-btn">
+              {" "}
+              <img src={back} alt="" /> Previous
+            </button>
+            <div className="page-details">
+              <p>
+                page <span>1</span> of <span>12</span>{" "}
+              </p>
             </div>
-            <div className="middle">
-              Page 1 of 10
-            </div>
-            <div className="next">
-            <button type="button"> Next </button>
-            </div>
-        </div>
+            <button className="next-btn">
+              {" "}
+              Next <img src={front} alt="" />
+            </button>
+          </div>
+       
         </div>
 
         
