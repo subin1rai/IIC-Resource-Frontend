@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import "../styles/issue.css";
+import "../styles/inventory.css";
 import Topbar from "../components/Topbar";
 import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
@@ -42,7 +42,6 @@ const Inventory = () => {
 
   const handleSUbmit = async (event) => {
     event.preventDefault();
-    console.log("ya aayo hai ta ");
 
     try {
       const response = await axios.post(
