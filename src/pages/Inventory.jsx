@@ -7,7 +7,6 @@ import filterIcon from "../assets/filter.svg";
 import back from "../assets/arrow-left.svg";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
-
 import axios from "axios";
 import {
   Button,
@@ -72,7 +71,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
+                <h4>31</h4> 
                 <p>Number of inventory</p>
               </div>
               <div className="container">
