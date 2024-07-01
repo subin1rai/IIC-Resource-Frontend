@@ -15,16 +15,31 @@
   }
   .records-container{
     width:100%;
-  }
+  
   .top{
     justify-content: space-between;
   }
+  .filter-btn {
+    display: flex;
+    width: 100px;
+    margin-left: 1300px;
+    padding: 5px 10px;
+    gap: 10px;
+    color: #5d6679;
+    background-color: #fff;
+    border: 1px solid #d0d3d9;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+}
 
   .add-btn {
       display: flex;
       justify-content: center;
       align-items: center;
       width: fit-content;
+      margin-right: 30px;
       padding: 7px 10px;
       gap: 10px;
       color: #fff;
