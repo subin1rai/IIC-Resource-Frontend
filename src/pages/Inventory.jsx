@@ -99,13 +99,13 @@ const Inventory = () => {
             <div className="icon-actions">
               <input type="text" placeholder="Search items" />
 
-              <burtton className="filter-btn" aria-label="Menu">
+              <button className="filter-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Filter
-              </burtton>
+              </button>
 
               <button className="add-btn" onClick={displayAddPopup}>
-                Add Item
+                Category
               </button>
             </div>
           </div>
