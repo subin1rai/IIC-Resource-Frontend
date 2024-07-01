@@ -21,7 +21,7 @@ const Inventory = () => {
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
-    item_category: "",
+    itemCategory: "",
     measuring_unit: "",
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -290,7 +290,7 @@ const Inventory = () => {
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
-              name="item_category"
+              name="itemCategory"
               id="item_category"
               onChange={handleChange}
             >

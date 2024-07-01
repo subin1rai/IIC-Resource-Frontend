@@ -28,7 +28,9 @@ const Issue = () => {
               </button>
               </div>
             </div>
-          <table>
+
+            <IssueTable />
+          {/* <table>
             <thead>
               <tr>
                 <th>Issue ID</th>
@@ -57,7 +59,7 @@ const Issue = () => {
               {" "}
               Next <img src={front} alt="" />
             </button>
-          </div>
+          </div> */}
        
         </div>
 
