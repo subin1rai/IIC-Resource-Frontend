@@ -72,34 +72,31 @@
   
   .forms{
     display: flex;
-
-    .left{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      
-    }
-    .right{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
   }
 
   .addform {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
     z-index: 11;
     padding: 30px;
-    display: flex;
-    flex-direction: column;
     gap: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 800px;
+    width: 1100px;
+    height: 500px;
+
+    .summary{
+      margin-left: 60px;
+      background-color: lightgrey;
+      width: 300px;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 35px;
+      
+    }
 
     .title {
       font-size: 24px;
@@ -118,10 +115,13 @@
         width: 15px;
       }
     }
+    .left{
+      display:flex;
+      flex-direction: column;
+      row-gap: 30px;
 
     .field {
       display: flex;
-      justify-content: space-between;
       gap: 20px;
 
       label {
@@ -141,6 +141,7 @@
         width: auto;
       }
     }
+  }
 
     .right {
       display: flex;
@@ -152,19 +153,13 @@
         font-size: 20px;
       }
     }
-
-    .buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-
-      .add-btn {
-        display: flex;
+      
+    .add-btn {   
         justify-content: center;
         align-items: center;
-        padding: 7px 10px;
-        gap: 10px;
         color: #fff;
+        padding: 10px;
+        margin-top:10px;
         background-color: #1570ef;
         border: none;
         outline: none;
@@ -173,4 +168,3 @@
       }
     }
   }
-}
