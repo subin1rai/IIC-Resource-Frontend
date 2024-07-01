@@ -2,7 +2,6 @@ import "../styles/vendor.css";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import React, { useEffect, useState } from "react";
-import "../styles/table.css";
 import filterIcon from "../assets/filter.svg";
 import validVendor from "../assets/user.svg";
 import close from "../assets/close.svg";
@@ -47,7 +46,8 @@ const Vendor = () => {
       <Sidebar />
       <div className="vendor-main">
         <Topbar />
-        <div className=" vendor-Summary">
+        <div className="vendor-summary">
+        <div className="overall-vendor">
           <h3 className="summary-title">Summary</h3>
           <div className="summary-container">
             <div className="summary">
@@ -72,24 +72,29 @@ const Vendor = () => {
             </div>
           </div>
         </div>
+        </div>
 
-        <div className="up">
+        <div className="vendor-container">
           <div className="top">
-            <h3> Vendors </h3>
+          <div className="up">
+            <p> Vendors </p>
+            </div>
+
             <div className="right">
               <input type="text" placeholder="Search Items..." />
-              <div className="category">
-                <button>
-                  {" "}
-                  <img src={filterIcon} alt="" />
-                  Category{" "}
-                </button>
-              </div>
-              <div className="add">
-                <button onClick={openAddVendorForm}> Add Vendor </button>
-              </div>
+              
+              <button className="category-btn" aria-label="Menu">
+                <img src={filterIcon} alt="" />
+                Category
+              </button>
+             
+              
+              <button className="add-button" onClick={openAddVendorForm}>
+                Add Vendor
+              </button>
             </div>
           </div>
+
           <VendorTable />
           {/* <div className="last">
             <div className="previous">
@@ -103,17 +108,17 @@ const Vendor = () => {
         </div>
 
         {addFormVisibility && (
-          <form action="" onSubmit={handleSubmit} className="filter-form">
+          <form action="" onSubmit={handleSubmit} className="filter">
             <button
-              type="button"
-              className="discard-btn"
+              type="vendor-button"
+              className="discard-button"
               onClick={closeAddVendorForm}
             >
               <img src={close} alt="" />
             </button>
-            <p className="title">Add Item</p>
-            <div className="field">
-              <label htmlFor="item_name">Item Name</label>
+            <p className="vendor_title">Add Item</p>
+            <div className="vendor_field">
+              <label htmlFor="vendor_name">Item Name</label>
               <input
                 type="text"
                 placeholder="Enter product name"
@@ -122,11 +127,11 @@ const Vendor = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="field">
+            <div className="vendor_field">
               <label htmlFor="category">Vendor Vat</label>
               <input type="text" name="vendor_vat" onChange={handleChange} />
             </div>
-            <div className="field">
+            <div className="vendor_field">
               <label htmlFor="measuring_unit">Contact</label>
               <input
                 type="text"
@@ -135,7 +140,7 @@ const Vendor = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="field">
+            <div className="vendor_field">
               <label htmlFor="category"> Category</label>
               <select id="category" onChange={handleChange}>
                 <option value="">Contact</option>
@@ -143,16 +148,17 @@ const Vendor = () => {
                 <option value="Appliances">Appliances</option>
               </select>
             </div>
-            <div className="buttons">
-              <button type="submit" className="add-btn">
-                Add Item
+            <div className="vendor_buttons">
+              <button type="submit" className="add-button">
+                Add Vendor
               </button>
             </div>
           </form>
         )}
       </div>
 
-      {addFormVisibility && <div className="overlay"></div>}
+      {addFormVisibility && 
+      (<div className="overlay-vendor" onClick={closeAddVendorForm}> </div> )}
     </div>
   );
 };

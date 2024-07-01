@@ -9,47 +9,54 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 const columns = [
-  { id: "vendor_name", label: "Vendor Name", maxWidth: 70 },
-  { id: "vat_number", label: "Vat Number", maxWidth: 70 },
+  { id: "items", label: "Items", maxWidth: 70 },
+  { id: "category", label: "Category", maxWidth: 70 },
   {
-    id: "contact_number",
-    label: "Contact Number",
+    id: "product_category",
+    label: "Product Category",
     maxWidth: 70,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "purchase_amount",
-    label: "Purchase Amount",
+    id: "quantity",
+    label: "Quantity",
     maxWidth: 70,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "recent_purchase",
-    label: "Recent purchase",
+    id: "unit",
+    label: "Unit",
     maxWidth: 70,
     align: "center",
     format: (value) => value.toFixed(2),
   },
   {
-    id: "payment_duration",
-    label: "Payment Duration",
+    id: "total_purchased",
+    label: "Total Purchased",
     maxWidth: 70,
     align: "center",
     format: (value) => value.toFixed(2),
   },
   {
-    id: "payment_status",
-    label: "Payment status",
+    id: "recent_purchased",
+    label: "Recent Purchased",
+    maxWidth: 70,
+    align: "center",
+    format: (value) => value.toFixed(2),
+  },
+  {
+    id: "item_status",
+    label: "Item Status",
     maxWidth: 70,
     align: "center",
     format: (value) => value.toFixed(2),
   },
 ];
 
-function createData(vendor_name, vat_number, contact_number, purchase_amount) {
-  return { vendor_name, vat_number, contact_number, purchase_amount };
+function createData(items, category, product_category, quantity) {
+  return { items, category, product_category, quantity };
 }
 
 const rows = [
@@ -70,7 +77,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-export default function VendorTable() {
+export default function InventoryTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
 
