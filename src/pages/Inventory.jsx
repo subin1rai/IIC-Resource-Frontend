@@ -4,9 +4,8 @@ import "../styles/inventory.css";
 import Topbar from "../components/Topbar";
 import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
-import back from "../assets/arrow-left.svg";
-import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
+import InventoryTable from "../components/InventoryTable";
 
 import axios from "axios";
 import {
@@ -109,8 +108,10 @@ const Inventory = () => {
               </button>
             </div>
           </div>
+          <InventoryTable />
+          
 
-          <table className="item-table">
+          {/* <table className="item-table">
             <thead className="item-table-head">
               <tr>
                 <th>Items</th>
@@ -236,9 +237,9 @@ const Inventory = () => {
                 <td>In StockIn Stock </td>
               </Link>
             </tbody>
-          </table>
+          </table> */}
 
-          <div className="page-controller">
+          {/* <div className="page-controller">
             <button className="prev-btn">
               {" "}
               <img src={back} alt="" /> Previous
@@ -252,7 +253,7 @@ const Inventory = () => {
               {" "}
               Next <img src={front} alt="" />
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Items table closed */}
