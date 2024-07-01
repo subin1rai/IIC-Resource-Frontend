@@ -7,6 +7,7 @@ import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
 import axios from "axios";
+import { BsDisplay } from "react-icons/bs";
 
 const Bill = () => {
   const [bill, setBill] = useState({
@@ -71,7 +72,10 @@ const Bill = () => {
       {addFormVisibility && (
         <>
           <div className="overlay"></div>
+       
           <form onSubmit={handleSubmit} className="addform">
+          <div className="forms">
+            <div className="left">
             <button type="button" className="closebtn" onClick={closeAddBillForm}>
               <img src={close} alt="close icon" />
             </button>
@@ -152,6 +156,8 @@ const Bill = () => {
                 onChange={handleChange}
               />
             </div>
+            </div>
+            <div className="summary">
             <div className="right">
               <h2>Summary</h2>
               <p>Bill No: {bill.bill_no}</p>
@@ -170,6 +176,8 @@ const Bill = () => {
                 Add Item
               </button>
             </div>
+            </div>
+          </div>
           </form>
         </>
       )}
