@@ -5,7 +5,7 @@ import "../styles/issue.css";
 import filterIcon from "../assets/filter.svg";
 import back from "../assets/arrow-left.svg";
 import front from "../assets/arrow-right.svg";
-
+import IssueTable from "../components/IssueTable";
 const Issue = () => {
     return (
     <div className="issue">
