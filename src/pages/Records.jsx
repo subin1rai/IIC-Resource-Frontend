@@ -80,7 +80,8 @@ const Bill = () => {
               <img src={close} alt="close icon" />
             </button>
             <p className="title">Add Bill Details</p>
-            <div className="field">
+            <div className="double">
+            <div className="for">
               <label htmlFor="bill_no">Bill No:</label>
               <input
                 type="text"
@@ -89,10 +90,14 @@ const Bill = () => {
                 id="bill_no"
                 onChange={handleChange}
               />
+            </div>
+            <div className="for">
               <label htmlFor="bill_date">Bill Date:</label>
               <input type="text" placeholder="Enter bill date" name="bill_date" id="bill_date" onChange={handleChange} />
             </div>
-            <div className="field">
+            </div>
+            <div className="single">
+            <div className="for">
               <label htmlFor="voucher_no">Voucher No:</label>
               <input
                 type="text"
@@ -102,7 +107,9 @@ const Bill = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="field">
+            </div>
+            <div className="single">
+            <div className="for">
               <label htmlFor="vendor">Vendor:</label>
               <select id="vendor" name="vendor" onChange={handleChange}>
                 <option value="">Select Vendor</option>
@@ -111,6 +118,10 @@ const Bill = () => {
                 <option value="Aneer Suppliers">Aneer Suppliers</option>
                 <option value="Subin Suppliers">Subin Suppliers</option>
               </select>
+              </div>
+              </div>
+              <div className="single">
+              <div className="for">
               <label htmlFor="item_name">Item Name:</label>
               <select id="item_name" name="item_name" onChange={handleChange}>
                 <option value="">Select Item</option>
@@ -119,10 +130,14 @@ const Bill = () => {
                 <option value="copy">Copy</option>
                 <option value="chair">Chair</option>
               </select>
+              </div>
             </div>
-            <div className="field">
-              <label htmlFor="unit_price">Unit Price:</label>
+            <div className="double">
+            <div className="for">
+              <label htmlFor="unit_price">Unit Price:</label>    
               <input type="text" placeholder="Enter unit price" name="unit_price" id="unit_price" onChange={handleChange} />
+              </div>
+            <div className="for">
               <label htmlFor="quantity">Quantity:</label>
               <input
                 type="text"
@@ -132,10 +147,16 @@ const Bill = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="field">
+            </div>
+            <div className="double">
+            <div className="for">
               <label htmlFor="bill_amt">Bill Amount:</label>
+             
               <input type="text" placeholder="Enter bill amount" name="bill_amt" id="bill_amt" onChange={handleChange} />
+              </div>
+              <div className="for">
               <label htmlFor="tds">Tax Deducted Source (TDS):</label>
+          
               <input
                 type="text"
                 placeholder="Enter TDS"
@@ -144,10 +165,17 @@ const Bill = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="field">
+            </div>
+            <div className="line">
+              <div className="double">
+            <div className="for">
               <label htmlFor="actual_amt">Actual Amount:</label>
+          
               <input type="text" placeholder="Enter actual amount" name="actual_amt" id="actual_amt" onChange={handleChange} />
+              </div>
+              <div className="for">
               <label htmlFor="paid_amt">Paid Amount:</label>
+            
               <input
                 type="text"
                 placeholder="Enter paid amount"
@@ -155,6 +183,9 @@ const Bill = () => {
                 id="paid_amt"
                 onChange={handleChange}
               />
+
+            </div>
+            </div>
             </div>
             </div>
             <div className="summary">
