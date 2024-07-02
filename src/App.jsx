@@ -8,6 +8,7 @@ import Inventory from "./pages/Inventory";
 import Issue from "./pages/Issue";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
+import SpecificVendor from "./pages/SpecificVendor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records/>} />
+          <Route path= "/specificVendor" element={<SpecificVendor/>} />
           </Routes>
       </BrowserRouter>
     </div>
