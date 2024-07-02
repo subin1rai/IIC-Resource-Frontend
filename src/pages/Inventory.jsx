@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/inventory.css";
 import Topbar from "../components/Topbar";
@@ -20,8 +20,9 @@ const Inventory = () => {
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
-    item_category: "",
+    itemCategory: "",
     measuring_unit: "",
+    productCategory:""
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -52,6 +53,27 @@ const Inventory = () => {
       console.log(error);
     }
   };
+ 
+  useEffect (()=>{
+    const getAllItems = async () => {
+ 
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/items"
+        );
+  console.log(response)
+  const items= response.data.items
+  console.log(items)
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllItems()
+  },[])
+
+
+ 
 
   return (
     <div className="inventory">
@@ -107,7 +129,7 @@ const Inventory = () => {
               </button>
             </div>
           </div>
-          <InventoryTable />
+          <InventoryTable response/>
           
 
           {/* <table className="item-table">
@@ -287,9 +309,18 @@ const Inventory = () => {
             </select>
           </div>
           <div className="field">
+            <label htmlFor="product_category"> Product Category</label>
+            <select name="productCategory" id="product_category" onChange={handleChange}>
+              <option value="">Choose Category</option>
+              <option value="SSD">SSD</option>
+              <option value="Academics">Academics</option>
+            </select>
+          </div>
+          
+          <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
-              name="item_category"
+              name="itemCategory"
               id="item_category"
               onChange={handleChange}
             >

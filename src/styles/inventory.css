@@ -19,13 +19,15 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
+    z-index: 99;
   }
   .filter-form {
     position: absolute;
-    top: 25%;
-    left: 25%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #fff;
-    z-index: 99;
+    z-index: 999;
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -40,7 +42,6 @@
       font-weight: 500;
       margin-left: -10px;
     }
-
 
     .discard-btn {
       right: 30px;
@@ -60,7 +61,6 @@
       padding: 5px 10px;
     }
 
-
     input {
       width: 250px;
       padding: 5px 10px;
@@ -70,7 +70,6 @@
       display: flex;
       justify-content: flex-end;
       gap: 30px;
-
 
       .add-btn {
         display: flex;
@@ -279,8 +278,6 @@
           width: 16px;
         }
       }
-
-      
     }
   }
 }
