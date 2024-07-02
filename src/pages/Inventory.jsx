@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/inventory.css";
 import Topbar from "../components/Topbar";
@@ -52,6 +52,27 @@ const Inventory = () => {
       console.log(error);
     }
   };
+ 
+  useEffect (()=>{
+    const getAllItems = async () => {
+ 
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/items"
+        );
+  console.log(response)
+  const items= response.data.items
+  console.log(items)
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllItems()
+  },[])
+
+
+ 
 
   return (
     <div className="inventory">
@@ -107,7 +128,7 @@ const Inventory = () => {
               </button>
             </div>
           </div>
-          <InventoryTable />
+          <InventoryTable response/>
           
 
           {/* <table className="item-table">
