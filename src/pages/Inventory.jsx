@@ -22,6 +22,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
+    productCategory:""
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -307,6 +308,15 @@ const Inventory = () => {
               <option value="Furniture">Furniture</option>
             </select>
           </div>
+          <div className="field">
+            <label htmlFor="product_category"> Product Category</label>
+            <select name="productCategory" id="product_category" onChange={handleChange}>
+              <option value="">Choose Category</option>
+              <option value="SSD">SSD</option>
+              <option value="Academics">Academics</option>
+            </select>
+          </div>
+          
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
