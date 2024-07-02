@@ -10,9 +10,9 @@ import VendorTable from "../components/VendorTable";
 const Vendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
-    vendor_vat: "",
+    vat_number: "",
     vendor_contact: "",
-    category: "",
+    category: ""
   });
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -36,8 +36,10 @@ const Vendor = () => {
         "http://localhost:8898/api/addVendor",
         vendor
       );
+      
     } catch (error) {
       console.log(error);
+      
     }
   };
 
@@ -129,7 +131,7 @@ const Vendor = () => {
             </div>
             <div className="vendor_field">
               <label htmlFor="category">Vendor Vat</label>
-              <input type="text" name="vendor_vat" onChange={handleChange} />
+              <input type="text" name="vat_number" onChange={handleChange} />
             </div>
             <div className="vendor_field">
               <label htmlFor="measuring_unit">Contact</label>
@@ -142,7 +144,7 @@ const Vendor = () => {
             </div>
             <div className="vendor_field">
               <label htmlFor="category"> Category</label>
-              <select id="category" onChange={handleChange}>
+              <select id="category" name="category" onChange={handleChange}>
                 <option value="">Contact</option>
                 <option value="Gadgets">Gadgets</option>
                 <option value="Appliances">Appliances</option>
@@ -158,7 +160,8 @@ const Vendor = () => {
       </div>
 
       {addFormVisibility && 
-      (<div className="overlay-vendor" onClick={closeAddVendorForm}> </div> )}
+      (
+      <div className="overlay-vendor" onClick={closeAddVendorForm}> </div> )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import "../styles/issue.css";
 import filterIcon from "../assets/filter.svg";
 import back from "../assets/arrow-left.svg";
 import front from "../assets/arrow-right.svg";
-
+import IssueTable from "../components/IssueTable";
 const Issue = () => {
     return (
     <div className="issue">
@@ -28,7 +28,9 @@ const Issue = () => {
               </button>
               </div>
             </div>
-          <table>
+
+            <IssueTable />
+          {/* <table>
             <thead>
               <tr>
                 <th>Issue ID</th>
@@ -57,7 +59,7 @@ const Issue = () => {
               {" "}
               Next <img src={front} alt="" />
             </button>
-          </div>
+          </div> */}
        
         </div>
 
