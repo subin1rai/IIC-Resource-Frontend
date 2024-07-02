@@ -55,19 +55,18 @@ const columns = [
   },
 ];
 
-function createData(issue_id,issued_item, issue_date, quantity, department) {
+function createData(issue_id, issued_item, issue_date, quantity, department) {
   return { issue_id, issued_item, issue_date, quantity, department };
 }
 
 const rows = [
-  createData(1,"India", "2024-03-04", 1324, "Finance"),
-  createData(2,"India", "2024-03-04", 1324, "Finance"),
-  createData(3,"India", "2024-03-04", 1324, "Finance"),
-  createData(4,"India", "2024-03-04", 1324, "Finance"),
-  createData(5,"India", "2024-03-04", 1324, "Finance"),
-  createData(6,"India", "2024-03-04", 1324, "Finance"),
-  createData(7,"India", "2024-03-04", 1324, "Finance"),
-
+  createData(1, "India", "2024-03-04", 1324, "Finance"),
+  createData(2, "India", "2024-03-04", 1324, "Finance"),
+  createData(3, "India", "2024-03-04", 1324, "Finance"),
+  createData(4, "India", "2024-03-04", 1324, "Finance"),
+  createData(5, "India", "2024-03-04", 1324, "Finance"),
+  createData(6, "India", "2024-03-04", 1324, "Finance"),
+  createData(7, "India", "2024-03-04", 1324, "Finance"),
 ];
 
 export default function InventoryTable() {
