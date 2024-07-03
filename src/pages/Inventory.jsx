@@ -22,6 +22,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
+    productCategory:""
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -70,7 +71,7 @@ const Inventory = () => {
     <div className="inventory">
       <Sidebar />
       <div className="inventory-main">
-        <Topbar />
+        {/* <Topbar />   */}
         {/* Status */}
         <div className="inventory-summary">
           <div className="overall-inventory">
@@ -114,6 +115,7 @@ const Inventory = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
+              <button className="add-btn">Add Item</button>
 
               <button className="add-btn" onClick={displayAddPopup}>
                 Category
@@ -298,6 +300,15 @@ const Inventory = () => {
               <option value="Furniture">Furniture</option>
             </select>
           </div>
+          <div className="field">
+            <label htmlFor="product_category"> Product Category</label>
+            <select name="productCategory" id="product_category" onChange={handleChange}>
+              <option value="">Choose Category</option>
+              <option value="SSD">SSD</option>
+              <option value="Academics">Academics</option>
+            </select>
+          </div>
+          
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
