@@ -1,15 +1,16 @@
 import React from "react";
-
 import "../styles/sidebar.css";
-
 import sideBarLogo from "../assets/top.svg";
 import dashboard from "../assets/dashboard.png";
 import inventory from "../assets/inventory.png";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  const setActiveClass = ({ isActive }) =>
+    isActive ? "active item-text" : "item-text";
+
   return (
     <div className="sidebar">
       <div className="sidebar-top">
@@ -18,34 +19,33 @@ const Sidebar = () => {
         <div className="sidebar-items">
           <div className="item">
             <img src={dashboard} alt="" />
-
-            <Link to="/dashboard" className="item-text">
+            <NavLink to="/dashboard" className={setActiveClass}>
               Dashboard
-            </Link>
+            </NavLink>
           </div>
           <div className="item">
             <img src={inventory} alt="" />
-            <Link to="/inventory" className="item-text">
+            <NavLink to="/inventory" className={setActiveClass}>
               Inventory
-            </Link>
+            </NavLink>
           </div>
           <div className="item">
             <img src={inventory} alt="" />
-            <Link to="/billRecords" className="item-text">
+            <NavLink to="/records" className={setActiveClass}>
               Bill Records
-            </Link>
+            </NavLink>
           </div>
           <div className="item">
             <img src={dashboard} alt="" />
-            <Link to="/vendors" className="item-text">
+            <NavLink to="/vendors" className={setActiveClass}>
               Vendors
-            </Link>
+            </NavLink>
           </div>
           <div className="item">
             <img src={dashboard} alt="" />
-            <Link to="/issue" className="item-text">
+            <NavLink to="/issue" className={setActiveClass}>
               Issue
-            </Link>
+            </NavLink>
           </div>
         </div>
       </div>
@@ -54,15 +54,15 @@ const Sidebar = () => {
         <div className="sidebar-items">
           <div className="item">
             <img src={settings} alt="" />
-            <Link to="/settings" className="item-text">
+            <NavLink to="/settings" className={setActiveClass}>
               Settings
-            </Link>
+            </NavLink>
           </div>
           <div className="item">
             <img src={logout} alt="" />
-            <Link to="/" className="item-text">
+            <NavLink to="/" className={setActiveClass}>
               Log out
-            </Link>
+            </NavLink>
           </div>
         </div>
       </div>

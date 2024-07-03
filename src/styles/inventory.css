@@ -17,25 +17,48 @@
   .overlay {
     background: #3756828e;
     position: absolute;
-
     width: 100vw;
     height: 100vh;
+    z-index: 99;
   }
   .filter-form {
     position: absolute;
-    top: 25%;
-    left: 25%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #fff;
-    z-index: 99;
+    z-index: 999;
     padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+
+    gap: 35px;
+    border-radius: 8px;
+
+    transition: all ease-in-out 0.5s;
 
     .title {
       font-size: 18px;
       font-weight: 500;
       margin-left: -10px;
+    }
+
+    .discard-btn {
+      right: 30px;
+      border: none;
+      position: absolute;
+      background-color: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+
+      img {
+        width: 15px;
+      }
+    }
+
+    select {
+      width: 275px;
+      padding: 5px 10px;
     }
 
     input {
@@ -47,14 +70,6 @@
       display: flex;
       justify-content: flex-end;
       gap: 30px;
-
-      .discard-btn {
-        border: 1px solid #1570ef;
-        padding: 5px 10px;
-        font-size: 14px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
 
       .add-btn {
         display: flex;
@@ -125,7 +140,6 @@
     width: 84vw;
     padding: 10px;
 
-    gap: 25px;
     border-radius: 10px;
 
     .item-container-top {
@@ -143,7 +157,7 @@
         justify-content: space-between;
         gap: 20px;
         margin: 15px;
-
+        margin-right: 40px;
         input {
           padding: 0 10px;
           width: 250px;
@@ -182,11 +196,87 @@
       }
     }
 
-    table {
+    .item-table {
+      display: flex;
+      flex-direction: column;
       width: 100%;
 
-      tr {
-        height: 40px;
+      thead {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+
+        tr {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          height: 45px;
+          border-bottom: 1px solid #1b1b1bb6;
+
+          th {
+            width: 100%;
+            font-weight: 500;
+            padding: 0 10px;
+            text-align: start;
+          }
+        }
+      }
+      tbody {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .single-row {
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          height: 45px;
+          gap: 20px;
+          text-decoration: none;
+          color: #000;
+          border-bottom: 1px solid #f0f1f3;
+
+          &:hover {
+            background-color: #f0f1f3;
+            transform: scaleX(1.013);
+            transition: all ease-in-out 0.3s;
+          }
+
+          td {
+            text-align: start;
+            padding: 0 10px;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .page-controller {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 10px;
+
+      button {
+        background-color: #fff;
+        border: 1px solid #d0d3d9;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+
+        img {
+          width: 16px;
+        }
       }
     }
   }
