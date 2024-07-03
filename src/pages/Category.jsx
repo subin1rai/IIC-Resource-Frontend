@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import "../styles/category.css";
+import axios from "axios";
 
 const Category = () => {
+    const [category,setCategory] = useState([])
+
+    useEffect(()=>{},[])
   return (
     <div className="category">
       <Sidebar />
