@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Inventory from "./pages/Inventory";
 import Issue from "./pages/Issue";
+import Category from "./pages/Category";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records/>} />
+          <Route path="/category" element={<Category/>} />
           </Routes>
       </BrowserRouter>
     </div>

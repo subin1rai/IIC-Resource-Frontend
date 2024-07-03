@@ -43,6 +43,12 @@ const Sidebar = () => {
           </div>
           <div className="item">
             <img src={dashboard} alt="" />
+            <NavLink to="/Category" className={setActiveClass}>
+              Category
+            </NavLink>
+          </div>
+          <div className="item">
+            <img src={dashboard} alt="" />
             <NavLink to="/issue" className={setActiveClass}>
               Issue
             </NavLink>
