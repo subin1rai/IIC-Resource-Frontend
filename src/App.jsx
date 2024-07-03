@@ -24,8 +24,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
-          <Route path="/records" element={<Records/>} />
-          </Routes>
+          <Route path="/records" element={<Records />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );
