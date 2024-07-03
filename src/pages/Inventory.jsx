@@ -53,25 +53,19 @@ const Inventory = () => {
       console.log(error);
     }
   };
- 
-  useEffect (()=>{
+
+  useEffect(() => {
     const getAllItems = async () => {
- 
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/items"
-        );
-  console.log(response)
-  const items= response.data.items
-  console.log(items)
-        
+        const response = await axios.get("http://localhost:8898/api/items");
+        const items = response.data.items;
       } catch (error) {
         console.log(error);
       }
     };
-    getAllItems()
-  },[])
 
+    getAllItems();
+  }, []);
 
   return (
     <div className="inventory">
@@ -90,7 +84,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4> 
+                <h4>31</h4>
                 <p>Number of inventory</p>
               </div>
               <div className="container">
@@ -128,8 +122,7 @@ const Inventory = () => {
               </button>
             </div>
           </div>
-          <InventoryTable response/>
-          
+          <InventoryTable response />
 
           {/* <table className="item-table">
             <thead className="item-table-head">
