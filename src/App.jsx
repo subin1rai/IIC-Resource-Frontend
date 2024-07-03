@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Inventory from "./pages/Inventory";
 import Issue from "./pages/Issue";
+import Category from "./pages/Category";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
 import SpecificVendor from "./pages/SpecificVendor";
@@ -28,6 +29,7 @@ function App() {
 
           <Route path="/records" element={<Records/>} />
           <Route path= "/specificVendor" element={<SpecificVendor/>} />
+          <Route path="/category" element={<Category/>} />
           </Routes>
 
       </BrowserRouter>
