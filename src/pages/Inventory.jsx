@@ -22,7 +22,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    productCategory:""
+    productCategory: "",
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -53,19 +53,6 @@ const Inventory = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    const getAllItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items");
-        const items = response.data.items;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getAllItems();
-  }, []);
 
   return (
     <div className="inventory">
@@ -115,14 +102,13 @@ const Inventory = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="add-btn">Add Item</button>
 
               <button className="add-btn" onClick={displayAddPopup}>
-                Category
+                Add Item
               </button>
             </div>
           </div>
-          <InventoryTable response />
+          <InventoryTable />
 
           {/* <table className="item-table">
             <thead className="item-table-head">
@@ -302,13 +288,17 @@ const Inventory = () => {
           </div>
           <div className="field">
             <label htmlFor="product_category"> Product Category</label>
-            <select name="productCategory" id="product_category" onChange={handleChange}>
+            <select
+              name="productCategory"
+              id="product_category"
+              onChange={handleChange}
+            >
               <option value="">Choose Category</option>
               <option value="SSD">SSD</option>
               <option value="Academics">Academics</option>
             </select>
           </div>
-          
+
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
