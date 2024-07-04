@@ -11,7 +11,9 @@ const SpecificVendor = () => {
             <div className="top">
             <Topbar />
             <div className="container">
-                <SpecificVendorDetails />
+                <div className="entry">
+                    <SpecificVendorDetails />
+                </div>
             </div>
             </div>
         </div>
