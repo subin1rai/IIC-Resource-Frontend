@@ -5,11 +5,22 @@ import dashboard from "../assets/dashboard.png";
 import inventory from "../assets/inventory.png";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const setActiveClass = ({ isActive }) =>
     isActive ? "active item-text" : "item-text";
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(" http://localhost:8898/api/logout");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="sidebar">
@@ -66,7 +77,7 @@ const Sidebar = () => {
           </div>
           <div className="item">
             <img src={logout} alt="" />
-            <NavLink to="/" className={setActiveClass}>
+            <NavLink to="/" onClick={handleLogout} className={setActiveClass}>
               Log out
             </NavLink>
           </div>
