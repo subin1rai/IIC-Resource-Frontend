@@ -4,9 +4,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Category = () => {
-  const [category, setCategory] = useState([]);
-  const [newCategory, setNewCategory] = useState({category_name: ""});
-  const [deleteCategory, setDeleteCategory] = useState('');
+  const [Itemcategory, setItemCategory] = useState([]);
+  const [newItemCategory, setItemNewCategory] = useState({item_category_name: ""});
+  const [deleteItemCategory, setDeleteItemCategory] = useState('');
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
@@ -15,9 +15,9 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get('http://localhost:8898/api/category');
+        const response = await axios.get('http://localhost:8898/api/itemCategory');
         console.log(response.data);
-        setCategory(response.data.category || []);
+        setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log('Request Canceled', error.message);
@@ -39,15 +39,15 @@ const Category = () => {
   };
 
   const handleChange = (e) => {
-    setNewCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setItemNewCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(e.target.value);
   };
 
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteCategory/${categoryId}`);
+      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`);
       console.log(response.data);
-      setCategory((prevCategory) => prevCategory.filter(cat => cat.category_id !== categoryId));
+      setItemCategory((prevCategory) => prevCategory.filter(cat => cat.category_id !== categoryId));
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log('Request Canceled', error.message);
@@ -61,11 +61,11 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addCategory",
-        newCategory
+        "http://localhost:8898/api/addItemCategory",
+        newItemCategory
       );
       console.log(response);
-      setCategory((prevCategory) => [...prevCategory, response.data.category]);
+      setItemCategory((prevCategory) => [...prevCategory, response.data.allData]);
       closeCategoryForm();
       window.location.reload();
     } catch (error) {
@@ -77,7 +77,7 @@ const Category = () => {
    
           <div className="first">
             <div className="head">
-              <p>Category</p>
+              <p>Item Category</p>
               <button className="add-buttons" onClick={displayAddPopup}> 
                 Add Category
               </button>
@@ -92,12 +92,12 @@ const Category = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {category.map((cat, index) => (
-                    <tr key={cat.category_id}>
+                  {Itemcategory.map((cat, index) => (
+                    <tr key={cat.item_category_id}>
                       <th scope="row">{index + 1}</th>
-                      <td>{cat.category_name}</td>
+                      <td>{cat.item_category_name}</td>
                       <td>
-                        <button onClick={() => handleDeleteSubmit(cat.category_id)}>Delete</button>
+                        <button onClick={() => handleDeleteSubmit(cat.item_category_id)}>Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -113,16 +113,16 @@ const Category = () => {
             className="discard-button"
             onClick={closeCategoryForm}
           >
-            <img src={"path/to/your/close/icon"} alt="Close" />
+            <img src={"../assets/close.svg"} alt="Close" />
           </button>
           <p className="title">Add Category</p>
           <div className="field">
-            <label htmlFor="category_name">Category Name</label>
+            <label htmlFor="item_category_name">Category Name</label>
             <input
               type="text"
               placeholder="Enter category name"
-              name="category_name"
-              id="category_name"
+              name="item_category_name"
+              id="item_category_name"
               onChange={handleChange}
             />
           </div>
