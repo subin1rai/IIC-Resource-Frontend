@@ -5,7 +5,162 @@
     height: 100vh;
     width: 100vw;
 
-.container{
+    .container{
         width: 100%;
+
+        .vdetails{
+            background-color: #fff;
+            margin: 2% 2%;
+            border-radius: 1px;
+            width: 1500px;
+            height:500px;
+            padding: 20px;
+            outline:auto;
+            outline-color: lightgray;
+            border-radius: 8px;
+        
+            .title{
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+        
+                h3{
+                    align-items: center;
+                }
+        
+                p{
+                    color:  rgb(25, 90, 212);
+                }
+            }
+        
+            .head{
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+        
+                h1{
+                    margin-right: 900px;
+                }
+            }
+        
+            .line {
+                border: none;
+                border-top: 3px solid #ccc;
+            }
+        
+            .content{
+                display: flex;
+                font-display: column;
+                line-height: 50px;
+        
+                .left{
+                    margin-right: 800px;
+                }
+        
+                }
+                .btn{
+                    padding: 20px;
+                    margin-left: 965px;
+        
+                    .edit{
+                        background-color: #1570ef;
+                        color: #fff;
+                        padding: 10px;
+                        border-radius: 5px;
+                        margin-right: 30px;
+                        border: none;
+                    }
+                    .blacklist{
+                        background-color: red;
+                        color: #fff;
+                        padding:10px;
+                        border-radius: 5px;
+                        border: none;
+                    }
+            }
+        }        
     }
+
+    .vendordetailsform {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        z-index: 11;
+        padding: 20px;
+        gap: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 520px;
+        height: 360px;
+
+
+        .toptitle{
+            display: flex;
+            align-items: center;
+
+        .title2{
+            font-size: 24px;
+            font-weight: 500;
+            margin-right: 360px;
+            padding-left: 10px;
+          }
+      
+          .close{
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+          }
+        }
+        .field{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 70px;
+        }
+        label{
+            padding: 10px;
+            font-size: medium;
+            font-weight: 450;
+            margin-right: 30px;
+          
+          }
+      
+          input{
+            padding: 15px;
+            width: 291px;
+            border-radius: 6px;
+            border: 1px solid grey;
+
+          }
+          .save{   
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 10px;
+            margin-top:10px;
+            margin-left: 370px;
+            background-color: #1570ef;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            width: 150px;
+            height: 45px;
+            border-radius: 6px;
+          }
+          
+    }
+    
+
+    .overlay {
+        background: #3756828e;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10;
+      }
+
 }

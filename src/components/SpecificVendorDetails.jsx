@@ -63,7 +63,7 @@ const SpecificVendorDetails = () => {
                         </div>
                     </div></>
                     <div className="btn">
-                            <button className= "edit">Edit details</button>
+                            <button  className= "edit">Edit details</button>
                             <button className="blacklist" > Add to blacklist </button>
                     </div>
         </div>
