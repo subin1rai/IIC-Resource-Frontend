@@ -59,8 +59,7 @@ const Inventory = () => {
     <div className="inventory">
       <Sidebar />
       <div className="inventory-main">
-        {/* <Topbar />   */}
-        {/* Status */}
+         <Topbar />
         <div className="inventory-summary">
           <div className="overall-inventory">
             <h3 className="title">Overall Inventory</h3>
