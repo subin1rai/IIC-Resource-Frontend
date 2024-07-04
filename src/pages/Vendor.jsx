@@ -11,8 +11,8 @@ const Vendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
     vat_number: "",
-    vendor_contact: "",
-    category: ""
+    vendor_contact: 0,
+    // category: ""
   });
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -26,7 +26,8 @@ const Vendor = () => {
   };
 
   const handleChange = (e) => {
-    setVendor((e.target.key = e.target.value));
+    setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(e.target.value)
   };
 
   const handleSubmit = async (event) => {
@@ -136,8 +137,8 @@ const Vendor = () => {
             <div className="vendor_field">
               <label htmlFor="measuring_unit">Contact</label>
               <input
-                type="text"
-                placeholder="Enter measuring unit"
+                type="number"
+                placeholder="Enter conatct number"
                 name="vendor_contact"
                 onChange={handleChange}
               />
