@@ -15,6 +15,7 @@ import {
   Popover,
 } from "react-aria-components";
 import { Link } from "react-router-dom";
+import Category from "./Category";
 
 const Inventory = () => {
   const [itemData, setItemData] = useState({
