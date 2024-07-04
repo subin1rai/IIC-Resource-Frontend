@@ -5,53 +5,88 @@ import "../styles/category.css";
 import axios from "axios";
 
 const Category = () => {
-  const [category, setCategory] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);  
-  useEffect(() => {
+  const [category] = useState([]);
+  const [setCategory] = useState({
+    category_name:"",
+  });
+  // const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(true);  
+  // useEffect(() => {
 
-    const controller = new AbortController();
-    (async () => {
-      try {
-        setLoading(true);
-        setError(false);
-        const response = await axios.get('http://localhost:8898/api/category');
-        console.log(response.data);
-        setCategory(response.data.category ||[]);
-        setLoading(false);
-      } catch (error) {
-        if(axios.isCancel(error)){
-          log('Request Canceled',error.message);
-          return;
-        }
-        setError(true);
-        setLoading(false);
-      }
-    })();
-    //cleanup code
-    return () =>{
-      controller.abort();
+  //   const controller = new AbortController();
+  //   (async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(false);
+  //       const response = await axios.get('http://localhost:8898/api/category');
+  //       console.log(response.data);
+  //       setCategory(response.data.category ||[]);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       if(axios.isCancel(error)){
+  //         log('Request Canceled',error.message);
+  //         return;
+  //       }
+  //       setError(true);
+  //       setLoading(false);
+  //     }
+  //   })();
+  //   //cleanup code
+  //   return () =>{
+  //     controller.abort();
+  //   }
+  // }, []);
+
+  // if (error) {
+  //   return <h1>Something went wrong</h1>;
+  // }
+  // if (loading) {
+  //   return <h1>Loading...</h1>;
+  // }
+
+  const [addFormVisibility, setAddFormVisibility] = useState(false);
+
+  const displayAddPopup = () => {
+    setAddFormVisibility(true);
+  };
+
+  const closeCategoryForm = () => {
+    setAddFormVisibility(false);
+  };
+
+  const handleChange = (e) => {
+    setCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(e.target.value);
+  };
+
+  const handlesubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8898/api/category",
+        category
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  };
 
-  if (error) {
-    return <h1>Something went wrong</h1>;
-  }
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <div className="category">
       <Sidebar />
       <div className="category-main">
         <Topbar />
-        <div className="main">
-          <p className="title">Categories</p>
+        <div className="main-container">
           <div className="first">
             <div className="head">
               <p>Category</p>
-              <button>Add Category</button>
+              <button className="add-buttons" onClick={displayAddPopup}> 
+                Add Category
+                </button>
             </div>
             <div className="tables">
               <table>
@@ -75,9 +110,44 @@ const Category = () => {
                 </tbody>
               </table>
             </div>
+
+            
           </div>
         </div>
       </div>
+
+      {addFormVisibility && (
+        <form action="" onSubmit={handlesubmit} className="category-form">
+          <button
+            type="button"
+            className="discard-button"
+            onClick={closeCategoryForm}
+          >
+            <img src={close} alt="" />
+          </button>
+          <p className="title">Add Category</p>
+          <div className="field">
+            <label htmlFor="category_name">Category Name</label>
+            <input
+              type="text"
+              placeholder="Enter category name"
+              name="category_name"
+              id="category_name"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="buttons">
+            <button type="submit" className="add-buttons">
+              Add Category
+            </button>
+          </div>
+        </form>
+      )}
+
+      {addFormVisibility && (
+        <div className="overlay-category" onClick={closeCategoryForm}></div>
+      )}
+
     </div>
   );
 };
