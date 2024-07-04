@@ -5,42 +5,76 @@ import "../styles/category.css";
 import axios from "axios";
 
 const Category = () => {
-    const [category,setCategory] = useState({
-      category_name:"",
+  const [category] = useState([]);
+  const [setCategory] = useState({
+    category_name:"",
+  });
+  // const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(true);  
+  // useEffect(() => {
 
-    });
+  //   const controller = new AbortController();
+  //   (async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(false);
+  //       const response = await axios.get('http://localhost:8898/api/category');
+  //       console.log(response.data);
+  //       setCategory(response.data.category ||[]);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       if(axios.isCancel(error)){
+  //         log('Request Canceled',error.message);
+  //         return;
+  //       }
+  //       setError(true);
+  //       setLoading(false);
+  //     }
+  //   })();
+  //   //cleanup code
+  //   return () =>{
+  //     controller.abort();
+  //   }
+  // }, []);
 
-    const [addFormVisibility, setAddFormVisibility] = useState(false);
+  // if (error) {
+  //   return <h1>Something went wrong</h1>;
+  // }
+  // if (loading) {
+  //   return <h1>Loading...</h1>;
+  // }
 
-    const displayAddPopup = () => {
-      setAddFormVisibility(true);
-    };
-  
-    const closeCategoryForm = () => {
-      setAddFormVisibility(false);
-    };
+  const [addFormVisibility, setAddFormVisibility] = useState(false);
 
-    const handleChange = (e) => {
-      setCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-      console.log(e.target.value);
-    };
-  
-    const handlesubmit = async (event) => {
-      event.preventDefault();
-  
-      try {
-        const response = await axios.post(
-          "http://localhost:8898/api/addCategory",
-          category
-        );
-  
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const displayAddPopup = () => {
+    setAddFormVisibility(true);
+  };
 
-    useEffect(()=>{},[])
+  const closeCategoryForm = () => {
+    setAddFormVisibility(false);
+  };
+
+  const handleChange = (e) => {
+    setCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(e.target.value);
+  };
+
+  const handlesubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8898/api/category",
+        category
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
     <div className="category">
       <Sidebar />
@@ -48,40 +82,36 @@ const Category = () => {
         <Topbar />
         <div className="main-container">
           <div className="first">
-           <div className="category-title">
-           <p> Category</p>
-           </div>
-
-           <div className="icon-action">
-
-            <button className="add-button" onClick={displayAddPopup}>
-                Category
-              </button>
-              </div>
-
-              <div className="tables">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">SN</th>
-                  <th scope="col">Category Name</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Chris</th>
-                  <td>HTML tables</td>
-                  <td>22</td>
-                </tr>
-                <tr>
-                  <th scope="row">Dennis</th>
-                  <td>Web accessibility</td>
-                  <td>45</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="head">
+              <p>Category</p>
+              <button className="add-buttons" onClick={displayAddPopup}> 
+                Add Category
+                </button>
             </div>
+            <div className="tables">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {category.map((cat, index) => (
+                    <tr key={cat.category_id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{cat.category_name}</td>
+                      <td>
+                        <button>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            
           </div>
         </div>
       </div>
@@ -123,3 +153,4 @@ const Category = () => {
 };
 
 export default Category;
+
