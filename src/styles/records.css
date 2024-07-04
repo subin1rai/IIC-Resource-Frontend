@@ -20,7 +20,11 @@
       .top {
         display: flex;
         justify-content: space-between;
-        width: 97.5%;
+        width: 82vw;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background-color: #fff;
+        padding: 10px;
 
         .container-title {
           p {

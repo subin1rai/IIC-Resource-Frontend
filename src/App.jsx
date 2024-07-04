@@ -10,6 +10,7 @@ import Category from "./pages/Category";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
 import SpecificVendor from "./pages/SpecificVendor";
+import SpecificVendorDetails from "./components/SpecificVendorDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 
@@ -29,6 +30,7 @@ function App() {
 
           <Route path="/records" element={<Records/>} />
           <Route path= "/specificVendor" element={<SpecificVendor/>} />
+          <Route path= "/details" element={<SpecificVendorDetails/>} />
           <Route path="/category" element={<Category/>} />
           </Routes>
 
