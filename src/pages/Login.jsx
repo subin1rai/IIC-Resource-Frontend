@@ -16,11 +16,12 @@ const Login = () => {
   const handleChange = (e) => {
     setUser((prev) => {
       const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser);
+      console.log(updatedUser); 
       return updatedUser;
     });
   };
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

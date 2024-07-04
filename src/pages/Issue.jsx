@@ -7,6 +7,8 @@ import back from "../assets/arrow-left.svg";
 import front from "../assets/arrow-right.svg";
 import IssueTable from "../components/IssueTable";
 const Issue = () => {
+  const [issue, setIssue] = "";
+
   return (
     <div className="issue">
       <Sidebar />

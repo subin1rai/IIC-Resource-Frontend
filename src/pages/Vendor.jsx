@@ -11,8 +11,8 @@ const Vendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
     vat_number: "",
-    vendor_contact: 0,
-    // category: ""
+    vendor_contact: "",
+    category: "",
   });
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -37,61 +37,69 @@ const Vendor = () => {
         "http://localhost:8898/api/addVendor",
         vendor
       );
-      
     } catch (error) {
       console.log(error);
-      
     }
   };
 
+  useEffect(() => {
+    try {
+      const getAllVendors = async () => {
+        const response = await axios.get("http://localhost:8898/api/vendor");
+        console.log(response);
+      };
+      getAllVendors();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <div className="vendor">
       <Sidebar />
       <div className="vendor-main">
         <Topbar />
         <div className="vendor-summary">
-        <div className="overall-vendor">
-          <h3 className="summary-title">Summary</h3>
-          <div className="summary-container">
-            <div className="summary">
-              <img src={validVendor} alt="" />
-              <h4>31</h4>
-              <p>Number of Vendors</p>
-            </div>
-            <div className="summary">
-              <img src={validVendor} alt="" />
-              <h4>31</h4>
-              <p>Whitelisted Vendors</p>
-            </div>
-            <div className="summary">
-              <img src={validVendor} alt="" />
-              <h4>31</h4>
-              <p>Blacklisted Vendors</p>
-            </div>
-            <div className="summary">
-              <img src={validVendor} alt="" />
-              <h4>31</h4>
-              <p>Payment Remaining</p>
+          <div className="overall-vendor">
+            <h3 className="summary-title">Summary</h3>
+            <div className="summary-container">
+              <div className="summary">
+                <img src={validVendor} alt="" />
+                <h4>31</h4>
+                <p>Number of Vendors</p>
+              </div>
+              <div className="summary">
+                <img src={validVendor} alt="" />
+                <h4>31</h4>
+                <p>Whitelisted Vendors</p>
+              </div>
+              <div className="summary">
+                <img src={validVendor} alt="" />
+                <h4>31</h4>
+                <p>Blacklisted Vendors</p>
+              </div>
+              <div className="summary">
+                <img src={validVendor} alt="" />
+                <h4>31</h4>
+                <p>Payment Remaining</p>
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div className="vendor-container">
           <div className="top">
-          <div className="up">
-            <p> Vendors </p>
+            <div className="up">
+              <p> Vendors </p>
             </div>
 
             <div className="right">
               <input type="text" placeholder="Search Items..." />
-              
+
               <button className="category-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Category
               </button>
-             
-              
+
               <button className="add-button" onClick={openAddVendorForm}>
                 Add Vendor
               </button>
@@ -160,9 +168,11 @@ const Vendor = () => {
         )}
       </div>
 
-      {addFormVisibility && 
-      (
-      <div className="overlay-vendor" onClick={closeAddVendorForm}> </div> )}
+      {addFormVisibility && (
+        <div className="overlay-vendor" onClick={closeAddVendorForm}>
+          {" "}
+        </div>
+      )}
     </div>
   );
 };
