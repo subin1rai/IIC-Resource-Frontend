@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Category = () => {
   const [productCategory, setProductCategory] = useState([]);
   const [newProductCategory, setNewProductCategory] = useState({ product_category_name: "" });
-  const [deleteCategory, setDeleteCategory] = useState("");
+  const [deleteItemCategory, setDeleteItemCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
@@ -45,11 +45,11 @@ const Category = () => {
   const handleDeleteSubmit = async (categoryId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
+        `http://localhost:8898/api/deleteProductCategory/${categoryId}`
       );
       console.log(response.data);
-      setCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.category_id !== categoryId)
+      setProductCategory((prevCategory) =>
+        prevCategory.filter((cat) => cat.product_category_id !== categoryId)
       );
     } catch (error) {
       if (axios.isCancel(error)) {
