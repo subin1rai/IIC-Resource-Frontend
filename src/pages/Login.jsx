@@ -14,11 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setUser((prev) => {
-      const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser);
-      return updatedUser;
-    });
+    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -26,9 +22,10 @@ const Login = () => {
     try {
       const response = await axios.post(
         `http://localhost:8898/api/login`,
-        user
+        user,
+        { withCredentials: true }
       );
-      console.log("Login successful:", response.data);
+      console.log(response);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);

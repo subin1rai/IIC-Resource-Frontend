@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useEffect, useState } from "react";
 
 const columns = [
   { id: "items", label: "Items", maxWidth: 70 },
@@ -89,6 +90,20 @@ export default function InventoryTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items");
+        const items = response.data.items;
+        console.log(items);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAllItems();
+  }, []);
 
   return (
     <Paper

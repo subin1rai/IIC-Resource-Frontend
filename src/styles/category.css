@@ -1,0 +1,149 @@
+.category{
+    display: flex;
+    justify-content: space-between;
+    background: #e7e7e7;
+}
+.main {
+    height:80vh;
+    width: 80%;
+    margin: 25px;
+    border-radius: 10px;
+    background: white;    
+    .title-category{
+    font-size: 22px;
+    font-weight: 600;
+    padding: 15px 0 0 15px;
+}
+
+}
+
+.overlay-category {
+  background: #3756828e;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+}
+.category-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  z-index: 999;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+
+  gap: 35px;
+  border-radius: 8px;
+
+  transition: all ease-in-out 0.5s;
+
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: -10px;
+  }
+
+  .discard-button {
+    right: 30px;
+    border: none;
+    position: absolute;
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+
+    img {
+      width: 15px;
+    }
+  }
+  
+  
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+
+    .add-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: fit-content;
+      padding: 7px 10px;
+      gap: 10px;
+      color: #fff;
+      background-color: #1570ef;
+      border: 1px solid #d0d3d9;
+      outline: none;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+    }
+  }
+}
+
+.head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    
+    p{
+     font-weight: 400;   
+    }
+    button{
+        background-color: #1366D9;
+        color: white;
+        padding: 15px 25px;
+        border: none;
+        border-radius: 8px;
+    }
+}
+.first{
+    margin: 25px;
+
+    border: 2px solid rgb(174, 174, 174);
+    border-radius: 6px;
+    table{
+      border-collapse: collapse;
+      border: 2px solid rgb(140 140 140);
+      font-family: sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+    
+    caption {
+      caption-side: bottom;
+      padding: 10px;
+      font-weight: bold;
+    }
+    
+    thead,
+    tfoot {
+      background-color: rgb(228 240 245);
+    }
+    
+    th,
+    td {
+      border: 1px solid rgb(160 160 160);
+      padding: 8px 10px;
+    }
+    
+    td:last-of-type {
+      text-align: center;
+    }
+    
+    tbody > tr:nth-of-type(even) {
+      background-color: rgb(237 238 242);
+    }
+    
+    tfoot th {
+      text-align: right;
+    }
+    
+    tfoot td {
+      font-weight: bold;
+    }
+    
+}

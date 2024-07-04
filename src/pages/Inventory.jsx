@@ -15,6 +15,7 @@ import {
   Popover,
 } from "react-aria-components";
 import { Link } from "react-router-dom";
+import Category from "./Category";
 
 const Inventory = () => {
   const [itemData, setItemData] = useState({
@@ -22,7 +23,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    productCategory:""
+    productCategory: "",
   });
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -53,33 +54,12 @@ const Inventory = () => {
       console.log(error);
     }
   };
- 
-  useEffect (()=>{
-    const getAllItems = async () => {
- 
-      try {
-        const response = await axios.get(
-          "http://localhost:8898/api/items"
-        );
-  console.log(response)
-  const items= response.data.items
-  console.log(items)
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getAllItems()
-  },[])
-
-
- 
 
   return (
     <div className="inventory">
       <Sidebar />
       <div className="inventory-main">
-        <Topbar />
+        {/* <Topbar />   */}
         {/* Status */}
         <div className="inventory-summary">
           <div className="overall-inventory">
@@ -92,7 +72,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4> 
+                <h4>31</h4>
                 <p>Number of inventory</p>
               </div>
               <div className="container">
@@ -125,12 +105,11 @@ const Inventory = () => {
               </button>
 
               <button className="add-btn" onClick={displayAddPopup}>
-                Category
+                Add Item
               </button>
             </div>
           </div>
-          <InventoryTable response/>
-          
+          <InventoryTable />
 
           {/* <table className="item-table">
             <thead className="item-table-head">
@@ -310,13 +289,17 @@ const Inventory = () => {
           </div>
           <div className="field">
             <label htmlFor="product_category"> Product Category</label>
-            <select name="productCategory" id="product_category" onChange={handleChange}>
+            <select
+              name="productCategory"
+              id="product_category"
+              onChange={handleChange}
+            >
               <option value="">Choose Category</option>
               <option value="SSD">SSD</option>
               <option value="Academics">Academics</option>
             </select>
           </div>
-          
+
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
