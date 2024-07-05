@@ -32,17 +32,14 @@
                     color:  rgb(25, 90, 212);
                 }
             }
-        
+
             .head{
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-        
-                h1{
-                    margin-right: 900px;
+                padding: 0px;
+            
+                p{
+                    margin-right: 200px;
                 }
             }
-        
             .line {
                 border: none;
                 border-top: 3px solid #ccc;
@@ -105,10 +102,9 @@
             .title2{
                 font-size: 24px;
                 font-weight: 500;
-                margin-right: 360px;
-                padding-left: 10px;
+                margin-right: 320px;
             }
-        
+
             .close{
                 top: 20px;
                 right: 20px;
