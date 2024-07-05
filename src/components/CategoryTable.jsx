@@ -5,29 +5,28 @@ import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
-  const [newCategory, setNewCategory] = useState({category_name: ""});
-  const [deleteCategory, setDeleteCategory] = useState('');
+  const [newCategory, setNewCategory] = useState({ category_name: "" });
+  const [deleteCategory, setDeleteCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get('http://localhost:8898/api/category');
+        const response = await axios.get("http://localhost:8898/api/category");
         console.log(response.data);
         setCategory(response.data.category || []);
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log('Request Canceled', error.message);
+          console.log("Request Canceled", error.message);
           return;
         }
       }
     })();
     return () => {
       controller.abort();
-    }
+    };
   }, []);
 
   const displayAddPopup = () => {
@@ -45,12 +44,16 @@ const Category = () => {
 
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteCategory/${categoryId}`);
+      const response = await axios.delete(
+        `http://localhost:8898/api/deleteCategory/${categoryId}`
+      );
       console.log(response.data);
-      setCategory((prevCategory) => prevCategory.filter(cat => cat.category_id !== categoryId));
+      setCategory((prevCategory) =>
+        prevCategory.filter((cat) => cat.category_id !== categoryId)
+      );
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log('Request Canceled', error.message);
+        console.log("Request Canceled", error.message);
         return;
       }
     }

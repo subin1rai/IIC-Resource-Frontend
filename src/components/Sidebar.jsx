@@ -6,6 +6,7 @@ import inventory from "../assets/inventory.png";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Sidebar = () => {
   const setActiveClass = ({ isActive }) =>
@@ -16,7 +17,8 @@ const Sidebar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(" http://localhost:8898/api/logout");
-      navigate("/login");
+      navigate("/");
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
