@@ -7,17 +7,9 @@ import filterIcon from "../assets/filter.svg";
 import close from "../assets/close.svg";
 import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
-import {
-  Button,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-  Popover,
-} from "react-aria-components";
-import { Link } from "react-router-dom";
-import Category from "./Category";
 
 const Inventory = () => {
+  const [items, setItems] = useState();
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
@@ -25,6 +17,11 @@ const Inventory = () => {
     measuring_unit: "",
     productCategory: "",
   });
+
+  const [category, setCategory] = useState("");
+  const [productCategory, setProductCategory] = useState("");
+  const [itemCategory, setItemCategory] = useState("");
+
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
   const displayAddPopup = () => {
@@ -54,6 +51,26 @@ const Inventory = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items");
+        setItems(response.data.items);
+
+        const categoryResponse = await axios.get(
+          "http://localhost:8898/api/category"
+        );
+
+        console.log(categoryResponse);
+        setItems(response.data.items);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAllItems();
+  }, []);
 
   return (
     <div className="inventory">
@@ -316,6 +333,16 @@ const Inventory = () => {
               placeholder="Enter measuring unit"
               name="measuring_unit"
               id="measuring_unit"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="low_limit">Low Limit</label>
+            <input
+              type="number"
+              placeholder="Enter low limit"
+              name="low_limit"
+              id="low_limit"
               onChange={handleChange}
             />
           </div>
