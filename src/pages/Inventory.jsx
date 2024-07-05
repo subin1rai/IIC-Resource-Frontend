@@ -59,6 +59,7 @@ const Inventory = () => {
     <div className="inventory">
       <Sidebar />
       <div className="inventory-main">
+        <Topbar />
          <Topbar />
         <div className="inventory-summary">
           <div className="overall-inventory">
@@ -87,7 +88,6 @@ const Inventory = () => {
             </div>
           </div>
         </div>
-
         {/* Items table */}
         <div className="items-container">
           <div className="item-container-top">
@@ -254,7 +254,6 @@ const Inventory = () => {
             </button>
           </div> */}
         </div>
-
         {/* Items table closed */}
       </div>
 
