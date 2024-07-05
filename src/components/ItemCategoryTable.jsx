@@ -5,29 +5,32 @@ import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const [Itemcategory, setItemCategory] = useState([]);
-  const [newItemCategory, setItemNewCategory] = useState({item_category_name: ""});
-  const [deleteItemCategory, setDeleteItemCategory] = useState('');
+  const [newItemCategory, setItemNewCategory] = useState({
+    item_category_name: "",
+  });
+  const [deleteItemCategory, setDeleteItemCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get('http://localhost:8898/api/itemCategory');
+        const response = await axios.get(
+          "http://localhost:8898/api/itemCategory"
+        );
         console.log(response.data);
         setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log('Request Canceled', error.message);
+          console.log("Request Canceled", error.message);
           return;
         }
       }
     })();
     return () => {
       controller.abort();
-    }
+    };
   }, []);
 
   const displayAddPopup = () => {
@@ -39,18 +42,25 @@ const Category = () => {
   };
 
   const handleChange = (e) => {
-    setItemNewCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setItemNewCategory((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
     console.log(e.target.value);
   };
 
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`);
+      const response = await axios.delete(
+        `http://localhost:8898/api/deleteItemCategory/${categoryId}`
+      );
       console.log(response.data);
-      setItemCategory((prevCategory) => prevCategory.filter(cat => cat.category_id !== categoryId));
+      setItemCategory((prevCategory) =>
+        prevCategory.filter((cat) => cat.category_id !== categoryId)
+      );
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log('Request Canceled', error.message);
+        console.log("Request Canceled", error.message);
         return;
       }
     }
@@ -65,7 +75,10 @@ const Category = () => {
         newItemCategory
       );
       console.log(response);
-      setItemCategory((prevCategory) => [...prevCategory, response.data.allData]);
+      setItemCategory((prevCategory) => [
+        ...prevCategory,
+        response.data.allData,
+      ]);
       closeCategoryForm();
       window.location.reload();
     } catch (error) {
@@ -74,37 +87,41 @@ const Category = () => {
   };
 
   return (
-   
-          <div className="first">
-            <div className="head">
-              <p>Item Category</p>
-              <button className="add-buttons" onClick={displayAddPopup}> 
-                Add Category
-              </button>
-            </div>
-            <div className="tables">
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">SN</th>
-                    <th scope="col">Category Name</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Itemcategory.map((cat, index) => (
-                    <tr key={cat.item_category_id}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{cat.item_category_name}</td>
-                      <td>
-                        <button onClick={() => handleDeleteSubmit(cat.item_category_id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-    
+    <div className="first">
+      <div className="head">
+        <p>Item Category</p>
+        <button className="add-buttons" onClick={displayAddPopup}>
+          Add Category
+        </button>
+      </div>
+      <div className="tables">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Item Category Name</th>
+              <th scope="col">Items</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Itemcategory.map((cat, index) => (
+              <tr key={cat.item_category_id}>
+                <th scope="row">{index + 1}</th>
+                <td>{cat.item_category_name}</td>
+                     <td>{cat.items.length}</td> 
+                <td>
+                  <button
+                    onClick={() => handleDeleteSubmit(cat.item_category_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">

@@ -32,17 +32,14 @@
                     color:  rgb(25, 90, 212);
                 }
             }
-        
+
             .head{
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-        
-                h1{
-                    margin-right: 900px;
+                padding: 0px;
+            
+                p{
+                    margin-right: 200px;
                 }
             }
-        
             .line {
                 border: none;
                 border-top: 3px solid #ccc;
@@ -69,6 +66,7 @@
                         border-radius: 5px;
                         margin-right: 30px;
                         border: none;
+                        cursor: pointer;
                     }
                     .blacklist{
                         background-color: red;
@@ -76,6 +74,7 @@
                         padding:10px;
                         border-radius: 5px;
                         border: none;
+                        cursor: pointer;
                     }
             }
         }        
@@ -100,19 +99,18 @@
             display: flex;
             align-items: center;
 
-        .title2{
-            font-size: 24px;
-            font-weight: 500;
-            margin-right: 360px;
-            padding-left: 10px;
-          }
-      
-          .close{
-            top: 20px;
-            right: 20px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
+            .title2{
+                font-size: 24px;
+                font-weight: 500;
+                margin-right: 320px;
+            }
+
+            .close{
+                top: 20px;
+                right: 20px;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
           }
         }
         .field{
@@ -120,22 +118,23 @@
             justify-content: space-between;
             align-items: center;
             line-height: 70px;
-        }
-        label{
-            padding: 10px;
-            font-size: medium;
-            font-weight: 450;
-            margin-right: 30px;
-          
-          }
-      
-          input{
-            padding: 15px;
-            width: 291px;
-            border-radius: 6px;
-            border: 1px solid grey;
 
-          }
+            label{
+                padding: 10px;
+                font-size: medium;
+                font-weight: 450;
+                margin-right: 30px;
+            
+            }
+        
+            input{
+                padding: 15px;
+                width: 291px;
+                border-radius: 6px;
+                border: 1px solid grey;
+            }
+
+    }
           .save{   
             justify-content: center;
             align-items: center;
@@ -153,7 +152,6 @@
           }
           
     }
-    
 
     .overlay {
         background: #3756828e;
