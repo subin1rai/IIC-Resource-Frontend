@@ -7,23 +7,21 @@ import filterIcon from "../assets/filter.svg";
 import close from "../assets/close.svg";
 import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
-import {
-  Button,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-  Popover,
-} from "react-aria-components";
-import { Link } from "react-router-dom";
 
 const Inventory = () => {
+  const [items, setItems] = useState();
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    productCategory:""
+    productCategory: "",
   });
+
+  const [category, setCategory] = useState("");
+  const [productCategory, setProductCategory] = useState("");
+  const [itemCategory, setItemCategory] = useState("");
+
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
   const displayAddPopup = () => {
@@ -58,7 +56,14 @@ const Inventory = () => {
     const getAllItems = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/items");
-        const items = response.data.items;
+        setItems(response.data.items);
+
+        const categoryResponse = await axios.get(
+          "http://localhost:8898/api/category"
+        );
+
+        console.log(categoryResponse);
+        setItems(response.data.items);
       } catch (error) {
         console.log(error);
       }
@@ -71,8 +76,7 @@ const Inventory = () => {
     <div className="inventory">
       <Sidebar />
       <div className="inventory-main">
-        {/* <Topbar />   */}
-        {/* Status */}
+        <Topbar />
         <div className="inventory-summary">
           <div className="overall-inventory">
             <h3 className="title">Overall Inventory</h3>
@@ -100,7 +104,6 @@ const Inventory = () => {
             </div>
           </div>
         </div>
-
         {/* Items table */}
         <div className="items-container">
           <div className="item-container-top">
@@ -115,14 +118,13 @@ const Inventory = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="add-btn">Add Item</button>
 
               <button className="add-btn" onClick={displayAddPopup}>
-                Category
+                Add Item
               </button>
             </div>
           </div>
-          <InventoryTable response />
+          <InventoryTable />
 
           {/* <table className="item-table">
             <thead className="item-table-head">
@@ -268,7 +270,6 @@ const Inventory = () => {
             </button>
           </div> */}
         </div>
-
         {/* Items table closed */}
       </div>
 
@@ -302,13 +303,17 @@ const Inventory = () => {
           </div>
           <div className="field">
             <label htmlFor="product_category"> Product Category</label>
-            <select name="productCategory" id="product_category" onChange={handleChange}>
+            <select
+              name="productCategory"
+              id="product_category"
+              onChange={handleChange}
+            >
               <option value="">Choose Category</option>
               <option value="SSD">SSD</option>
               <option value="Academics">Academics</option>
             </select>
           </div>
-          
+
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
@@ -328,6 +333,16 @@ const Inventory = () => {
               placeholder="Enter measuring unit"
               name="measuring_unit"
               id="measuring_unit"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="low_limit">Low Limit</label>
+            <input
+              type="number"
+              placeholder="Enter low limit"
+              name="low_limit"
+              id="low_limit"
               onChange={handleChange}
             />
           </div>

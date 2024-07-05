@@ -7,79 +7,48 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import axios from "axios";
 
 const columns = [
-  { id: "items", label: "Items", maxWidth: 70 },
-  { id: "category", label: "Category", maxWidth: 70 },
+  { id: "item_id", label: "Item ID", maxWidth: 70 },
+  { id: "item_name", label: "Item Name", maxWidth: 150 },
+  { id: "measuring_unit", label: "Measuring Unit", maxWidth: 120 },
   {
-    id: "product_category",
-    label: "Product Category",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    id: "total_purchased",
+    label: "Total Purchased",
+    maxWidth: 120,
+    align: "right",
+    format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
     id: "quantity",
     label: "Quantity",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    maxWidth: 100,
+    align: "right",
+    format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
-  {
-    id: "unit",
-    label: "Unit",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "total_purchased",
-    label: "Total Purchased",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "recent_purchased",
-    label: "Recent Purchased",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "item_status",
-    label: "Item Status",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-];
-
-function createData(items, category, product_category, quantity) {
-  return { items, category, product_category, quantity };
-}
-
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
+  { id: "category", label: "Category", maxWidth: 120 },
+  { id: "productCategory", label: "Product Category", maxWidth: 150 },
 ];
 
 export default function InventoryTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [items, setItems] = React.useState([]);
+
+  React.useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items");
+        setItems(response.data.items || []);
+      } catch (error) {
+        console.log(error);
+        setItems([]);
+      }
+    };
+
+    getAllItems();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -115,35 +84,37 @@ export default function InventoryTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {items
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          height={3}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+              .map((item) => (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={item.item_id}
+                >
+                  {columns.map((column) => {
+                    let value = item[column.id];
+                    if (column.id === "productCategory") {
+                      value = item.productCategory?.product_category_name;
+                    }
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value || "N/A"}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[]}
+        rowsPerPageOptions={[7, 14, 21]}
         component="div"
-        count={rows.length}
+        count={items.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
