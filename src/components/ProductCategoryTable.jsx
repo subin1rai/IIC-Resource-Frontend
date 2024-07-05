@@ -89,7 +89,8 @@ const Category = () => {
           <thead>
             <tr>
               <th scope="col">SN</th>
-              <th scope="col">Category Name</th>
+              <th scope="col">Product Category Name</th>
+              <th scope="col">Product</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -98,6 +99,7 @@ const Category = () => {
               <tr key={cat.product_category_id}>
                 <th scope="row">{index + 1}</th>
                 <td>{cat.product_category_name}</td>
+                <td>{cat.items.length}</td> 
                 <td>
                   <button onClick={() => handleDeleteSubmit(cat.product_category_id)}>
                     Delete
