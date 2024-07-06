@@ -45,8 +45,8 @@ const Inventory = () => {
         "http://localhost:8898/api/addItem",
         itemData
       );
-
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +62,16 @@ const Inventory = () => {
           "http://localhost:8898/api/category"
         );
 
-        console.log(categoryResponse);
+        const itemCategoryResponse = await axios.get(
+          "http://localhost:8898/api/itemCategory"
+        );
+        const productCategoryResponse = await axios.get(
+          "http://localhost:8898/api/productCategory"
+        );
+
+        setProductCategory(productCategoryResponse.data.allData);
+        setItemCategory(itemCategoryResponse.data.allData);
+        setCategory(categoryResponse.data.category);
         setItems(response.data.items);
       } catch (error) {
         console.log(error);
@@ -71,6 +80,8 @@ const Inventory = () => {
 
     getAllItems();
   }, []);
+
+  console.log(productCategory);
 
   return (
     <div className="inventory">
@@ -84,22 +95,17 @@ const Inventory = () => {
               <div className="container">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of category</p>
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of items</p>
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
-              </div>
-              <div className="container">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of lowstock</p>
               </div>
             </div>
           </div>
@@ -297,8 +303,11 @@ const Inventory = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category" onChange={handleChange}>
               <option value="">Choose Category</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Furniture">Furniture</option>
+              {category.map((cat, index) => (
+                <option key={index} value={cat.category_name}>
+                  {cat.category_name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="field">
@@ -306,11 +315,15 @@ const Inventory = () => {
             <select
               name="productCategory"
               id="product_category"
+              value={itemData.productCategory}
               onChange={handleChange}
             >
-              <option value="">Choose Category</option>
-              <option value="SSD">SSD</option>
-              <option value="Academics">Academics</option>
+              <option value="">Select Product Category</option>
+              {productCategory.map((prodCat, index) => (
+                <option key={index} value={prodCat.product_category_name}>
+                  {prodCat.product_category_name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -322,8 +335,11 @@ const Inventory = () => {
               onChange={handleChange}
             >
               <option value="">Choose Item Category</option>
-              <option value="Gadgets">Gadgets</option>
-              <option value="Appliances">Appliances</option>
+              {itemCategory.map((itemCat, index) => (
+                <option key={index} value={itemCat.item_category_name}>
+                  {itemCat.item_category_name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="field">
