@@ -74,152 +74,87 @@ const Bill = () => {
           <div className="overlay"></div>
 
           <form onSubmit={handleSubmit} className="addform">
-            <div className="forms">
-              <div className="left">
-                <button
-                  type="button"
-                  className="closebtn"
-                  onClick={closeAddBillForm}
-                >
-                  <img src={close} alt="close icon" />
-                </button>
-                <p className="title">Add Bill Details</p>
-                <div className="double">
-                  <div className="for">
-                    <label htmlFor="bill_no">Bill No:</label>
-                    <input
-                      type="text"
-                      placeholder="Enter bill number"
-                      name="bill_no"
-                      id="bill_no"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="for">
-                    <label htmlFor="bill_date">Bill Date:</label>
-                    <input
-                      type="text"
-                      placeholder="Enter bill date"
-                      name="bill_date"
-                      id="bill_date"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="single">
-                  <div className="for">
-                    <label htmlFor="voucher_no">Voucher No:</label>
-                    <input
-                      type="text"
-                      placeholder="Enter voucher number"
-                      name="voucher_no"
-                      id="voucher_no"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="single">
-                  <div className="for">
-                    <label htmlFor="vendor">Vendor:</label>
-                    <select id="vendor" name="vendor" onChange={handleChange}>
-                      <option value="">Select Vendor</option>
-                      <option value="Lizan Suppliers">Lizan Suppliers</option>
-                      <option value="Lenisha Suppliers">
-                        Lenisha Suppliers
-                      </option>
-                      <option value="Aneer Suppliers">Aneer Suppliers</option>
-                      <option value="Subin Suppliers">Subin Suppliers</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="single">
-                  <div className="for">
-                    <label htmlFor="item_name">Item Name:</label>
-                    <select
-                      id="item_name"
-                      name="item_name"
-                      onChange={handleChange}
-                    >
-                      <option value="">Select Item</option>
-                      <option value="pen">Pen</option>
-                      <option value="bag">Bag</option>
-                      <option value="copy">Copy</option>
-                      <option value="chair">Chair</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="double">
-                  <div className="for">
-                    <label htmlFor="unit_price">Unit Price:</label>
-                    <input
-                      type="text"
-                      placeholder="Enter unit price"
-                      name="unit_price"
-                      id="unit_price"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="for">
-                    <label htmlFor="quantity">Quantity:</label>
-                    <input
-                      type="text"
-                      placeholder="Enter quantity"
-                      name="quantity"
-                      id="quantity"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="double">
-                  <div className="for">
-                    <label htmlFor="bill_amt">Bill Amount:</label>
 
-                    <input
-                      type="text"
-                      placeholder="Enter bill amount"
-                      name="bill_amt"
-                      id="bill_amt"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="for">
-                    <label htmlFor="tds">Tax Deducted Source (TDS):</label>
+          <div className="forms">
+            <div className="left">
+            <button type="button" className="closebtn" onClick={closeAddBillForm}>
+              <img src={close} alt="close icon" />
+            </button>
+            <p className="title">Add Bill Details</p>
+            <div className="double">
+            <div className="for">
+              <label htmlFor="bill_no">Bill No:</label>
+              <input
+                type="text"
+                placeholder="Enter bill number"
+                name="bill_no"
+                id="bill_no"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="for">
+              <label htmlFor="bill_date">Bill Date:</label>
+              <input type="date" placeholder="Enter bill date" name="bill_date" id="bill_date" onChange={handleChange} />
+            </div>
+            </div>
+            <div className="single">
+            <div className="for">
+              <label htmlFor="voucher_no">Voucher No:</label>
+              <input
+                type="text"
+                placeholder="Enter voucher number"
+                name="voucher_no"
+                id="voucher_no"
+                onChange={handleChange}
+              />
+            </div>
+            </div>
+            <div className="single">
+            <div className="for">
+              <label htmlFor="vendor">Vendor:</label>
+              <select id="vendor" name="vendor" onChange={handleChange}>
+                <option value="">Select Vendor</option>
+                <option value="Lizan Suppliers">Lizan Suppliers</option>
+                <option value="Lenisha Suppliers">Lenisha Suppliers</option>
+                <option value="Aneer Suppliers">Aneer Suppliers</option>
+                <option value="Subin Suppliers">Subin Suppliers</option>
+              </select>
+              </div>
+              </div>
+              <div className="single">
+              <div className="for">
+              <label htmlFor="item_name">Item Name:</label>
+              <select id="item_name" name="item_name" onChange={handleChange}>
+                <option value="">Select Item</option>
+                <option value="pen">Pen</option>
+                <option value="bag">Bag</option>
+                <option value="copy">Copy</option>
+                <option value="chair">Chair</option>
+              </select>
+              </div>
+            </div>
+            <div className="double">
+            <div className="for">
+              <label htmlFor="unit_price">Unit Price:</label>    
+              <input type="text" placeholder="Enter unit price" name="unit_price" id="unit_price" onChange={handleChange} />
+              </div>
+            <div className="for">
+              <label htmlFor="quantity">Quantity:</label>
+              <input
+                type="text"
+                placeholder="Enter quantity"
+                name="quantity"
+                id="quantity"
+                onChange={handleChange}
+              />
+            </div>
+            </div>
+            <div className="double">
+            <div className="for">
+              <label htmlFor="bill_amt">Bill Amount:</label>
+             
+              <input type="text" placeholder="Enter bill amount" name="bill_amt" id="bill_amt" onChange={handleChange} />
 
-                    <input
-                      type="text"
-                      placeholder="Enter TDS"
-                      name="tds"
-                      id="tds"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="line">
-                  <div className="double">
-                    <div className="for">
-                      <label htmlFor="actual_amt">Actual Amount:</label>
-
-                      <input
-                        type="text"
-                        placeholder="Enter actual amount"
-                        name="actual_amt"
-                        id="actual_amt"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="for">
-                      <label htmlFor="paid_amt">Paid Amount:</label>
-
-                      <input
-                        type="text"
-                        placeholder="Enter paid amount"
-                        name="paid_amt"
-                        id="paid_amt"
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                </div>
               </div>
               <div className="summary">
                 <div className="right">

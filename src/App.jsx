@@ -11,6 +11,7 @@ import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
 import SpecificVendor from "./pages/SpecificVendor";
 import SpecificVendorDetails from "./components/SpecificVendorDetails";
+import SpecificBill from "./pages/SpecificBill";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 
@@ -27,11 +28,11 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
-
           <Route path="/records" element={<Records/>} />
           <Route path= "/specificVendor" element={<SpecificVendor/>} />
           <Route path= "/details" element={<SpecificVendorDetails/>} />
           <Route path="/category" element={<Category/>} />
+          <Route path="/specificbill" element={<SpecificBill />} />
           </Routes>
 
       </BrowserRouter>

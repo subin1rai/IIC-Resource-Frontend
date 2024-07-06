@@ -1,5 +1,4 @@
 import * as React from "react";
-import SpecificVendorDetails from "../components/SpecificVendorDetails";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
 import Sidebar from "../components/Sidebar";
