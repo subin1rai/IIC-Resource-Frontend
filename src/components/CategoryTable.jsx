@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/category.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import close from "../assets/close.svg";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
@@ -77,47 +78,46 @@ const Category = () => {
   };
 
   return (
-   
-          <div className="first">
-            <div className="head">
-              <p>Category</p>
-              <button className="add-buttons" onClick={displayAddPopup}> 
-                Add Category
-              </button>
-            </div>
-            <div className="tables">
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">SN</th>
-                    <th scope="col">Category Name</th>
-                    <th scope="col">Items</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-  {category.map((cat, index) => (
-    <tr key={cat.category_id}>
-      <th scope="row">{index + 1}</th>
-      <td>{cat.category_name}</td>
-      <td>{cat.items.length}</td> {/* Display the length of items */}
-      {/* <td>
+    <div className="first">
+      <div className="head">
+        <p>Category</p>
+        <button className="add-buttons" onClick={displayAddPopup}>
+          Add Category
+        </button>
+      </div>
+      <div className="tables">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Category Name</th>
+              <th scope="col">Items</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {category.map((cat, index) => (
+              <tr key={cat.category_id}>
+                <th scope="row">{index + 1}</th>
+                <td>{cat.category_name}</td>
+                <td>{cat.items.length}</td> {/* Display the length of items */}
+                {/* <td>
         <ul>
           {cat.items.map((item, i) => (
             <li key={i}>{items.length}</li>
           ))}
         </ul>
       </td> */}
-      <td>
-        <button onClick={() => handleDeleteSubmit(cat.category_id)}>Delete</button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
-              </table>
-            </div>
-    
+                <td>
+                  <button onClick={() => handleDeleteSubmit(cat.category_id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">
@@ -126,7 +126,7 @@ const Category = () => {
             className="discard-button"
             onClick={closeCategoryForm}
           >
-            <img src={"path/to/your/close/icon"} alt="Close" />
+            <img src={close} alt="Close" />
           </button>
           <p className="title">Add Category</p>
           <div className="field">
