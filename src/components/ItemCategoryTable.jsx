@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/category.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import close from "../assets/close.svg";
 
 const Category = () => {
   const [Itemcategory, setItemCategory] = useState([]);
@@ -109,7 +110,7 @@ const Category = () => {
               <tr key={cat.item_category_id}>
                 <th scope="row">{index + 1}</th>
                 <td>{cat.item_category_name}</td>
-                     <td>{cat.items.length}</td> 
+                <td>{cat.items.length}</td>
                 <td>
                   <button
                     onClick={() => handleDeleteSubmit(cat.item_category_id)}
@@ -130,7 +131,7 @@ const Category = () => {
             className="discard-button"
             onClick={closeCategoryForm}
           >
-            <img src={"../assets/close.svg"} alt="Close" />
+            <img src={close} alt="Close" />
           </button>
           <p className="title">Add Category</p>
           <div className="field">
