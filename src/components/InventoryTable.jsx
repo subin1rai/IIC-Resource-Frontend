@@ -10,7 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 
 const columns = [
-  { id: "item_id", label: "Item ID", maxWidth: 70 },
   { id: "item_name", label: "Item Name", maxWidth: 150 },
   { id: "measuring_unit", label: "Measuring Unit", maxWidth: 120 },
   {
@@ -28,6 +27,7 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   { id: "category", label: "Category", maxWidth: 120 },
+  { id: "itemCategory", label: "Item Category", maxWidth: 120 },
   { id: "productCategory", label: "Product Category", maxWidth: 150 },
 ];
 
@@ -41,6 +41,7 @@ export default function InventoryTable() {
       try {
         const response = await axios.get("http://localhost:8898/api/items");
         setItems(response.data.items || []);
+        console.log(items);
       } catch (error) {
         console.log(error);
         setItems([]);
@@ -98,6 +99,13 @@ export default function InventoryTable() {
                     if (column.id === "productCategory") {
                       value = item.productCategory?.product_category_name;
                     }
+                    if (column.id === "category") {
+                      value = item.category?.category_name;
+                    }
+                    if (column.id === "itemCategory") {
+                      value = item.itemCategory?.item_category_name;
+                    }
+
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === "number"
