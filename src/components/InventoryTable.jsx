@@ -41,7 +41,6 @@ export default function InventoryTable() {
       try {
         const response = await axios.get("http://localhost:8898/api/items");
         setItems(response.data.items || []);
-        console.log(items);
       } catch (error) {
         console.log(error);
         setItems([]);
