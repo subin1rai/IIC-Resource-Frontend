@@ -34,7 +34,7 @@ const columns = [
 
 export default function InventoryTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
 
   React.useEffect(() => {
@@ -141,7 +141,7 @@ export default function InventoryTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[7, 14, 21]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={items.length}
         rowsPerPage={rowsPerPage}
