@@ -17,9 +17,8 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/productCategory"
-        );
+        //api request send
+        const response = await axios.get("http://localhost:8898/api/productCategory");
         console.log(response.data);
         setProductCategory(response.data.allData || []);
       } catch (error) {
