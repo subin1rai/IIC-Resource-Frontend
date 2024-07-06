@@ -72,8 +72,9 @@ const Bill = () => {
       {addFormVisibility && (
         <>
           <div className="overlay"></div>
-       
+
           <form onSubmit={handleSubmit} className="addform">
+
           <div className="forms">
             <div className="left">
             <button type="button" className="closebtn" onClick={closeAddBillForm}>
@@ -153,62 +154,29 @@ const Bill = () => {
               <label htmlFor="bill_amt">Bill Amount:</label>
              
               <input type="text" placeholder="Enter bill amount" name="bill_amt" id="bill_amt" onChange={handleChange} />
-              </div>
-              <div className="for">
-              <label htmlFor="tds">Tax Deducted Source (TDS):</label>
-          
-              <input
-                type="text"
-                placeholder="Enter TDS"
-                name="tds"
-                id="tds"
-                onChange={handleChange}
-              />
-            </div>
-            </div>
-            <div className="line">
-              <div className="double">
-            <div className="for">
-              <label htmlFor="actual_amt">Actual Amount:</label>
-          
-              <input type="text" placeholder="Enter actual amount" name="actual_amt" id="actual_amt" onChange={handleChange} />
-              </div>
-              <div className="for">
-              <label htmlFor="paid_amt">Paid Amount:</label>
-            
-              <input
-                type="text"
-                placeholder="Enter paid amount"
-                name="paid_amt"
-                id="paid_amt"
-                onChange={handleChange}
-              />
 
+              </div>
+              <div className="summary">
+                <div className="right">
+                  <h2>Summary</h2>
+                  <p>Bill No: {bill.bill_no}</p>
+                  <p>Bill Date: {bill.bill_date}</p>
+                  <p>Vendor: {bill.vendor}</p>
+                  <p>Item Name: {bill.item_name}</p>
+                  <p>Unit Price: {bill.unit_price}</p>
+                  <p>Quantity: {bill.quantity}</p>
+                  <p>Bill Amount: {bill.bill_amt}</p>
+                  <p>TDS: {bill.tds}</p>
+                  <p>Actual Amount: {bill.actual_amt}</p>
+                  <p>Paid Amount: {bill.paid_amt}</p>
+                </div>
+                <div className="buttons">
+                  <button type="submit" className="add-btn">
+                    Add Item
+                  </button>
+                </div>
+              </div>
             </div>
-            </div>
-            </div>
-            </div>
-            <div className="summary">
-            <div className="right">
-              <h2>Summary</h2>
-              <p>Bill No: {bill.bill_no}</p>
-              <p>Bill Date: {bill.bill_date}</p>
-              <p>Vendor: {bill.vendor}</p>
-              <p>Item Name: {bill.item_name}</p>
-              <p>Unit Price: {bill.unit_price}</p>
-              <p>Quantity: {bill.quantity}</p>
-              <p>Bill Amount: {bill.bill_amt}</p>
-              <p>TDS: {bill.tds}</p>
-              <p>Actual Amount: {bill.actual_amt}</p>
-              <p>Paid Amount: {bill.paid_amt}</p>
-            </div>
-            <div className="buttons">
-              <button type="submit" className="add-btn">
-                Add Item
-              </button>
-            </div>
-            </div>
-          </div>
           </form>
         </>
       )}
