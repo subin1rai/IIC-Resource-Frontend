@@ -98,11 +98,12 @@
         .toptitle{
             display: flex;
             align-items: center;
+            padding-left: 8px;
 
             .title2{
                 font-size: 24px;
                 font-weight: 500;
-                margin-right: 320px;
+                margin-right: 365px;
             }
 
             .close{

@@ -93,7 +93,7 @@ const Bill = () => {
             </div>
             <div className="for">
               <label htmlFor="bill_date">Bill Date:</label>
-              <input type="text" placeholder="Enter bill date" name="bill_date" id="bill_date" onChange={handleChange} />
+              <input type="date" placeholder="Enter bill date" name="bill_date" id="bill_date" onChange={handleChange} />
             </div>
             </div>
             <div className="single">
