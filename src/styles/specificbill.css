@@ -1,0 +1,84 @@
+.billside{
+  background-color: #f0f1f3;
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
+
+  .billcontainer{
+    width: 100%;
+
+    .billcontent{
+        background-color: #fff;
+        margin: 2% 2%;
+        border-radius: 1px;
+        width: 1500px;
+        height:340px;
+        padding: 20px;
+        outline:auto;
+        outline-color: lightgray;
+        border-radius: 8px;
+    
+        .title{
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+    
+            h3{
+                align-items: center;
+            }
+    
+            p{
+                color:  rgb(25, 90, 212);
+            }
+        }
+
+        .head{
+            padding: 0px;
+        
+            p{
+                margin-right: 200px;
+            }
+        }
+        .line {
+            border: none;
+            border-top: 3px solid #ccc;
+        }
+    
+        .content{
+            display: flex;
+            font-display: column;
+            line-height: 50px;
+    
+            .left{
+                margin-right: 800px;
+            }
+    
+            }
+            .btn{
+                padding: 10px;
+                margin-left: 1385px;
+    
+                .edit{
+                    background-color: #1570ef;
+                    color: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: none;
+                    cursor: pointer;
+                }
+              }
+            }
+          }        
+
+  .billtop {
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    position: relative;
+  }
+
+}
+
