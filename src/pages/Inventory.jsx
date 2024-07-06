@@ -99,7 +99,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
+                <h4>{}</h4>
                 <p>Number of items</p>
               </div>
               <div className="container">
