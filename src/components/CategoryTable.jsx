@@ -109,7 +109,10 @@ const Category = () => {
         </ul>
       </td> */}
                 <td>
-                  <button onClick={() => handleDeleteSubmit(cat.category_id)}>
+                  <button
+                    onClick={() => handleDeleteSubmit(cat.category_id)}
+                    className="deleteBtn"
+                  >
                     Delete
                   </button>
                 </td>

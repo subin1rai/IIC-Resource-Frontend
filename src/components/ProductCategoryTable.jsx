@@ -90,7 +90,7 @@ const Category = () => {
   return (
     <div className="first">
       <div className="head">
-        <p>Category</p>
+        <p>Product Category</p>
         <button className="add-buttons" onClick={displayAddPopup}>
           Add Category
         </button>
