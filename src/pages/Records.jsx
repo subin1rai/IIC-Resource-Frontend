@@ -26,10 +26,12 @@ const Records = () => {
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
+  //  visualizing add bill form
   const openAddBillForm = () => {
     setAddFormVisibility(true);
   };
 
+  //closing add bill form
   const closeAddBillForm = () => {
     setAddFormVisibility(false);
   };
@@ -58,6 +60,7 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
+            {/* adding filter icon */}
             <button className="filter-btn" aria-label="Menu">
               <img src={filterIcon} alt="filter icon" />
               Filter
@@ -66,6 +69,7 @@ const Records = () => {
               Add Bill
             </button>
           </div>
+          {/* importing records table from components */}
           <RecordsTable />
         </div>
       </div>
@@ -85,6 +89,7 @@ const Records = () => {
                 </button>
                 <p className="title">Add Bill Details</p>
                 <div className="double">
+                  {/* details of bill */}
                   <div className="for">
                     <label htmlFor="bill_no">Bill No:</label>
                     <input
@@ -126,6 +131,9 @@ const Records = () => {
                       <option value="Lizan Suppliers">Lizan Suppliers</option>
                       <option value="Lenisha Suppliers">
                         Lenisha Suppliers
+                      </option>
+                      <option value="Lenisha Suppliers">
+                        Maheema Suppliers
                       </option>
                       <option value="Aneer Suppliers">Aneer Suppliers</option>
                       <option value="Subin Suppliers">Subin Suppliers</option>
@@ -249,4 +257,4 @@ const Records = () => {
   );
 };
 
-export default Records;
+export default Records;
