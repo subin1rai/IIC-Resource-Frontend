@@ -98,7 +98,7 @@ const Bill = () => {
                   <div className="for">
                     <label htmlFor="bill_date">Bill Date:</label>
                     <input
-                      type="text"
+                      type="date"
                       placeholder="Enter bill date"
                       name="bill_date"
                       id="bill_date"
