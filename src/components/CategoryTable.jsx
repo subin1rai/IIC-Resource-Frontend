@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/category.css";
+import Ctable from "../components/Ctable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
@@ -46,7 +47,7 @@ const Category = () => {
   const handleDeleteSubmit = async (categoryId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
+        "http://localhost:8898/api/deleteCategory/${categoryId}"
       );
       console.log(response.data);
       setCategory((prevCategory) =>
@@ -78,82 +79,56 @@ const Category = () => {
   };
 
   return (
-    <div className="first">
-      <div className="head">
-        <p>Category</p>
-        <button className="add-buttons" onClick={displayAddPopup}>
-          Add Category
-        </button>
-      </div>
-      <div className="tables">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">SN</th>
-              <th scope="col">Category Name</th>
-              <th scope="col">Items</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {category.map((cat, index) => (
-              <tr key={cat.category_id}>
-                <th scope="row">{index + 1}</th>
-                <td>{cat.category_name}</td>
-                <td>{cat.items.length}</td> {/* Display the length of items */}
-                {/* <td>
-        <ul>
-          {cat.items.map((item, i) => (
-            <li key={i}>{items.length}</li>
-          ))}
-        </ul>
-      </td> */}
-                <td>
-                  <button
-                    onClick={() => handleDeleteSubmit(cat.category_id)}
-                    className="deleteBtn"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {addFormVisibility && (
-        <form action="" onSubmit={handleSubmit} className="category-form">
-          <button
-            type="button"
-            className="discard-button"
-            onClick={closeCategoryForm}
-          >
-            <img src={close} alt="Close" />
-          </button>
-          <p className="title">Add Category</p>
-          <div className="field">
-            <label htmlFor="category_name">Category Name</label>
-            <input
-              type="text"
-              placeholder="Enter category name"
-              name="category_name"
-              id="category_name"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="buttons">
-            <button type="submit" className="add-buttons">
-              Add Category
-            </button>
-          </div>
-        </form>
-      )}
-
-      {addFormVisibility && (
-        <div className="overlay-category" onClick={closeCategoryForm}></div>
-      )}
+  <><div className="overall-category">
+      <h3 className="category-title">Categories</h3>
     </div>
+
+      <div className="first">
+        <div className="head">
+          <div className="container">
+          <p>Category</p>
+          </div>
+
+          <div className="icons">
+          <button className="add-buttons" onClick={displayAddPopup}>
+            Add Category
+          </button>
+        </div>
+        </div>
+        <Ctable category={category}/>
+      
+        {addFormVisibility && (
+          <form action="" onSubmit={handleSubmit} className="category-form">
+            <button
+              type="button"
+              className="discard-button"
+              onClick={closeCategoryForm}
+            >
+              <img src={close} alt="Close" />
+            </button>
+            <p className="title">Add Category</p>
+            <div className="field">
+              <label htmlFor="category_name">Category Name</label>
+              <input
+                type="text"
+                placeholder="Enter category name"
+                name="category_name"
+                id="category_name"
+                onChange={handleChange} />
+            </div>
+            <div className="buttons">
+              <button type="submit" className="add-buttons">
+                Add Category
+              </button>
+            </div>
+          </form>
+        )}
+
+        {addFormVisibility && (
+          <div className="overlay-category" onClick={closeCategoryForm}></div>
+        )}
+      </div></>
+
   );
 };
 

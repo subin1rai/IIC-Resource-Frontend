@@ -89,7 +89,7 @@ const Records = () => {
                 </button>
                 <p className="title">Add Bill Details</p>
                 <div className="double">
-                  {/* details of bill record */}
+                  {/* details of bill */}
                   <div className="for">
                     <label htmlFor="bill_no">Bill No:</label>
                     <input
