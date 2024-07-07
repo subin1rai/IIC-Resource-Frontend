@@ -9,7 +9,7 @@ import filterIcon from "../assets/filter.svg";
 import axios from "axios";
 import { BsDisplay } from "react-icons/bs";
 
-const Bill = () => {
+const Records = () => {
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
@@ -184,4 +184,4 @@ const Bill = () => {
   );
 };
 
-export default Bill;
+export default Records;
