@@ -87,14 +87,22 @@ const Category = () => {
   };
 
   return (
+    <><div className="overall-category">
+
+    </div>
     <div className="first">
       <div className="head">
+      <div className="container">
         <p>Item Category</p>
+        </div>
+
+    <div className="icons">
         <button className="add-buttons" onClick={displayAddPopup}>
           Add Category
         </button>
       </div>
-      <div className="tables">
+      </div>
+      {/* <div className="tables">
         <table>
           <thead>
             <tr>
@@ -121,7 +129,7 @@ const Category = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">
@@ -154,7 +162,7 @@ const Category = () => {
       {addFormVisibility && (
         <div className="overlay-category" onClick={closeCategoryForm}></div>
       )}
-    </div>
+    </div></>
   );
 };
 
