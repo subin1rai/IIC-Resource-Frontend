@@ -30,53 +30,76 @@ const Sidebar = () => {
         <img src={sideBarLogo} className="sidebar-logo" alt="" />
 
         <div className="sidebar-items">
+          {/* dashboard nav */}
           <div className="item">
             <img src={dashboard} alt="" />
             <NavLink to="/dashboard" className={setActiveClass}>
               Dashboard
             </NavLink>
           </div>
+          {/* inventory nav */}
           <div className="item">
             <img src={inventory} alt="" />
             <NavLink to="/inventory" className={setActiveClass}>
               Inventory
             </NavLink>
           </div>
+          {/* record nav */}
           <div className="item">
             <img src={inventory} alt="" />
             <NavLink to="/records" className={setActiveClass}>
               Bill Records
             </NavLink>
           </div>
+          {/* vendors nav */}
           <div className="item">
             <img src={dashboard} alt="" />
             <NavLink to="/vendors" className={setActiveClass}>
               Vendors
             </NavLink>
           </div>
+          {/* category nav */}
           <div className="item">
             <img src={dashboard} alt="" />
             <NavLink to="/Category" className={setActiveClass}>
               Category
             </NavLink>
           </div>
+          {/* issue nav */}
           <div className="item">
             <img src={dashboard} alt="" />
             <NavLink to="/issue" className={setActiveClass}>
               Issue
             </NavLink>
           </div>
+          {/* Payment nav */}
+          <div className="item">
+            <img src={dashboard} alt="" />
+            <NavLink to="/payment" className={setActiveClass}>
+              Payment
+            </NavLink>
+          </div>
+          {/* Request nav */}
+          <div className="item">
+            <img src={dashboard} alt="" />
+            <NavLink to="/request" className={setActiveClass}>
+              Request
+            </NavLink>
+          </div>
         </div>
+
       </div>
 
       <div className="sidebar-bottom">
         <div className="sidebar-items">
+          {/* settings nav */}
           <div className="item">
             <img src={settings} alt="" />
             <NavLink to="/settings" className={setActiveClass}>
               Settings
             </NavLink>
           </div>
+          {/* logout nav */}
           <div className="item">
             <img src={logout} alt="" />
             <NavLink to="/" onClick={handleLogout} className={setActiveClass}>
