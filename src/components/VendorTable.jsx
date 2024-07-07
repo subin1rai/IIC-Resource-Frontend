@@ -7,72 +7,53 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const columns = [
-  { id: "vendor_name", label: "Vendor Name", maxWidth: 70 },
-  { id: "vat_number", label: "Vat Number", maxWidth: 70 },
+  { id: "vendor_name", label: "Vendor Name", maxWidth: 120 },
+  { id: "vat_number", label: "VAT Number", maxWidth: 120 },
   {
-    id: "contact_number",
+    id: "vendor_contact",
     label: "Contact Number",
-    maxWidth: 70,
+    maxWidth: 120,
     align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
     id: "purchase_amount",
     label: "Purchase Amount",
-    maxWidth: 70,
+    maxWidth: 120,
     align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
     id: "recent_purchase",
-    label: "Recent purchase",
-    maxWidth: 70,
+    label: "Recent Purchase",
+    maxWidth: 120,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => value?.toFixed(2) || "N/A",
   },
   {
     id: "payment_duration",
     label: "Payment Duration",
-    maxWidth: 70,
+    maxWidth: 120,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => value?.toFixed(2) || "N/A",
   },
   {
     id: "payment_status",
-    label: "Payment status",
-    maxWidth: 70,
+    label: "Payment Status",
+    maxWidth: 120,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => value?.toFixed(2) || "N/A",
   },
-];
-
-function createData(vendor_name, vat_number, contact_number, purchase_amount) {
-  return { vendor_name, vat_number, contact_number, purchase_amount };
-}
-
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
 ];
 
 export default function VendorTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [vendors, setVendors] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -82,6 +63,21 @@ export default function VendorTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useEffect(() => {
+    const getAllVendors = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/vendor");
+        setVendors(response.data.getVendor || []);
+        console.log(vendors);
+      } catch (error) {
+        console.log("Error fetching vendors:", error);
+        setVendors([]);
+      }
+    };
+
+    getAllVendors();
+  }, []);
 
   return (
     <Paper
@@ -108,35 +104,31 @@ export default function VendorTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {vendors
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          height={3}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+              .map((vendor) => (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={vendor.vendor_name}
+                >
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align={column.align}>
+                      {column.format
+                        ? column.format(vendor[column.id])
+                        : vendor[column.id]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[]}
+        rowsPerPageOptions={[10]}
         component="div"
-        count={rows.length}
+        count={vendors.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

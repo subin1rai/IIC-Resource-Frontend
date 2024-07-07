@@ -7,11 +7,13 @@ import validVendor from "../assets/user.svg";
 import close from "../assets/close.svg";
 import axios from "axios";
 import VendorTable from "../components/VendorTable";
+
 const Vendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
     vat_number: "",
     vendor_contact: "",
+    payment_duration: 15,
     category: "",
   });
 
@@ -27,7 +29,6 @@ const Vendor = () => {
 
   const handleChange = (e) => {
     setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(e.target.value)
   };
 
   const handleSubmit = async (event) => {
@@ -37,22 +38,12 @@ const Vendor = () => {
         "http://localhost:8898/api/addVendor",
         vendor
       );
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    try {
-      const getAllVendors = async () => {
-        const response = await axios.get("http://localhost:8898/api/vendor");
-        console.log(response);
-      };
-      getAllVendors();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
   return (
     <div className="vendor">
       <Sidebar />
@@ -117,57 +108,69 @@ const Vendor = () => {
             </div>
           </div> */}
         </div>
-
-        {addFormVisibility && (
-          <form action="" onSubmit={handleSubmit} className="filter">
-            <button
-              type="vendor-button"
-              className="discard-button"
-              onClick={closeAddVendorForm}
-            >
-              <img src={close} alt="" />
-            </button>
-            <p className="vendor_title">Add Item</p>
-            <div className="vendor_field">
-              <label htmlFor="vendor_name">Item Name</label>
-              <input
-                type="text"
-                placeholder="Enter product name"
-                name="vendor_name"
-                id="item_name"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="vendor_field">
-              <label htmlFor="category">Vendor Vat</label>
-              <input type="text" name="vat_number" onChange={handleChange} />
-            </div>
-            <div className="vendor_field">
-              <label htmlFor="measuring_unit">Contact</label>
-              <input
-                type="number"
-                placeholder="Enter conatct number"
-                name="vendor_contact"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="vendor_field">
-              <label htmlFor="category"> Category</label>
-              <select id="category" name="category" onChange={handleChange}>
-                <option value="">Contact</option>
-                <option value="Gadgets">Gadgets</option>
-                <option value="Appliances">Appliances</option>
-              </select>
-            </div>
-            <div className="vendor_buttons">
-              <button type="submit" className="add-button">
-                Add Vendor
-              </button>
-            </div>
-          </form>
-        )}
       </div>
-
+      {addFormVisibility && (
+        <form action="" onSubmit={handleSubmit} className="filter">
+          <button
+            type="vendor-button"
+            className="discard-button"
+            onClick={closeAddVendorForm}
+          >
+            <img src={close} alt="" />
+          </button>
+          <p className="vendor_title">Add Item</p>
+          <div className="vendor_field">
+            <label htmlFor="vendor_name">Item Name</label>
+            <input
+              type="text"
+              placeholder="Enter product name"
+              name="vendor_name"
+              id="item_name"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="vendor_field">
+            <label htmlFor="category">Vendor Vat</label>
+            <input
+              type="text"
+              name="vat_number"
+              placeholder="Vendor vat number"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="vendor_field">
+            <label htmlFor="measuring_unit">Contact</label>
+            <input
+              type="number"
+              placeholder="Enter conatct number"
+              name="vendor_contact"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="vendor_field">
+            <label htmlFor="payment_duration">Payment Duration</label>
+            <input
+              type="number"
+              placeholder="Enter conatct number"
+              name="payment_duration"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="vendor_field">
+            <label htmlFor="category"> Category</label>
+            <select id="category" name="category" onChange={handleChange}>
+              <option value="">Contact</option>
+              <option value="Gadgets">Gadgets</option>
+              <option value="Appliances">Appliances</option>
+            </select>
+          </div>
+          <div className="vendor_buttons">
+            <button type="submit" className="add-button">
+              Add Vendor
+            </button>
+          </div>
+        </form>
+      )}
       {addFormVisibility && (
         <div className="overlay-vendor" onClick={closeAddVendorForm}>
           {" "}

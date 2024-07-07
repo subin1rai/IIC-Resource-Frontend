@@ -10,30 +10,31 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 
 const columns = [
-  { id: "item_id", label: "Item ID", maxWidth: 70 },
-  { id: "item_name", label: "Item Name", maxWidth: 150 },
-  { id: "measuring_unit", label: "Measuring Unit", maxWidth: 120 },
+  { id: "item_name", label: "Item Name", maxWidth: 120 },
+  { id: "unit_price", label: "Unit Price", maxWidth: 80 },
+  { id: "measuring_unit", label: "Measuring Unit", maxWidth: 80 },
   {
     id: "total_purchased",
     label: "Total Purchased",
     maxWidth: 120,
-    align: "right",
     format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
     id: "quantity",
     label: "Quantity",
-    maxWidth: 100,
-    align: "right",
+    maxWidth: 80,
     format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   { id: "category", label: "Category", maxWidth: 120 },
-  { id: "productCategory", label: "Product Category", maxWidth: 150 },
+  { id: "itemCategory", label: "Item Category", maxWidth: 120 },
+  { id: "productCategory", label: "Product Category", maxWidth: 120 },
+  { id: "recentPurchase", label: "Recent Purchase", maxWidth: 120 },
+  { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
 
 export default function InventoryTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
 
   React.useEffect(() => {
@@ -59,13 +60,22 @@ export default function InventoryTable() {
     setPage(0);
   };
 
+  const getStockStatusStyle = (stockStatus) => {
+    return {
+      color: stockStatus === "Low Stock" ? "red" : "green",
+    };
+  };
+
+  const cellStyle = {
+    fontSize: "16px",
+  };
+
   return (
     <Paper
       sx={{
         width: "100%",
         overflow: "hidden",
         cursor: "pointer",
-        fontSize: "18px",
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -76,7 +86,11 @@ export default function InventoryTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    ...cellStyle,
+                    minWidth: column.minWidth,
+                    fontWeight: 600,
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -98,8 +112,23 @@ export default function InventoryTable() {
                     if (column.id === "productCategory") {
                       value = item.productCategory?.product_category_name;
                     }
+                    if (column.id === "category") {
+                      value = item.category?.category_name;
+                    }
+                    if (column.id === "itemCategory") {
+                      value = item.itemCategory?.item_category_name;
+                    }
+
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={
+                          column.id === "stockStatus"
+                            ? { ...cellStyle, ...getStockStatusStyle(value) }
+                            : cellStyle
+                        }
+                      >
                         {column.format && typeof value === "number"
                           ? column.format(value)
                           : value || "N/A"}
@@ -112,7 +141,7 @@ export default function InventoryTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[7, 14, 21]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={items.length}
         rowsPerPage={rowsPerPage}

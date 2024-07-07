@@ -18,22 +18,22 @@ const Dashboard = () => {
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of Items</p>
               </div>
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of Categories</p>
               </div>
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Returned Items</p>
               </div>
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Low Stock Items</p>
               </div>
             </div>
           </div>
@@ -44,37 +44,37 @@ const Dashboard = () => {
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of Vendors</p>
               </div>
             </div>
           </div>
           <div className="vendor-overview">
-            <h3 className="summary-title">Vendor Overview</h3>
+            <h3 className="summary-title">Issue Overview</h3>
             <div className="overview-container">
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of Issues</p>
               </div>
             </div>
           </div>
           <div className="vendor-overview">
-            <h3 className="summary-title">Vendor Overview</h3>
+            <h3 className="summary-title">Bill Overview</h3>
             <div className="overview-container">
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of Bills</p>
               </div>
             </div>
           </div>
           <div className="vendor-overview">
-            <h3 className="summary-title">Vendor Overview</h3>
+            <h3 className="summary-title">Payment Overview</h3>
             <div className="overview-container">
               <div className="overview">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Pending Payments</p>
               </div>
             </div>
           </div>

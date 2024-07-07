@@ -16,6 +16,7 @@ const Inventory = () => {
     itemCategory: "",
     measuring_unit: "",
     productCategory: "",
+    low_limit: 0,
   });
 
   const [category, setCategory] = useState("");
@@ -45,8 +46,8 @@ const Inventory = () => {
         "http://localhost:8898/api/addItem",
         itemData
       );
-
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +63,16 @@ const Inventory = () => {
           "http://localhost:8898/api/category"
         );
 
-        console.log(categoryResponse);
+        const itemCategoryResponse = await axios.get(
+          "http://localhost:8898/api/itemCategory"
+        );
+        const productCategoryResponse = await axios.get(
+          "http://localhost:8898/api/productCategory"
+        );
+
+        setProductCategory(productCategoryResponse.data.allData);
+        setItemCategory(itemCategoryResponse.data.allData);
+        setCategory(categoryResponse.data.category);
         setItems(response.data.items);
       } catch (error) {
         console.log(error);
@@ -71,6 +81,8 @@ const Inventory = () => {
 
     getAllItems();
   }, []);
+
+  console.log(productCategory);
 
   return (
     <div className="inventory">
@@ -84,22 +96,17 @@ const Inventory = () => {
               <div className="container">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of category</p>
+              </div>
+              <div className="container">
+                <img src={validVendor} alt="" />
+                <h4>{}</h4>
+                <p>Number of items</p>
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
                 <h4>31</h4>
-                <p>Number of inventory</p>
-              </div>
-              <div className="container">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of inventory</p>
-              </div>
-              <div className="container">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of inventory</p>
+                <p>Number of lowstock</p>
               </div>
             </div>
           </div>
@@ -125,152 +132,7 @@ const Inventory = () => {
             </div>
           </div>
           <InventoryTable />
-
-          {/* <table className="item-table">
-            <thead className="item-table-head">
-              <tr>
-                <th>Items</th>
-                <th>Category</th>
-                <th>Product Category</th>
-                <th>Quantity</th>
-                <th>Unit</th>
-                <th>Unit Price</th>
-                <th>Total Purchased</th>
-                <th>Recent Purchased</th>
-                <th>Item Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In Stock</td>
-              </Link>
-              <Link to={"/singleItem"} className="single-row">
-                <td>Item 1</td>
-                <td>Electronics</td>
-                <td>Gadgets</td>
-                <td>50</td>
-                <td>Pcs</td>
-                <td>$10</td>
-                <td>500</td>
-                <td>2024-06-20</td>
-                <td>In StockIn Stock </td>
-              </Link>
-            </tbody>
-          </table> */}
-
-          {/* <div className="page-controller">
-            <button className="prev-btn">
-              {" "}
-              <img src={back} alt="" /> Previous
-            </button>
-            <div className="page-details">
-              <p>
-                page <span>1</span> of <span>12</span>{" "}
-              </p>
-            </div>
-            <button className="next-btn">
-              {" "}
-              Next <img src={front} alt="" />
-            </button>
-          </div> */}
         </div>
-        {/* Items table closed */}
       </div>
 
       {addFormVisibility && (
@@ -297,8 +159,11 @@ const Inventory = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category" onChange={handleChange}>
               <option value="">Choose Category</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Furniture">Furniture</option>
+              {category.map((cat, index) => (
+                <option key={index} value={cat.category_name}>
+                  {cat.category_name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="field">
@@ -306,11 +171,15 @@ const Inventory = () => {
             <select
               name="productCategory"
               id="product_category"
+              value={itemData.productCategory}
               onChange={handleChange}
             >
-              <option value="">Choose Category</option>
-              <option value="SSD">SSD</option>
-              <option value="Academics">Academics</option>
+              <option value="">Select Product Category</option>
+              {productCategory.map((prodCat, index) => (
+                <option key={index} value={prodCat.product_category_name}>
+                  {prodCat.product_category_name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -322,8 +191,11 @@ const Inventory = () => {
               onChange={handleChange}
             >
               <option value="">Choose Item Category</option>
-              <option value="Gadgets">Gadgets</option>
-              <option value="Appliances">Appliances</option>
+              {itemCategory.map((itemCat, index) => (
+                <option key={index} value={itemCat.item_category_name}>
+                  {itemCat.item_category_name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="field">

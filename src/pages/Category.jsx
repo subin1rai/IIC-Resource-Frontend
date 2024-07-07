@@ -9,16 +9,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Category = () => {
-
   return (
     <div className="category">
       <Sidebar />
       <div className="category-main">
         <Topbar />
         <div className="main-container">
-         <CategoryTable/>
-         <ItemCategoryTable/>
-         <ProductCategoryTable/>
+          <CategoryTable />
+          <ItemCategoryTable />
+          <ProductCategoryTable />
         </div>
       </div>
     </div>
