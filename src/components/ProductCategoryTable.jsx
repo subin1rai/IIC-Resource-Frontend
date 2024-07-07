@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../styles/category.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import close from "../assets/close.svg";
 
 const Category = () => {
   const [productCategory, setProductCategory] = useState([]);
-  const [newProductCategory, setNewProductCategory] = useState({
-    product_category_name: "",
-  });
+  const [newProductCategory, setNewProductCategory] = useState({ product_category_name: "" });
   const [deleteItemCategory, setDeleteItemCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +14,6 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        //api request send
         const response = await axios.get("http://localhost:8898/api/productCategory");
         console.log(response.data);
         setProductCategory(response.data.allData || []);
@@ -42,10 +38,7 @@ const Category = () => {
   };
 
   const handleChange = (e) => {
-    setNewProductCategory((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setNewProductCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(e.target.value);
   };
 
@@ -75,10 +68,7 @@ const Category = () => {
         newProductCategory
       );
       console.log(response);
-      setNewProductCategory((prevCategory) => [
-        ...prevCategory,
-        response.data.category,
-      ]);
+      setNewProductCategory((prevCategory) => [...prevCategory, response.data.category]);
       closeCategoryForm();
       window.location.reload();
     } catch (error) {
@@ -87,14 +77,21 @@ const Category = () => {
   };
 
   return (
+    <><div className="overall-category">
+    </div>
     <div className="first">
       <div className="head">
-        <p>Product Category</p>
+      <div className="container">
+        <p>Category</p>
+        </div>
+
+        <div className="icons">
         <button className="add-buttons" onClick={displayAddPopup}>
           Add Category
         </button>
       </div>
-      <div className="tables">
+      </div>
+      {/* <div className="tables">
         <table>
           <thead>
             <tr>
@@ -109,11 +106,9 @@ const Category = () => {
               <tr key={cat.product_category_id}>
                 <th scope="row">{index + 1}</th>
                 <td>{cat.product_category_name}</td>
-                <td>{cat.items.length}</td>
+                <td>{cat.items.length}</td> 
                 <td>
-                  <button
-                    onClick={() => handleDeleteSubmit(cat.product_category_id)}
-                  >
+                  <button onClick={() => handleDeleteSubmit(cat.product_category_id)}>
                     Delete
                   </button>
                 </td>
@@ -121,7 +116,7 @@ const Category = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">
@@ -130,7 +125,7 @@ const Category = () => {
             className="discard-button"
             onClick={closeCategoryForm}
           >
-            <img src={close} alt="Close" />
+            <img src={"path/to/your/close/icon"} alt="Close" />
           </button>
           <p className="title">Add Category</p>
           <div className="field">
@@ -154,7 +149,7 @@ const Category = () => {
       {addFormVisibility && (
         <div className="overlay-category" onClick={closeCategoryForm}></div>
       )}
-    </div>
+    </div> </>
   );
 };
 
