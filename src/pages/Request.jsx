@@ -1,19 +1,12 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
-import Topbar from '../components/Topbar'
+
+import React from "react";
 
 const Request = () => {
   return (
-    <div className="request">
-      {/* Importing sidebar */}
-      <Sidebar/>
-
-      <div className="request-main">
-        {/* Importing Topbar */}
-        <Topbar/>
-      </div>
+    <div class="bg-red-300 flex justify-center items-center h-screen text-green-500 font-extrabold text-3xl">
+      <h1>hi</h1> 
     </div>
-  )
-}
+  );
+};
 
-export default Request
+export default Request;

@@ -87,7 +87,6 @@ const Sidebar = () => {
             </NavLink>
           </div>
         </div>
-
       </div>
 
       <div className="sidebar-bottom">
