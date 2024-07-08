@@ -28,13 +28,12 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
-          <Route path="/records" element={<Records/>} />
-          <Route path= "/specificVendor" element={<SpecificVendor/>} />
-          <Route path= "/details" element={<SpecificVendorDetails/>} />
-          <Route path="/category" element={<Category/>} />
+          <Route path="/records" element={<Records />} />
+          <Route path="/specificVendor" element={<SpecificVendor />} />
+          <Route path="/details" element={<SpecificVendorDetails />} />
+          <Route path="/category" element={<Category />} />
           <Route path="/specificbill" element={<SpecificBill />} />
-          </Routes>
-
+        </Routes>
       </BrowserRouter>
     </div>
   );
