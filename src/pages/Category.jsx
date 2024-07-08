@@ -11,10 +11,13 @@ import { useNavigate } from "react-router-dom";
 const Category = () => {
   return (
     <div className="category">
+      {/* Importing sidebar */}
       <Sidebar />
       <div className="category-main">
+        {/* Importing topbar */}
         <Topbar />
         <div className="main-container">
+          {/* importing category tables from components */}
           <CategoryTable />
           <ItemCategoryTable />
           <ProductCategoryTable />
