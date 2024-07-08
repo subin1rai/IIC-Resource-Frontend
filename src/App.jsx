@@ -14,6 +14,8 @@ import SpecificVendorDetails from "./components/SpecificVendorDetails";
 import SpecificBill from "./pages/SpecificBill";
 import Navbar from "./components/Navbar";
 import UserHome from "./pages/UserHome";
+import UserRequest from "./pages/UserRequest";
+import RequestHistory from "./pages/RequestHistory";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 
@@ -37,6 +39,8 @@ function App() {
           <Route path="/specificbill" element={<SpecificBill />} />
           <Route path = "/userhome" element={<UserHome />} />
           <Route path = "/navbar" component = {<Navbar />} />
+          <Route path = "/userrequest" element = {<UserRequest />} />
+          <Route path = "/requesthistory" element = {<RequestHistory/> } />
           {/* <Route path = "/home" element= {<Home />} />
           <Route path = "/request" component={<Request />} />
           <Route path = "/requesthistory" component={<RequestHistory />} /> */}
