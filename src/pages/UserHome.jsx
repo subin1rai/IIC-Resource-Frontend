@@ -8,11 +8,13 @@ const UserHome =() =>{
         <div className="homecontainer">
             <Navbar />
             <div className="homecontent">
+                <div className="content">
                 <h1> Find Resources For You</h1>
                 <h3>We are the bridge</h3>
                 <input type="text" placeholder="Search resources..."/>
                 <div className="btn">
                     <button>Request</button>
+                </div>
                 </div>
             </div>
         </div>
