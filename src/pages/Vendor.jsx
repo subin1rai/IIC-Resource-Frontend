@@ -118,19 +118,19 @@ const Vendor = () => {
           >
             <img src={close} alt="" />
           </button>
-          <p className="vendor_title">Add Item</p>
+          <p className="vendor_title">Add Vendor</p>
           <div className="vendor_field">
-            <label htmlFor="vendor_name">Item Name</label>
+            <label htmlFor="vendor_name">Vendor Name</label>
             <input
               type="text"
-              placeholder="Enter product name"
+              placeholder="Enter vendor name"
               name="vendor_name"
               id="item_name"
               onChange={handleChange}
             />
           </div>
           <div className="vendor_field">
-            <label htmlFor="category">Vendor Vat</label>
+            <label htmlFor="vendor_vat">Vendor Vat</label>
             <input
               type="text"
               name="vat_number"
@@ -139,10 +139,10 @@ const Vendor = () => {
             />
           </div>
           <div className="vendor_field">
-            <label htmlFor="measuring_unit">Contact</label>
+            <label htmlFor="contact">Contact</label>
             <input
               type="number"
-              placeholder="Enter conatct number"
+              placeholder="Enter contact number"
               name="vendor_contact"
               onChange={handleChange}
             />
@@ -150,19 +150,11 @@ const Vendor = () => {
           <div className="vendor_field">
             <label htmlFor="payment_duration">Payment Duration</label>
             <input
-              type="number"
-              placeholder="Enter conatct number"
+              type="text"
+              placeholder="Enter payment "
               name="payment_duration"
               onChange={handleChange}
             />
-          </div>
-          <div className="vendor_field">
-            <label htmlFor="category"> Category</label>
-            <select id="category" name="category" onChange={handleChange}>
-              <option value="">Contact</option>
-              <option value="Gadgets">Gadgets</option>
-              <option value="Appliances">Appliances</option>
-            </select>
           </div>
           <div className="vendor_buttons">
             <button type="submit" className="add-button">
