@@ -3,36 +3,39 @@
     height: 100vh;
 
    .homecontent{
-        background:rgb(104, 104, 233);
+        background:rgb(111, 111, 228);
         height: 90vh;
         display: flex;
         line-height: 40px;
 
         .content{
             margin-top: 320px;
-            margin-right: 700px;            
-
+            margin-right: 440px; 
+            margin-left: 270px;
+            align-items: start;
 
             h1{
                 padding: 10x;
-                margin-left: 120px;
+                /* margin-left: 120px; */
                 font-weight:900;
+                color:white;
 
             }
             h3{
                 padding-bottom: 20px; 
-                margin-left: 220px; 
-                font-weight: 700;  
+                /* margin-left: 220px;  */
+                font-weight: 700; 
+                color: white; 
             }
 
-    input{
+    /* input{
         width: 30vw;
         padding:20px;
         border-radius: 50px;
         border-width:1px;
         margin-bottom: 20px;
         border: solid 1px;
-    }
+    } */
 
    button{
     background-color: rgb(51, 51, 245);
@@ -40,7 +43,7 @@
     width:250px;
     color: white;
     border-radius: 10px;
-    margin-left: 180px;
+    /* margin-left: 180px; */
     border: none;
     cursor: pointer;
    }
