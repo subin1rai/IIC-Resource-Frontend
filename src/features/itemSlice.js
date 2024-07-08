@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: 0,
+  items: [
+    {
+      item_name: "",
+      category: "",
+      itemCategory: "",
+      measuring_unit: "",
+      productCategory: "",
+      low_limit: 0,
+    },
+  ],
 };
 
 export const itemSlice = createSlice({

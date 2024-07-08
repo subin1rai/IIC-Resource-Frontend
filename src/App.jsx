@@ -14,6 +14,7 @@ import SpecificVendorDetails from "./components/SpecificVendorDetails";
 import SpecificBill from "./pages/SpecificBill";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
+import Request from "./pages/Request";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/details" element={<SpecificVendorDetails />} />
           <Route path="/category" element={<Category />} />
           <Route path="/specificbill" element={<SpecificBill />} />
+          <Route path="/request" element={<Request />} />
         </Routes>
       </BrowserRouter>
     </div>
