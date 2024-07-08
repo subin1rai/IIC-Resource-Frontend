@@ -37,7 +37,6 @@ const Navbar = () => {
          <div className="fourth">
          <NavLink to ="/" onClick={handleLogin} className={setActiveClass}> Login </NavLink>
          </div>
-        <button className="btn"> Signup</button>
         </div>
         </div>
   );     

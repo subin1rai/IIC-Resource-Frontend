@@ -63,6 +63,7 @@
     input {
       width: 250px;
       padding: 5px 10px;
+      border: 0.1px solid;
     }
 
     .vendor_buttons {
