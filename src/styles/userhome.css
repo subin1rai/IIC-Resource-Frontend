@@ -3,25 +3,26 @@
     height: 100vh;
 
    .homecontent{
-        background-color: #fff;
+        background:rgb(104, 104, 233);
         height: 90vh;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
         line-height: 40px;
 
         .content{
-            margin-left: 700px;
-            align-items: end;
+            margin-top: 320px;
+            margin-right: 700px;            
+
 
             h1{
                 padding: 10x;
-                margin-left: 110px;
+                margin-left: 120px;
+                font-weight:900;
 
             }
             h3{
                 padding-bottom: 20px; 
-                margin-left: 220px;   
+                margin-left: 220px; 
+                font-weight: 700;  
             }
 
     input{
@@ -39,10 +40,27 @@
     width:250px;
     color: white;
     border-radius: 10px;
-    margin-left: 190px;
+    margin-left: 180px;
     border: none;
     cursor: pointer;
    }
 }
+.right1{
+    height:57vh;
+    margin-top: 170px;
+    background-color: #f15555;
+    border-radius: 68%;
+}
+.right2{
+    background-color: rgb(130, 130, 228);
+    height: 49vh;
+    width:30vw;
+    border-radius: 68%;
+
+img{
+    height: 50vh;
+}
+
    }
+}
 }
