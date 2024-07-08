@@ -62,7 +62,9 @@
 
     input {
       width: 250px;
-      padding: 5px 10px;
+      padding: 10px 10px;
+      border: 1px solid grey;
+      border-radius: 5px;
     }
 
     .vendor_buttons {
@@ -89,7 +91,9 @@
     .vendor_field {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 30px;
+   
     }
   }
 

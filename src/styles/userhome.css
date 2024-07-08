@@ -1,0 +1,48 @@
+.homecontainer{
+    width:100vw;
+    height: 100vh;
+
+   .homecontent{
+        background-color: #fff;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 40px;
+
+        .content{
+            margin-left: 700px;
+            align-items: end;
+
+            h1{
+                padding: 10x;
+                margin-left: 110px;
+
+            }
+            h3{
+                padding-bottom: 20px; 
+                margin-left: 220px;   
+            }
+
+    input{
+        width: 30vw;
+        padding:20px;
+        border-radius: 50px;
+        border-width:1px;
+        margin-bottom: 20px;
+        border: solid 1px;
+    }
+
+   button{
+    background-color: rgb(51, 51, 245);
+    padding: 20px;
+    width:250px;
+    color: white;
+    border-radius: 10px;
+    margin-left: 190px;
+    border: none;
+    cursor: pointer;
+   }
+}
+   }
+}
