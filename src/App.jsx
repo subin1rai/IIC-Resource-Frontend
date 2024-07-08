@@ -18,6 +18,7 @@ import UserRequest from "./pages/UserRequest";
 import RequestHistory from "./pages/RequestHistory";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
+import Request from "./pages/Request";
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
           <Route path="/details" element={<SpecificVendorDetails />} />
           <Route path="/category" element={<Category />} />
           <Route path="/specificbill" element={<SpecificBill />} />
+
+
 
           <Route path = "/userhome" element={<UserHome />} />
           <Route path = "/navbar" component = {<Navbar />} />
