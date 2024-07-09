@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/category.css";
+import Itable from "../components/Itable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
@@ -50,7 +51,7 @@ const Category = () => {
     console.log(e.target.value);
   };
 
-  const handleDeleteSubmit = async (categoryId) => {
+  const handleDeleteSUBmit = async (categoryId) => {
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteItemCategory/${categoryId}`
@@ -131,6 +132,7 @@ const Category = () => {
           </tbody>
         </table>
       </div> */}
+      <Itable Itemcategory={Itemcategory} setItemCategory={setItemCategory} />
 
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">

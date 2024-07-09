@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../styles/category.css";
+import Ptable from "../components/Ptable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import close from "../assets/close.svg";
 
 const Category = () => {
   const [productCategory, setProductCategory] = useState([]);
@@ -117,7 +119,7 @@ const Category = () => {
           </tbody>
         </table>
       </div> */}
-
+   <Ptable productCategory={productCategory} setProductCategory={setProductCategory} />
       {addFormVisibility && (
         <form action="" onSubmit={handleSubmit} className="category-form">
           <button
@@ -125,7 +127,7 @@ const Category = () => {
             className="discard-button"
             onClick={closeCategoryForm}
           >
-            <img src={"path/to/your/close/icon"} alt="Close" />
+            <img src={close} alt="Close" />
           </button>
           <p className="title">Add Category</p>
           <div className="field">
