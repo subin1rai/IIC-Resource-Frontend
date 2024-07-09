@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,24 +16,24 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 120 },
 ];
 
-export default function Ctable({ category, setCategory }) {
-  const handleDeleteSubmit = async (categoryId) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
-      );
-      console.log(response.data);
-      setCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.category_id !== categoryId)
-      );
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
+export default function Itable({ Itemcategory, setItemCategory }) {
+    const handleDeleteSUbmit = async (categoryId) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8898/api/deleteItemCategory/${categoryId}`
+        );
+        console.log(response.data);
+        setItemCategory((prevCategory) =>
+          prevCategory.filter((cat) => cat.category_id !== categoryId)
+        );
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request Canceled", error.message);
+          return;
+        }
       }
-    }
-    window.location.reload();
-  };
+      window.location.reload();
+    };
 
   return (
     <Paper
@@ -51,8 +51,8 @@ export default function Ctable({ category, setCategory }) {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.maxWidth }}
+                  align={column.id === "action" ? "center" : "left"} // Align action column to center
                 >
                   {column.label}
                 </TableCell>
@@ -60,21 +60,21 @@ export default function Ctable({ category, setCategory }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {category.map((cat, index) => (
+            {Itemcategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{cat.category_name}</TableCell>
+                <TableCell>{cat.item_category_name}</TableCell>
                 <TableCell>{cat.items.length}</TableCell>
-                <TableCell>
-                  <Button 
-                    variant="contained" 
-                    sx={{ 
+                <TableCell align="center">
+                  <Button
+                    variant="contained"
+                    sx={{
                       backgroundColor: "#ff4d4d", // light red background
                       '&:hover': {
                         backgroundColor: "#e60000", // darker red on hover
                       }
-                    }} 
-                    onClick={() => handleDeleteSubmit(cat.category_id)}
+                    }}
+                    onClick={() => handleDeleteSUbmit(cat.category_id)}
                   >
                     Delete
                   </Button>

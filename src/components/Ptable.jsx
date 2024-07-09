@@ -16,23 +16,16 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 120 },
 ];
 
-export default function Ctable({ category, setCategory }) {
+export default function Ptable({ productCategory, setProductCategory }) {
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
-      );
-      console.log(response.data);
-      setCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.category_id !== categoryId)
+      await axios.delete(`http://localhost:8898/api/deleteProductCategory/${categoryId}`);
+      setProductCategory((prevCategory) =>
+        prevCategory.filter((cat) => cat.product_category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting category:", error);
     }
-    window.location.reload();
   };
 
   return (
@@ -60,10 +53,10 @@ export default function Ctable({ category, setCategory }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {category.map((cat, index) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
+            {productCategory.map((cat, index) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={cat.product_category_id}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{cat.category_name}</TableCell>
+                <TableCell>{cat.product_category_name}</TableCell>
                 <TableCell>{cat.items.length}</TableCell>
                 <TableCell>
                   <Button 
@@ -74,7 +67,7 @@ export default function Ctable({ category, setCategory }) {
                         backgroundColor: "#e60000", // darker red on hover
                       }
                     }} 
-                    onClick={() => handleDeleteSubmit(cat.category_id)}
+                    onClick={() => handleDeleteSubmit(cat.product_category_id)}
                   >
                     Delete
                   </Button>
