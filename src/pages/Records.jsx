@@ -24,6 +24,8 @@ const Records = () => {
     paid_amt: "",
   });
 
+  const [error, setError] = useState("");
+
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
   //  visualizing add bill form
@@ -33,6 +35,7 @@ const Records = () => {
 
   //closing add bill form
   const closeAddBillForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -47,9 +50,11 @@ const Records = () => {
       closeAddBillForm(); // Close the form after successful submission
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
+  console.log(error);
   return (
     <div className="records">
       <Sidebar />
@@ -230,7 +235,7 @@ const Records = () => {
                 </div>
               </div>
               <div className="summary">
-                <div className="right">
+                <div className="right" class="mb-2">
                   <h2>Summary</h2>
                   <p>Bill No: {bill.bill_no}</p>
                   <p>Bill Date: {bill.bill_date}</p>
@@ -243,7 +248,10 @@ const Records = () => {
                   <p>Actual Amount: {bill.actual_amt}</p>
                   <p>Paid Amount: {bill.paid_amt}</p>
                 </div>
-                <div className="buttons">
+
+                {error && <span class="text-red-500">{error}</span>}
+
+                <div className="buttons" class="mt-2">
                   <button type="submit" className="add-btn">
                     Add Item
                   </button>

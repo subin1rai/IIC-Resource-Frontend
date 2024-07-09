@@ -11,6 +11,8 @@ const Login = () => {
     password: "",
   });
 
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,12 +27,14 @@ const Login = () => {
         user,
         { withCredentials: true }
       );
-      console.log(response);
+
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.log(error);
+      setError(error.response.data.error);
     }
   };
+  console.log(error);
 
   return (
     <div className="login">
@@ -70,7 +74,10 @@ const Login = () => {
             <div className="forgot-password">
               <Link to={"/forgotPassword"}>Forgot password?</Link>
             </div>
-            <button type="submit">Sign in</button>
+            {error && <span class=" mb-2 text-red-500">{error}</span>}
+            <button type="submit" class=" mt-3  ">
+              Sign in
+            </button>
           </form>
         </div>
       </div>
