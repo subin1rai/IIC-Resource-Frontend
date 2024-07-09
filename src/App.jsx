@@ -34,22 +34,22 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records />} />
-          <Route path="/specificVendor" element={<SpecificVendor />} />
+          <Route
+            path="/specificVendor/:vendor_id"
+            element={<SpecificVendor />}
+          />
           <Route path="/details" element={<SpecificVendorDetails />} />
           <Route path="/category" element={<Category />} />
           <Route path="/specificbill" element={<SpecificBill />} />
 
-
-
-          <Route path = "/userhome" element={<UserHome />} />
-          <Route path = "/navbar" component = {<Navbar />} />
-          <Route path = "/userrequest" element = {<UserRequest />} />
-          <Route path = "/requesthistory" element = {<RequestHistory/> } />
+          <Route path="/userhome" element={<UserHome />} />
+          <Route path="/navbar" component={<Navbar />} />
+          <Route path="/userrequest" element={<UserRequest />} />
+          <Route path="/requesthistory" element={<RequestHistory />} />
           {/* <Route path = "/home" element= {<Home />} />
           <Route path = "/request" component={<Request />} />
           <Route path = "/requesthistory" component={<RequestHistory />} /> */}
-          </Routes>
-
+        </Routes>
       </BrowserRouter>
     </div>
   );

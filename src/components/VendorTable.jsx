@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
 import axios from "axios";
 
 const columns = [
@@ -54,6 +55,7 @@ export default function VendorTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [vendors, setVendors] = useState([]);
+  const navigate = useNavigate(); // Initialize navigate function
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -78,6 +80,10 @@ export default function VendorTable() {
 
     getAllVendors();
   }, []);
+
+  const handleRowClick = (vendorId) => {
+    navigate(`/specificVendor/${vendorId}`); // Navigate to the vendor details page
+  };
 
   return (
     <Paper
@@ -111,7 +117,8 @@ export default function VendorTable() {
                   hover
                   role="checkbox"
                   tabIndex={-1}
-                  key={vendor.vendor_name}
+                  key={vendor.vendor_id}
+                  onClick={() => handleRowClick(vendor.vendor_id)} // Add onClick handler
                 >
                   {columns.map((column) => (
                     <TableCell key={column.id} align={column.align}>
