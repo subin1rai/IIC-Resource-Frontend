@@ -17,6 +17,8 @@ const Vendor = () => {
     category: "",
   });
 
+  const [error, setError] = useState("");
+
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
   const openAddVendorForm = () => {
@@ -24,6 +26,7 @@ const Vendor = () => {
   };
 
   const closeAddVendorForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -41,6 +44,7 @@ const Vendor = () => {
       window.location.reload();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -156,6 +160,9 @@ const Vendor = () => {
               onChange={handleChange}
             />
           </div>
+
+          {error && <span class=" text-red-500">{error}</span>}
+
           <div className="vendor_buttons">
             <button type="submit" className="add-button">
               Add Vendor
