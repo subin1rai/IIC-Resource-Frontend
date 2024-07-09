@@ -135,6 +135,8 @@ const Inventory = () => {
         </div>
       </div>
 
+
+      {/* Creating a form for adding item in the inventory */}
       {addFormVisibility && (
         <form action="" onSubmit={handleSUbmit} className="filter-form">
           <button
@@ -218,6 +220,8 @@ const Inventory = () => {
               onChange={handleChange}
             />
           </div>
+
+          {/* Add item button */}
           <div className="buttons">
             <button type="submit" className="add-btn">
               Add Item

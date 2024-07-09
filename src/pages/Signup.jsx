@@ -33,6 +33,7 @@ const Signup = () => {
   };
 
   return (
+    // Register user form
     <div className="sign-up-page">
       <div className="left-side">
         <img src={logo} alt="Resource Department Logo" className="logo" />
