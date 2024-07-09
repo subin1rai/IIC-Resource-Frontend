@@ -56,8 +56,6 @@ const Inventory = () => {
       setError(error.response.data.error);
     }
   };
-
-  console.log(error);
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -105,7 +103,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>{}</h4>
+                <h4>{ }</h4>
                 <p>Number of items</p>
               </div>
               <div className="container">
