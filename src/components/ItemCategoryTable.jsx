@@ -51,7 +51,7 @@ const Category = () => {
     console.log(e.target.value);
   };
 
-  const handleDeleteSUbmit = async (categoryId) => {
+  const handleDeleteSUBmit = async (categoryId) => {
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteItemCategory/${categoryId}`

@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
-import axios from "axios";
 
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
@@ -16,25 +15,18 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 120 },
 ];
 
-export default function Itable({ Itemcategory, setItemCategory }) {
-    const handleDeleteSUbmit = async (categoryId) => {
-      try {
-        const response = await axios.delete(
-          `http://localhost:8898/api/deleteItemCategory/${categoryId}`
-        );
-        console.log(response.data);
-        setItemCategory((prevCategory) =>
-          prevCategory.filter((cat) => cat.category_id !== categoryId)
-        );
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log("Request Canceled", error.message);
-          return;
-        }
-      }
-      window.location.reload();
-    };
-
+export default function Itable({ Itemcategory, setItemCategory, handleDeleteSubmit }) {
+  const handleDeleteSUBmit = async (categoryId) => {
+    try {
+      await axios.delete(`http://localhost:8898/api/deleteProductCategory/${categoryId}`);
+      setItemCategory((prevCategory) =>
+        prevCategory.filter((cat) => cat.item_category_id !== categoryId)
+      );
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+  
   return (
     <Paper
       sx={{
@@ -52,7 +44,7 @@ export default function Itable({ Itemcategory, setItemCategory }) {
                 <TableCell
                   key={column.id}
                   style={{ minWidth: column.maxWidth }}
-                  align={column.id === "action" ? "center" : "left"} // Align action column to center
+                  align={column.id === "action" ? "center" : "left"}
                 >
                   {column.label}
                 </TableCell>
@@ -61,7 +53,7 @@ export default function Itable({ Itemcategory, setItemCategory }) {
           </TableHead>
           <TableBody>
             {Itemcategory.map((cat, index) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{cat.item_category_name}</TableCell>
                 <TableCell>{cat.items.length}</TableCell>
@@ -69,12 +61,12 @@ export default function Itable({ Itemcategory, setItemCategory }) {
                   <Button
                     variant="contained"
                     sx={{
-                      backgroundColor: "#ff4d4d", // light red background
+                      backgroundColor: "#ff4d4d",
                       '&:hover': {
-                        backgroundColor: "#e60000", // darker red on hover
+                        backgroundColor: "#e60000",
                       }
                     }}
-                    onClick={() => handleDeleteSUbmit(cat.category_id)}
+                    onClick={() => handleDeleteSUBmit(cat.item_category_id)}
                   >
                     Delete
                   </Button>
