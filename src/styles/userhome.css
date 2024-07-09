@@ -3,7 +3,7 @@
     height: 100vh;
 
    .homecontent{
-        background:rgb(127, 127, 240);
+        background:white;
         height: 90vh;
         display: flex;
         line-height: 40px;
@@ -17,16 +17,17 @@
             h1{
                 padding: 10x;
                 /* margin-left: 120px; */
-                font-weight:900;
-                font-size: 4500;
-                color:white;
+                font-size: xx-large;
+                font-weight: 700;
+                color: black;
 
             }
             h3{
-                padding-bottom: 20px; 
+                padding-bottom: 10px; 
+                font-size:medium;
                 /* margin-left: 220px;  */
                 font-weight: 700; 
-                color: white; 
+                color: black; 
             }
 
     /* input{
@@ -40,7 +41,7 @@
 
    button{
     background-color: rgb(51, 51, 245);
-    padding: 20px;
+    padding: 10px;
     width:250px;
     color: white;
     border-radius: 10px;
@@ -51,15 +52,21 @@
 }
 .right2{
     position:absolute;
-    background-color: rgb(130, 130, 228);
-    height: 49vh;
+    height: 70vh;
     width:30vw;
-    border-radius: 68%;
+    top:200px;
+    left: 1190px;
+    bottom: 300px;
 
-    
-
+    .small{
+        left:40px;
+        
+    }
+    .big{
+        left: 160px;
+    }
 img{
-    height: 50vh;
+    position: absolute;
 }
 
    }
