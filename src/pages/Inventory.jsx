@@ -19,6 +19,8 @@ const Inventory = () => {
     low_limit: 0,
   });
 
+  const [error, setError] = useState("");
+
   const [category, setCategory] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [itemCategory, setItemCategory] = useState("");
@@ -30,6 +32,7 @@ const Inventory = () => {
   };
 
   const closeAddItemForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -50,9 +53,11 @@ const Inventory = () => {
       window.location.reload();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
+  console.log(error);
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -134,7 +139,6 @@ const Inventory = () => {
           <InventoryTable />
         </div>
       </div>
-
 
       {/* Creating a form for adding item in the inventory */}
       {addFormVisibility && (
@@ -220,6 +224,8 @@ const Inventory = () => {
               onChange={handleChange}
             />
           </div>
+
+          {error && <span class="text-red-500">{error}</span>}
 
           {/* Add item button */}
           <div className="buttons">

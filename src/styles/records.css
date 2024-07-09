@@ -113,10 +113,15 @@
         padding: 3px;
       }
 
+      h2 {
+        font-weight: 600;
+        font-size: 24px;
+      }
       .add-btn {
         justify-content: center;
         align-items: center;
         color: #fff;
+        padding: 10px;
         margin-top: 10px;
         background-color: #1570ef;
         border: none;
@@ -153,8 +158,7 @@
         font-weight: 450;
       }
 
-      input,
-      select {
+      input {
         padding: 10px;
         width: 291px;
         border-radius: 6px;
@@ -162,11 +166,16 @@
       }
 
       select {
-        width: 700px;
+        border-radius: 6px;
+        border: 1px solid grey;
+        width: 650px;
         height: 48px;
       }
     }
 
+    label {
+      margin-left: -10px;
+    }
     .single {
       display: flex;
       flex-direction: row;
