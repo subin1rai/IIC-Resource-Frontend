@@ -3,46 +3,72 @@
     height: 100vh;
 
    .homecontent{
-        background-color: #fff;
+        background:white;
         height: 90vh;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
         line-height: 40px;
 
         .content{
-            margin-left: 700px;
-            align-items: end;
+            margin-top: 320px;
+            margin-right: 440px; 
+            margin-left: 270px;
+            align-items: start;
 
             h1{
                 padding: 10x;
-                margin-left: 110px;
+                /* margin-left: 120px; */
+                font-size: xx-large;
+                font-weight: 700;
+                color: black;
 
             }
             h3{
-                padding-bottom: 20px; 
-                margin-left: 220px;   
+                padding-bottom: 10px; 
+                font-size:medium;
+                /* margin-left: 220px;  */
+                font-weight: 700; 
+                color: black; 
             }
 
-    input{
+    /* input{
         width: 30vw;
         padding:20px;
         border-radius: 50px;
         border-width:1px;
         margin-bottom: 20px;
         border: solid 1px;
-    }
+    } */
 
    button{
     background-color: rgb(51, 51, 245);
-    padding: 20px;
+    padding: 10px;
     width:250px;
     color: white;
     border-radius: 10px;
-    margin-left: 190px;
+    /* margin-left: 180px; */
     border: none;
     cursor: pointer;
    }
 }
+.right2{
+    position:absolute;
+    height: 70vh;
+    width:30vw;
+    top:200px;
+    left: 1190px;
+    bottom: 300px;
+
+    .small{
+        left:40px;
+        
+    }
+    .big{
+        left: 160px;
+    }
+img{
+    position: absolute;
+}
+
    }
+}
 }

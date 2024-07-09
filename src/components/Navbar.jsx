@@ -29,7 +29,7 @@ const Navbar = () => {
         <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink>
         </div>
         <div className="second">
-        <NavLink to ="/request" className = {setActiveClass}> Request </NavLink>
+        <NavLink to ="/userrequest" className = {setActiveClass}> Request </NavLink>
         </div>
         <div className="third">
          <NavLink to ="/requesthistory" className = {setActiveClass}> Request History </NavLink>

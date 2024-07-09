@@ -8,7 +8,6 @@ const UserRequest = () =>{
         <div className="nav">
         <Navbar/>
         <div className="requestcontent">
-            
         </div>
         </div>
 
