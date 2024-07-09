@@ -59,11 +59,13 @@
     select {
       width: 275px;
       padding: 5px 10px;
+      border: 1px solid gray;
     }
 
     input {
-      width: 250px;
+      width: 275px;
       padding: 5px 10px;
+      border: 1px solid gray;
     }
 
     .buttons {
