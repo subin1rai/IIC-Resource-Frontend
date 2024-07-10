@@ -9,13 +9,13 @@
     background-color:white;
 
     .navright .item-text {
-        color: grey;
+        color: black;
         text-decoration: none;
         font-weight: 600;
       }
       
       .navright .item-text.active { 
-        color: rgb(194, 18, 18); 
+        color: blue; 
       }
 
     .logo{
