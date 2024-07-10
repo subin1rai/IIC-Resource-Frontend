@@ -7,6 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
+import axios from "axios";
 
 const columns = [
   { id: "bill_number", label: "Bill Number", maxWidth: 70 },
@@ -29,7 +32,7 @@ const columns = [
     label: "Vendor",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => value.toFixed("en-US"),
   },
   {
     id: "total_items",
@@ -54,38 +57,40 @@ const columns = [
   },
 ];
 
-function createData(bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount) {
-  return { bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount };
-}
+// function createData(bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount) {
+//   return { bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount };
+// }
 
-const rows = [
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-  createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-];
+// const rows = [
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
+// ];
 
 export default function RecordsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(11);
+  const [bills, setBills] = useState([]);
+  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -94,6 +99,25 @@ export default function RecordsTable() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  useEffect(() => {
+    const getAllBills = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/bill");
+        setBills(response.data.getBill || []);
+        console.log(bills);
+      } catch (error) {
+        console.log("Error fetching bills:", error);
+        setBills([]);
+      }
+    };
+
+    getAllBills();
+  }, []);
+
+  const handleRowClick = (billId) => {
+    navigate(`/specificbill/${billId}`); 
   };
 
   return (
@@ -121,35 +145,28 @@ export default function RecordsTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {bills
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
+              .map((bill) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={bill.bill_id}>
+                    onClick={() => handleRowClick(bill.bill_id)}
+                    {columns.map((column) => (
                         <TableCell
                           key={column.id}
-                          align={column.align}
-                          height={3}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
+                          align={column.align}>
+                          {column.format
+                          ? column.format(bill[column.id]) : bill[column.id]}
                         </TableCell>
-                      );
-                    })}
+                    ))}
                   </TableRow>
-                );
-              })}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[]}
+        rowsPerPageOptions={[10]}
         component="div"
-        count={rows.length}
+        count={bills.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
