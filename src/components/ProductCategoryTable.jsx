@@ -79,8 +79,7 @@ const Category = () => {
   };
 
   return (
-    <><div className="overall-category">
-    </div>
+    <>
     <div className="first">
       <div className="head">
       <div className="container">

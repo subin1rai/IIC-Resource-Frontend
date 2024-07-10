@@ -89,7 +89,7 @@ const Category = () => {
 
 
   return (
-    <div className="overall-category">
+  <>
       <div className="first">
         <div className="head">
           <div className="container">
@@ -133,7 +133,7 @@ const Category = () => {
           <div className="overlay-category" onClick={closeCategoryForm}></div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

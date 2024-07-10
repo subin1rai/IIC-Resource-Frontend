@@ -10,10 +10,10 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 const columns = [
-  { id: "sn", label: "SN", maxWidth: 70 },
-  { id: "category_name", label: "Category Name", maxWidth: 150 },
-  { id: "items", label: "Items", maxWidth: 120 },
-  { id: "action", label: "Action", maxWidth: 120 },
+  { id: "sn", label: "SN", width: 70 },
+  { id: "category_name", label: "Category Name", width: 100 },
+  { id: "items", label: "Items", width: 100 },
+  { id: "action", label: "Action", width: 170 },
 ];
 
 export default function Ctable({ category, setCategory }) {
@@ -45,14 +45,14 @@ export default function Ctable({ category, setCategory }) {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  sx={{ width: column.width, padding: "8px 16px" }}
                 >
                   {column.label}
                 </TableCell>
@@ -62,10 +62,10 @@ export default function Ctable({ category, setCategory }) {
           <TableBody>
             {category.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{cat.category_name}</TableCell>
-                <TableCell>{cat.items.length}</TableCell>
-                <TableCell>
+                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
+                <TableCell sx={{ width: columns[1].width, padding: "8px 16px" }}>{cat.category_name}</TableCell>
+                <TableCell sx={{ width: columns[2].width, padding: "8px 16px" }}>{cat.items.length}</TableCell>
+                <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
                   <Button 
                     variant="contained" 
                     sx={{ 
