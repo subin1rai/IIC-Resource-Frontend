@@ -10,10 +10,10 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 const columns = [
-  { id: "sn", label: "SN", maxWidth: 70 },
-  { id: "category_name", label: "Category Name", maxWidth: 150 },
-  { id: "items", label: "Items", maxWidth: 120 },
-  { id: "action", label: "Action", maxWidth: 120 },
+  { id: "sn", label: "SN", width: 70 },
+  { id: "category_name", label: "Category Name", width: 100 },
+  { id: "items", label: "Items", width: 100 },
+  { id: "action", label: "Action", width: 170 },
 ];
 
 export default function Itable({ itemCategory, setItemCategory }) {
@@ -44,7 +44,7 @@ export default function Itable({ itemCategory, setItemCategory }) {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  style={{ minWidth: column.maxWidth }}
+                  sx={{ width: column.width, padding: "8px 16px" }}
                   align={column.id === "action" ? "center" : "left"}
                 >
                   {column.label}
@@ -55,10 +55,10 @@ export default function Itable({ itemCategory, setItemCategory }) {
           <TableBody>
             {itemCategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{cat.item_category_name}</TableCell>
-                <TableCell>{cat.items.length}</TableCell>
-                <TableCell align="center">
+                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}></TableCell>
+                <TableCell sx={{ width: columns[1].width, padding: "8px 16px" }}>{cat.item_category_name}</TableCell>
+                <TableCell sx={{ width: columns[2].width, padding: "8px 16px" }}>{cat.items.length}</TableCell>
+                <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
                   <Button
                     variant="contained"
                     sx={{
