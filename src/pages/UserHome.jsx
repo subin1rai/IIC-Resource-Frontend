@@ -7,25 +7,25 @@ import search from "../assets/search.png";
 import person from "../assets/person.png";
 
 
-const UserHome =() =>{
-    return(
+const UserHome = () => {
+    return (
         <div className="homecontainer">
             <Navbar />
             <div className="homecontent">
                 <div className="content">
-                <h1> Find Resources For You</h1>
-                <h3>We are the bridge</h3>
-                {/* <input type="te xt" placeholder="Search resources..."> 
+                    <h1> Find resources <br/>for you</h1>
+                    <h3>One stop for all your needs</h3>
+                    {/* <input type="te xt" placeholder="Search resources..."> 
                 {/* <img src={search} alt ="searchicon" />                 
                 </input> */}
-                <div className="btn">
-                    <button>Request</button>
-                </div>
+                    <div className="btn">
+                        <button>Request</button>
+                    </div>
                 </div>
                 <div className="right2">
-                    <img className="big" src ={big} alt="biglayout" />
-                    <img className= "small" src ={small} alt="smalllayout" />
-                    <img className = "person" src={person} alt ="person-image" />
+                    <img className="big" src={big} alt="biglayout" />
+                    <img className="small" src={small} alt="smalllayout" />
+                    <img className="person" src={person} alt="person-image" />
                 </div>
             </div>
         </div>
