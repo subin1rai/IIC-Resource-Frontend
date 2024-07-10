@@ -7,6 +7,7 @@ const RequestHistory = () =>{
         <div className="nav">
         <Navbar />
         <div className="historycontent">
+            
         </div>
         </div>
     );
