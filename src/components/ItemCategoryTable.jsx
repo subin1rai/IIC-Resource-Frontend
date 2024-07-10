@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import "../styles/category.css";
 import Itable from "../components/Itable";
@@ -6,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
 
 const Category = () => {
-  const [Itemcategory, setItemCategory] = useState([]);
-  const [newItemCategory, setItemNewCategory] = useState({
-    item_category_name: "",
-  });
+  const [itemCategory, setItemCategory] = useState([]);
+  const [newItemCategory, setNewItemCategory] = useState({
+    item_category_name: "" });
   const [deleteItemCategory, setDeleteItemCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
@@ -44,9 +44,10 @@ const Category = () => {
   };
 
   const handleChange = (e) => {
-    setItemNewCategory((prev) => ({
+    setNewItemCategory((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
+
     }));
     console.log(e.target.value);
   };
@@ -58,7 +59,7 @@ const Category = () => {
       );
       console.log(response.data);
       setItemCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.category_id !== categoryId)
+        prevCategory.filter((cat) => cat.item_category_id !== categoryId)
       );
     } catch (error) {
       if (axios.isCancel(error)) {
@@ -69,7 +70,8 @@ const Category = () => {
     window.location.reload();
   };
 
-  const handleSubmit = async (event) => {
+
+  const handleSUBmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
@@ -77,10 +79,7 @@ const Category = () => {
         newItemCategory
       );
       console.log(response);
-      setItemCategory((prevCategory) => [
-        ...prevCategory,
-        response.data.allData,
-      ]);
+      setNewItemCategory((prevCategory) => [...prevCategory, response.data.category]);
       closeCategoryForm();
       window.location.reload();
     } catch (error) {
@@ -88,84 +87,53 @@ const Category = () => {
     }
   };
 
+
   return (
-    <><div className="overall-category">
-
-    </div>
-    <div className="first">
-      <div className="head">
-      <div className="container">
-        <p>Item Category</p>
-        </div>
-
-    <div className="icons">
-        <button className="add-buttons" onClick={displayAddPopup}>
-          Add Category
-        </button>
-      </div>
-      </div>
-      {/* <div className="tables">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">SN</th>
-              <th scope="col">Item Category Name</th>
-              <th scope="col">Items</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Itemcategory.map((cat, index) => (
-              <tr key={cat.item_category_id}>
-                <th scope="row">{index + 1}</th>
-                <td>{cat.item_category_name}</td>
-                <td>{cat.items.length}</td>
-                <td>
-                  <button
-                    onClick={() => handleDeleteSubmit(cat.item_category_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
-      <Itable Itemcategory={Itemcategory} setItemCategory={setItemCategory} />
-
-      {addFormVisibility && (
-        <form action="" onSubmit={handleSubmit} className="category-form">
-          <button
-            type="button"
-            className="discard-button"
-            onClick={closeCategoryForm}
-          >
-            <img src={close} alt="Close" />
-          </button>
-          <p className="title">Add Category</p>
-          <div className="field">
-            <label htmlFor="item_category_name">Category Name</label>
-            <input
-              type="text"
-              placeholder="Enter category name"
-              name="item_category_name"
-              id="item_category_name"
-              onChange={handleChange}
-            />
+    <div className="overall-category">
+      <div className="first">
+        <div className="head">
+          <div className="container">
+            <p>Item Category</p>
           </div>
-          <div className="buttons">
-            <button type="submit" className="add-buttons">
+          <div className="icons">
+            <button className="add-buttons" onClick={displayAddPopup}>
               Add Category
             </button>
           </div>
-        </form>
-      )}
-
-      {addFormVisibility && (
-        <div className="overlay-category" onClick={closeCategoryForm}></div>
-      )}
-    </div></>
+        </div>
+        <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
+        {addFormVisibility && (
+          <form action="" onSubmit={handleSUBmit} className="category-form">
+            <button
+              type="button"
+              className="discard-button"
+              onClick={closeCategoryForm}
+            >
+              <img src={close} alt="Close" />
+            </button>
+            <p className="title">Add Category</p>
+            <div className="field">
+              <label htmlFor="item_category_name">Category Name</label>
+              <input
+                type="text"
+                placeholder="Enter category name"
+                name="item_category_name"
+                id="item_category_name"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="buttons">
+              <button type="submit" className="add-buttons">
+                Add Category
+              </button>
+            </div>
+          </form>
+        )}
+        {addFormVisibility && (
+          <div className="overlay-category" onClick={closeCategoryForm}></div>
+        )}
+      </div>
+    </div>
   );
 };
 

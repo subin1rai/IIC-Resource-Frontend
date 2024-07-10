@@ -138,7 +138,7 @@ const Vendor = () => {
             <input
               type="text"
               name="vat_number"
-              placeholder="Vendor vat number"
+              placeholder="Vendor VAT number"
               onChange={handleChange}
             />
           </div>
