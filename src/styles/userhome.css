@@ -53,14 +53,14 @@
 .right2{
     position:absolute;
     height: 70vh;
-    width:30vw;
+    width:29.5vw;
     top:200px;
     left: 1190px;
     bottom: 300px;
 
-    .small{
+    img.small{
         left:40px;
-        
+           
     }
     .big{
         left: 160px;
