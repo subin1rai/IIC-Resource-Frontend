@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
@@ -15,18 +16,18 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 120 },
 ];
 
-export default function Itable({ Itemcategory, setItemCategory, handleDeleteSubmit }) {
-  const handleDeleteSUBmit = async (categoryId) => {
+export default function Itable({ itemCategory, setItemCategory }) {
+  const handleDeleteSubmit = async (categoryId) => {
     try {
-      await axios.delete(`http://localhost:8898/api/deleteProductCategory/${categoryId}`);
-      setItemCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.item_category_id !== categoryId)
-      );
-    } catch (error) {
-      console.error("Error deleting category:", error);
-    }
-  };
-  
+      await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`
+    );
+    setItemCategory((prevCategory) =>
+      prevCategory.filter((cat) => cat.item_category_id !== categoryId)
+    );
+  } catch (error) {
+    console.error("Error deleting category:", error);
+  }
+};
   return (
     <Paper
       sx={{
@@ -52,7 +53,7 @@ export default function Itable({ Itemcategory, setItemCategory, handleDeleteSubm
             </TableRow>
           </TableHead>
           <TableBody>
-            {Itemcategory.map((cat, index) => (
+            {itemCategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{cat.item_category_name}</TableCell>
@@ -66,7 +67,7 @@ export default function Itable({ Itemcategory, setItemCategory, handleDeleteSubm
                         backgroundColor: "#e60000",
                       }
                     }}
-                    onClick={() => handleDeleteSUBmit(cat.item_category_id)}
+                    onClick={() => handleDeleteSubmit(cat.item_category_id)}
                   >
                     Delete
                   </Button>
@@ -79,3 +80,4 @@ export default function Itable({ Itemcategory, setItemCategory, handleDeleteSubm
     </Paper>
   );
 }
+
