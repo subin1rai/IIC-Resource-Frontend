@@ -22,23 +22,17 @@ const Navbar = () => {
   return (
         <div className="navbar">
           <div className="logo">
-        <img src={logo} alt="main logo" />
+            <img src={logo} alt="main logo" />
+          </div>
+          <div className="navright">
+              <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink>
+              <NavLink to ="/userrequest" className = {setActiveClass}> Request </NavLink>
+              <NavLink to ="/requesthistory" className = {setActiveClass}> Request History </NavLink>
+            <button className="btn">
+              <NavLink to ="/" onClick={handleLogin} className={setActiveClass}> Login </NavLink>
+            </button>
+          </div>
       </div>
-      <div className="navright">
-        <div className="first">
-        <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink>
-        </div>
-        <div className="second">
-        <NavLink to ="/userrequest" className = {setActiveClass}> Request </NavLink>
-        </div>
-        <div className="third">
-         <NavLink to ="/requesthistory" className = {setActiveClass}> Request History </NavLink>
-         </div>
-         <div className="fourth">
-         <NavLink to ="/" onClick={handleLogin} className={setActiveClass}> Login </NavLink>
-         </div>
-        </div>
-        </div>
   );     
 }
 export default Navbar;
