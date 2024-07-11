@@ -29,11 +29,15 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
-    id: "recent_purchase",
+    id: "last_purchase_date",
     label: "Recent Purchase",
     maxWidth: 120,
     align: "center",
-    format: (value) => value?.toFixed(2) || "N/A",
+    format: (value) => {
+      if (!value) return "N/A";
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
+    },
   },
   {
     id: "payment_duration",
@@ -70,8 +74,8 @@ export default function VendorTable() {
     const getAllVendors = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/vendor");
-        setVendors(response.data.getVendor || []);
-        console.log(vendors);
+        setVendors(response.data.vendors || []);
+        console.log(response.data.vendors);
       } catch (error) {
         console.log("Error fetching vendors:", error);
         setVendors([]);

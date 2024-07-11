@@ -41,6 +41,7 @@ const Records = () => {
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(bill);
   };
 
   const handleSubmit = async (event) => {
@@ -54,8 +55,26 @@ const Records = () => {
       setError(error.response.data.error);
     }
   };
+  const [vendors, setVendors] = useState("");
+  const [items, setItems] = useState("");
 
-  console.log(error);
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const itemsData = await axios.get("http://localhost:8898/api/items");
+
+        setItems(itemsData.data.items);
+
+        const vendorsData = await axios.get("http://localhost:8898/api/vendor");
+        setVendors(vendorsData.data.vendors);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAllItems();
+  }, []);
+
   return (
     <div className="records">
       <Sidebar />
@@ -81,7 +100,9 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeAddBillForm}> {" "} </div>
+          <div className="overlay" onClick={closeAddBillForm}>
+            {" "}
+          </div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
@@ -130,18 +151,18 @@ const Records = () => {
                 </div>
                 <div className="single">
                   <div className="for">
-                    <label htmlFor="vendor">Vendor:</label>
-                    <select id="vendor" name="vendor" onChange={handleChange}>
+                    <label htmlFor="vendor_name">Vendor:</label>
+                    <select
+                      id="vendor_name"
+                      name="vendor_name"
+                      onChange={handleChange}
+                    >
                       <option value="">Select Vendor</option>
-                      <option value="Lizan Suppliers">Lizan Suppliers</option>
-                      <option value="Lenisha Suppliers">
-                        Lenisha Suppliers
-                      </option>
-                      <option value="Lenisha Suppliers">
-                        Maheema Suppliers
-                      </option>
-                      <option value="Aneer Suppliers">Aneer Suppliers</option>
-                      <option value="Subin Suppliers">Subin Suppliers</option>
+                      {vendors.map((vendor, vendor_id) => (
+                        <option key={vendor_id} value={vendor.vendor_name}>
+                          {vendor.vendor_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -153,11 +174,12 @@ const Records = () => {
                       name="item_name"
                       onChange={handleChange}
                     >
-                      <option value="">Select Item</option>
-                      <option value="pen">Pen</option>
-                      <option value="bag">Bag</option>
-                      <option value="copy">Copy</option>
-                      <option value="chair">Chair</option>
+                      <option value="">Select Items</option>
+                      {items.map((item, item_id) => (
+                        <option key={item_id} value={item.item_name}>
+                          {item.item_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -175,7 +197,7 @@ const Records = () => {
                   <div className="for">
                     <label htmlFor="quantity">Quantity:</label>
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Enter quantity"
                       name="quantity"
                       id="quantity"
@@ -185,10 +207,9 @@ const Records = () => {
                 </div>
                 <div className="double">
                   <div className="for">
-                    <label htmlFor="bill_amount">Bill Amount:</label>
-
+                    <label htmlFor="bill_amt">Bill Amount:</label>
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Enter bill amount"
                       name="bill_amount"
                       id="bill_amount"
@@ -196,10 +217,11 @@ const Records = () => {
                     />
                   </div>
                   <div className="for">
-                    <label htmlFor="TDS">Tax Deducted Source (TDS):</label>
-                    <select className="tdsselect"
-                      id="TDS"
-                      name="TDS"
+                    <label htmlFor="tds">Tax Deducted Source (TDS):</label>
+                    <select
+                      className="tdsselect"
+                      id="tds"
+                      name="tds"
                       onChange={handleChange}
                     >
                       <option value="">Select TDS</option>
@@ -215,7 +237,7 @@ const Records = () => {
                       <label htmlFor="actual_amount">Actual Amount:</label>
 
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter actual amount"
                         name="actual_amount"
                         id="actual_amount"
@@ -226,7 +248,7 @@ const Records = () => {
                       <label htmlFor="paid_amount">Paid Amount:</label>
 
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"
@@ -241,7 +263,7 @@ const Records = () => {
                   <h2>Summary</h2>
                   <p>Bill No: {bill.bill_no}</p>
                   <p>Bill Date: {bill.bill_date}</p>
-                  <p>Vendor: {bill.vendor}</p>
+                  <p>Vendor: {bill.vendor_name}</p>
                   <p>Item Name: {bill.item_name}</p>
                   <p>Unit Price: {bill.unit_price}</p>
                   <p>Quantity: {bill.quantity}</p>

@@ -7,84 +7,50 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const columns = [
-  { id: "bill_number", label: "Bill Number", maxWidth: 70 },
+  { id: "bill_ID", label: "Bill Number", maxWidth: 70 },
   {
     id: "bill_date",
     label: "Bill Date",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => {
+      if (!value) return "N/A";
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
+    },
   },
   {
-    id: "voucher_no",
+    id: "invoice_no",
     label: "Voucher Number",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "vendor",
-    label: "Vendor",
+    id: "vendor_name",
+    label: "Vendor Name",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toFixed("en-US"),
   },
   {
-    id: "total_items",
+    id: "actual_amount",
     label: "Total Amount",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "total_amount",
-    label:" Total Amount",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US"),
   },
   {
     id: "paid_amount",
     label: "Paid Amount",
     maxWidth: 70,
     align: "center",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US"),
   },
 ];
-
-// function createData(bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount) {
-//   return { bill_number, bill_date, voucher_no, vendor, total_items, total_amount, paid_amount };
-// }
-
-// const rows = [
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-//   createData(1, "2024-1- 01", 1, "Lizan Suppliers", 1, 1 , 1),
-// ];
 
 export default function RecordsTable() {
   const [page, setPage] = React.useState(0);
@@ -105,8 +71,8 @@ export default function RecordsTable() {
     const getAllBills = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/bill");
-        setBills(response.data.getBill || []);
-        console.log(bills);
+        setBills(response.data.bills || []);
+        console.log(response.data.bills);
       } catch (error) {
         console.log("Error fetching bills:", error);
         setBills([]);
@@ -117,7 +83,7 @@ export default function RecordsTable() {
   }, []);
 
   const handleRowClick = (billId) => {
-    navigate(`/specificbill/${billId}`); 
+    navigate(`/specificbill/${billId}`);
   };
 
   return (
@@ -148,17 +114,25 @@ export default function RecordsTable() {
             {bills
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((bill) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={bill.bill_id}>
-                    onClick={() => handleRowClick(bill.bill_id)}
-                    {columns.map((column) => (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}>
-                          {column.format
-                          ? column.format(bill[column.id]) : bill[column.id]}
-                        </TableCell>
-                    ))}
-                  </TableRow>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={bill.bill_ID}
+                  onClick={() => handleRowClick(bill.bill_ID)}
+                >
+                  {columns.map((column) => {
+                    const value =
+                      column.id === "vendor_name"
+                        ? bill.vendors.vendor_name
+                        : bill[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format ? column.format(value) : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
               ))}
           </TableBody>
         </Table>

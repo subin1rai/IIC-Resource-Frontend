@@ -105,7 +105,9 @@
                 justify-content: center;
                 margin-top: 20px;
 
-                .small, .big, .person {
+                .small,
+                .big,
+                .person {
                     position: static;
                     margin: 10px;
                 }
@@ -140,7 +142,9 @@
                 flex-direction: column;
                 align-items: center;
 
-                .small, .big, .person {
+                .small,
+                .big,
+                .person {
                     width: 80%;
                 }
             }
