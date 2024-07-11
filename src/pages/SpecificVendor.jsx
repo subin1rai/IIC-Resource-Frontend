@@ -31,8 +31,20 @@ const SpecificVendor = () => {
 
   const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
 
+  const { vendor_id } = useParams();
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+  };
+
   const openVendorDetailsForm = () => {
-    setEditedVendor(vendor); // Set editedVendor state initially with vendor state
+    setEditedVendor({
+      vendor_name: vendor.vendor_name,
+      vat_number: vendor.vat_number,
+      vendor_contact: vendor.vendor_contact,
+    });
     setVendorDetailsFormVisibility(true);
   };
 
@@ -48,10 +60,10 @@ const SpecificVendor = () => {
     event.preventDefault();
     try {
       await axios.put(
-        `http://localhost:8898/api/updateVendor/${vendor.vendor_id}`,
+        `http://localhost:8898/api/updateVendor/${vendor_id}`,
         editedVendor
       );
-      setVendor(editedVendor);
+      setVendor({ ...vendor, ...editedVendor });
       closeVendorDetailsForm();
     } catch (error) {
       console.log(error);
@@ -60,13 +72,12 @@ const SpecificVendor = () => {
 
   const handleBlackList = async () => {
     try {
-      const res = await axios.put(
-        `http://localhost:8898/api/blacklist/${vendor_id}`
-      );
-    } catch (error) {}
+      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`);
+      // You might want to update the vendor state or show a message here
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const { vendor_id } = useParams();
 
   useEffect(() => {
     const fetchSingleVendor = async () => {
@@ -93,30 +104,41 @@ const SpecificVendor = () => {
             <>
               <div className="title">
                 <h3>
-                  {" "}
-                  <Link to={"/vendors"}>Vendors</Link>{" "}
-                </h3>{" "}
+                  <Link to={"/vendors"}>Vendors</Link>
+                </h3>
                 <img src={front} alt=""></img> <p>{vendor.vendor_name}</p>
               </div>
               <div className="head">
                 <h1>{vendor.vendor_name}</h1>
-                <p>Contact:{vendor.vendor_contact} </p>
+                <p>Contact: {vendor.vendor_contact}</p>
               </div>
               <hr className="line" />
               <div className="content">
                 <div className="left">
-                  <p> VAT Number: {vendor.vat_number}</p>
-                  <p> Purchase Amount: {vendor.purchase_amount}</p>
-                  <p> Last Purchase Date: {vendor.last_purchase_date}</p>
-                  <p> Recent Purchase Date:{vendor.last_purchase_date} </p>
-                  <p> Last Paid Date: {vendor.last_paid} </p>
-                  <p> Payment Duration: {vendor.payment_duration}</p>
+                  <p>VAT Number: {vendor.vat_number}</p>
+                  <p>Purchase Amount: {vendor.purchase_amount}</p>
+                  <p>
+                    Last Purchase Date: {formatDate(vendor.last_purchase_date)}
+                  </p>
+                  <p>
+                    Recent Purchase Date:{" "}
+                    {formatDate(vendor.last_purchase_date)}
+                  </p>
+                  <p>Last Paid Date: {formatDate(vendor.last_paid_date)}</p>
+                  <p>Payment Duration: {vendor.payment_duration}</p>
                 </div>
                 <div className="right">
-                  <p> Total Payment: {vendor.total_payment} </p>
-                  <p> Pending Payment: {vendor.pending_payment} </p>
-                  <p> Next Payment Date: {vendor.next_payment_date}</p>
-                  <p> Payment Status: {vendor.payment_status}</p>
+                  <p>Total Payment: {vendor.total_payment}</p>
+                  <p>Pending Payment: {vendor.pending_payment}</p>
+                  <p>
+                    Next Payment Date: {formatDate(vendor.next_payment_date)}
+                  </p>
+                  <p>
+                    Payment Status:{" "}
+                    {Number(vendor.pending_payment) > 0
+                      ? "Pending"
+                      : "completed"}
+                  </p>
                 </div>
               </div>
             </>
@@ -125,8 +147,7 @@ const SpecificVendor = () => {
                 Edit details
               </button>
               <button className="blacklist" onClick={handleBlackList}>
-                {" "}
-                Add to blacklist{" "}
+                Add to blacklist
               </button>
             </div>
           </div>
@@ -134,9 +155,7 @@ const SpecificVendor = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeVendorDetailsForm}>
-            {" "}
-          </div>
+          <div className="overlay" onClick={closeVendorDetailsForm}></div>
 
           <form onSubmit={handleSubmit} className="vendordetailsform">
             <div className="toptitle">
@@ -161,7 +180,7 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="field">
-              <label htmlFor="vat_no"> VAT Number</label>
+              <label htmlFor="vat_no">VAT Number</label>
               <input
                 type="text"
                 placeholder="Edit VAT Number"
