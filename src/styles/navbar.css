@@ -6,11 +6,9 @@
     width: 100vw;
     align-items: center;
     box-shadow: 0 10px 20px #0000001a;
-    background-color:white;
 
     .navright .item-text {
         color: black;
-        text-decoration: none;
         font-weight: 600;
       }
       
@@ -20,7 +18,7 @@
 
     .logo{
         margin-left: 250px;
-        background: transparent
+        background: transparent;
     }
     
     .navright{
@@ -29,7 +27,7 @@
         justify-content: space-around;
         align-items: center;
         margin-right: 250px;
-        color: #fff;
+
 
         .btn{
             background-color:rgb(126, 126, 231);
