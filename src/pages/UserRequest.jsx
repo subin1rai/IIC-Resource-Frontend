@@ -11,9 +11,7 @@ const UserRequest = () =>{
         <Navbar/>
         <div className="requestcontent">
             <h1>Request Resources</h1>
-            <input type="text" placeholder="Search resources..."> 
-                {/* <img src={search} alt ="searchicon" />                  */}
-                </input>
+            
                 <NavTable />
         </div>
         </div>
