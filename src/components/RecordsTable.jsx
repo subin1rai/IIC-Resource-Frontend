@@ -74,7 +74,7 @@ export default function RecordsTable() {
         setBills(response.data.bills || []);
         console.log(response.data.bills);
       } catch (error) {
-        console.log("Error fetching bills:", error);
+        console.log(error);
         setBills([]);
       }
     };
