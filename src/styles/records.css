@@ -171,6 +171,13 @@
         width: 650px;
         height: 48px;
       }
+
+      .tdsselect{
+        padding: 10px;
+        width: 291px;
+        border-radius: 6px;
+        border: 1px solid grey;
+      }
     }
 
     label {

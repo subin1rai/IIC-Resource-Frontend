@@ -13,7 +13,13 @@
     align-items: center;
     position: relative;
   }
- 
+  .overlay-category{
+    background: #3756828e;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+  }
   .category-form{
     position: absolute;
     top: 50%;
@@ -105,12 +111,11 @@
   .category-title {
     display: flex;
     margin-left: 14px;
-    font-weight: 500;
    
   
     .h3{
         font:26px;
-        
+        font-weight: 500;
 
       }
     }
@@ -120,7 +125,7 @@
     margin: 25px;
     border-radius: 41px;
     background: #e0e0e0;
-    box-shadow:  15px 15px 40px #b1b1b1, -15px -15px 40px #ffffff;
+    box-shadow:  15px 15px 45px #b1b1b1, -15px -15px 40px #ffffff;
     border-radius: 6px;
     background-color: #ffff;
     align-items: center;

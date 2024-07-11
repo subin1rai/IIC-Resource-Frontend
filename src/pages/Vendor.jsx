@@ -13,7 +13,7 @@ const Vendor = () => {
     vendor_name: "",
     vat_number: "",
     vendor_contact: "",
-    payment_duration: 15,
+    payment_duration: "",
     category: "",
   });
 
@@ -47,7 +47,7 @@ const Vendor = () => {
       setError(error.response.data.error);
     }
   };
-
+  console.log(error);
   return (
     <div className="vendor">
       <Sidebar />
