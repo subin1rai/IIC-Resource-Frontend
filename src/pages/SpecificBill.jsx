@@ -1,12 +1,12 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
 import "../styles/specificbill.css";
 import Topbar from "../components/Topbar";
 import Sidebar from "../components/Sidebar";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { format } from "date-fns";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -14,7 +14,6 @@ const SpecificBill = () => {
     bill_date: "",
     voucher_no: "",
     vendor_name: "",
-    item_id: "",
     item_name: "",
     quantity: "",
     unit_price: "",
@@ -25,8 +24,44 @@ const SpecificBill = () => {
   });
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
+  const [billDetails, setBillDetails] = useState({});
+  const { bill_id } = useParams();
+  const [vendors, setVendors] = useState([]);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [singleBillResponse, itemsResponse, vendorsResponse] =
+          await Promise.all([
+            axios.get(`http://localhost:8898/api/singleBill/${bill_id}`),
+            axios.get("http://localhost:8898/api/items"),
+            axios.get("http://localhost:8898/api/vendor"),
+          ]);
+        setBillDetails(singleBillResponse.data.bill);
+        setItems(itemsResponse.data.items);
+        setVendors(vendorsResponse.data.vendors);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [bill_id]);
 
   const openEditBillDetailsForm = () => {
+    setBill({
+      bill_no: billDetails.bill_no || "",
+      bill_date: billDetails.bill_date ? formatDate(billDetails.bill_date) : "",
+      voucher_no: billDetails.invoice_no || "",
+      vendor_name: billDetails.vendors?.vendor_name || "",
+      item_name: billDetails.items?.item_name || "",
+      quantity: billDetails.quantity || "",
+      unit_price: billDetails.unit_price || "",
+      tds: billDetails.TDS || "",
+      total_amt: billDetails.actual_amount || "",
+      paid_amt: billDetails.paid_amount || "",
+      pending_amt: billDetails.vendors?.pending_payment || "",
+    });
     setEditBillDetailsFormVisibility(true);
   };
 
@@ -41,30 +76,22 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8898/api/editBill", bill);
-      closeEditBillDetailsForm(); // Close the form after successful submission
+      await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill);
+      closeEditBillDetailsForm();
+      // Refresh bill details
+      const updatedBill = await axios.get(
+        `http://localhost:8898/api/singleBill/${bill_id}`
+      );
+      setBillDetails(updatedBill.data.bill);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const { bill_id } = useParams();
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "yyyy-MM-dd");
+  };
 
-  useEffect(() => {
-    const getSingleBill = async () => {
-      try {
-        const singleBill = await axios.get(
-          `http://localhost:8898/api/singleBill/${bill_id}`
-        );
-        setBill(singleBill.data.bill);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getSingleBill();
-  }, [bill_id]);
-
-  console.log(bill);
   return (
     <div className="billside">
       <Sidebar />
@@ -74,31 +101,39 @@ const SpecificBill = () => {
           <div className="billcontent">
             <>
               <div className="title">
-                <h3> Bill Records</h3>
-                <img src={front} alt=""></img>
-                <p> {bill.bill_no} </p>
+                <h3>
+                  <Link to={"/records"} className="redeirect">
+                    Bill Records
+                  </Link>
+                </h3>
+                <img src={front} alt="" />
+                <p>{billDetails.bill_no}</p>
               </div>
               <div className="head">
-                <h1># {bill.bill_no}</h1>
+                <h1># {billDetails.bill_no}</h1>
               </div>
               <hr className="line" />
               <div className="content">
                 <div className="left">
-                  <p> Bill Date: {bill.bill_date} </p>
-                  <p> Voucher Number: {bill.voucher_no}</p>
-                  <p> Vendor: {bill.vendor_name}</p>
+                  <p>
+                    Bill Date:{" "}
+                    {billDetails.bill_date
+                      ? formatDate(billDetails.bill_date)
+                      : ""}
+                  </p>
+                  <p>Voucher Number: {billDetails.invoice_no}</p>
+                  <p>Vendor: {billDetails.vendors?.vendor_name}</p>
                 </div>
                 <div className="middle">
-                  <p> Item ID: {bill.item_id} </p>
-                  <p> Item Name: {bill.item_name}</p>
-                  <p> Quantity: {bill.quantity}</p>
-                  <p> Unit Price: {bill.unit_price}</p>
+                  <p>Item Name: {billDetails.items?.item_name}</p>
+                  <p>Quantity: {billDetails.quantity}</p>
+                  <p>Unit Price: {billDetails.unit_price}</p>
                 </div>
                 <div className="right">
-                  <p> TDS: {bill.tds}</p>
-                  <p> Total Amount: {bill.total_amt}</p>
-                  <p> Paid Amount: {bill.paid_amt}</p>
-                  <p> Pending Amount: {bill.pending_amt}</p>
+                  <p>TDS: {billDetails.TDS}</p>
+                  <p>Total Amount: {billDetails.actual_amount}</p>
+                  <p>Paid Amount: {billDetails.paid_amount}</p>
+                  <p>Pending Amount: {billDetails.vendors?.pending_payment}</p>
                 </div>
               </div>
             </>
@@ -162,38 +197,37 @@ const SpecificBill = () => {
                 </div>
                 <div className="field">
                   <label htmlFor="vendor_name">Vendor Name:</label>
-                  <input
-                    type="text"
-                    placeholder="Edit Vendor Name"
-                    name="vendor_name"
+                  <select
                     id="vendor_name"
+                    name="vendor_name"
                     onChange={handleChange}
                     value={bill.vendor_name}
-                  />
+                  >
+                    <option value="">Select Vendor</option>
+                    {vendors.map((vendor, index) => (
+                      <option key={index} value={vendor.vendor_name}>
+                        {vendor.vendor_name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="middle">
                 <div className="field">
-                  <label htmlFor="item_id"> Item ID:</label>
-                  <input
-                    type="text"
-                    placeholder="Edit item Id"
-                    name="item_id"
-                    id="item_id"
-                    onChange={handleChange}
-                    value={bill.item_id}
-                  />
-                </div>
-                <div className="field">
                   <label htmlFor="item_name">Item Name:</label>
-                  <input
-                    type="text"
-                    placeholder="Edit item name"
-                    name="item_name"
+                  <select
                     id="item_name"
+                    name="item_name"
                     onChange={handleChange}
                     value={bill.item_name}
-                  />
+                  >
+                    <option value="">Select Item</option>
+                    {items.map((item, index) => (
+                      <option key={index} value={item.item_name}>
+                        {item.item_name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="field">
                   <label htmlFor="quantity">Quantity:</label>
@@ -253,7 +287,7 @@ const SpecificBill = () => {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="pending_amt">Pending Amount:</label>
+                  <label htmlFor="pending_amt">Pending Amount</label>
                   <input
                     type="text"
                     placeholder="Edit pending amount"
@@ -276,4 +310,5 @@ const SpecificBill = () => {
     </div>
   );
 };
+
 export default SpecificBill;
