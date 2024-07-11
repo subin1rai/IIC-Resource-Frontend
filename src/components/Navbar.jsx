@@ -24,19 +24,11 @@ const Navbar = () => {
           <div className="logo">
         <img src={logo} alt="main logo" />
       </div>
-      <div className="navright">
-        <div className="first">
-        <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink>
-        </div>
-        <div className="second">
+      <div className="navright">  
+        <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink> 
         <NavLink to ="/userrequest" className = {setActiveClass}> Request </NavLink>
-        </div>
-        <div className="third">
          <NavLink to ="/requesthistory" className = {setActiveClass}> Request History </NavLink>
-         </div>
-         <div className="fourth">
          <NavLink to ="/" onClick={handleLogin} className={setActiveClass}> Login </NavLink>
-         </div>
         </div>
         </div>
   );     
