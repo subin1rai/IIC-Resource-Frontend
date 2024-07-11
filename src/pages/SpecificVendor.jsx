@@ -11,13 +11,28 @@ import axios from "axios";
 const SpecificVendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
-    vendor_vat: "",
+    vat_number: "",
+    vendor_contact: "",
+    purchase_amount: "",
+    last_purchase_date: "",
+    last_paid: "",
+    payment_duration: "",
+    total_payment: "",
+    pending_payment: "",
+    next_payment_date: "",
+    payment_status: "",
+  });
+
+  const [editedVendor, setEditedVendor] = useState({
+    vendor_name: "",
+    vat_number: "",
     vendor_contact: "",
   });
 
   const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
 
   const openVendorDetailsForm = () => {
+    setEditedVendor(vendor); // Set editedVendor state initially with vendor state
     setVendorDetailsFormVisibility(true);
   };
 
@@ -26,17 +41,29 @@ const SpecificVendor = () => {
   };
 
   const handleChange = (e) => {
-    setVendor({ ...vendor, [e.target.name]: e.target.value });
+    setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8898/api/editVendor", vendor);
-      closeVendorDetailsForm(); // Close the form after successful submission
+      await axios.put(
+        `http://localhost:8898/api/updateVendor/${vendor.vendor_id}`,
+        editedVendor
+      );
+      setVendor(editedVendor);
+      closeVendorDetailsForm();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleBlackList = async () => {
+    try {
+      const res = await axios.put(
+        `http://localhost:8898/api/blacklist/${vendor_id}`
+      );
+    } catch (error) {}
   };
 
   const { vendor_id } = useParams();
@@ -48,7 +75,6 @@ const SpecificVendor = () => {
           `http://localhost:8898/api/vendor/${vendor_id}`
         );
         setVendor(response.data.VendorById);
-        console.log(vendor);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }
@@ -90,7 +116,7 @@ const SpecificVendor = () => {
                   <p> Total Payment: {vendor.total_payment} </p>
                   <p> Pending Payment: {vendor.pending_payment} </p>
                   <p> Next Payment Date: {vendor.next_payment_date}</p>
-                  <p> Payment Status: </p>
+                  <p> Payment Status: {vendor.payment_status}</p>
                 </div>
               </div>
             </>
@@ -98,7 +124,10 @@ const SpecificVendor = () => {
               <button onClick={openVendorDetailsForm} className="edit">
                 Edit details
               </button>
-              <button className="blacklist"> Add to blacklist </button>
+              <button className="blacklist" onClick={handleBlackList}>
+                {" "}
+                Add to blacklist{" "}
+              </button>
             </div>
           </div>
         </div>
@@ -128,6 +157,7 @@ const SpecificVendor = () => {
                 name="vendor_name"
                 id="vendor_name"
                 onChange={handleChange}
+                value={editedVendor.vendor_name}
               />
             </div>
             <div className="field">
@@ -135,9 +165,10 @@ const SpecificVendor = () => {
               <input
                 type="text"
                 placeholder="Edit VAT Number"
-                name="vat_no"
+                name="vat_number"
                 id="vat_no"
                 onChange={handleChange}
+                value={editedVendor.vat_number}
               />
             </div>
             <div className="field">
@@ -148,11 +179,12 @@ const SpecificVendor = () => {
                 name="vendor_contact"
                 id="vendor_contact"
                 onChange={handleChange}
+                value={editedVendor.vendor_contact}
               />
             </div>
             <div className="btn">
               <button type="submit" className="save">
-                Save Edit
+                Save Changes
               </button>
             </div>
           </form>
@@ -161,4 +193,5 @@ const SpecificVendor = () => {
     </div>
   );
 };
+
 export default SpecificVendor;

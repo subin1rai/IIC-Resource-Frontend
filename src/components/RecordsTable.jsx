@@ -82,8 +82,8 @@ export default function RecordsTable() {
     getAllBills();
   }, []);
 
-  const handleRowClick = (billId) => {
-    navigate(`/specificbill/${billId}`);
+  const handleRowClick = (bill_ID) => {
+    navigate(`/specificbill/${bill_ID}`);
   };
 
   return (
