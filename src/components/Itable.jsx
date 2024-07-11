@@ -38,14 +38,15 @@ export default function Itable({ itemCategory, setItemCategory }) {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
+                  align={column.align}
                   sx={{ width: column.width, padding: "8px 16px" }}
-                  align={column.id === "action" ? "center" : "left"}
+                 
                 >
                   {column.label}
                 </TableCell>
@@ -55,7 +56,7 @@ export default function Itable({ itemCategory, setItemCategory }) {
           <TableBody>
             {itemCategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
-                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}></TableCell>
+                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
                 <TableCell sx={{ width: columns[1].width, padding: "8px 16px" }}>{cat.item_category_name}</TableCell>
                 <TableCell sx={{ width: columns[2].width, padding: "8px 16px" }}>{cat.items.length}</TableCell>
                 <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
