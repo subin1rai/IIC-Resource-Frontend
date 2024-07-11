@@ -154,7 +154,7 @@ const Vendor = () => {
           <div className="vendor_field">
             <label htmlFor="payment_duration">Payment Duration</label>
             <input
-              type="text"
+              type="number"
               placeholder="Enter payment "
               name="payment_duration"
               onChange={handleChange}
