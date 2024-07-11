@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import deleteIcon from "../assets/deleteIcon.svg";
 
 const columns = [
   { id: "sn", label: "SN", width: 70 },
@@ -34,7 +35,7 @@ export default function Ptable({ productCategory, setProductCategory }) {
         width: "100%",
         overflow: "hidden",
         cursor: "pointer",
-        fontSize: "16px",
+        fontSize: "18px",
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -45,7 +46,7 @@ export default function Ptable({ productCategory, setProductCategory }) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  sx={{ width: column.width, padding: "8px 16px" }}
+                  sx={{ width: column.width, padding: "8px 14px" }}
                 >
                   {column.label}
                 </TableCell>
@@ -56,20 +57,17 @@ export default function Ptable({ productCategory, setProductCategory }) {
             {productCategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.product_category_id}>
                  <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
-                 <TableCell sx={{ width: columns[1].width, padding: "8px 16px" }}>{cat.product_category_name}</TableCell>
-                 <TableCell sx={{ width: columns[2].width, padding: "8px 16px" }}>{cat.items.length}</TableCell>
+                 <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.product_category_name}</TableCell>
+                 <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
                  <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
                   <Button 
-                    variant="contained" 
+          
                     sx={{ 
-                      backgroundColor: "#ff4d4d", // light red background
-                      '&:hover': {
-                        backgroundColor: "#e60000", // darker red on hover
-                      }
+                      
                     }} 
                     onClick={() => handleDeleteSubmit(cat.product_category_id)}
                   >
-                    Delete
+                    <img src={deleteIcon} alt="delete" />
                   </Button>
                 </TableCell>
               </TableRow>
