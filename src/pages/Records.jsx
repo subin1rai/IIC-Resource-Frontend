@@ -223,7 +223,7 @@ const Records = () => {
                     <select
                       className="tdsselect"
                       id="tds"
-                      name="tds"
+                      name="TDS"
                       onChange={handleChange}
                     >
                       <option value="">Select TDS</option>

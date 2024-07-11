@@ -10,7 +10,6 @@ import Category from "./pages/Category";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
 import SpecificVendor from "./pages/SpecificVendor";
-import SpecificVendorDetails from "./components/SpecificVendorDetails";
 import SpecificBill from "./pages/SpecificBill";
 import Navbar from "./components/Navbar";
 import UserHome from "./pages/UserHome";
@@ -34,10 +33,12 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records />} />
-          <Route path="/specificVendor/:vendor_id" element={<SpecificVendor />} />
-          <Route path="/details" element={<SpecificVendorDetails />} />
+          <Route
+            path="/specificVendor/:vendor_id"
+            element={<SpecificVendor />}
+          />
           <Route path="/category" element={<Category />} />
-          <Route path="/specificbill" element={<SpecificBill />} />
+          <Route path="/specificbill/:bill_id" element={<SpecificBill />} />
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/navbar" component={<Navbar />} />
           <Route path="/userrequest" element={<UserRequest />} />
