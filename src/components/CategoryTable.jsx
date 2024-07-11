@@ -79,24 +79,25 @@ const Category = () => {
   };
 
   return (
-  <><div className="overall-category">
-      <h3 className="category-title">Categories</h3>
-    </div>
+    <>
+      <div className="overall-category">
+        <h3 className="category-title">Categories</h3>
+      </div>
 
       <div className="first">
         <div className="head">
           <div className="container">
-          <p>Category</p>
+            <p>Category</p>
           </div>
 
           <div className="icons">
-          <button className="add-buttons" onClick={displayAddPopup}>
-            Add Category
-          </button>
+            <button className="add-buttons" onClick={displayAddPopup}>
+              Add Category
+            </button>
+          </div>
         </div>
-        </div>
-        <Ctable category={category}/>
-      
+        <Ctable category={category} />
+
         {addFormVisibility && (
           <form action="" onSubmit={handleSubmit} className="category-form">
             <button
@@ -114,7 +115,8 @@ const Category = () => {
                 placeholder="Enter category name"
                 name="category_name"
                 id="category_name"
-                onChange={handleChange} />
+                onChange={handleChange}
+              />
             </div>
             <div className="buttons">
               <button type="submit" className="add-buttons">
@@ -123,12 +125,8 @@ const Category = () => {
             </div>
           </form>
         )}
-
-        {addFormVisibility && (
-          <div className="overlay-category" onClick={closeCategoryForm}></div>
-        )}
-      </div></>
-
+      </div>
+    </>
   );
 };
 

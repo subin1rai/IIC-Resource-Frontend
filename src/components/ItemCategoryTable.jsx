@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import "../styles/category.css";
 import Itable from "../components/Itable";
@@ -9,7 +8,8 @@ import close from "../assets/close.svg";
 const Category = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [newItemCategory, setNewItemCategory] = useState({
-    item_category_name: "" });
+    item_category_name: "",
+  });
   const [deleteItemCategory, setDeleteItemCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ const Category = () => {
     setNewItemCategory((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-
     }));
     console.log(e.target.value);
   };
@@ -70,7 +69,6 @@ const Category = () => {
     window.location.reload();
   };
 
-
   const handleSUBmit = async (event) => {
     event.preventDefault();
     try {
@@ -79,7 +77,10 @@ const Category = () => {
         newItemCategory
       );
       console.log(response);
-      setNewItemCategory((prevCategory) => [...prevCategory, response.data.category]);
+      setNewItemCategory((prevCategory) => [
+        ...prevCategory,
+        response.data.category,
+      ]);
       closeCategoryForm();
       window.location.reload();
     } catch (error) {
@@ -87,9 +88,8 @@ const Category = () => {
     }
   };
 
-
   return (
-  <>
+    <>
       <div className="first">
         <div className="head">
           <div className="container">
@@ -128,9 +128,6 @@ const Category = () => {
               </button>
             </div>
           </form>
-        )}
-        {addFormVisibility && (
-          <div className="overlay-category" onClick={closeCategoryForm}></div>
         )}
       </div>
     </>
