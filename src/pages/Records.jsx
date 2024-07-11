@@ -64,6 +64,8 @@ const Records = () => {
         const itemsData = await axios.get("http://localhost:8898/api/items");
 
         setItems(itemsData.data.items);
+        console.log(items);
+        console.log(vendors);
 
         const vendorsData = await axios.get("http://localhost:8898/api/vendor");
         setVendors(vendorsData.data.vendors);
