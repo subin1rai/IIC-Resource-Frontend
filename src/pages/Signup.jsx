@@ -13,6 +13,7 @@ const Signup = () => {
   });
 
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setUser((prev) => {
@@ -28,7 +29,8 @@ const Signup = () => {
       await axios.post(`http://localhost:8898/api/signup`, user);
       navigate("/");
     } catch (error) {
-      console.error("Error Signing up:", error);
+      console.log(error);
+      setError(error.response.data.error);
     }
   };
 
