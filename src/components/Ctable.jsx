@@ -19,6 +19,13 @@ const columns = [
 
 export default function Ctable({ category, setCategory }) {
   const handleDeleteSubmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteCategory/${categoryId}`
@@ -66,15 +73,15 @@ export default function Ctable({ category, setCategory }) {
                 <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
                 <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.category_name}</TableCell>
                 <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
+                <TableCell sx={{ width: columns[3].width, padding: "8px 22px" }}>
                   <Button 
-                   
                     sx={{ 
-                      
+                      minWidth: "auto", // Adjust button style to your preference
+                      padding: 0,
                     }} 
                     onClick={() => handleDeleteSubmit(cat.category_id)}
                   >
-                  <img src={deleteIcon} alt="delete" />
+                    <img src={deleteIcon} alt="delete" />
                   </Button>
                 </TableCell>
               </TableRow>
