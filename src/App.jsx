@@ -15,6 +15,8 @@ import Navbar from "./components/Navbar";
 import UserHome from "./pages/UserHome";
 import UserRequest from "./pages/UserRequest";
 import RequestHistory from "./pages/RequestHistory";
+import UserProfile from "./pages/UserProfile";
+import ProfileSide from "./components/Profileside";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
@@ -33,16 +35,15 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records />} />
-          <Route
-            path="/specificVendor/:vendor_id"
-            element={<SpecificVendor />}
-          />
+          <Route path="/specificVendor/:vendor_id" element={<SpecificVendor />}/>
           <Route path="/category" element={<Category />} />
           <Route path="/specificbill/:bill_id" element={<SpecificBill />} />
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/navbar" component={<Navbar />} />
+          <Route psth="/profil" component ={<ProfileSide/>} />
           <Route path="/userrequest" element={<UserRequest />} />
           <Route path="/requesthistory" element={<RequestHistory />} />
+          <Route path="/userprofile" element={<UserProfile />} />
           {/* <Route path = "/home" element= {<Home />} />
           <Route path = "/request" component={<Request />} />
           <Route path = "/requesthistory" component={<RequestHistory />} /> */}

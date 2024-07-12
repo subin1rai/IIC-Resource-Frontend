@@ -1,0 +1,22 @@
+.side{
+    background-color: #f0f1f3;
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+
+    .top{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      position: relative;
+    }
+  
+    .content{
+      display: flex;
+      flex-wrap: wrap;
+      width: 85vw;
+      gap: 35px;
+    }
+}
