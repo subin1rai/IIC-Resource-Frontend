@@ -34,7 +34,7 @@ const SpecificBill = () => {
       try {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
-            axios.get(`http://localhost:8898/api/singleBill/${bill_id}`),
+            axios.get("http://localhost:8898/api/singleBill/${bill_id}"),
             axios.get("http://localhost:8898/api/items"),
             axios.get("http://localhost:8898/api/vendor"),
           ]);
@@ -76,11 +76,11 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill);
+      await axios.put("http://localhost:8898/api/updateBill/${bill_id}", bill);
       closeEditBillDetailsForm();
       // Refresh bill details
       const updatedBill = await axios.get(
-        `http://localhost:8898/api/singleBill/${bill_id}`
+        "http://localhost:8898/api/singleBill/${bill_id}"
       );
       setBillDetails(updatedBill.data.bill);
     } catch (error) {
