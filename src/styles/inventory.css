@@ -44,12 +44,14 @@
     }
 
     .discard-btn {
-      right: 30px;
+      right: 20px;
+      top: 20px;
       border: none;
       position: absolute;
       background-color: transparent;
       border-radius: 4px;
       cursor: pointer;
+      padding: 15px;
 
       img {
         width: 15px;
