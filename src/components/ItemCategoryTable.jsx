@@ -111,12 +111,13 @@ const Category = () => {
             >
               <img src={close} alt="Close" />
             </button>
-            <p className="title">Add Category</p>
+            <p className="title">Add Item Category</p>
             <div className="field">
               <label htmlFor="item_category_name">Item Category</label>
               <input
                 type="text"
-                placeholder="Enter category name"
+                placeholder="eg:Electonics/Sports/Stationary"
+                autoFocus="autofocus"
                 name="item_category_name"
                 id="item_category_name"
                 onChange={handleChange}

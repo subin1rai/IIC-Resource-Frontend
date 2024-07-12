@@ -112,8 +112,9 @@ const Category = () => {
               <label htmlFor="category_name">Category</label>
               <input
                 type="text"
-                placeholder="Enter category name"
+                placeholder="eg:Assets/Consumables/Returnable"
                 name="category_name"
+                autoFocus="autofocus"
                 id="category_name"
                 onChange={handleChange}
               />
