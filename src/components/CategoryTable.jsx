@@ -8,8 +8,8 @@ import close from "../assets/close.svg";
 const Category = () => {
   const [category, setCategory] = useState([]);
   const [newCategory, setNewCategory] = useState({ category_name: "" });
-  const [deleteCategory, setDeleteCategory] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
+  const [error, setError] = useState(""); // Move inside the component
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const Category = () => {
   };
 
   const closeCategoryForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -45,9 +46,16 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
     try {
       const response = await axios.delete(
-        "http://localhost:8898/api/deleteCategory/${categoryId}"
+        `http://localhost:8898/api/deleteCategory/${categoryId}`
       );
       console.log(response.data);
       setCategory((prevCategory) =>
@@ -75,6 +83,7 @@ const Category = () => {
       window.location.reload();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -96,7 +105,7 @@ const Category = () => {
             </button>
           </div>
         </div>
-        <Ctable category={category} />
+        <Ctable category={category} onDelete={handleDeleteSubmit} />
 
         {addFormVisibility && (
           <form action="" onSubmit={handleSubmit} className="category-form">
@@ -119,6 +128,8 @@ const Category = () => {
                 onChange={handleChange}
               />
             </div>
+
+            {error && <span className="text-red-500">{error}</span>}
             <div className="buttons">
               <button type="submit" className="add-buttons">
                 Add Category
