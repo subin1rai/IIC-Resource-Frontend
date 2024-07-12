@@ -42,13 +42,12 @@
                 cursor: pointer;
         }
     }
-
         .right2 {
             position: absolute;
             height: 70vh;
             width: 29.5vw;
             top: 200px;
-            left: 1190px;
+            left: 1200px;
             bottom: 300px;
 
             .small {
@@ -63,6 +62,7 @@
             img {
                 position: absolute;
                 right: 30px;
+                top: 170px;
             }
         }
     }

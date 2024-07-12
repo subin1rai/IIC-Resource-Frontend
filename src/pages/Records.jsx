@@ -123,6 +123,7 @@ const Records = () => {
                     <input
                       type="text"
                       placeholder="Enter bill number"
+                      autoFocus="autofocus"
                       name="bill_no"
                       id="bill_no"
                       onChange={handleChange}

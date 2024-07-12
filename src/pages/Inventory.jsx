@@ -154,6 +154,7 @@ const Inventory = () => {
             <input
               type="text"
               placeholder="Enter product name"
+              autoFocus="autofocus"
               name="item_name"
               id="item_name"
               onChange={handleChange}

@@ -1,0 +1,24 @@
+.bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    margin-top: 9px;
+    background-color: #fff;
+
+    .sidebar-items {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        padding: 20px;
+        justify-content: center;
+        align-items: flex-start;
+
+        h1{
+            font-weight: 500;
+            font-size: xx-large;
+            color:grey;
+        }
+      }
+
+  } 

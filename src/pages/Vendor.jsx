@@ -128,6 +128,7 @@ const Vendor = () => {
             <input
               type="text"
               placeholder="Enter vendor name"
+              autoFocus="autofocus"
               name="vendor_name"
               id="item_name"
               onChange={handleChange}
