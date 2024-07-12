@@ -15,9 +15,6 @@ const UserHome = () => {
                 <div className="content">
                     <h1> Find resources <br/>for you</h1>
                     <h3>One stop for all your needs</h3>
-                    {/* <input type="te xt" placeholder="Search resources..."> 
-                {/* <img src={search} alt ="searchicon" />                 
-                </input> */}
                     <div className="btn">
                         <button>Request</button>
                     </div>

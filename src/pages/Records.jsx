@@ -64,6 +64,8 @@ const Records = () => {
         const itemsData = await axios.get("http://localhost:8898/api/items");
 
         setItems(itemsData.data.items);
+        console.log(items);
+        console.log(vendors);
 
         const vendorsData = await axios.get("http://localhost:8898/api/vendor");
         setVendors(vendorsData.data.vendors);
@@ -221,13 +223,13 @@ const Records = () => {
                     <select
                       className="tdsselect"
                       id="tds"
-                      name="tds"
+                      name="TDS"
                       onChange={handleChange}
                     >
                       <option value="">Select TDS</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
+                      <option value="ten">10</option>
+                      <option value="twenty">20</option>
+                      <option value="thirty">30</option>
                     </select>
                   </div>
                 </div>
@@ -267,10 +269,10 @@ const Records = () => {
                   <p>Item Name: {bill.item_name}</p>
                   <p>Unit Price: {bill.unit_price}</p>
                   <p>Quantity: {bill.quantity}</p>
-                  <p>Bill Amount: {bill.bill_amt}</p>
+                  <p>Bill Amount: {bill.bill_amount}</p>
                   <p>TDS: {bill.TDS}</p>
-                  <p>Actual Amount: {bill.actual_amt}</p>
-                  <p>Paid Amount: {bill.paid_amt}</p>
+                  <p>Actual Amount: {bill.actual_amount}</p>
+                  <p>Paid Amount: {bill.paid_amount}</p>
                 </div>
 
                 {error && <span class="text-red-500">{error}</span>}

@@ -9,7 +9,7 @@
         line-height: 40px;
 
         .content {
-            margin-top: 290px;
+            margin-top: 250px;
             margin-right: 440px;
             margin-left: 270px;
             align-items: start;
@@ -30,16 +30,7 @@
                 font-weight: 500;
                 color: black;
             }
-
-            /* input {
-                width: 30vw;
-                padding: 20px;
-                border-radius: 50px;
-                border-width: 1px;
-                margin-bottom: 20px;
-                border: solid 1px;
-            } */
-
+            
             button {
                 background-color: rgb(51, 51, 245);
                 padding: 10px;
@@ -49,8 +40,8 @@
                 /* margin-left: 180px; */
                 border: none;
                 cursor: pointer;
-            }
         }
+    }
 
         .right2 {
             position: absolute;

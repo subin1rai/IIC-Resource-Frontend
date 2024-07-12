@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import deleteIcon from "../assets/deleteIcon.svg";
 
 const columns = [
   { id: "sn", label: "SN", width: 70 },
@@ -34,18 +35,19 @@ export default function Itable({ itemCategory, setItemCategory }) {
         width: "100%",
         overflow: "hidden",
         cursor: "pointer",
-        fontSize: "16px",
+        fontSize: "18px",
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  sx={{ width: column.width, padding: "8px 16px" }}
-                  align={column.id === "action" ? "center" : "left"}
+                  align={column.align}
+                  sx={{ width: column.width, padding: "8px 14px" }}
+                 
                 >
                   {column.label}
                 </TableCell>
@@ -55,21 +57,18 @@ export default function Itable({ itemCategory, setItemCategory }) {
           <TableBody>
             {itemCategory.map((cat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
-                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}></TableCell>
-                <TableCell sx={{ width: columns[1].width, padding: "8px 16px" }}>{cat.item_category_name}</TableCell>
-                <TableCell sx={{ width: columns[2].width, padding: "8px 16px" }}>{cat.items.length}</TableCell>
+                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
+                <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.item_category_name}</TableCell>
+                <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
                 <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
                   <Button
-                    variant="contained"
+                    
                     sx={{
-                      backgroundColor: "#ff4d4d",
-                      '&:hover': {
-                        backgroundColor: "#e60000",
-                      }
+                     
                     }}
                     onClick={() => handleDeleteSubmit(cat.item_category_id)}
                   >
-                    Delete
+                    <img src={deleteIcon} alt="delete" />
                   </Button>
                 </TableCell>
               </TableRow>

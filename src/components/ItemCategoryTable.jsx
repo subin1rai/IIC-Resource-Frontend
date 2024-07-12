@@ -113,7 +113,7 @@ const Category = () => {
             </button>
             <p className="title">Add Category</p>
             <div className="field">
-              <label htmlFor="item_category_name">Category Name</label>
+              <label htmlFor="item_category_name">Item Category</label>
               <input
                 type="text"
                 placeholder="Enter category name"

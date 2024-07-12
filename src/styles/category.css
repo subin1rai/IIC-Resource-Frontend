@@ -19,6 +19,7 @@
     width: 100vw;
     height: 100vh;
     z-index: 99;
+   
   }
   .category-form {
     position: absolute;
@@ -32,7 +33,9 @@
     flex-direction: column;
     gap: 40px;
     border-radius: 8px;
+    box-shadow: 8px 8px 20px #b1b1b1, -8px -8px 20px #ffffff;
     border: 2px solid rgb(99, 99, 99);
+
     transition: all ease-in-out 0.5s;
 
     .title {
@@ -85,6 +88,8 @@
       display: flex;
       justify-content: space-between;
       gap: 30px;
+   
+      
     }
   }
 
@@ -123,7 +128,7 @@
   margin: 25px;
   border-radius: 41px;
   background: #e0e0e0;
-  box-shadow: 5px 5px 15px #b1b1b1, -5px -5px 15px #ffffff;
+  box-shadow: 2px 2px 15px #b1b1b1, -5px -5px 15px #ffffff;
   border-radius: 6px;
   background-color: #ffff;
   align-items: center;

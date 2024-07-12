@@ -1,4 +1,9 @@
+nav{
+    width: 100vw;
+    height: 100vh;
+}
 .requestcontent{
+    background-color: #fff;
     height:63vh;
     width:100vw;
     display: flex;
@@ -9,6 +14,7 @@
 
 h1{
     font-weight: 700;
+    color: rgb(26, 26, 97);
     font-size:xx-large;
 }
 input{

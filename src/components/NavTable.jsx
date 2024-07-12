@@ -34,23 +34,23 @@ const NavTable = () =>{
     //   };
     return(
         <div className="navtable">
-        <div className="first">
+        <div className="item">
         <img src ={academics} alt="academicicon" />
         <NavLink to="/userrequest" className = {setActiveClass}> Academics </NavLink>
         </div>
-        <div className="second">
+        <div className="item">
         <img src ={sports} alt="sportsicon" />
         <NavLink to ="/sports" className = {setActiveClass}> Sports </NavLink>
         </div>
-        <div className="third">
+        <div className="item">
         <img src = {stationaries} alt="stationaryicon" />
          <NavLink to ="/stationaries" className = {setActiveClass}> Stationaries </NavLink>
          </div>
-         <div className="fourth">
+         <div className="item">
          <img src ={electronics} alt="electronicsicon" />
          <NavLink to ="/electronics" className = {setActiveClass}> Electronics </NavLink>
          </div>
-         <div className="fifth">
+         <div className="item">
          <img src ={events} alt="eventsicon" />
          <NavLink to ="/events" className = {setActiveClass}> Events </NavLink>
          </div>
