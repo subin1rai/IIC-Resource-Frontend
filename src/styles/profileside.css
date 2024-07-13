@@ -1,23 +1,33 @@
 .bar {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-    margin-top: 9px;
-    background-color: #fff;
+    align-items: center;
+    margin-top: 50px;
+    width:20vw;
+    margin-left: 40px;
+    padding: 20px;
+    height:70vh;
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+
+    h1{
+        font-weight: 800;
+        font-size:xx-large;
+        margin-left:42px;
+        color:Black;
+    }
 
     .sidebar-items {
+        font-weight:600;
+        font-size: larger;
         display: flex;
         flex-direction: column;
-        gap: 25px;
-        padding: 20px;
-        justify-content: center;
-        align-items: flex-start;
-
-        h1{
-            font-weight: 500;
-            font-size: xx-large;
-            color:grey;
+        width: fit-content;
+        gap: 40px;
+        
+        img{
+            height:70px;
+            width: 70px;
         }
       }
 
