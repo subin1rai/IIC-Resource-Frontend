@@ -1,9 +1,9 @@
 import React from "react";
 import "../styles/userhome.css";
 import Navbar from "../components/Navbar";
-import big from "../assets/biglayout.png";
-import small from "../assets/smalllayout.png";
-import search from "../assets/search.png";
+// import big from "../assets/biglayout.png";
+// import small from "../assets/smalllayout.png";
+// import search from "../assets/search.png";
 import person from "../assets/person.png";
 
 
