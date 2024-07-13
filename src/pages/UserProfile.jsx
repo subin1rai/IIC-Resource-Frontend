@@ -15,7 +15,7 @@ const UserProfile = () => {
             <div className="maincontent">
                 <div className="field">
                 <label> Full Name: </label>
-                <input type ="text" ></input>
+                <input type ="text" autoFocus="autofocus"></input>
                 </div>
                 <div className="field">
                 <label> Email Address: </label>
