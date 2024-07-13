@@ -8,19 +8,35 @@ nav{
     width:100vw;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 250px;
-    gap: 10px;
 
-h1{
-    font-weight: 700;
-    color: rgb(26, 26, 97);
-    font-size:xx-large;
+    .request-form{
+        position: absolute;
+        padding: 70px;
+        margin-left: 230px;
+        gap: 40px;
+    
+        h1{
+            font-weight: 530;
+            color: #000000;
+            font-size:x-large;
+        }
+
+        h5{
+            color:#224199;
+            font-size: small;
+        }
+        
+        
+    }
+
 }
+
+
+
+    
 input{
  padding: 20px;
  border: 1px solid grey;
  width: 30vw;
  border-radius: 50PX;
-}
 }

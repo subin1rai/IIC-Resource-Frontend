@@ -10,9 +10,13 @@ const UserRequest = () =>{
         <div className="nav">
         <Navbar/>
         <div className="requestcontent">
-            <h1>Request Resources</h1>
-            
-                <NavTable />
+            <form action="" className="request-form">
+                <h1>Request Resource</h1>
+                <h5>You can request the resource of your choice</h5>
+
+                
+
+            </form>
         </div>
         </div>
 
