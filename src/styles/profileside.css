@@ -1,4 +1,4 @@
-.bar {
+.profilesidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,13 +8,13 @@
     padding: 20px;
     height:70vh;
     border-radius: 15px;
-    background-color: rgb(255, 255, 255);
+    background-color: white;
 
     h1{
         font-weight: 800;
         font-size:xx-large;
         margin-left:42px;
-        color:Black;
+        color:Black;    
     }
 
     .sidebar-items {

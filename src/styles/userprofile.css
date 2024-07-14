@@ -1,23 +1,29 @@
-.side {
-  background-color: rgb(240, 236, 236);
-  height: 80vh;
-  width: 71.5vw;
-  margin-left: 275px;
-  margin-top: 50px;
-  border-radius: 15px;
+.profiletop{
+  background: radial-gradient(rgb(221, 181, 181),rgb(179, 179, 219));
+  height: 100vh;
 
-  .content {
-    margin-top: 100px;
-    width: fit-content;
+.profileside{
+    display: flex;
+    background:white;
+    height: 80vh;
+    width: 71.5vw;
+    margin-left: 275px;
+    margin-top: 50px;
+    border-radius: 15px;
+    border-width: 5px;
+    
+    .content{
+      margin-top: 100px;
+      width: fit-content;
 
-    form {
-      display: flex;
+      form{
+        display: flex;
 
-      .maincontent {
-        margin-left: -850px;
-        line-height: 40px;
+        .maincontent{
+          margin-left: 150px;
+          line-height: 40px;
 
-        .field {
+        .dual{
           display: flex;
           flex-direction: column;
         }
@@ -59,4 +65,5 @@
       }
     }
   }
+}
 }
