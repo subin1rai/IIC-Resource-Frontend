@@ -1,42 +1,90 @@
-nav{
+.userRequest {
     width: 100vw;
     height: 100vh;
 }
-.requestcontent{
-    background-color: #fff;
-    height:63vh;
-    width:100vw;
-    display: flex;
-    flex-direction: column;
 
-    .request-form{
-        position: absolute;
-        padding: 70px;
-        margin-left: 230px;
-        gap: 40px;
-    
-        h1{
+/* css for the whole content */
+.requestcontent {
+    background-color: #fff;
+
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 100px;
+
+    /* writing css for request side */
+    .request-form {
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        h1 {
             font-weight: 530;
             color: #000000;
-            font-size:x-large;
+            font-size: x-large;
         }
 
-        h5{
-            color:#224199;
+        h5 {
+            color: #224199;
             font-size: small;
         }
-        
-        
+
+        select,
+        input {
+            width: 250px;
+            border: 1px solid #000000;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+
+        /* css for text */
+        .singleField {
+            display: flex;
+            gap: 60px;
+            height: fit-content;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .request-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            padding: 7px 10px;
+            gap: 10px;
+            color: #fff;
+            background-color: #1570ef;
+            border: 1px solid #d0d3d9;
+            outline: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 290px;
+        }
     }
 
-}
+    /* Writing css for history side */
+    .requestHistory {
+        height: 75vh;
+        background-color: rebeccapurple;
+        width: 45vw;
+        overflow-y: scroll;
+
+        h1 {
+            font-weight: 530;
+            color: #000000;
+            font-size: x-large;
+        }
+
+        h5 {
+            color: #000000 ;
+            /* color: #224199; */
+            font-size: small;
+        }
 
 
+    }
 
-    
-input{
- padding: 20px;
- border: 1px solid grey;
- width: 30vw;
- border-radius: 50PX;
 }

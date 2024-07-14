@@ -27,7 +27,7 @@ const Navbar = () => {
           <div className="navright">
               <NavLink to="/userhome" className = {setActiveClass}> Home </NavLink>
               <NavLink to ="/userrequest" className = {setActiveClass}> Request </NavLink>
-              <NavLink to ="/requesthistory" className = {setActiveClass}> Request History </NavLink>
+              <NavLink to ="/aboutus" className = {setActiveClass}> About Us </NavLink>
             <button className="btn">
               <NavLink to ="/" onClick={handleLogin} className={setActiveClass}> Login </NavLink>
             </button>
