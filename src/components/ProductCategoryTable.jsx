@@ -10,7 +10,7 @@ const Category = () => {
   const [newProductCategory, setNewProductCategory] = useState({
     product_category_name: "",
   });
-  const [deleteItemCategory, setDeleteItemCategory] = useState("");
+  const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
@@ -40,6 +40,7 @@ const Category = () => {
   };
 
   const closeCategoryForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -52,6 +53,13 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteProductCategory/${categoryId}`
@@ -77,14 +85,11 @@ const Category = () => {
         newProductCategory
       );
       console.log(response);
-      setNewProductCategory((prevCategory) => [
-        ...prevCategory,
-        response.data.category,
-      ]);
-      closeCategoryForm();
+
       window.location.reload();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -94,6 +99,7 @@ const Category = () => {
         <div className="head">
           <div className="container">
             <p>Product Category</p>
+           
           </div>
 
           <div className="icons">
@@ -116,17 +122,20 @@ const Category = () => {
             >
               <img src={close} alt="Close" />
             </button>
-            <p className="title">Add Category</p>
+            <p className="title">Add Product Category</p>
+            <h2>Example: Black Pen, IIC Pen</h2>
             <div className="field">
               <label htmlFor="product_category_name">Product Category</label>
               <input
                 type="text"
-                placeholder="Enter category name"
+                placeholder=""
+                autoFocus="autofocus"
                 name="product_category_name"
                 id="product_category_name"
                 onChange={handleChange}
               />
             </div>
+            {error && <span className="text-red-500 ml-4">{error}</span>}
             <div className="buttons">
               <button type="submit" className="add-buttons">
                 Add Category
@@ -134,9 +143,16 @@ const Category = () => {
             </div>
           </form>
         )}
+
+        
+      {addFormVisibility && (
+        <div className="overlay-category" onClick={closeCategoryForm}></div>
+      )}
+      
       </div>{" "}
     </>
   );
 };
 
 export default Category;
+

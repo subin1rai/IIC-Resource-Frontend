@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import deleteIcon from "../assets/deleteIcon.svg";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "/src/App.css"; // Import CSS
 
 const columns = [
   { id: "sn", label: "SN", width: 70 },
@@ -20,15 +22,39 @@ const columns = [
 export default function Itable({ itemCategory, setItemCategory }) {
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`
+      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`
     );
+    console.log(response.data);
     setItemCategory((prevCategory) =>
       prevCategory.filter((cat) => cat.item_category_id !== categoryId)
     );
   } catch (error) {
-    console.error("Error deleting category:", error);
+    if (axios.isCancel(error)) {
+    console.error("Error deleting category:", error.message);
+    return;
   }
-};
+}
+window.location.reload();
+  };
+  const showDeleteConfirm = (categoryId) => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this category?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => handleDeleteSubmit(categoryId),
+          className: 'confirm-yes' 
+        },
+        {
+          label: "No",
+          onClick: () => {},
+          className: 'confirm-no'
+        }
+      ]
+    });
+  };
+
   return (
     <Paper
       sx={{
@@ -60,13 +86,14 @@ export default function Itable({ itemCategory, setItemCategory }) {
                 <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
                 <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.item_category_name}</TableCell>
                 <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                <TableCell sx={{ width: columns[3].width, padding: "8px 0px" }}>
+                <TableCell sx={{ width: columns[3].width, padding: "8px 22px" }}>
                   <Button
                     
                     sx={{
-                     
+                      minWidth: "auto", // Adjust button style to your preference
+                      padding: 0,
                     }}
-                    onClick={() => handleDeleteSubmit(cat.item_category_id)}
+                    onClick={() => showDeleteConfirm(cat.item_category_id)}
                   >
                     <img src={deleteIcon} alt="delete" />
                   </Button>
@@ -79,4 +106,3 @@ export default function Itable({ itemCategory, setItemCategory }) {
     </Paper>
   );
 }
-
