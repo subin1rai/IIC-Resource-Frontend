@@ -1,12 +1,12 @@
 import React from "react";
-import "../styles/requesthistory.css";
+import "../styles/aboutus.css";
 import Navbar from "../components/Navbar";
 
 const RequestHistory = () =>{
     return(
         <div className="nav">
         <Navbar />
-        <div className="historycontent">
+        <div className="aboutContent">
             
         </div>
         </div>
