@@ -13,7 +13,7 @@ import SpecificVendor from "./pages/SpecificVendor";
 import SpecificBill from "./pages/SpecificBill";
 import UserHome from "./pages/UserHome";
 import UserRequest from "./pages/UserRequest";
-import RequestHistory from "./pages/RequestHistory";
+import AboutUs from "./pages/Aboutus";
 import UserProfile from "./pages/UserProfile";
 import UserPassword from "./pages/UserPassword";
 import Reset from "./pages/Reset";
@@ -40,7 +40,7 @@ function App() {
           <Route path="/specificbill/:bill_id" element={<SpecificBill />} />
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/userrequest" element={<UserRequest />} />
-          <Route path="/requesthistory" element={<RequestHistory />} />
+          <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/userPassword" element ={<UserPassword />} />
           <Route path="/reset" element ={<Reset />} />

@@ -25,7 +25,7 @@ const SpecificBill = () => {
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
-  const { bill_id } = useParams();
+  const bill_ID = useParams();
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -34,7 +34,9 @@ const SpecificBill = () => {
       try {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
-            axios.get("http://localhost:8898/api/singleBill/${bill_id}"),
+            axios.get(
+              `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`
+            ),
             axios.get("http://localhost:8898/api/items"),
             axios.get("http://localhost:8898/api/vendor"),
           ]);
@@ -46,7 +48,7 @@ const SpecificBill = () => {
       }
     };
     fetchData();
-  }, [bill_id]);
+  }, []);
 
   const openEditBillDetailsForm = () => {
     setBill({
@@ -76,11 +78,11 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put("http://localhost:8898/api/updateBill/${bill_id}", bill);
+      await axios.put(`http://localhost:8898/api/updateBill/${bill_ID}`, bill);
       closeEditBillDetailsForm();
       // Refresh bill details
       const updatedBill = await axios.get(
-        "http://localhost:8898/api/singleBill/${bill_id}"
+        `http://localhost:8898/api/singleBill/${bill_ID}`
       );
       setBillDetails(updatedBill.data.bill);
     } catch (error) {
@@ -283,7 +285,7 @@ const SpecificBill = () => {
                     name="paid_amt"
                     id="paid_amt"
                     onChange={handleChange}
-                    value={bill.paid_amt}
+                    // value={bill.paid_amt}
                   />
                 </div>
                 <div className="field">

@@ -30,7 +30,7 @@
 
 
         .btn{
-            background: rgb(27, 27, 145);
+            background: linear-gradient(#8F9BFF, #5568FF);
             color: white;
             padding: 10px;
             width: 100px;
