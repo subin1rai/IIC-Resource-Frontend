@@ -7,6 +7,8 @@ import filterIcon from "../assets/filter.svg";
 import close from "../assets/close.svg";
 import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Inventory = () => {
   const [items, setItems] = useState();
@@ -20,7 +22,7 @@ const Inventory = () => {
   });
 
   const [error, setError] = useState("");
-
+  const [lodaing, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [itemCategory, setItemCategory] = useState("");
@@ -45,12 +47,14 @@ const Inventory = () => {
     event.preventDefault();
 
     try {
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:8898/api/addItem",
         itemData
       );
-      console.log(response);
-      window.location.reload();
+      toast.success(`${itemData.item_name} Added successfully!`);
+      setAddFormVisibility(false);
+      lodaing(false);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -154,6 +158,7 @@ const Inventory = () => {
             <input
               type="text"
               placeholder="Enter product name"
+              autoFocus="autofocus"
               name="item_name"
               id="item_name"
               onChange={handleChange}
@@ -237,6 +242,7 @@ const Inventory = () => {
       {addFormVisibility && (
         <div className="overlay" onClick={closeAddItemForm}></div>
       )}
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };

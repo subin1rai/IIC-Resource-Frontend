@@ -16,11 +16,18 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(" http://localhost:8898/api/logout");
+      console.log("Sending logout request");
+      const response = await axios.post(
+        "http://localhost:8898/api/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Logout response:", response);
       navigate("/");
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
     }
   };
 

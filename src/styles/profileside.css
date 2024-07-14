@@ -1,0 +1,34 @@
+.profilesidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    width:20vw;
+    margin-left: 40px;
+    padding: 20px;
+    height:70vh;
+    border-radius: 15px;
+    background-color: white;
+
+    h1{
+        font-weight: 800;
+        font-size:xx-large;
+        margin-left:42px;
+        color:Black;    
+    }
+
+    .sidebar-items {
+        font-weight:600;
+        font-size: larger;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 40px;
+        
+        img{
+            height:70px;
+            width: 70px;
+        }
+      }
+
+  } 

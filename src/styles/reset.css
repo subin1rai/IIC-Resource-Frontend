@@ -1,0 +1,51 @@
+.reset {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    background-color: #ffffff;
+    width: 100vw;
+    
+    .resetform {
+    background-color: #fff;
+    width: 40vw;
+    padding-top: 70px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 25px;
+    border-radius: 10px;
+
+    h2{
+      font-size: xx-large;
+      font-weight: 700;
+    }
+
+    label{
+        padding: 20px;
+    }
+
+    input {
+      width: 500px;
+      padding: 20px;
+      border: 1px solid grey;
+      border-radius: 15px;
+    }
+
+    .submit-btn {
+      background-color: #1139a8;
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+
+      &:hover {
+        background-color: #103a66;
+      }
+    }
+  }
+}

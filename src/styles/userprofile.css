@@ -1,0 +1,69 @@
+.profiletop{
+  background: radial-gradient(rgb(221, 181, 181),rgb(179, 179, 219));
+  height: 100vh;
+
+.profileside{
+    display: flex;
+    background:white;
+    height: 80vh;
+    width: 71.5vw;
+    margin-left: 275px;
+    margin-top: 50px;
+    border-radius: 15px;
+    border-width: 5px;
+    
+    .content{
+      margin-top: 100px;
+      width: fit-content;
+
+      form{
+        display: flex;
+
+        .maincontent{
+          margin-left: 150px;
+          line-height: 40px;
+
+        .dual{
+          display: flex;
+          flex-direction: column;
+        }
+
+        label {
+          font-size: larger;
+          font-weight: 400;
+          padding: 20px 0px;
+        }
+
+
+        input {
+          padding: 10px;
+          width: 400px;
+          border: 1px solid grey;
+          border-radius: 10px;
+        }
+
+        button {
+          background-color: rgb(31, 31, 153);
+          color: white;
+          padding: 10px;
+          width: 150px;
+          margin-top: 20px;
+          border-radius: 15px;
+        }
+
+      }
+
+      .image {
+        margin-left: 140px;
+      }
+
+      .image img {
+        width: 10vw;
+        height: 20vh;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+}

@@ -7,6 +7,8 @@ import validVendor from "../assets/user.svg";
 import close from "../assets/close.svg";
 import axios from "axios";
 import VendorTable from "../components/VendorTable";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Vendor = () => {
   const [vendor, setVendor] = useState({
@@ -41,7 +43,9 @@ const Vendor = () => {
         "http://localhost:8898/api/addVendor",
         vendor
       );
-      window.location.reload();
+
+      toast.success(`${vendor.vendor_name} Added Successfully!`);
+      setAddFormVisibility(false);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -102,15 +106,6 @@ const Vendor = () => {
           </div>
 
           <VendorTable />
-          {/* <div className="last">
-            <div className="previous">
-              <button>Previous </button>
-            </div>
-            <div className="middle">Page 1 of 10</div>
-            <div className="next">
-              <button> Next </button>
-            </div>
-          </div> */}
         </div>
       </div>
       {addFormVisibility && (
@@ -128,6 +123,7 @@ const Vendor = () => {
             <input
               type="text"
               placeholder="Enter vendor name"
+              autoFocus="autofocus"
               name="vendor_name"
               id="item_name"
               onChange={handleChange}
@@ -175,6 +171,7 @@ const Vendor = () => {
           {" "}
         </div>
       )}
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };

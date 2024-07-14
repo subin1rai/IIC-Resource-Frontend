@@ -35,9 +35,15 @@
 
       .head {
         padding: 0px;
+        display: flex;
+        align-items: center;
 
         p {
-          margin-right: 200px;
+          margin-left: 732px;
+        }
+        h1{
+          font-size: xx-large;
+          font-weight:600;
         }
       }
       .line {
@@ -51,7 +57,7 @@
         line-height: 50px;
 
         .left {
-          margin-right: 800px;
+          margin-right: 710px;
         }
       }
       .btn {
