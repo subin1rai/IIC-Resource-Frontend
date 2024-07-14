@@ -78,8 +78,6 @@ const Category = () => {
         newCategory
       );
       console.log(response);
-      setCategory((prevCategory) => [...prevCategory, response.data.category]);
-      closeCategoryForm();
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -97,6 +95,7 @@ const Category = () => {
         <div className="head">
           <div className="container">
             <p>Category</p>
+
           </div>
 
           <div className="icons">
@@ -108,34 +107,39 @@ const Category = () => {
         <Ctable category={category} onDelete={handleDeleteSubmit} />
 
         {addFormVisibility && (
-          <form action="" onSubmit={handleSubmit} className="category-form">
-            <button
-              type="button"
-              className="discard-button"
-              onClick={closeCategoryForm}
-            >
-              <img src={close} alt="Close" />
-            </button>
-            <p className="title">Add Category</p>
-            <div className="field">
-              <label htmlFor="category_name">Category</label>
-              <input
-                type="text"
-                placeholder="eg:Assets/Consumables/Returnable"
-                name="category_name"
-                autoFocus="autofocus"
-                id="category_name"
-                onChange={handleChange}
-              />
-            </div>
-
-            {error && <span className="text-red-500">{error}</span>}
-            <div className="buttons">
-              <button type="submit" className="add-buttons">
-                Add Category
+          <>
+            <div className="overlay-category" onClick={closeCategoryForm}></div>
+            <form action="" onSubmit={handleSubmit} className="category-form">
+              <button
+                type="button"
+                className="discard-button"
+                onClick={closeCategoryForm}
+              >
+                <img src={close} alt="Close" />
               </button>
-            </div>
-          </form>
+              <p className="title">Add Category</p>
+              <h2>Example: Assest, Consumable</h2>
+              <div className="field">
+                <label htmlFor="category_name">Category</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  name="category_name"
+                  autoFocus="autofocus"
+                  id="category_name"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {error && <span className="text-red-500 ml-4">{error}</span>}
+
+              <div className="buttons">
+                <button type="submit" className="add-buttons">
+                  Add Category
+                </button>
+              </div>
+            </form>
+          </>
         )}
       </div>
     </>
@@ -143,3 +147,6 @@ const Category = () => {
 };
 
 export default Category;
+
+
+

@@ -10,7 +10,7 @@ const Category = () => {
   const [newItemCategory, setNewItemCategory] = useState({
     item_category_name: "",
   });
-  const [deleteItemCategory, setDeleteItemCategory] = useState("");
+  const [error, setError] = useState(""); 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
 
@@ -40,6 +40,7 @@ const Category = () => {
   };
 
   const closeCategoryForm = () => {
+    setError("");
     setAddFormVisibility(false);
   };
 
@@ -52,6 +53,12 @@ const Category = () => {
   };
 
   const handleDeleteSUBmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteItemCategory/${categoryId}`
@@ -77,14 +84,10 @@ const Category = () => {
         newItemCategory
       );
       console.log(response);
-      setNewItemCategory((prevCategory) => [
-        ...prevCategory,
-        response.data.category,
-      ]);
-      closeCategoryForm();
       window.location.reload();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -112,17 +115,24 @@ const Category = () => {
               <img src={close} alt="Close" />
             </button>
             <p className="title">Add Item Category</p>
+            <h2>Example: Electronics, Stationary</h2>
+           
             <div className="field">
               <label htmlFor="item_category_name">Item Category</label>
+
+              
+             
               <input
                 type="text"
-                placeholder="eg:Electonics/Sports/Stationary"
+                placeholder=""
                 autoFocus="autofocus"
                 name="item_category_name"
                 id="item_category_name"
                 onChange={handleChange}
               />
+              
             </div>
+            {error && <span className="text-red-500 ml-4">{error}</span>}
             <div className="buttons">
               <button type="submit" className="add-buttons">
                 Add Category
@@ -130,6 +140,10 @@ const Category = () => {
             </div>
           </form>
         )}
+           
+      {addFormVisibility && (
+        <div className="overlay-category" onClick={closeCategoryForm}></div>
+      )}
       </div>
     </>
   );
