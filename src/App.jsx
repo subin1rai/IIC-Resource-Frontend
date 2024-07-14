@@ -16,6 +16,7 @@ import UserRequest from "./pages/UserRequest";
 import RequestHistory from "./pages/RequestHistory";
 import UserProfile from "./pages/UserProfile";
 import UserPassword from "./pages/UserPassword";
+import Reset from "./pages/Reset";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/requesthistory" element={<RequestHistory />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/userPassword" element ={<UserPassword />} />
+          <Route path="/reset" element ={<Reset />} />
         </Routes>
       </BrowserRouter>
     </div>
