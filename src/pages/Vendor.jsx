@@ -44,7 +44,7 @@ const Vendor = () => {
         vendor
       );
 
-      toast.success("Item Added Successfully!");
+      toast.success(`${vendor.vendor_name} Added Successfully!`);
       setAddFormVisibility(false);
     } catch (error) {
       console.log(error);
@@ -106,15 +106,6 @@ const Vendor = () => {
           </div>
 
           <VendorTable />
-          {/* <div className="last">
-            <div className="previous">
-              <button>Previous </button>
-            </div>
-            <div className="middle">Page 1 of 10</div>
-            <div className="next">
-              <button> Next </button>
-            </div>
-          </div> */}
         </div>
       </div>
       {addFormVisibility && (

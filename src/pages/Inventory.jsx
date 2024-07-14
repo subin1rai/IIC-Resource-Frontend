@@ -52,8 +52,7 @@ const Inventory = () => {
         "http://localhost:8898/api/addItem",
         itemData
       );
-      console.log(response);
-      toast.success("Item Added Successfully!");
+      toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
       lodaing(false);
     } catch (error) {
@@ -243,7 +242,7 @@ const Inventory = () => {
       {addFormVisibility && (
         <div className="overlay" onClick={closeAddItemForm}></div>
       )}
-      <ToastContainer pauseOnHover theme="light" transition:Bounce />
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };
