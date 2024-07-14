@@ -12,9 +12,10 @@ const ForgotPassword = () => {
         </Link>{" "}
       </button>
       <form className="forgotForm">
-        <h2>Change Password</h2>
-        <input type="text" placeholder="Enter your email..." />
-        <button className="submit-btn">Send OTP</button>
+        <h2>Forgot Password?</h2>
+        <h3> Enter the email address you used to register</h3>
+        <input type="email" placeholder="Enter your email..." autoFocus="autofocus" />
+        <button className="submit-btn">Request OTP</button>
       </form>
     </div>
   );

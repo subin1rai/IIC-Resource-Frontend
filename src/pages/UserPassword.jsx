@@ -7,7 +7,7 @@ const UserPassword =() => {
     return(
         <div className="top">
             <Navbar />
-            <div className="side">
+            <div className="profileside">
                 <ProfileSide />
                 <div className="passcontent">
                 <form>

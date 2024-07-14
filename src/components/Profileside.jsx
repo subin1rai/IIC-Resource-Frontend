@@ -25,7 +25,7 @@ const ProfileSide =() => {
         }
       };
     return(
-        <div className="bar">
+        <div className="profilesidebar">
             <h1> My Profile </h1>
             <div className="sidebar-items">
           <div className="item">
