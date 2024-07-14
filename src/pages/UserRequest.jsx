@@ -1,8 +1,9 @@
 import React from "react";
 import NavTable from "../components/NavTable";
 // import search from "../assets/search.png";
-import "../styles/userrequest.css";
+import "../styles/userRequest.css";
 import Navbar from "../components/Navbar";
+
 
 
 const UserRequest = () => {
