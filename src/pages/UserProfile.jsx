@@ -8,7 +8,7 @@ const UserProfile = () => {
     return(
         <div className="top">
             <Navbar />
-        <div className="side">
+        <div className="profileside">
         <ProfileSide />
        <div className="content">
             <form>

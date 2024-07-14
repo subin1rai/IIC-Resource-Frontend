@@ -1,4 +1,4 @@
-.bar {
+.profilesidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +14,7 @@
         font-weight: 800;
         font-size:xx-large;
         margin-left:42px;
-        color:Black;
+        color:Black;    
     }
 
     .sidebar-items {

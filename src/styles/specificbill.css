@@ -68,6 +68,14 @@
         input {
           padding-left: 10px;
           width: 291px;
+          padding: 7px;
+          border-radius: 6px;
+          border: 1px solid grey;
+        }
+        select{
+          padding-left: 10px;
+          width: 291px;
+          padding:10px;
           border-radius: 6px;
           border: 1px solid grey;
         }
