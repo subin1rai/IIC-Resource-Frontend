@@ -5,6 +5,13 @@ import dashboard from "../assets/dashboard.png";
 import inventory from "../assets/inventory.png";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
+import request from "../assets/request.svg";
+import payment from "../assets/payment.svg";
+import billRecord from "../assets/billRecord.svg";
+import issue from "../assets/issue.svg";
+import category from "../assets/category.svg";
+import vendor from "../assets/vendor.svg";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -53,42 +60,42 @@ const Sidebar = () => {
           </div>
           {/* record nav */}
           <div className="item">
-            <img src={inventory} alt="" />
+            <img src={billRecord} alt="" />
             <NavLink to="/records" className={setActiveClass}>
               Bill Records
             </NavLink>
           </div>
           {/* vendors nav */}
           <div className="item">
-            <img src={dashboard} alt="" />
+            <img src={vendor} alt="" />
             <NavLink to="/vendors" className={setActiveClass}>
               Vendors
             </NavLink>
           </div>
           {/* category nav */}
           <div className="item">
-            <img src={dashboard} alt="" />
+            <img src={category} alt="" />
             <NavLink to="/Category" className={setActiveClass}>
               Category
             </NavLink>
           </div>
           {/* issue nav */}
           <div className="item">
-            <img src={dashboard} alt="" />
+            <img src={issue} alt="" />
             <NavLink to="/issue" className={setActiveClass}>
               Issue
             </NavLink>
           </div>
           {/* Payment nav */}
           <div className="item">
-            <img src={dashboard} alt="" />
+            <img src={payment} alt="" />
             <NavLink to="/payment" className={setActiveClass}>
               Payment
             </NavLink>
           </div>
           {/* Request nav */}
           <div className="item">
-            <img src={dashboard} alt="" />
+            <img src={request} alt="" />
             <NavLink to="/request" className={setActiveClass}>
               Request
             </NavLink>
