@@ -28,6 +28,7 @@ const Issue = () => {
                 <img src={filterIcon} alt="" />
                 Filters
               </button>
+              <button class="bg-blue-500 p-2 text-white ">Add Issue</button>
             </div>
           </div>
 

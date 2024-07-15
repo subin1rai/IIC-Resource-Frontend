@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel"; // Import TableSortLabel for sorting
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
 import axios from "axios";
@@ -27,6 +28,7 @@ const columns = [
     maxWidth: 120,
     align: "center",
     format: (value) => value?.toLocaleString("en-US") || "N/A",
+    numeric: true,
   },
   {
     id: "last_purchase_date",
@@ -38,6 +40,7 @@ const columns = [
       const date = new Date(value);
       return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
     },
+    numeric: true,
   },
   {
     id: "payment_duration",
@@ -45,6 +48,7 @@ const columns = [
     maxWidth: 120,
     align: "center",
     format: (value) => value?.toFixed(2) || "N/A",
+    numeric: true,
   },
   {
     id: "payment_status",
@@ -56,6 +60,8 @@ const columns = [
 ];
 
 export default function VendorTable() {
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("last_purchase_date");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [vendors, setVendors] = useState([]);
@@ -69,6 +75,7 @@ export default function VendorTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
   useEffect(() => {
     const getAllVendors = async () => {
       try {
@@ -89,8 +96,56 @@ export default function VendorTable() {
     getAllVendors();
   }, []);
 
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  };
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (orderBy === "last_purchase_date") {
+      return new Date(b[orderBy]) - new Date(a[orderBy]);
+    }
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
+  const visibleRows = React.useMemo(
+    () =>
+      stableSort(vendors, getComparator(order, orderBy)).slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ),
+    [vendors, order, orderBy, page, rowsPerPage]
+  );
+
   const handleRowClick = (vendorId) => {
     navigate(`/specificVendor/${vendorId}`); // Navigate to the vendor details page
+  };
+
+  const cellStyle = {
+    fontSize: "16px",
   };
 
   return (
@@ -110,33 +165,42 @@ export default function VendorTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
+                  sortDirection={orderBy === column.id ? order : false}
                   style={{ minWidth: column.minWidth }}
                 >
-                  {column.label}
+                  {column.numeric ? (
+                    <TableSortLabel
+                      active={orderBy === column.id}
+                      direction={orderBy === column.id ? order : "asc"}
+                      onClick={(event) => handleRequestSort(event, column.id)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  ) : (
+                    column.label
+                  )}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {vendors
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((vendor) => (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={vendor.vendor_id}
-                  onClick={() => handleRowClick(vendor.vendor_id)} // Add onClick handler
-                >
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format
-                        ? column.format(vendor[column.id])
-                        : vendor[column.id]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+            {visibleRows.map((vendor) => (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={vendor.vendor_id}
+                onClick={() => handleRowClick(vendor.vendor_id)} // Add onClick handler
+              >
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.format
+                      ? column.format(vendor[column.id])
+                      : vendor[column.id]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

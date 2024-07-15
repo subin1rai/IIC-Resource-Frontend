@@ -7,32 +7,42 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import axios from "axios";
 
 const columns = [
   { id: "item_name", label: "Item Name", maxWidth: 120 },
-  { id: "unit_price", label: "Unit Price", maxWidth: 80 },
+  { id: "unit_price", label: "Unit Price", maxWidth: 80, numeric: true },
   { id: "measuring_unit", label: "Measuring Unit", maxWidth: 80 },
   {
     id: "total_purchased",
     label: "Total Purchased",
     maxWidth: 120,
     format: (value) => value?.toLocaleString("en-US") || "N/A",
+    numeric: true,
   },
   {
     id: "quantity",
     label: "Quantity",
     maxWidth: 80,
     format: (value) => value?.toLocaleString("en-US") || "N/A",
+    numeric: true,
   },
   { id: "category", label: "Category", maxWidth: 120 },
   { id: "itemCategory", label: "Item Category", maxWidth: 120 },
   { id: "productCategory", label: "Product Category", maxWidth: 120 },
-  { id: "recentPurchase", label: "Recent Purchase", maxWidth: 120 },
+  {
+    id: "recentPurchase",
+    label: "Recent Purchase",
+    maxWidth: 120,
+    numeric: true,
+  },
   { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
 
 export default function InventoryTable() {
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("recentPurchase");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
@@ -60,6 +70,50 @@ export default function InventoryTable() {
     setPage(0);
   };
 
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  };
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (orderBy === "recentPurchase") {
+      return new Date(b[orderBy]) - new Date(a[orderBy]);
+    }
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
+  const visibleRows = React.useMemo(
+    () =>
+      stableSort(items, getComparator(order, orderBy)).slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ),
+    [items, order, orderBy, page, rowsPerPage]
+  );
+
   const getStockStatusStyle = (stockStatus) => {
     return {
       color: stockStatus === "Low Stock" ? "red" : "green",
@@ -68,6 +122,10 @@ export default function InventoryTable() {
 
   const cellStyle = {
     fontSize: "16px",
+  };
+
+  const headerStyle = {
+    fontWeight: 600,
   };
 
   return (
@@ -86,57 +144,61 @@ export default function InventoryTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
+                  sortDirection={orderBy === column.id ? order : false}
                   style={{
                     ...cellStyle,
+                    ...headerStyle,
                     minWidth: column.minWidth,
-                    fontWeight: 600,
                   }}
                 >
-                  {column.label}
+                  {column.numeric ? (
+                    <TableSortLabel
+                      active={orderBy === column.id}
+                      direction={orderBy === column.id ? order : "asc"}
+                      onClick={(event) => handleRequestSort(event, column.id)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  ) : (
+                    column.label
+                  )}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {items
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item) => (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={item.item_id}
-                >
-                  {columns.map((column) => {
-                    let value = item[column.id];
-                    if (column.id === "productCategory") {
-                      value = item.productCategory?.product_category_name;
-                    }
-                    if (column.id === "category") {
-                      value = item.category?.category_name;
-                    }
-                    if (column.id === "itemCategory") {
-                      value = item.itemCategory?.item_category_name;
-                    }
+            {visibleRows.map((item) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={item.item_id}>
+                {columns.map((column) => {
+                  let value = item[column.id];
+                  if (column.id === "productCategory") {
+                    value = item.productCategory?.product_category_name;
+                  }
+                  if (column.id === "category") {
+                    value = item.category?.category_name;
+                  }
+                  if (column.id === "itemCategory") {
+                    value = item.itemCategory?.item_category_name;
+                  }
 
-                    return (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={
-                          column.id === "stockStatus"
-                            ? { ...cellStyle, ...getStockStatusStyle(value) }
-                            : cellStyle
-                        }
-                      >
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value || "N/A"}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
+                  return (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={
+                        column.id === "stockStatus"
+                          ? { ...cellStyle, ...getStockStatusStyle(value) }
+                          : cellStyle
+                      }
+                    >
+                      {column.format && typeof value === "number"
+                        ? column.format(value)
+                        : value || "N/A"}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
