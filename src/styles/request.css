@@ -24,22 +24,19 @@
         justify-content: space-between;
         padding: 10px;
         gap: 10px;
-      }
+      
 
       .request-title {
         display: flex;
-        margin-left: 14px;
-    
-        h3 {
-          font: 26px;
-          font-weight: 500;
-        }
+        font-size: 24px;
+        font-weight: 500;
+
 
         .p{
-            font: 16px;
+            font: 26px;
             font-weight: 400;
-            margin-left: 10px;
+            margin-left: 40px;
         }
       }
-
+    }
 }
