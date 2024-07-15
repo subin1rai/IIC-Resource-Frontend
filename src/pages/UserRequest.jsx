@@ -30,6 +30,7 @@ const UserRequest = () => {
               <option value="">Select a category</option>
               <option value="">Books</option>
               <option value="">Pens</option>
+              <option value="">Pencil</option>
             </select>
           </div>
           <div className="singleField">
@@ -50,7 +51,6 @@ const UserRequest = () => {
             <button type="filter" className="filter-btn">
               <img src={filter} alt="" />
               Filter</button>
-
 
           </div>
           <div className="history">
