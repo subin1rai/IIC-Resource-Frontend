@@ -17,6 +17,7 @@ import AboutUs from "./pages/Aboutus";
 import UserProfile from "./pages/UserProfile";
 import UserPassword from "./pages/UserPassword";
 import Reset from "./pages/Reset";
+import Otp from "./pages/Otp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
@@ -36,10 +37,7 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/vendors" element={<Vendor />} />
           <Route path="/records" element={<Records />} />
-          <Route
-            path="/specificVendor/:vendor_id"
-            element={<SpecificVendor />}
-          />
+          <Route path="/specificVendor/:vendor_id" element={<SpecificVendor />} />
           <Route path="/category" element={<Category />} />
           <Route path="/specificbill/:bill_id" element={<SpecificBill />} />
           <Route path="/userhome" element={<UserHome />} />
@@ -49,6 +47,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/userPassword" element ={<UserPassword />} />
           <Route path="/reset" element ={<Reset />} />
+          <Route path= "/otp" element ={<Otp />} />
         </Routes>
       </BrowserRouter>
     </div>
