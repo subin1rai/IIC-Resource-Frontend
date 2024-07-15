@@ -1,6 +1,6 @@
 import React from "react";
 import NavTable from "../components/NavTable";
-// import search from "../assets/search.png";
+import filter from "../assets/filter.svg";
 import "../styles/userrequest.css";
 import Navbar from "../components/Navbar";
 
@@ -44,9 +44,20 @@ const UserRequest = () => {
         </form>
         {/* Creating a div for keeping history records */}
         <div className="requestHistory">
-          <h1>History</h1>
-          <h5>You can view your history details here.</h5>
+          <div className="heading2">
+            <h1>History</h1>
+            <h5>You can view your history details here.</h5>
+            <button type="filter" className="filter-btn">
+              <img src={filter} alt="" />
+              Filter</button>
+
+
+          </div>
+          <div className="history">
+
+          </div>
         </div>
+
       </div>
     </div>
   );
