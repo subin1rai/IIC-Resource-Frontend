@@ -69,11 +69,15 @@ export default function VendorTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
   useEffect(() => {
     const getAllVendors = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/vendor");
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:8898/api/vendor", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setVendors(response.data.vendors || []);
         console.log(response.data.vendors);
       } catch (error) {

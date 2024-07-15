@@ -61,13 +61,22 @@ const Records = () => {
   useEffect(() => {
     const getAllItems = async () => {
       try {
+        const token = localStorage.getItem("token");
+
         const itemsData = await axios.get("http://localhost:8898/api/items");
 
         setItems(itemsData.data.items);
         console.log(items);
         console.log(vendors);
 
-        const vendorsData = await axios.get("http://localhost:8898/api/vendor");
+        const vendorsData = await axios.get(
+          "http://localhost:8898/api/vendor",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setVendors(vendorsData.data.vendors);
       } catch (error) {
         console.log(error);

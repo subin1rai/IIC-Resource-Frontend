@@ -27,7 +27,7 @@ const Login = () => {
         user,
         { withCredentials: true }
       );
-
+      localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
