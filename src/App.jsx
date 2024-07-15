@@ -9,6 +9,7 @@ import Issue from "./pages/Issue";
 import Category from "./pages/Category";
 import Vendor from "./pages/Vendor";
 import Records from "./pages/Records";
+import Payment from "./pages/Payment";
 import SpecificVendor from "./pages/SpecificVendor";
 import SpecificBill from "./pages/SpecificBill";
 import UserHome from "./pages/UserHome";
@@ -49,6 +50,8 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/userPassword" element ={<UserPassword />} />
           <Route path="/reset" element ={<Reset />} />
+          <Route path="/request" element ={<Request />} />
+          <Route path="/payment" element ={<Payment />} />
         </Routes>
       </BrowserRouter>
     </div>
