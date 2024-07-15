@@ -35,13 +35,18 @@ const Vendor = () => {
   const handleChange = (e) => {
     setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8898/api/addVendor",
-        vendor
+        vendor,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       toast.success(`${vendor.vendor_name} Added Successfully!`);

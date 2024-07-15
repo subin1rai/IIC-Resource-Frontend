@@ -70,7 +70,13 @@ export default function RecordsTable() {
   useEffect(() => {
     const getAllBills = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/bill");
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get("http://localhost:8898/api/bill", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBills(response.data.bills || []);
         console.log(response.data.bills);
       } catch (error) {
