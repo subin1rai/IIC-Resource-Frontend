@@ -1,0 +1,19 @@
+.otpcontent{
+    text-align: center;
+    margin-top: 400px;
+    row-gap: 50px;
+    
+    h1{
+        font-weight: 600;
+        font-size: xx-large;
+    }
+
+.otpInput {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    text-align: center;
+    font-size: 2em;
+    color: rgb(30, 30, 155);
+  }
+}
