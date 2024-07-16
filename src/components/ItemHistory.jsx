@@ -9,58 +9,79 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const columns = [
-  { id: "item_name", label: "Item Name", maxWidth: 120 },
-  { id: "unit_price", label: "Unit Price", maxWidth: 80, numeric: true },
-  { id: "measuring_unit", label: "Measuring Unit", maxWidth: 80 },
-  {
-    id: "total_purchased",
-    label: "Total Purchased",
-    maxWidth: 120,
-    format: (value) => value?.toLocaleString("en-US") || "N/A",
-    numeric: true,
-  },
+  { id: "sNo", label: "S.No.", minWidth: 60, maxWidth: 60, numeric: true },
+  { id: "billNumber", label: "Bill Number", minWidth: 120, maxWidth: 120 },
+  { id: "vendorName", label: "Vendor Name", minWidth: 180, maxWidth: 180 },
   {
     id: "quantity",
     label: "Quantity",
-    maxWidth: 80,
-    format: (value) => value?.toLocaleString("en-US") || "N/A",
+    minWidth: 100,
+    maxWidth: 100,
     numeric: true,
   },
-  { id: "category", label: "Category", maxWidth: 120 },
-  { id: "itemCategory", label: "Item Category", maxWidth: 120 },
-  { id: "productCategory", label: "Product Category", maxWidth: 120 },
   {
-    id: "recentPurchase",
-    label: "Recent Purchase",
-    maxWidth: 120,
-    numeric: true,
+    id: "measuringUnit",
+    label: "Measuring Unit",
+    minWidth: 140,
+    maxWidth: 140,
   },
-  { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
 
-export default function InventoryTable() {
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log("Error caught by boundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+function ItemHistory() {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("recentPurchase");
+  const [orderBy, setOrderBy] = React.useState("sNo");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
-  const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    const getAllItems = async () => {
+    const getItemHistory = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get("http://localhost:8898/api/items");
-        setItems(response.data.items || []);
+        const response = await axios.get(
+          "http://localhost:8898/api/item-history"
+        );
+        console.log("API response:", response.data);
+        setItems(response.data.itemHistory || []);
+        setError(null);
       } catch (error) {
-        console.log(error);
+        console.error("API error:", error);
         setItems([]);
+        // setError("Failed to fetch item history. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    getAllItems();
+    getItemHistory();
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -85,9 +106,6 @@ export default function InventoryTable() {
   };
 
   const descendingComparator = (a, b, orderBy) => {
-    if (orderBy === "recentPurchase") {
-      return new Date(b[orderBy]) - new Date(a[orderBy]);
-    }
     if (b[orderBy] < a[orderBy]) {
       return -1;
     }
@@ -116,30 +134,45 @@ export default function InventoryTable() {
     [items, order, orderBy, page, rowsPerPage]
   );
 
-  const getStockStatusStyle = (stockStatus) => {
-    return {
-      color: stockStatus === "Low Stock" ? "red" : "green",
-    };
-  };
-
   const cellStyle = {
     fontSize: "16px",
+    padding: "16px 24px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 
   const headerStyle = {
     fontWeight: 600,
+    backgroundColor: "#f5f5f5",
   };
 
-  const handleRowClick = (id) => {
-    navigate(`/specificItem/${id}`);
-  };
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "300px",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div style={{ color: "red", textAlign: "center" }}>{error}</div>;
+  }
 
   return (
     <Paper
       sx={{
         width: "100%",
         overflow: "hidden",
-        cursor: "pointer",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        borderRadius: "8px",
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -149,64 +182,51 @@ export default function InventoryTable() {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
+                  align={column.numeric ? "right" : "left"}
                   sortDirection={orderBy === column.id ? order : false}
                   style={{
                     ...cellStyle,
                     ...headerStyle,
                     minWidth: column.minWidth,
+                    maxWidth: column.maxWidth,
                   }}
                 >
-                  {column.numeric ? (
-                    <TableSortLabel
-                      active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : "asc"}
-                      onClick={(event) => handleRequestSort(event, column.id)}
-                    >
-                      {column.label}
-                    </TableSortLabel>
-                  ) : (
-                    column.label
-                  )}
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={orderBy === column.id ? order : "asc"}
+                    onClick={(event) => handleRequestSort(event, column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((item) => (
+            {visibleRows.map((item, index) => (
               <TableRow
                 hover
                 role="checkbox"
                 tabIndex={-1}
-                key={item.item_id}
-                onClick={() => handleRowClick(item.item_id)}
-                style={{ cursor: "pointer" }}
+                key={item.id || index}
+                sx={{ "&:nth-of-type(even)": { backgroundColor: "#f9f9f9" } }}
               >
                 {columns.map((column) => {
-                  let value = item[column.id];
-                  if (column.id === "productCategory") {
-                    value = item.productCategory?.product_category_name;
-                  }
-                  if (column.id === "category") {
-                    value = item.category?.category_name;
-                  }
-                  if (column.id === "itemCategory") {
-                    value = item.itemCategory?.item_category_name;
-                  }
-
+                  const value =
+                    column.id === "sNo"
+                      ? page * rowsPerPage + index + 1
+                      : item[column.id] ?? "N/A";
                   return (
                     <TableCell
                       key={column.id}
-                      align={column.align}
-                      style={
-                        column.id === "stockStatus"
-                          ? { ...cellStyle, ...getStockStatusStyle(value) }
-                          : cellStyle
-                      }
+                      align={column.numeric ? "right" : "left"}
+                      style={{
+                        ...cellStyle,
+                        minWidth: column.minWidth,
+                        maxWidth: column.maxWidth,
+                      }}
                     >
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value || "N/A"}
+                      {value}
                     </TableCell>
                   );
                 })}
@@ -216,7 +236,7 @@ export default function InventoryTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={items.length}
         rowsPerPage={rowsPerPage}
@@ -227,3 +247,5 @@ export default function InventoryTable() {
     </Paper>
   );
 }
+
+export default ItemHistory;

@@ -101,14 +101,14 @@
   .inventory-summary {
     display: flex;
     flex-wrap: wrap;
-    width: 86.5vw;
+    width: 87vw;
     gap: 20px;
     justify-content: center;
   }
 
   .overall-inventory {
     background-color: #fff;
-    width: 84vw;
+    width: 85.5vw;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -141,7 +141,7 @@
     background-color: #ffff;
     justify-content: center;
     align-items: center;
-    width: 84vw;
+    width: 85.5vw;
     padding: 10px;
 
     border-radius: 10px;
@@ -196,90 +196,6 @@
           cursor: pointer;
           border-radius: 4px;
           border: none;
-        }
-      }
-    }
-
-    .item-table {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-
-      thead {
-        width: 100%;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-
-        tr {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          height: 45px;
-          border-bottom: 1px solid #1b1b1bb6;
-
-          th {
-            width: 100%;
-            font-weight: 500;
-            padding: 0 10px;
-            text-align: start;
-          }
-        }
-      }
-      tbody {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        .single-row {
-          width: 100%;
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          height: 45px;
-          gap: 20px;
-          text-decoration: none;
-          color: #000;
-          border-bottom: 1px solid #f0f1f3;
-
-          &:hover {
-            background-color: #f0f1f3;
-            transform: scaleX(1.013);
-            transition: all ease-in-out 0.3s;
-          }
-
-          td {
-            text-align: start;
-            padding: 0 10px;
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    .page-controller {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      margin-top: 20px;
-      margin-bottom: 10px;
-
-      button {
-        background-color: #fff;
-        border: 1px solid #d0d3d9;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        padding: 5px 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-
-        img {
-          width: 16px;
         }
       }
     }

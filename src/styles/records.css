@@ -8,13 +8,15 @@
   .records-main {
     margin: 0px auto;
     display: flex;
-    width: 86.5vw;
+    width: 90vw;
+
     flex-direction: column;
     gap: 16px;
     align-items: center;
     position: relative;
 
     .records-container {
+
       display: flex;
       flex-direction: column;
       background-color: #ffff;
@@ -25,14 +27,16 @@
       gap: 25px;
       border-radius: 10px;
 
+
       .top {
         display: flex;
         justify-content: space-between;
-        width: 83vw;
+        width: 85.5vw;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         background-color: #fff;
         padding: 10px;
+        padding-left: 20px;
 
         .container-title {
           p {
