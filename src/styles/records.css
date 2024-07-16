@@ -8,23 +8,24 @@
   .records-main {
     margin: 0 auto;
     display: flex;
-    width: 83vw;
+    width: 90vw;
     flex-direction: column;
     gap: 12px;
     align-items: center;
     position: relative;
 
     .records-container {
-      width: 100%;
+      /* width: 100%; */
 
       .top {
         display: flex;
         justify-content: space-between;
-        width: 83vw;
+        width: 85.5vw;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         background-color: #fff;
         padding: 10px;
+        padding-left: 20px;
 
         .container-title {
           p {
