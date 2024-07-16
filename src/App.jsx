@@ -51,14 +51,16 @@ function App() {
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
 
-          <Route path="/specificItem" element={<SingleItem />} />
+          <Route path="/specificItem/:id" element={<SingleItem />} />
 
-          <Route path="/userPassword" element ={<UserPassword />} />
           <Route path="/reset" element ={<Reset />} />
           <Route path= "/otp" element={<Otp />} />
-          <Route path="/request" element ={<Request />} />
-          <Route path="/payment" element ={<Payment />} />
+          
 
+          <Route path="/userPassword" element={<UserPassword />} />
+          <Route path="/reset" element={<Reset />} />
+          <Route path="/request" element={<Request />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </div>
