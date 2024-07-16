@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import Settings from "./pages/Settings";
+import SingleItem from "./pages/SingleItem";
 
 function App() {
   return (
@@ -47,8 +48,9 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/userPassword" element ={<UserPassword />} />
-          <Route path="/reset" element ={<Reset />} />
+          <Route path="/userPassword" element={<UserPassword />} />
+          <Route path="/reset" element={<Reset />} />
+          <Route path="/specificItem" element={<SingleItem />} />
         </Routes>
       </BrowserRouter>
     </div>

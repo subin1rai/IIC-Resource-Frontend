@@ -67,11 +67,11 @@ export default function RecordsTable() {
     setPage(0);
   };
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const getAllBills = async () => {
       try {
-        const token = localStorage.getItem("token");
-
         const response = await axios.get("http://localhost:8898/api/bill", {
           headers: {
             Authorization: `Bearer ${token}`,
