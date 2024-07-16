@@ -7,6 +7,8 @@ import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { BsDisplay } from "react-icons/bs";
 
 const Records = () => {
@@ -43,13 +45,21 @@ const Records = () => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(bill);
   };
-
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8898/api/addBill", bill);
+      await axios.post("http://localhost:8898/api/addBill", bill,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(`${bill.bill_id} Added Successfully!`);
       closeAddBillForm(); // Close the form after successful submission
       window.location.reload();
+
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -297,6 +307,7 @@ const Records = () => {
           </form>
         </>
       )}
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };
