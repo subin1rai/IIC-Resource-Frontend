@@ -49,16 +49,14 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
-<<<<<<< HEAD
-          <Route path="/userPassword" element={<UserPassword />} />
-          <Route path="/reset" element={<Reset />} />
+
           <Route path="/specificItem" element={<SingleItem />} />
-=======
+
           <Route path="/userPassword" element ={<UserPassword />} />
           <Route path="/reset" element ={<Reset />} />
           <Route path="/request" element ={<Request />} />
           <Route path="/payment" element ={<Payment />} />
->>>>>>> e382bcb75a5fd0aab7b3d96bdf2b03394d6d446d
+
         </Routes>
       </BrowserRouter>
     </div>
