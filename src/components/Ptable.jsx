@@ -21,10 +21,16 @@ const columns = [
 ];
 
 export default function Ptable({ productCategory, setProductCategory }) {
+  const token = localStorage.getItem("token");
   const handleDeleteSubmit = async (categoryId) => {
     try{
     const response = await axios.delete(
-      `http://localhost:8898/api/deleteProductCategory/${categoryId}`
+      `http://localhost:8898/api/deleteProductCategory/${categoryId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     console.log(response.data);
       setProductCategory((prevCategory) =>
