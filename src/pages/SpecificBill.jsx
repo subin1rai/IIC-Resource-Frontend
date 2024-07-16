@@ -35,10 +35,27 @@ const SpecificBill = () => {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(
-              `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`
+              `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`, 
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             ),
-            axios.get("http://localhost:8898/api/items"),
-            axios.get("http://localhost:8898/api/vendor"),
+            axios.get("http://localhost:8898/api/items",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ),
+            axios.get("http://localhost:8898/api/vendor",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ),
           ]);
         setBillDetails(singleBillResponse.data.bill);
         setItems(itemsResponse.data.items);
@@ -74,15 +91,27 @@ const SpecificBill = () => {
   const handleChange = (e) => {
     setBill({ ...bill, [e.target.name]: e.target.value });
   };
-
+  const token = localStorage.getBill("token")
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:8898/api/updateBill/${bill_ID}`, bill);
+      await axios.put(`http://localhost:8898/api/updateBill/${bill_ID}`, bill,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       closeEditBillDetailsForm();
       // Refresh bill details
       const updatedBill = await axios.get(
-        `http://localhost:8898/api/singleBill/${bill_ID}`
+        `http://localhost:8898/api/singleBill/${bill_ID,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        }`
       );
       setBillDetails(updatedBill.data.bill);
     } catch (error) {

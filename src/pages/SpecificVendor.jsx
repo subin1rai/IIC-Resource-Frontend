@@ -55,13 +55,18 @@ const SpecificVendor = () => {
   const handleChange = (e) => {
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
   };
-
+  const token = localStorage.getVendor("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.put(
         `http://localhost:8898/api/updateVendor/${vendor_id}`,
-        editedVendor
+        editedVendor,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setVendor({ ...vendor, ...editedVendor });
       closeVendorDetailsForm();
@@ -72,7 +77,13 @@ const SpecificVendor = () => {
 
   const handleBlackList = async () => {
     try {
-      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`);
+      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        } 
+      );
       // You might want to update the vendor state or show a message here
     } catch (error) {
       console.log(error);
@@ -83,7 +94,12 @@ const SpecificVendor = () => {
     const fetchSingleVendor = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8898/api/vendor/${vendor_id}`
+          `http://localhost:8898/api/vendor/${vendor_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setVendor(response.data.VendorById);
       } catch (error) {
