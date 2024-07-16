@@ -124,7 +124,6 @@ const Inventory = () => {
             <div className="container-title">
               <p>Items</p>
             </div>
-
             <div className="icon-actions">
               <input type="text" placeholder="Search items" />
 

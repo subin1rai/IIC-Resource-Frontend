@@ -22,7 +22,7 @@
     gap: 5px;
     margin: 20px;
 
-    img {
+    .profile {
       width: 50px;
       height: 50px;
     }

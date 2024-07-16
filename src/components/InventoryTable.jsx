@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "item_name", label: "Item Name", maxWidth: 120 },
@@ -46,6 +47,7 @@ export default function InventoryTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const getAllItems = async () => {
@@ -128,6 +130,10 @@ export default function InventoryTable() {
     fontWeight: 600,
   };
 
+  const handleRowClick = (id) => {
+    navigate(`/specificItem/${id}`);
+  };
+
   return (
     <Paper
       sx={{
@@ -168,7 +174,14 @@ export default function InventoryTable() {
           </TableHead>
           <TableBody>
             {visibleRows.map((item) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={item.item_id}>
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={item.item_id}
+                onClick={() => handleRowClick(item.item_id)}
+                style={{ cursor: "pointer" }}
+              >
                 {columns.map((column) => {
                   let value = item[column.id];
                   if (column.id === "productCategory") {
