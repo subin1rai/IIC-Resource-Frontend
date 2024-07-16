@@ -76,10 +76,10 @@ export default function VendorTable() {
     setPage(0);
   };
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const getAllVendors = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get("http://localhost:8898/api/vendor", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,7 +130,7 @@ export default function VendorTable() {
     });
     return stabilizedThis.map((el) => el[0]);
   };
-
+  
   const visibleRows = React.useMemo(
     () =>
       stableSort(vendors, getComparator(order, orderBy)).slice(

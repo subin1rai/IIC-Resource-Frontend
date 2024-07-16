@@ -6,7 +6,7 @@
   width: 100vw;
 
   .vendor-main {
-    margin: 0 auto;
+    margin: 0px auto;
     display: flex;
     position: relative;
     flex-direction: column;

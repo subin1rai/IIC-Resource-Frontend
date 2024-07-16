@@ -6,16 +6,27 @@
   width: 100vw;
 
   .records-main {
-    margin: 0 auto;
+    margin: 0px auto;
     display: flex;
     width: 90vw;
+
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
     position: relative;
 
     .records-container {
-      /* width: 100%; */
+
+      display: flex;
+      flex-direction: column;
+      background-color: #ffff;
+      justify-content: center;
+      align-items: center;
+      width: 84vw;
+      padding: 10px;
+      gap: 25px;
+      border-radius: 10px;
+
 
       .top {
         display: flex;
@@ -29,7 +40,8 @@
 
         .container-title {
           p {
-            font-weight: 600;
+            font-weight: 500;
+            font-size: x-large;
           }
         }
 

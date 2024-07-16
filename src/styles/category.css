@@ -122,7 +122,7 @@
 
   .overall-category {
     background-color: #fff;
-    width: 83vw;
+    width: 84vw;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -154,7 +154,7 @@
     justify-content: space-between;
 
     .container p {
-      font-size: 16px;
+      font-size: 18px;
       margin: 15px;
     }
   

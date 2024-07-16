@@ -42,7 +42,7 @@ const Inventory = () => {
     setItemData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(e.target.value);
   };
-
+  const token = localStorage.getItem("token");
   const handleSUbmit = async (event) => {
     event.preventDefault();
 
@@ -50,7 +50,12 @@ const Inventory = () => {
       setLoading(true);
       const response = await axios.post(
         "http://localhost:8898/api/addItem",
-        itemData
+        itemData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
@@ -63,18 +68,39 @@ const Inventory = () => {
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items");
+        const response = await axios.get("http://localhost:8898/api/items", 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setItems(response.data.items);
 
         const categoryResponse = await axios.get(
-          "http://localhost:8898/api/category"
+          "http://localhost:8898/api/category",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const itemCategoryResponse = await axios.get(
-          "http://localhost:8898/api/itemCategory"
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const productCategoryResponse = await axios.get(
-          "http://localhost:8898/api/productCategory"
+          "http://localhost:8898/api/productCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         setProductCategory(productCategoryResponse.data.allData);
@@ -107,7 +133,7 @@ const Inventory = () => {
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>{}</h4>
+                <h4>31</h4>
                 <p>Number of items</p>
               </div>
               <div className="container">

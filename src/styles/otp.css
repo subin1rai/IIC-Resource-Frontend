@@ -1,7 +1,45 @@
 .otpcontent{
     text-align: center;
-    margin-top: 400px;
-    row-gap: 50px;
+    margin-top: 210px;
+    width: fit-content;
+    padding: 20px;
+    line-height: 150px;
+    border: 2px solid rgb(8, 7, 90);
+    margin-left: 630px;
+    border-radius: 15px;
+    padding-inline: 50px;
+
+    
+    .back{
+        background-color: #fff;
+        border: 2px solid #007bff;
+        top: 40px;
+        left: 40px;
+        color: black;
+        position: absolute;
+        transition: ease-in-out all 0.5s;
+        width: fit-content;
+        padding: 10px 20px;
+        
+        .redirect {
+          text-decoration: none;
+          color: #007bff;
+          display: flex;
+          justify-content: center;
+          height: 2.5vh;
+          align-items: center;
+          gap: 5px;
+        }
+      
+        &:hover {
+          background-color: #182170;
+          border: none;
+          .redirect {
+            text-decoration: none;
+            color: #fff;
+          }
+        }
+      }
     
     h1{
         font-weight: 600;
