@@ -6,6 +6,36 @@
     align-items: center;
     background-color: #ffffff;
     width: 100vw;
+
+    
+  .back-btn {
+    background-color: #fff;
+    border: 2px solid #007bff;
+    top: 40px;
+    left: 40px;
+    color: black;
+    position: absolute;
+    transition: ease-in-out all 0.5s;
+    width: fit-content;
+    padding: 10px 20px;
+    .redirect {
+      text-decoration: none;
+      color: #007bff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+  
+    &:hover {
+      background-color:#252f8a;
+      border: none;
+      .redirect {
+        text-decoration: none;
+        color: #fff;
+      }
+    }
+  }
     
     .resetform {
     background-color: #fff;

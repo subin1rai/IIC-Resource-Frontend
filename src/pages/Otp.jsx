@@ -1,5 +1,7 @@
 import {useEffect, useRef, useState} from "react";
+import { Link } from "react-router-dom";
 import "../styles/otp.css";
+import { IoChevronBackOutline } from "react-icons/io5";
 
 const Otp = ({length = 4, onOtpSubmit = () => {}}) => {
   const [otp, setOtp] = useState(new Array(length).fill(""));
@@ -53,6 +55,12 @@ const Otp = ({length = 4, onOtpSubmit = () => {}}) => {
 
   return (
     <div className="otpcontent">
+      <button className="back">
+        {" "}
+        <Link to={"/"} className="redirect">
+          <IoChevronBackOutline /> Back
+        </Link>{" "}
+      </button>
           <h1> Enter the OTP sent to your email </h1>
       {otp.map((value, index) => {
         return (
