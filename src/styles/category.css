@@ -135,11 +135,8 @@
   .category-title {
     display: flex;
     margin-left: 14px;
-
-    .h3 {
-      font: 26px;
-      font-weight: 500;
-    }
+    font-size: 20px;
+    font-weight: 500;
   }
 }
 

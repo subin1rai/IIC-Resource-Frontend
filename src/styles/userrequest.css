@@ -70,7 +70,7 @@
     /* Writing css for history side */
     .requestHistory {
         height: 75vh;
-        background-color: rebeccapurple;
+        /* background-color: rebeccapurple; */
         width: 45vw;
         overflow-y: scroll;
 
@@ -84,6 +84,15 @@
             color: #000000 ;
             /* color: #224199; */
             font-size: small;
+        }
+        .filter-btn{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #d0d3d9;
+            width: 100px;
+            height: 40px;
+            border-radius: 4px;
         }
 
 

@@ -1,0 +1,17 @@
+.payment {
+    background-color: #f0f1f3;
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+  
+    .payment-main {
+      margin: 0px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+
+}

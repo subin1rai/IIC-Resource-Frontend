@@ -1,11 +1,25 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../components/Sidebar";
+import "../styles/request.css";
+import Topbar from "../components/Topbar";
+import axios from "axios";
 
 const Request = () => {
   return (
-    <div class="bg-red-300 flex justify-center items-center h-screen text-green-500 font-extrabold text-3xl">
-      <h1>hi</h1> 
-    </div>
+    <div className="request">
+    <Sidebar />
+    <div className="request-main">
+      <Topbar />
+      <div className="overall-request">
+      <h3 className="request-title">Requests</h3>
+      <p>You can view your request here</p>
+        </div>
+
+
+          </div>
+          </div>
+
   );
 };
 
