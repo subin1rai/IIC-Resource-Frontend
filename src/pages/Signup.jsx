@@ -22,11 +22,17 @@ const Signup = () => {
       return updatedUser;
     });
   };
-
+  const token = localStorage.getUser("token")
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8898/api/signup`, user);
+      await axios.post(`http://localhost:8898/api/signup`, user,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -8,14 +8,13 @@
     .issue-main {
       margin: 0px auto;
       display: flex;
+      position:relative;
       flex-direction: column;
       gap: 16px;
+      width: 86.5vw;
       align-items: center;
-      position: relative;
     }
     
-  
-   
       .issue-container {
         display: flex;
         flex-direction: column;

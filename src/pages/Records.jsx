@@ -45,7 +45,7 @@ const Records = () => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(bill);
   };
-  const token = localStorage.getItem("token");
+  const token = localStorage.getBill("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
