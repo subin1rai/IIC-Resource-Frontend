@@ -55,7 +55,7 @@ const SpecificVendor = () => {
   const handleChange = (e) => {
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
   };
-  const token = localStorage.getVendor("token");
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -74,7 +74,7 @@ const SpecificVendor = () => {
       console.log(error);
     }
   };
-
+  
   const handleBlackList = async () => {
     try {
       await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`,

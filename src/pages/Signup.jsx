@@ -22,7 +22,7 @@ const Signup = () => {
       return updatedUser;
     });
   };
-  const token = localStorage.getUser("token")
+  const token = localStorage.getItem("token")
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

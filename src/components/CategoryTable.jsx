@@ -80,7 +80,7 @@ const Category = () => {
     }
     window.location.reload();
   };
-  const token = localStorage.getCategory("token");
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

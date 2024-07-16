@@ -76,13 +76,18 @@ const Category = () => {
     }
     window.location.reload();
   };
-
+  const token = localStorage.getItem("token")
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8898/api/addProductCategory",
-        newProductCategory
+        newProductCategory,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
 

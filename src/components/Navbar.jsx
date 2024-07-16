@@ -12,7 +12,8 @@ const Navbar = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(" http://localhost:8898/api/login");
+      const response = await axios.post(" http://localhost:8898/api/login", 
+      );
       navigate("/");
       console.log(response);
     } catch (error) {

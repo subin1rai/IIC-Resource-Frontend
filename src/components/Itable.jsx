@@ -22,7 +22,12 @@ const columns = [
 export default function Itable({ itemCategory, setItemCategory }) {
   const handleDeleteSubmit = async (categoryId) => {
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`
+      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
     );
     console.log(response.data);
     setItemCategory((prevCategory) =>

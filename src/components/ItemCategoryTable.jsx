@@ -15,11 +15,17 @@ const Category = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+   
     const controller = new AbortController();
     (async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8898/api/itemCategory"
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response.data);
         setItemCategory(response.data.allData || []);
@@ -51,7 +57,7 @@ const Category = () => {
     }));
     console.log(e.target.value);
   };
-
+ 
   const handleDeleteSUBmit = async (categoryId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this category?"
@@ -80,7 +86,7 @@ const Category = () => {
     }
     window.location.reload();
   };
-  const token = localStorage.getCategory("token");
+  const token = localStorage.getItem("token");
   const handleSUBmit = async (event) => {
     event.preventDefault();
     try {

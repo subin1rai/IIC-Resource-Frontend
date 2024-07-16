@@ -45,7 +45,7 @@ const Records = () => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(bill);
   };
-  const token = localStorage.getBill("token");
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -72,8 +72,13 @@ const Records = () => {
     const getAllItems = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const itemsData = await axios.get("http://localhost:8898/api/items");
+        const itemsData = await axios.get("http://localhost:8898/api/items",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          } 
+        );
 
         setItems(itemsData.data.items);
         console.log(items);

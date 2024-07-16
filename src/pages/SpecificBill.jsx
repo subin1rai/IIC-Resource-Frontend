@@ -91,7 +91,7 @@ const SpecificBill = () => {
   const handleChange = (e) => {
     setBill({ ...bill, [e.target.name]: e.target.value });
   };
-  const token = localStorage.getBill("token")
+  const token = localStorage.getItem("token")
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
