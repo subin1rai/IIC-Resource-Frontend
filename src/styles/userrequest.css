@@ -1,7 +1,8 @@
 /* css for the whole content */
 .requestcontent {
     background-color: #fff;
-    width: 100vw;
+    width: 80vw;
+    height: 80vh;
     display: flex;
     justify-content: flex-start;
     margin-top: 50px;
@@ -67,14 +68,15 @@
         height: 70vh;
         background-color:#224199;
         position: relative;
-        right: 200;
-        margin-left: 40px;
+        right: 180;
+        margin-left: 80px;
+        margin-top: 10px;
      
     }
 
     .requestHistory {
         width: 45%;
-        margin-left: 40px;
+        margin-left: 60px;
         
         h1 {
             font-weight: 530;
@@ -97,6 +99,7 @@
         .filter-options {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
     
             .month-btn {
                 display: flex;
@@ -132,20 +135,30 @@
 
         .history {
             margin-top: 20px;
-           
-        
-
-        .history-item {
-            border: 2px solid #d0d3d9;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-        
-
-         h4 {
-            margin-bottom: 5px;
         }
-    }
-    }
+        
+        .history-item {
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+        
+        .history-item h4 {
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .history-item h4:nth-child(odd) {
+            margin-right: 100px;
+           
+        }
+        
+        .history-item h4:nth-child(even) {
+            
+            margin-left: 20px;
+        }
     }
 }

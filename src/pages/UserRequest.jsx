@@ -61,16 +61,32 @@ const UserRequest = () => {
               <button className="date-btn">By month</button>
             </div>
           </div>
-          <div className="history">
-            <div className="history-item">
-              <h4>Item:</h4>
-              <h4>Status:</h4>
-              <h4>Quantity:</h4>
-              <h4>Issued by:</h4>
-              <h4>Requested date:</h4>
-              <h4>Issued date:</h4>
-            </div>
-          </div>
+          <div class="form-container">
+        <div class="form-row">
+            <span class="form-label">Item:</span>
+            <input type="text" class="form-input">
+        </div>
+        <div class="form-row">
+            <span class="form-label">Quantity:</span>
+            <input type="text" class="form-input">
+        </div>
+        <div class="form-row">
+            <span class="form-label">Requested date:</span>
+            <input type="text" class="form-input">
+        </div>
+        <div class="form-row">
+            <span class="form-label">Status:</span>
+            <input type="text" class="form-input">
+        </div>
+        <div class="form-row">
+            <span class="form-label">Issued by:</span>
+            <input type="text" class="form-input">
+        </div>
+        <div class="form-row">
+            <span class="form-label">Issued date:</span>
+            <input type="text" class="form-input">
+        </div>
+    </div>
         </div>
       </div>
     </div>
