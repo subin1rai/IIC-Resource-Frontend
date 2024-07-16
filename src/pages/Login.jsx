@@ -18,14 +18,19 @@ const Login = () => {
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `http://localhost:8898/api/login`,
         user,
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        
+         withCredentials: true }
       );
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");

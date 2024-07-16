@@ -8,21 +8,20 @@
     .issue-main {
       margin: 0px auto;
       display: flex;
+      position:relative;
       flex-direction: column;
       gap: 16px;
+      width: 86.5vw;
       align-items: center;
-      position: relative;
     }
     
-  
-   
       .issue-container {
         display: flex;
         flex-direction: column;
         background-color: #ffff;
         justify-content: center;
         align-items: center;
-        width: 84vw;
+        width: 85.5vw;
         padding: 10px;
         gap: 25px;
         border-radius: 10px;

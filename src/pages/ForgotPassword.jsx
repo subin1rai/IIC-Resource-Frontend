@@ -44,9 +44,6 @@ const ForgotPassword = () => {
         <input type="email" placeholder="Enter your email..." autoFocus="autofocus" onChange ={handleEmail} />
         <button className="submit-btn">Request OTP</button>
       </form>
-      <div className="verify">
-      <Otp length={4} onOtpSubmit={onOtpSubmit} />
-      </div>
     </div>
   );
 };

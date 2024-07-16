@@ -130,7 +130,7 @@ export default function VendorTable() {
     });
     return stabilizedThis.map((el) => el[0]);
   };
-
+  
   const visibleRows = React.useMemo(
     () =>
       stableSort(vendors, getComparator(order, orderBy)).slice(

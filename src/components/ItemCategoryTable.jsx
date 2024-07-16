@@ -61,7 +61,12 @@ const Category = () => {
     }
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteItemCategory/${categoryId}`
+        `http://localhost:8898/api/deleteItemCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setItemCategory((prevCategory) =>
@@ -75,13 +80,18 @@ const Category = () => {
     }
     window.location.reload();
   };
-
+  const token = localStorage.getCategory("token");
   const handleSUBmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8898/api/addItemCategory",
-        newItemCategory
+        newItemCategory,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       window.location.reload();

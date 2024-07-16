@@ -5,9 +5,9 @@ import ProfileSide from "../components/Profileside";
 
 const UserPassword =() => {
     return(
-        <div className="top">
+        <div className="passtop">
             <Navbar />
-            <div className="profileside">
+            <div className="paside">
                 <ProfileSide />
                 <div className="passcontent">
                 <form>

@@ -16,7 +16,13 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/category");
+        const response = await axios.get("http://localhost:8898/api/category", 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response.data);
         setCategory(response.data.category || []);
       } catch (error) {
@@ -55,7 +61,12 @@ const Category = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
+        `http://localhost:8898/api/deleteCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setCategory((prevCategory) =>
@@ -69,13 +80,18 @@ const Category = () => {
     }
     window.location.reload();
   };
-
+  const token = localStorage.getCategory("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8898/api/addCategory",
-        newCategory
+        newCategory,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       window.location.reload();
@@ -132,7 +148,7 @@ const Category = () => {
               </div>
 
               {error && <span className="text-red-500 ml-4">{error}</span>}
-
+              {/* button  of category */}
               <div className="buttons">
                 <button type="submit" className="add-buttons">
                   Add Category
