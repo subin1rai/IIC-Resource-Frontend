@@ -60,7 +60,8 @@ export default function RecordsTable() {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const navigate = useNavigate();
-
+  
+  const token = localStorage.getItem("token");
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -73,7 +74,6 @@ export default function RecordsTable() {
   useEffect(() => {
     const getAllBills = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get("http://localhost:8898/api/bill", {
           headers: {
             Authorization: `Bearer ${token}`,

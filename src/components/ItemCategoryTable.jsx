@@ -13,9 +13,9 @@ const Category = () => {
   const [error, setError] = useState(""); 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
-
+  
+  const token = localStorage.getItem("token");
   useEffect(() => {
-   
     const controller = new AbortController();
     (async () => {
       try {
@@ -86,7 +86,6 @@ const Category = () => {
     }
     window.location.reload();
   };
-  const token = localStorage.getItem("token");
   const handleSUBmit = async (event) => {
     event.preventDefault();
     try {

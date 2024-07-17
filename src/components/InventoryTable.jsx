@@ -39,18 +39,24 @@ const columns = [
   },
   { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
-
 export default function InventoryTable() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("recentPurchase");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [items, setItems] = React.useState([]);
-
+  
+  const token = localStorage.getItem("token");
   React.useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items");
+        const response = await axios.get("http://localhost:8898/api/items",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          } 
+        );
         setItems(response.data.items || []);
       } catch (error) {
         console.log(error);

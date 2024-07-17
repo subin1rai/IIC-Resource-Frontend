@@ -65,13 +65,12 @@ const Records = () => {
       setError(error.response.data.error);
     }
   };
-  const [vendors, setVendors] = useState("");
-  const [items, setItems] = useState("");
+  const [vendors, setVendors] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const token = localStorage.getItem("token");
         const itemsData = await axios.get("http://localhost:8898/api/items",
           {
             headers: {
