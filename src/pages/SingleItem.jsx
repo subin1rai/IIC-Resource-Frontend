@@ -119,7 +119,6 @@ const SingleItem = () => {
           <ItemHistory />
         </div>
       </div>
-
       {editFormVisibility && (
         <>
           <form

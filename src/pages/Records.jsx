@@ -49,17 +49,14 @@ const Records = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8898/api/addBill", bill,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.post("http://localhost:8898/api/addBill", bill, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       toast.success(`${bill.bill_id} Added Successfully!`);
       closeAddBillForm(); // Close the form after successful submission
       window.location.reload();
-
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -72,13 +69,11 @@ const Records = () => {
     const getAllItems = async () => {
       try {
         const token = localStorage.getItem("token");
-        const itemsData = await axios.get("http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          } 
-        );
+        const itemsData = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setItems(itemsData.data.items);
         console.log(items);

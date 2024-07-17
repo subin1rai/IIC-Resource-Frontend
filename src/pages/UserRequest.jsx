@@ -34,10 +34,15 @@ const UserRequest = () => {
               <option value="Pencil">Pencil</option>
             </select>
           </div>
-          
+
           <div className="singleField">
             <label htmlFor="quantity">Quantity</label>
-            <input type="number" name="quantity" id="" placeholder="Enter quantity" />
+            <input
+              type="number"
+              name="quantity"
+              id=""
+              placeholder="Enter quantity"
+            />
           </div>
           <div className="request-buttons">
             <button type="submit" className="request-btn">
@@ -62,31 +67,31 @@ const UserRequest = () => {
             </div>
           </div>
           <div class="form-container">
-        <div class="form-row">
-            <span class="form-label">Item:</span>
-            <input type="text" class="form-input">
-        </div>
-        <div class="form-row">
-            <span class="form-label">Quantity:</span>
-            <input type="text" class="form-input">
-        </div>
-        <div class="form-row">
-            <span class="form-label">Requested date:</span>
-            <input type="text" class="form-input">
-        </div>
-        <div class="form-row">
-            <span class="form-label">Status:</span>
-            <input type="text" class="form-input">
-        </div>
-        <div class="form-row">
-            <span class="form-label">Issued by:</span>
-            <input type="text" class="form-input">
-        </div>
-        <div class="form-row">
-            <span class="form-label">Issued date:</span>
-            <input type="text" class="form-input">
-        </div>
-    </div>
+            <div class="form-row">
+              <span class="form-label">Item:</span>
+              <input type="text" class="form-input" />
+            </div>
+            <div class="form-row">
+              <span class="form-label">Quantity:</span>
+              <input type="text" class="form-input" />
+            </div>
+            <div class="form-row">
+              <span class="form-label">Requested date:</span>
+              <input type="text" class="form-input" />
+            </div>
+            <div class="form-row">
+              <span class="form-label">Status:</span>
+              <input type="text" class="form-input" />
+            </div>
+            <div class="form-row">
+              <span class="form-label">Issued by:</span>
+              <input type="text" class="form-input" />
+            </div>
+            <div class="form-row">
+              <span class="form-label">Issued date:</span>
+              <input type="text" class="form-input" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
