@@ -6,7 +6,7 @@ import validVendor from "../assets/user.svg";
 
 const Dashboard = () => {
   return (
-    <div className="dashbaord">
+    <div className="dashboard">
       <Sidebar />
 
 

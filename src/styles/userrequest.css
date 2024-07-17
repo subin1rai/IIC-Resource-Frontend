@@ -1,25 +1,20 @@
-
-
-.userRequest {
-    width: 100vw;
-    height: 100vh;
-}
-
 /* css for the whole content */
 .requestcontent {
     background-color: #fff;
-
-    width: 100vw;
+    width: 80vw;
+    height: 80vh;
     display: flex;
-    justify-content: space-around;
-    margin-top: 100px;
+    justify-content: flex-start;
+    margin-top: 50px;
+    margin-left: 280px;
+    
 
     /* writing css for request side */
     .request-form {
-        gap: 5px;
+        
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 35px;
 
         h1 {
             font-weight: 530;
@@ -37,9 +32,8 @@
             width: 250px;
             border: 1px solid #000000;
             padding: 5px 10px;
-            border-radius: 6px;
+            border-radius: 8px;
         }
-
 
         /* css for text */
         .singleField {
@@ -50,7 +44,8 @@
             justify-content: space-between;
         }
 
-        .request-btn{
+        .request-btn {
+            
             display: flex;
             justify-content: center;
             align-items: center;
@@ -58,22 +53,31 @@
             padding: 7px 10px;
             gap: 10px;
             color: #fff;
-            background-color: #1570ef;
+            background-color: #224199;
             border: 1px solid #d0d3d9;
             outline: none;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 30px;
             margin-left: 290px;
         }
     }
 
-    /* Writing css for history side */
-    .requestHistory {
-        height: 75vh;
-        /* background-color: rebeccapurple; */
-        width: 45vw;
-        overflow-y: scroll;
+    /* Writing css for vertical line */
+    .divider {
+        width: 2px;
+        height: 70vh;
+        background-color:#224199;
+        position: relative;
+        right: 180;
+        margin-left: 80px;
+        margin-top: 10px;
+     
+    }
 
+    .requestHistory {
+        width: 45%;
+        margin-left: 60px;
+        
         h1 {
             font-weight: 530;
             color: #000000;
@@ -81,22 +85,80 @@
         }
 
         h5 {
-            color: #000000 ;
-            /* color: #224199; */
+            color: #224199;
             font-size: small;
         }
-        .filter-btn{
-            display:flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #d0d3d9;
-            width: 100px;
-            height: 40px;
-            border-radius: 4px;
+
+        .heading2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+    
+            .month-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: fit-content;
+                padding: 5px 10px;
+                gap: 10px;
+                color: #5d6679;
+                background-color: #fff;
+                border: 1px solid #d0d3d9;
+                outline: none;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+    
+            .date-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: fit-content;
+                padding: 7px 10px;
+                gap: 10px;
+                color:  #5d6679;
+                background-color: #fff;
+                border: 1px solid #d0d3d9;
+                outline: none;
+                cursor: pointer;
+                border-radius: 10px;
+                margin-left: 0; /* Remove margin-left */
+            }
+        }
 
+        .history {
+            margin-top: 20px;
+        }
+        
+        .history-item {
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+        
+        .history-item h4 {
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .history-item h4:nth-child(odd) {
+            margin-right: 100px;
+           
+        }
+        
+        .history-item h4:nth-child(even) {
+            
+            margin-left: 20px;
+        }
     }
-
 }
-

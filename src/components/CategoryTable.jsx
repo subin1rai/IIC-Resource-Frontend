@@ -148,7 +148,7 @@ const Category = () => {
               </div>
 
               {error && <span className="text-red-500 ml-4">{error}</span>}
-
+              {/* button  of category */}
               <div className="buttons">
                 <button type="submit" className="add-buttons">
                   Add Category

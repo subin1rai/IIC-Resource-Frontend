@@ -8,7 +8,8 @@
   .records-main {
     margin: 0px auto;
     display: flex;
-    width: 86.5vw;
+    width: 90vw;
+
     flex-direction: column;
     gap: 16px;
     align-items: center;
@@ -20,7 +21,7 @@
       background-color: #ffff;
       justify-content: center;
       align-items: center;
-      width: 84vw;
+      width: 85.5vw;
       padding: 10px;
       gap: 25px;
       border-radius: 10px;
@@ -28,11 +29,12 @@
       .top {
         display: flex;
         justify-content: space-between;
-        width: 83vw;
+        width: 85.5vw;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         background-color: #fff;
         padding: 10px;
+        padding-left: 20px;
 
         .container-title {
           p {
@@ -181,7 +183,7 @@
         height: 48px;
       }
 
-      .tdsselect{
+      .tdsselect {
         padding: 10px;
         width: 291px;
         border-radius: 6px;
