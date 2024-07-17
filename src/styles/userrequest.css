@@ -75,7 +75,7 @@
     }
 
     .requestHistory {
-        width: 45%;
+        width: 65%;
         margin-left: 60px;
         
         h1 {
@@ -133,32 +133,40 @@
             }
         }
 
-        .history {
-            margin-top: 20px;
-        }
-        
-        .history-item {
+        .Historyform {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
             border: 1px solid #000;
-            border-radius: 5px;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+          
+          
+          .left-column, .right-column {
+            width:50%;
+            box-sizing: border-box;
+          }
+          
+          .History {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+          }
+          
+          .History label {
+            margin-right: 25px;
+            min-width: 125px;
+          
+          }
+          .History input {
+            width: 250px;
+            border: 1px solid #000000;
+            padding: 5px 10px;
+            border-radius: 8px;
+          
         }
-        
-        .history-item h4 {
-            margin: 0;
-            font-weight: normal;
-        }
-        
-        .history-item h4:nth-child(odd) {
-            margin-right: 100px;
-           
-        }
-        
-        .history-item h4:nth-child(even) {
-            
-            margin-left: 20px;
-        }
+    }
+
     }
 }

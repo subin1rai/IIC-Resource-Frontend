@@ -53,10 +53,9 @@ const columns = [
   },
 ];
 
-export default function RecordsTable() {
+export default function RecordsTable({ bills, setBills }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(11);
-  const [bills, setBills] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const navigate = useNavigate();
@@ -76,8 +75,6 @@ export default function RecordsTable() {
   useEffect(() => {
     const getAllBills = async () => {
       try {
-
-
         const response = await axios.get("http://localhost:8898/api/bill", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -91,8 +88,10 @@ export default function RecordsTable() {
       }
     };
 
-    getAllBills();
-  }, []);
+    if (bills.length === 0) {
+      getAllBills();
+    }
+  }, [bills, setBills]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

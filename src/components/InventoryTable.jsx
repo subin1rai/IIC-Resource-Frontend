@@ -8,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -40,11 +39,14 @@ const columns = [
   },
   { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
-export default function InventoryTable() {
+
+
+export default function InventoryTable({ items }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("recentPurchase");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
   const [items, setItems] = React.useState([]);
     const navigate = useNavigate();
 
@@ -68,6 +70,10 @@ export default function InventoryTable() {
 
     getAllItems();
   }, []);
+
+
+  const navigate = useNavigate();
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -222,7 +228,7 @@ export default function InventoryTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={items.length}
         rowsPerPage={rowsPerPage}

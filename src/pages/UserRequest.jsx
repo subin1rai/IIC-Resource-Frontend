@@ -66,35 +66,65 @@ const UserRequest = () => {
               <button className="date-btn">By month</button>
             </div>
           </div>
-          <div class="form-container">
-            <div class="form-row">
-              <span class="form-label">Item:</span>
-              <input type="text" class="form-input" />
-            </div>
-            <div class="form-row">
-              <span class="form-label">Quantity:</span>
-              <input type="text" class="form-input" />
-            </div>
-            <div class="form-row">
-              <span class="form-label">Requested date:</span>
-              <input type="text" class="form-input" />
-            </div>
-            <div class="form-row">
-              <span class="form-label">Status:</span>
-              <input type="text" class="form-input" />
-            </div>
-            <div class="form-row">
-              <span class="form-label">Issued by:</span>
-              <input type="text" class="form-input" />
-            </div>
-            <div class="form-row">
-              <span class="form-label">Issued date:</span>
-              <input type="text" class="form-input" />
-            </div>
-          </div>
+        
+
+        <form action="" className="Historyform">
+      <div className="left-column">
+        <div className="History">
+          <label htmlFor="Item">Item</label>
+          <input type="text" 
+          name="item" 
+          id="" 
+          placeholder="" />
+        </div>
+
+        <div className="History">
+          <label htmlFor="Quantity">Quantity</label>
+          <input type="number" 
+          name="quantity" 
+          id="" 
+          placeholder="" />
+        </div>
+
+        <div className="History">
+          <label htmlFor="Requested date">Requested date</label>
+          <input type="date"
+           name="Requested date"
+            id="" 
+            placeholder="" />
         </div>
       </div>
-    </div>
+
+      <div className="right-column">
+        <div className="History">
+          <label htmlFor="Status">Status</label>
+          <input type="text"
+           name="status"
+            id="" 
+            placeholder="" />
+        </div>
+
+        <div className="History">
+          <label htmlFor="Issued by">Issued by</label>
+          <input type="text"
+           name="Issued by" 
+           id=""
+          placeholder="" />
+        </div>
+
+        <div className="History">
+          <label htmlFor="Issued date">Issued date</label>
+          <input type="date" 
+          name="Issued date"
+           id="" 
+           placeholder="" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
   );
 };
 
