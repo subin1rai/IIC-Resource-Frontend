@@ -5,6 +5,25 @@ import "../styles/userrequest.css";
 import Navbar from "../components/Navbar";
 
 const UserRequest = () => {
+  const [request, setRequest] = React.useState({
+    user_id: "",
+    category_name: "",
+    item_name: "",
+    quantity: "",
+  });
+
+  const handleChange = (e) => {
+    setRequest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await axios.post("http://localhost:8898/api/addRequest");
+    console.log(response);
+  };
+
+  console.log(request);
+
   return (
     <div className="userRequest">
       <Navbar />
@@ -19,7 +38,7 @@ const UserRequest = () => {
           {/* creating required fields for the form */}
           <div className="singleField">
             <label htmlFor="categoryName">Category Name</label>
-            <select name="category_name" id="">
+            <select name="category_name" id="" onChange={handleChange}>
               <option value="">Select a category</option>
               <option value="Books">Books</option>
               <option value="Pens">Pens</option>
@@ -27,7 +46,7 @@ const UserRequest = () => {
           </div>
           <div className="singleField">
             <label htmlFor="itemCategory">Item Category</label>
-            <select name="item_category" id="">
+            <select name="item_category" id="" onChange={handleChange}>
               <option value="">Select a category</option>
               <option value="Books">Books</option>
               <option value="Pens">Pens</option>
@@ -42,6 +61,7 @@ const UserRequest = () => {
               name="quantity"
               id=""
               placeholder="Enter quantity"
+              onChange={handleChange}
             />
           </div>
           <div className="request-buttons">
@@ -66,65 +86,45 @@ const UserRequest = () => {
               <button className="date-btn">By month</button>
             </div>
           </div>
-        
 
-        <form action="" className="Historyform">
-      <div className="left-column">
-        <div className="History">
-          <label htmlFor="Item">Item</label>
-          <input type="text" 
-          name="item" 
-          id="" 
-          placeholder="" />
-        </div>
+          <form action="" className="Historyform">
+            <div className="left-column">
+              <div className="History">
+                <label htmlFor="Item">Item</label>
+                <input type="text" name="item" id="" placeholder="" />
+              </div>
 
-        <div className="History">
-          <label htmlFor="Quantity">Quantity</label>
-          <input type="number" 
-          name="quantity" 
-          id="" 
-          placeholder="" />
-        </div>
+              <div className="History">
+                <label htmlFor="Quantity">Quantity</label>
+                <input type="number" name="quantity" id="" placeholder="" />
+              </div>
 
-        <div className="History">
-          <label htmlFor="Requested date">Requested date</label>
-          <input type="date"
-           name="Requested date"
-            id="" 
-            placeholder="" />
-        </div>
-      </div>
+              <div className="History">
+                <label htmlFor="Requested date">Requested date</label>
+                <input type="date" name="Requested date" id="" placeholder="" />
+              </div>
+            </div>
 
-      <div className="right-column">
-        <div className="History">
-          <label htmlFor="Status">Status</label>
-          <input type="text"
-           name="status"
-            id="" 
-            placeholder="" />
-        </div>
+            <div className="right-column">
+              <div className="History">
+                <label htmlFor="Status">Status</label>
+                <input type="text" name="status" id="" placeholder="" />
+              </div>
 
-        <div className="History">
-          <label htmlFor="Issued by">Issued by</label>
-          <input type="text"
-           name="Issued by" 
-           id=""
-          placeholder="" />
-        </div>
+              <div className="History">
+                <label htmlFor="Issued by">Issued by</label>
+                <input type="text" name="Issued by" id="" placeholder="" />
+              </div>
 
-        <div className="History">
-          <label htmlFor="Issued date">Issued date</label>
-          <input type="date" 
-          name="Issued date"
-           id="" 
-           placeholder="" />
+              <div className="History">
+                <label htmlFor="Issued date">Issued date</label>
+                <input type="date" name="Issued date" id="" placeholder="" />
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-    </form>
-  </div>
-</div>
-</div>
-
+    </div>
   );
 };
 
