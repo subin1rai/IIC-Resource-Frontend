@@ -40,27 +40,24 @@ const columns = [
   { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
 
-
 export default function InventoryTable({ items }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("recentPurchase");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [items, setItems] = React.useState([]);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+
   React.useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          } 
-        );
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setItems(response.data.items || []);
       } catch (error) {
         console.log(error);
@@ -70,10 +67,6 @@ export default function InventoryTable({ items }) {
 
     getAllItems();
   }, []);
-
-
-  const navigate = useNavigate();
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
