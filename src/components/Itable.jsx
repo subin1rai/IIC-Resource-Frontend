@@ -18,8 +18,8 @@ const columns = [
   { id: "items", label: "Items", width: 100 },
   { id: "action", label: "Action", width: 170 },
 ];
-
 export default function Itable({ itemCategory, setItemCategory }) {
+  const token = localStorage.getItem("token");
   const handleDeleteSubmit = async (categoryId) => {
     try {
       const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`,

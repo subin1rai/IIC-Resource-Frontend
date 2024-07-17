@@ -68,8 +68,9 @@ const Records = () => {
     }
   };
 
-  const [vendors, setVendors] = useState("");
-  const [items, setItems] = useState("");
+  const [vendors, setVendors] = useState([]);
+  const [items, setItems] = useState([]);
+
 
   useEffect(() => {
     const getAllItems = async () => {

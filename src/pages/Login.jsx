@@ -24,7 +24,8 @@ const Login = () => {
     try {
       const response = await axios.post(
         `http://localhost:8898/api/login`,
-        user
+        user,
+         {withCredentials: true }
       );
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");

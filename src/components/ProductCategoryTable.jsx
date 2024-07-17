@@ -13,13 +13,19 @@ const Category = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const navigate = useNavigate();
-
+  
+  const token = localStorage.getItem("token")
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8898/api/productCategory"
+          "http://localhost:8898/api/productCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response.data);
         setProductCategory(response.data.allData || []);
@@ -51,7 +57,7 @@ const Category = () => {
     }));
     console.log(e.target.value);
   };
-
+  
   const handleDeleteSubmit = async (categoryId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this category?"
@@ -62,7 +68,12 @@ const Category = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteProductCategory/${categoryId}`
+        `http://localhost:8898/api/deleteProductCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setProductCategory((prevCategory) =>
@@ -76,7 +87,6 @@ const Category = () => {
     }
     window.location.reload();
   };
-  const token = localStorage.getItem("token")
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

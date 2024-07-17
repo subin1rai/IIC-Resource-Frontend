@@ -18,12 +18,17 @@ const columns = [
   { id: "items", label: "Items", width: 100 },
   { id: "action", label: "Action", width: 170 },
 ];
-
 export default function Ctable({ category, setCategory }) {
+  const token = localStorage.getItem("token");
   const handleDeleteSubmit = async (categoryId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`
+        `http://localhost:8898/api/deleteCategory/${categoryId}`, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setCategory((prevCategory) =>

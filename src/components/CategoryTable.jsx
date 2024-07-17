@@ -12,6 +12,7 @@ const Category = () => {
   const [error, setError] = useState(""); // Move inside the component
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -80,7 +81,6 @@ const Category = () => {
     }
     window.location.reload();
   };
-  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
