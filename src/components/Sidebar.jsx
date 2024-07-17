@@ -8,14 +8,9 @@ import logout from "../assets/logout.svg";
 import request from "../assets/request.svg";
 import payment from "../assets/payment.svg";
 import billRecord from "../assets/billRecord.svg";
-import activeBillRecord from "../assets/activeBillRecord.svg";
 import issue from "../assets/issue.svg";
 import category from "../assets/category.svg";
 import vendor from "../assets/vendor.svg";
-import activeVendor from "../assets/activeVendor.svg";
-import activeDashboard from "../assets/activeDashboard.svg";
-import activeInventory from "../assets/activeInventory.svg";
-import activeRequest from "../assets/activeRequest.svg";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -52,64 +47,56 @@ const Sidebar = () => {
           {/* dashboard nav */}
           <div className="item">
             <NavLink to="/dashboard" className={setActiveClass}>
-              <img src={dashboard} className="inactiveImg" alt="" />
-              <img src={activeDashboard} className="activeImg" alt="" />
+              <img src={dashboard} className="item-img" alt="" />
               Dashboard
             </NavLink>
           </div>
           {/* inventory nav */}
           <div className="item">
             <NavLink to="/inventory" className={setActiveClass}>
-              <img src={activeInventory} alt="" className="activeImg" />
-              <img src={inventory} alt="" className="inactiveImg" />
+              <img src={inventory} className="item-img" alt="" />
               Inventory
             </NavLink>
           </div>
           {/* record nav */}
           <div className="item">
             <NavLink to="/records" className={setActiveClass}>
-              <img src={activeBillRecord} alt="" className="activeImg" />
-              <img src={billRecord} alt="" className="inactiveImg" />
+              <img src={billRecord} className="item-img" alt="" />
               Bill Records
             </NavLink>
           </div>
           {/* vendors nav */}
           <div className="item">
             <NavLink to="/vendors" className={setActiveClass}>
-              <img src={activeVendor} alt="" className="activeImg" />
-              <img src={vendor} alt="" className="inactiveImg" />
+              <img src={vendor} className="item-img" alt="" />
               Vendors
             </NavLink>
           </div>
           {/* category nav */}
           <div className="item">
             <NavLink to="/Category" className={setActiveClass}>
-              <img src={category} alt="" />
-              <img src={category} alt="" />
+              <img src={category} className="item-img" alt="" />
               Category
             </NavLink>
           </div>
           {/* issue nav */}
           <div className="item">
             <NavLink to="/issue" className={setActiveClass}>
-              <img src={issue} alt="" className="activeImg" />
-              <img src={issue} alt="" className="activeImg" />
+              <img src={issue} className="item-img" alt="" />
               Issue
             </NavLink>
           </div>
           {/* Payment nav */}
           <div className="item">
             <NavLink to="/payment" className={setActiveClass}>
-              <img src={payment} alt="" className="activeImg" />
-              <img src={payment} alt="" className="activeImg" />
+              <img src={payment} className="item-img" alt="" />
               Payment
             </NavLink>
           </div>
           {/* Request nav */}
           <div className="item">
             <NavLink to="/request" className={setActiveClass}>
-              <img src={activeRequest} alt="" className="activeImg" />
-              <img src={request} alt="" className="inactiveImg" />
+              <img src={request} className="item-img" alt="" />
               Request
             </NavLink>
           </div>
@@ -121,16 +108,14 @@ const Sidebar = () => {
           {/* settings nav */}
           <div className="item">
             <NavLink to="/settings" className={setActiveClass}>
-              <img src={settings} alt="" className="activeImg" />
-              <img src={settings} alt="" className="activeImg" />
+              <img src={settings} className="item-img" alt="" />
               Settings
             </NavLink>
           </div>
           {/* logout nav */}
           <div className="item">
             <NavLink to="/" onClick={handleLogout} className={setActiveClass}>
-              <img src={logout} alt="" className="activeImg" />
-              <img src={logout} alt="" className="activeImg" />
+              <img src={logout} className="item-img" alt="" />
               Log out
             </NavLink>
           </div>
