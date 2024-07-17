@@ -27,48 +27,53 @@ const Records = () => {
   });
 
   const [error, setError] = useState("");
-
   const [addFormVisibility, setAddFormVisibility] = useState(false);
+  const [bills, setBills] = useState([]);
 
-  //  visualizing add bill form
   const openAddBillForm = () => {
     setAddFormVisibility(true);
   };
 
-  //closing add bill form
   const closeAddBillForm = () => {
     setError("");
     setAddFormVisibility(false);
   };
 
+  const token = localStorage.getItem("token");
+
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(bill);
   };
-  const token = localStorage.getItem("token");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8898/api/addBill", bill, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success(`${bill.bill_id} Added Successfully!`);
-      closeAddBillForm(); // Close the form after successful submission
-      window.location.reload();
+      const response = await axios.post(
+        "http://localhost:8898/api/addBill",
+        bill,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(`${bill.bill_no} Added Successfully!`);
+      closeAddBillForm();
+      // Update the bills state with the new bill
+      setBills((prevBills) => [...prevBills, response.data.bill]);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
     }
   };
+
   const [vendors, setVendors] = useState("");
   const [items, setItems] = useState("");
 
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const token = localStorage.getItem("token");
         const itemsData = await axios.get("http://localhost:8898/api/items", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -106,7 +111,6 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
-            {/* adding filter icon */}
             <button className="filter-btn" aria-label="Menu">
               <img src={filterIcon} alt="filter icon" />
               Filter
@@ -115,8 +119,7 @@ const Records = () => {
               Add Bill
             </button>
           </div>
-          {/* importing records table from components */}
-          <RecordsTable />
+          <RecordsTable bills={bills} setBills={setBills} />
         </div>
       </div>
       {addFormVisibility && (
@@ -136,7 +139,6 @@ const Records = () => {
                 </button>
                 <p className="title">Add Bill Details</p>
                 <div className="double">
-                  {/* details of bill */}
                   <div className="for">
                     <label htmlFor="bill_no">Bill No:</label>
                     <input
@@ -180,11 +182,12 @@ const Records = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Vendor</option>
-                      {vendors.map((vendor, vendor_id) => (
-                        <option key={vendor_id} value={vendor.vendor_name}>
-                          {vendor.vendor_name}
-                        </option>
-                      ))}
+                      {vendors &&
+                        vendors.map((vendor, vendor_id) => (
+                          <option key={vendor_id} value={vendor.vendor_name}>
+                            {vendor.vendor_name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -197,11 +200,12 @@ const Records = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Items</option>
-                      {items.map((item, item_id) => (
-                        <option key={item_id} value={item.item_name}>
-                          {item.item_name}
-                        </option>
-                      ))}
+                      {items &&
+                        items.map((item, item_id) => (
+                          <option key={item_id} value={item.item_name}>
+                            {item.item_name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -257,7 +261,6 @@ const Records = () => {
                   <div className="double">
                     <div className="for">
                       <label htmlFor="actual_amount">Actual Amount:</label>
-
                       <input
                         type="number"
                         placeholder="Enter actual amount"
@@ -268,7 +271,6 @@ const Records = () => {
                     </div>
                     <div className="for">
                       <label htmlFor="paid_amount">Paid Amount:</label>
-
                       <input
                         type="number"
                         placeholder="Enter paid amount"
@@ -295,7 +297,7 @@ const Records = () => {
                   <p>Paid Amount: {bill.paid_amount}</p>
                 </div>
 
-                {error && <span class="text-red-500">{error}</span>}
+                {error && <span className="text-red-500">{error}</span>}
 
                 <div className="buttons" class="mt-2">
                   <button type="submit" className="add-btn">

@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Inventory = () => {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
@@ -22,10 +22,10 @@ const Inventory = () => {
   });
 
   const [error, setError] = useState("");
-  const [lodaing, setLoading] = useState(false);
-  const [category, setCategory] = useState("");
-  const [productCategory, setProductCategory] = useState("");
-  const [itemCategory, setItemCategory] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [productCategory, setProductCategory] = useState([]);
+  const [itemCategory, setItemCategory] = useState([]);
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -40,10 +40,11 @@ const Inventory = () => {
 
   const handleChange = (e) => {
     setItemData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(e.target.value);
   };
+
   const token = localStorage.getItem("token");
-  const handleSUbmit = async (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
@@ -59,22 +60,35 @@ const Inventory = () => {
       );
       toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
-      lodaing(false);
+      setLoading(false);
+
+      // Add the new item to the items state
+      setItems((prevItems) => [...prevItems, response.data.newItem]);
+
+      // Reset the form
+      setItemData({
+        item_name: "",
+        category: "",
+        itemCategory: "",
+        measuring_unit: "",
+        productCategory: "",
+        low_limit: 0,
+      });
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
+      setLoading(false);
     }
   };
+
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items", 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setItems(response.data.items);
 
         const categoryResponse = await axios.get(
@@ -106,7 +120,6 @@ const Inventory = () => {
         setProductCategory(productCategoryResponse.data.allData);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
-        setItems(response.data.items);
       } catch (error) {
         console.log(error);
       }
@@ -114,8 +127,6 @@ const Inventory = () => {
 
     getAllItems();
   }, []);
-
-  console.log(productCategory);
 
   return (
     <div className="inventory">
@@ -128,23 +139,27 @@ const Inventory = () => {
             <div className="inventory-container">
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of category</p>
+                <h4>{category.length}</h4>
+                <p>Number of categories</p>
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
+                <h4>{items.length}</h4>
                 <p>Number of items</p>
               </div>
               <div className="container">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of lowstock</p>
+                <h4>
+                  {
+                    items.filter((item) => item.stockStatus === "Low Stock")
+                      .length
+                  }
+                </h4>
+                <p>Number of low stock</p>
               </div>
             </div>
           </div>
         </div>
-        {/* Items table */}
         <div className="items-container">
           <div className="item-container-top">
             <div className="container-title">
@@ -152,24 +167,21 @@ const Inventory = () => {
             </div>
             <div className="icon-actions">
               <input type="text" placeholder="Search items" />
-
               <button className="filter-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-
               <button className="add-btn" onClick={displayAddPopup}>
                 Add Item
               </button>
             </div>
           </div>
-          <InventoryTable />
+          <InventoryTable items={items} />
         </div>
       </div>
 
-      {/* Creating a form for adding item in the inventory */}
       {addFormVisibility && (
-        <form action="" onSubmit={handleSUbmit} className="filter-form">
+        <form onSubmit={handleSubmit} className="filter-form">
           <button
             type="button"
             className="discard-btn"
@@ -186,12 +198,18 @@ const Inventory = () => {
               autoFocus="autofocus"
               name="item_name"
               id="item_name"
+              value={itemData.item_name}
               onChange={handleChange}
             />
           </div>
           <div className="field">
             <label htmlFor="category">Category</label>
-            <select name="category" id="category" onChange={handleChange}>
+            <select
+              name="category"
+              id="category"
+              value={itemData.category}
+              onChange={handleChange}
+            >
               <option value="">Choose Category</option>
               {category.map((cat, index) => (
                 <option key={index} value={cat.category_name}>
@@ -201,7 +219,7 @@ const Inventory = () => {
             </select>
           </div>
           <div className="field">
-            <label htmlFor="product_category"> Product Category</label>
+            <label htmlFor="product_category">Product Category</label>
             <select
               name="productCategory"
               id="product_category"
@@ -216,12 +234,12 @@ const Inventory = () => {
               ))}
             </select>
           </div>
-
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
             <select
               name="itemCategory"
               id="item_category"
+              value={itemData.itemCategory}
               onChange={handleChange}
             >
               <option value="">Choose Item Category</option>
@@ -239,6 +257,7 @@ const Inventory = () => {
               placeholder="Enter measuring unit"
               name="measuring_unit"
               id="measuring_unit"
+              value={itemData.measuring_unit}
               onChange={handleChange}
             />
           </div>
@@ -249,16 +268,16 @@ const Inventory = () => {
               placeholder="Enter low limit"
               name="low_limit"
               id="low_limit"
+              value={itemData.low_limit}
               onChange={handleChange}
             />
           </div>
 
-          {error && <span class="text-red-500">{error}</span>}
+          {error && <span className="text-red-500">{error}</span>}
 
-          {/* Add item button */}
           <div className="buttons">
-            <button type="submit" className="add-btn">
-              Add Item
+            <button type="submit" className="add-btn" disabled={loading}>
+              {loading ? "Adding..." : "Add Item"}
             </button>
           </div>
         </form>

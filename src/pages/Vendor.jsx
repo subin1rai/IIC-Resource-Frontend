@@ -56,6 +56,27 @@ const Vendor = () => {
       setError(error.response.data.error);
     }
   };
+  const [vendors, setVendors] = useState([]);
+
+  useEffect(() => {
+    const getAllVendors = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/vendor", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setVendors(response.data.vendors || []);
+        console.log(response.data.vendors);
+      } catch (error) {
+        console.log("Error fetching vendors:", error);
+        setVendors([]);
+      }
+    };
+
+    getAllVendors();
+  }, []);
+
   console.log(error);
   return (
     <div className="vendor">
@@ -110,7 +131,7 @@ const Vendor = () => {
             </div>
           </div>
 
-          <VendorTable />
+          <VendorTable vendors={vendors} />
         </div>
       </div>
       {addFormVisibility && (
