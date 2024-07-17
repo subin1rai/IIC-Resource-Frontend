@@ -59,7 +59,7 @@ export default function RecordsTable({ bills, setBills }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const navigate = useNavigate();
-  
+
   const token = localStorage.getItem("token");
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -69,8 +69,6 @@ export default function RecordsTable({ bills, setBills }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const getAllBills = async () => {
