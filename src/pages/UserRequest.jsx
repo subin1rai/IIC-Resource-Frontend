@@ -1,5 +1,5 @@
 import React from "react";
-import NavTable from "../components/NavTable";
+
 import filter from "../assets/filter.svg";
 import "../styles/userrequest.css";
 import Navbar from "../components/Navbar";
@@ -90,35 +90,33 @@ const UserRequest = () => {
           <form action="" className="Historyform">
             <div className="left-column">
               <div className="History">
-                <label htmlFor="Item">Item</label>
-                <input type="text" name="item" id="" placeholder="" />
+                <label htmlFor="Item">Item:</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Quantity">Quantity</label>
-                <input type="number" name="quantity" id="" placeholder="" />
+                <label htmlFor="Quantity">Quantity:</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Requested date">Requested date</label>
-                <input type="date" name="Requested date" id="" placeholder="" />
+                <label htmlFor="Requested date">Requested date:</label>
+               
               </div>
             </div>
 
             <div className="right-column">
               <div className="History">
-                <label htmlFor="Status">Status</label>
-                <input type="text" name="status" id="" placeholder="" />
+                <label htmlFor="Status">Status:</label>
+               
               </div>
 
               <div className="History">
-                <label htmlFor="Issued by">Issued by</label>
-                <input type="text" name="Issued by" id="" placeholder="" />
+                <label htmlFor="Issued by">Issued by:</label>
+                
               </div>
 
               <div className="History">
-                <label htmlFor="Issued date">Issued date</label>
-                <input type="date" name="Issued date" id="" placeholder="" />
+                <label htmlFor="Issued date">Issued date:</label>
+               
               </div>
             </div>
           </form>
