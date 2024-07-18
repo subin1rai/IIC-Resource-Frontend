@@ -122,7 +122,7 @@ const SingleItem = () => {
       {editFormVisibility && (
         <>
           <form
-            className="flex absolute z-10 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
             onSubmit={(e) => e.preventDefault()}
           >
             <button
@@ -194,7 +194,7 @@ const SingleItem = () => {
           </form>
 
           <div
-            className="w-screen h-screen bg-overlay cursor-pointer absolute"
+            className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
             onClick={() => setEditFormVisibility(false)}
           ></div>
         </>

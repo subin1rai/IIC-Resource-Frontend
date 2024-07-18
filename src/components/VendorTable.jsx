@@ -7,10 +7,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel"; // Import TableSortLabel for sorting
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
-import axios from "axios";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "vendor_name", label: "Vendor Name", maxWidth: 120 },
@@ -55,17 +53,16 @@ const columns = [
     label: "Payment Status",
     maxWidth: 120,
     align: "center",
-    format: (value) => value?.toFixed(2) || "N/A",
+    format: (value) => value || "N/A",
   },
 ];
 
-export default function VendorTable() {
+export default function VendorTable({ vendors, setVendors }) {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("last_purchase_date");
+  const [orderBy, setOrderBy] = React.useState("vendor_name");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [vendors, setVendors] = useState([]);
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -75,26 +72,6 @@ export default function VendorTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const token = localStorage.getItem("token");
-  useEffect(() => {
-    const getAllVendors = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/vendor", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setVendors(response.data.vendors || []);
-        console.log(response.data.vendors);
-      } catch (error) {
-        console.log("Error fetching vendors:", error);
-        setVendors([]);
-      }
-    };
-
-    getAllVendors();
-  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -109,13 +86,23 @@ export default function VendorTable() {
   };
 
   const descendingComparator = (a, b, orderBy) => {
+    // Safely access properties
+    const aValue = a && a[orderBy];
+    const bValue = b && b[orderBy];
+
+    // Handle cases where the property might be undefined
+    if (aValue === undefined && bValue === undefined) return 0;
+    if (aValue === undefined) return 1;
+    if (bValue === undefined) return -1;
+
     if (orderBy === "last_purchase_date") {
-      return new Date(b[orderBy]) - new Date(a[orderBy]);
+      return new Date(bValue) - new Date(aValue);
     }
-    if (b[orderBy] < a[orderBy]) {
+
+    if (bValue < aValue) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (bValue > aValue) {
       return 1;
     }
     return 0;
@@ -133,7 +120,7 @@ export default function VendorTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(vendors, getComparator(order, orderBy)).slice(
+      stableSort(vendors || [], getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
@@ -141,11 +128,7 @@ export default function VendorTable() {
   );
 
   const handleRowClick = (vendorId) => {
-    navigate(`/specificVendor/${vendorId}`); // Navigate to the vendor details page
-  };
-
-  const cellStyle = {
-    fontSize: "16px",
+    navigate(`/specificVendor/${vendorId}`);
   };
 
   return (
@@ -165,20 +148,15 @@ export default function VendorTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  sortDirection={orderBy === column.id ? order : false}
                   style={{ minWidth: column.minWidth }}
                 >
-                  {column.numeric ? (
-                    <TableSortLabel
-                      active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : "asc"}
-                      onClick={(event) => handleRequestSort(event, column.id)}
-                    >
-                      {column.label}
-                    </TableSortLabel>
-                  ) : (
-                    column.label
-                  )}
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={orderBy === column.id ? order : "asc"}
+                    onClick={(event) => handleRequestSort(event, column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
@@ -189,14 +167,16 @@ export default function VendorTable() {
                 hover
                 role="checkbox"
                 tabIndex={-1}
-                key={vendor.vendor_id}
-                onClick={() => handleRowClick(vendor.vendor_id)} // Add onClick handler
+                key={vendor?.vendor_id || Math.random()}
+                onClick={() => handleRowClick(vendor?.vendor_id)}
               >
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.format
+                    {column.format && vendor && vendor[column.id] !== undefined
                       ? column.format(vendor[column.id])
-                      : vendor[column.id]}
+                      : vendor && vendor[column.id] !== undefined
+                      ? vendor[column.id]
+                      : "N/A"}
                   </TableCell>
                 ))}
               </TableRow>
@@ -205,9 +185,9 @@ export default function VendorTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={vendors.length}
+        count={vendors?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

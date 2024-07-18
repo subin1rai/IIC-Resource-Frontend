@@ -20,8 +20,8 @@ const Vendor = () => {
   });
 
   const [error, setError] = useState("");
-
   const [addFormVisibility, setAddFormVisibility] = useState(false);
+  const [vendors, setVendors] = useState([]);
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -35,7 +35,9 @@ const Vendor = () => {
   const handleChange = (e) => {
     setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const token = localStorage.getItem("token");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -49,14 +51,25 @@ const Vendor = () => {
         }
       );
 
+      // Add the new vendor to the state
+      setVendors((prevVendors) => [...prevVendors, response.data.vendor]);
+
       toast.success(`${vendor.vendor_name} Added Successfully!`);
       setAddFormVisibility(false);
+
+      // Reset the vendor form
+      setVendor({
+        vendor_name: "",
+        vat_number: "",
+        vendor_contact: "",
+        payment_duration: "",
+        category: "",
+      });
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
     }
   };
-  const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
     const getAllVendors = async () => {
@@ -67,7 +80,6 @@ const Vendor = () => {
           },
         });
         setVendors(response.data.vendors || []);
-        console.log(response.data.vendors);
       } catch (error) {
         console.log("Error fetching vendors:", error);
         setVendors([]);
@@ -75,9 +87,8 @@ const Vendor = () => {
     };
 
     getAllVendors();
-  }, []);
+  }, [token]);
 
-  console.log(error);
   return (
     <div className="vendor">
       <Sidebar />
@@ -89,24 +100,10 @@ const Vendor = () => {
             <div className="summary-container">
               <div className="summary">
                 <img src={validVendor} alt="" />
-                <h4>31</h4>
+                <h4>{vendors.length}</h4>
                 <p>Number of Vendors</p>
               </div>
-              <div className="summary">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Whitelisted Vendors</p>
-              </div>
-              <div className="summary">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Blacklisted Vendors</p>
-              </div>
-              <div className="summary">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Payment Remaining</p>
-              </div>
+              {/* Add other summary items here */}
             </div>
           </div>
         </div>
@@ -131,13 +128,13 @@ const Vendor = () => {
             </div>
           </div>
 
-          <VendorTable vendors={vendors} />
+          <VendorTable vendors={vendors} setVendors={setVendors} />
         </div>
       </div>
       {addFormVisibility && (
-        <form action="" onSubmit={handleSubmit} className="filter">
+        <form onSubmit={handleSubmit} className="filter">
           <button
-            type="vendor-button"
+            type="button"
             className="discard-button"
             onClick={closeAddVendorForm}
           >
@@ -149,41 +146,45 @@ const Vendor = () => {
             <input
               type="text"
               placeholder="Enter vendor name"
-              autoFocus="autofocus"
+              autoFocus
               name="vendor_name"
-              id="item_name"
+              id="vendor_name"
               onChange={handleChange}
+              value={vendor.vendor_name}
             />
           </div>
           <div className="vendor_field">
-            <label htmlFor="vendor_vat">Vendor Vat</label>
+            <label htmlFor="vat_number">Vendor Vat</label>
             <input
               type="text"
               name="vat_number"
               placeholder="Vendor VAT number"
               onChange={handleChange}
+              value={vendor.vat_number}
             />
           </div>
           <div className="vendor_field">
-            <label htmlFor="contact">Contact</label>
+            <label htmlFor="vendor_contact">Contact</label>
             <input
               type="number"
               placeholder="Enter contact number"
               name="vendor_contact"
               onChange={handleChange}
+              value={vendor.vendor_contact}
             />
           </div>
           <div className="vendor_field">
             <label htmlFor="payment_duration">Payment Duration</label>
             <input
               type="number"
-              placeholder="Enter payment "
+              placeholder="Enter payment duration"
               name="payment_duration"
               onChange={handleChange}
+              value={vendor.payment_duration}
             />
           </div>
 
-          {error && <span class=" text-red-500">{error}</span>}
+          {error && <span className="text-red-500">{error}</span>}
 
           <div className="vendor_buttons">
             <button type="submit" className="add-button">
@@ -193,12 +194,11 @@ const Vendor = () => {
         </form>
       )}
       {addFormVisibility && (
-        <div className="overlay-vendor" onClick={closeAddVendorForm}>
-          {" "}
-        </div>
+        <div className="overlay-vendor" onClick={closeAddVendorForm}></div>
       )}
       <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };
+
 export default Vendor;
