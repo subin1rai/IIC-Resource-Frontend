@@ -31,11 +31,11 @@ const SingleItem = () => {
     setEditFormVisibility(true);
   };
 
-  return (
+  return (  // JSX for rendering the component
     <div className="flex bg-background h-screen w-screen gap-1">
-      <Sidebar />
+      <Sidebar /> {/* Rendering Sidebar component */}
       <div className="flex flex-col mx-auto gap-3">
-        <Topbar />
+        <Topbar /> {/* Rendering Topbar component */}
 
         {/* Start of top container */}
         <div className="bg-white w-[98%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
@@ -45,29 +45,29 @@ const SingleItem = () => {
                 <h4 className="text-base font-normal">
                   <Link to="/inventory">Inventory</Link>
                 </h4>
-                <img src={arrow} alt="arrow" />
+                <img src={arrow} alt="arrow" />  {/* Arrow icon */}
                 <h4 className="text-base font-normal text-blue-400">
                   {item.item_name}
                 </h4>
               </div>
-              <h2 className="font-semibold px-4 text-2xl">{item.item_name}</h2>
+              <h2 className="font-semibold px-4 text-2xl">{item.item_name}</h2>   {/* Displaying item name */}
             </div>
             <div className="flex justify-center items-end">
               <button
                 className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md"
-                onClick={handlePopupForm}
+                onClick={handlePopupForm}  // Handling click event to show edit form
               >
                 Edit Item
               </button>
             </div>
           </div>
-          <div className="w-[98%] mx-auto mt-5 bg-blue-600 h-1"></div>
-
+          <div className="w-[98%] mx-auto mt-5 bg-blue-600 h-1"></div>    {/* Divider */}
+ 
           <div className="flex px-11 justify-between mt-7 w-9/12">
             <div className="flex flex-col gap-5">
               <div className="flex gap-4">
-                <p className="font-semibold">Item Name:</p>
-                <span className="font-medium">{item.item_name}</span>
+                <p className="font-semibold">Item Name:</p>  {/* Item name label */}
+                <span className="font-medium">{item.item_name}</span>  {/* Displaying item name */}
               </div>
               <div className="flex gap-4">
                 <p className="font-semibold">Measuring Unit:</p>
@@ -109,30 +109,30 @@ const SingleItem = () => {
               <input
                 type="text"
                 placeholder="Search for history"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md w-64"  // Search input for purchase history
               />
               <button className="bg-white border-2 rounded-md p-1 px-4 flex justify-between items-center gap-3">
-                <img src={filter} alt="filter" /> Filter
-              </button>
+                <img src={filter} alt="filter" /> Filter     
+              </button>    {/* Filter button */}
             </div>
           </div>
-          <ItemHistory />
+          <ItemHistory />  {/* Rendering ItemHistory component */}
         </div>
       </div>
       {editFormVisibility && (
         <>
           <form
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => e.preventDefault()}   // Preventing default form submission
           >
             <button
               type="button"
               className="absolute p-2 top-5 right-5"
-              onClick={() => setEditFormVisibility(false)}
+              onClick={() => setEditFormVisibility(false)} // Handling click event to hide edit form
             >
               <img src={close} alt="close" className="w-3.5 h-3.5" />
             </button>
-            <h4 className="font-semibold text-xl">Edit Items</h4>
+            <h4 className="font-semibold text-xl">Edit Items</h4> {/* Edit form heading */}
             <div className="flex justify-between items-center">
               <label htmlFor="item_name">Item Name</label>
               <input
@@ -144,12 +144,12 @@ const SingleItem = () => {
               />
             </div>
             <div className="flex justify-between items-center">
-              <label htmlFor="category">Category</label>
+              <label htmlFor="category">Category</label>  {/* Category label */}
               <select
                 id="category"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
               >
-                <option value="">Select category</option>
+                <option value="">Select category</option> {/* Placeholder option */}
               </select>
             </div>
             <div className="flex justify-between items-center">
@@ -176,7 +176,7 @@ const SingleItem = () => {
                 type="text"
                 id="measuring_unit"
                 placeholder="Enter measuring unit"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md w-64"  // Measuring unit input
               />
             </div>
             <div className="flex justify-between items-center">
@@ -195,7 +195,7 @@ const SingleItem = () => {
 
           <div
             className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
-            onClick={() => setEditFormVisibility(false)}
+            onClick={() => setEditFormVisibility(false)} // Handling click event to hide edit form
           ></div>
         </>
       )}
