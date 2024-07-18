@@ -185,7 +185,7 @@ export default function VendorTable({ vendors, setVendors }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={vendors?.length || 0}
         rowsPerPage={rowsPerPage}

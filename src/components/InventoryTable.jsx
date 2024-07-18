@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const columns = [
   { id: "item_name", label: "Item Name", maxWidth: 120 },
@@ -224,7 +225,7 @@ export default function InventoryTable({ items }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={items.length}
         rowsPerPage={rowsPerPage}
