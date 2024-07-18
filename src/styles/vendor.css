@@ -106,7 +106,7 @@
 
   .overall-vendor {
     background-color: #fff;
-    width: 84vw;
+    width: 85.5vw;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -140,7 +140,7 @@
     background-color: #ffff;
     justify-content: center;
     align-items: center;
-    width: 84vw;
+    width: 85.5vw;
     padding: 10px;
 
     border-radius: 10px;

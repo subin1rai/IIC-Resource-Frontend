@@ -9,7 +9,6 @@ import filterIcon from "../assets/filter.svg";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BsDisplay } from "react-icons/bs";
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -29,6 +28,56 @@ const Records = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [bills, setBills] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const [items, setItems] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const getAllBills = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/bill", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setBills(response.data.bills || []);
+      } catch (error) {
+        console.log(error);
+        setBills([]);
+      }
+    };
+
+    getAllBills();
+  }, [token]);
+
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const itemsData = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setItems(itemsData.data.items);
+
+        const vendorsData = await axios.get(
+          "http://localhost:8898/api/vendor",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setVendors(vendorsData.data.vendors);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAllItems();
+  }, [token]);
 
   const openAddBillForm = () => {
     setAddFormVisibility(true);
@@ -39,11 +88,8 @@ const Records = () => {
     setAddFormVisibility(false);
   };
 
-  const token = localStorage.getItem("token");
-
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(bill);
   };
 
   const handleSubmit = async (event) => {
@@ -68,40 +114,6 @@ const Records = () => {
     }
   };
 
-  const [vendors, setVendors] = useState([]);
-  const [items, setItems] = useState([]);
-
-
-  useEffect(() => {
-    const getAllItems = async () => {
-      try {
-        const itemsData = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setItems(itemsData.data.items);
-        console.log(items);
-        console.log(vendors);
-
-        const vendorsData = await axios.get(
-          "http://localhost:8898/api/vendor",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setVendors(vendorsData.data.vendors);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getAllItems();
-  }, []);
-
   return (
     <div className="records">
       <Sidebar />
@@ -120,14 +132,12 @@ const Records = () => {
               Add Bill
             </button>
           </div>
-          <RecordsTable bills={bills} setBills={setBills} />
+          <RecordsTable bills={bills} />
         </div>
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeAddBillForm}>
-            {" "}
-          </div>
+          <div className="overlay" onClick={closeAddBillForm}></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">

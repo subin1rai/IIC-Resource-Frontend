@@ -8,9 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const columns = [
   { id: "bill_ID", label: "Bill Number", maxWidth: 70 },
@@ -42,25 +41,24 @@ const columns = [
     label: "Total Amount",
     maxWidth: 70,
     align: "center",
-    format: (value) => value?.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US") ?? "N/A",
   },
   {
     id: "paid_amount",
     label: "Paid Amount",
     maxWidth: 70,
     align: "center",
-    format: (value) => value?.toLocaleString("en-US"),
+    format: (value) => value?.toLocaleString("en-US") ?? "N/A",
   },
 ];
 
-export default function RecordsTable({ bills, setBills }) {
+export default function RecordsTable({ bills }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(11);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const navigate = useNavigate();
-  
-  const token = localStorage.getItem("token");
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -69,6 +67,7 @@ export default function RecordsTable({ bills, setBills }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
 
   useEffect(() => {
     const getAllBills = async () => {
@@ -104,20 +103,28 @@ export default function RecordsTable({ bills, setBills }) {
   };
 
   const descendingComparator = (a, b, orderBy) => {
+    // Check if a or b is undefined
+    if (!a || !b) return 0;
+
     if (orderBy === "bill_date") {
-      return new Date(b[orderBy]) - new Date(a[orderBy]);
+      return new Date(b[orderBy] || 0) - new Date(a[orderBy] || 0);
     }
-    if (b[orderBy] < a[orderBy]) {
+
+    // Use optional chaining to safely access properties
+    if ((b[orderBy] ?? "") < (a[orderBy] ?? "")) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if ((b[orderBy] ?? "") > (a[orderBy] ?? "")) {
       return 1;
     }
     return 0;
   };
 
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
+    // Filter out any undefined or null items
+    const validArray = array.filter((item) => item != null);
+
+    const stabilizedThis = validArray.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
@@ -128,10 +135,10 @@ export default function RecordsTable({ bills, setBills }) {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(bills, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
+      stableSort(
+        bills.filter((bill) => bill != null),
+        getComparator(order, orderBy)
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [bills, order, orderBy, page, rowsPerPage]
   );
 
@@ -171,30 +178,32 @@ export default function RecordsTable({ bills, setBills }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((bill) => (
-              <TableRow
-                hover
-                role="checkbox"
-                tabIndex={-1}
-                key={bill.bill_ID}
-                onClick={() => handleRowClick(bill.bill_ID)}
-              >
-                {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align}>
-                    {column.format
-                      ? column.format(bill[column.id])
-                      : bill[column.id]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
+            {visibleRows.map((bill) =>
+              bill ? (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={bill.bill_ID || "unknown"}
+                  onClick={() => handleRowClick(bill.bill_ID)}
+                >
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align={column.align}>
+                      {column.format && bill[column.id] != null
+                        ? column.format(bill[column.id])
+                        : bill[column.id] ?? "N/A"}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ) : null
+            )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={bills.length}
+        count={bills.filter((bill) => bill != null).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
