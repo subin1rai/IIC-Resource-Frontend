@@ -70,8 +70,6 @@ export default function RecordsTable({ bills, setBills }) {
     setPage(0);
   };
 
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     const getAllBills = async () => {
       try {
