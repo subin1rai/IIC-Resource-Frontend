@@ -68,6 +68,28 @@ export default function RecordsTable({ bills }) {
     setPage(0);
   };
 
+
+  useEffect(() => {
+    const getAllBills = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/bill", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setBills(response.data.bills || []);
+        console.log(response.data.bills);
+      } catch (error) {
+        console.log(error);
+        setBills([]);
+      }
+    };
+
+    if (bills.length === 0) {
+      getAllBills();
+    }
+  }, [bills, setBills]);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
