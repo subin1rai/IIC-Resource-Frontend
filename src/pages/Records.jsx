@@ -15,7 +15,7 @@ const Records = () => {
     bill_no: "",
     bill_date: "",
     invoice_no: "",
-    vendor: "",
+    vendor_name: "",
     item_name: "",
     unit_price: "",
     quantity: "",
@@ -33,50 +33,44 @@ const Records = () => {
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const getAllBills = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/bill", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBills(response.data.bills || []);
-      } catch (error) {
-        console.log(error);
-        setBills([]);
-      }
-    };
+  const fetchBills = async () => {
+    try {
+      const response = await axios.get("http://localhost:8898/api/bill", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setBills(response.data.bills || []);
+    } catch (error) {
+      console.error("Error fetching bills:", error);
+      setBills([]);
+    }
+  };
 
-    getAllBills();
+  useEffect(() => {
+    fetchBills();
   }, [token]);
 
   useEffect(() => {
-    const getAllItems = async () => {
+    const fetchData = async () => {
       try {
-        const itemsData = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const [itemsResponse, vendorsResponse] = await Promise.all([
+          axios.get("http://localhost:8898/api/items", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:8898/api/vendor", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        setItems(itemsData.data.items);
-
-        const vendorsData = await axios.get(
-          "http://localhost:8898/api/vendor",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setVendors(vendorsData.data.vendors);
+        setItems(itemsResponse.data.items);
+        setVendors(vendorsResponse.data.vendors);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    getAllItems();
+    fetchData();
   }, [token]);
 
   const openAddBillForm = () => {
@@ -86,6 +80,19 @@ const Records = () => {
   const closeAddBillForm = () => {
     setError("");
     setAddFormVisibility(false);
+    setBill({
+      bill_no: "",
+      bill_date: "",
+      invoice_no: "",
+      vendor_name: "",
+      item_name: "",
+      unit_price: "",
+      quantity: "",
+      bill_amount: "",
+      TDS: "",
+      actual_amount: "",
+      paid_amount: "",
+    });
   };
 
   const handleChange = (e) => {
@@ -106,11 +113,12 @@ const Records = () => {
       );
       toast.success(`${bill.bill_no} Added Successfully!`);
       closeAddBillForm();
-      // Update the bills state with the new bill
       setBills((prevBills) => [...prevBills, response.data.bill]);
     } catch (error) {
-      console.log(error);
-      setError(error.response.data.error);
+      console.error("Error adding bill:", error);
+      setError(
+        error.response?.data?.error || "An error occurred while adding the bill"
+      );
     }
   };
 
@@ -159,6 +167,7 @@ const Records = () => {
                       name="bill_no"
                       id="bill_no"
                       onChange={handleChange}
+                      value={bill.bill_no}
                     />
                   </div>
                   <div className="for">
@@ -169,6 +178,7 @@ const Records = () => {
                       name="bill_date"
                       id="bill_date"
                       onChange={handleChange}
+                      value={bill.bill_date}
                     />
                   </div>
                 </div>
@@ -181,6 +191,7 @@ const Records = () => {
                       name="invoice_no"
                       id="invoice_no"
                       onChange={handleChange}
+                      value={bill.invoice_no}
                     />
                   </div>
                 </div>
@@ -191,14 +202,14 @@ const Records = () => {
                       id="vendor_name"
                       name="vendor_name"
                       onChange={handleChange}
+                      value={bill.vendor_name}
                     >
                       <option value="">Select Vendor</option>
-                      {vendors &&
-                        vendors.map((vendor, vendor_id) => (
-                          <option key={vendor_id} value={vendor.vendor_name}>
-                            {vendor.vendor_name}
-                          </option>
-                        ))}
+                      {vendors.map((vendor, index) => (
+                        <option key={index} value={vendor.vendor_name}>
+                          {vendor.vendor_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -209,14 +220,14 @@ const Records = () => {
                       id="item_name"
                       name="item_name"
                       onChange={handleChange}
+                      value={bill.item_name}
                     >
                       <option value="">Select Items</option>
-                      {items &&
-                        items.map((item, item_id) => (
-                          <option key={item_id} value={item.item_name}>
-                            {item.item_name}
-                          </option>
-                        ))}
+                      {items.map((item, index) => (
+                        <option key={index} value={item.item_name}>
+                          {item.item_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -229,6 +240,7 @@ const Records = () => {
                       name="unit_price"
                       id="unit_price"
                       onChange={handleChange}
+                      value={bill.unit_price}
                     />
                   </div>
                   <div className="for">
@@ -239,27 +251,30 @@ const Records = () => {
                       name="quantity"
                       id="quantity"
                       onChange={handleChange}
+                      value={bill.quantity}
                     />
                   </div>
                 </div>
                 <div className="double">
                   <div className="for">
-                    <label htmlFor="bill_amt">Bill Amount:</label>
+                    <label htmlFor="bill_amount">Bill Amount:</label>
                     <input
                       type="number"
                       placeholder="Enter bill amount"
                       name="bill_amount"
                       id="bill_amount"
                       onChange={handleChange}
+                      value={bill.bill_amount}
                     />
                   </div>
                   <div className="for">
-                    <label htmlFor="tds">Tax Deducted Source (TDS):</label>
+                    <label htmlFor="TDS">Tax Deducted Source (TDS):</label>
                     <select
                       className="tdsselect"
-                      id="tds"
+                      id="TDS"
                       name="TDS"
                       onChange={handleChange}
+                      value={bill.TDS}
                     >
                       <option value="">Select TDS</option>
                       <option value="ten">10</option>
@@ -278,6 +293,7 @@ const Records = () => {
                         name="actual_amount"
                         id="actual_amount"
                         onChange={handleChange}
+                        value={bill.actual_amount}
                       />
                     </div>
                     <div className="for">
@@ -288,13 +304,14 @@ const Records = () => {
                         name="paid_amount"
                         id="paid_amount"
                         onChange={handleChange}
+                        value={bill.paid_amount}
                       />
                     </div>
                   </div>
                 </div>
               </div>
               <div className="summary">
-                <div className="right" class="mb-2">
+                <div className="right">
                   <h2>Summary</h2>
                   <p>Bill No: {bill.bill_no}</p>
                   <p>Bill Date: {bill.bill_date}</p>
@@ -310,7 +327,7 @@ const Records = () => {
 
                 {error && <span className="text-red-500">{error}</span>}
 
-                <div className="buttons" class="mt-2">
+                <div className="buttons">
                   <button type="submit" className="add-btn">
                     Add Item
                   </button>

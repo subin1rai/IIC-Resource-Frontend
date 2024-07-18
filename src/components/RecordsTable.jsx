@@ -54,8 +54,8 @@ const columns = [
 ];
 
 export default function RecordsTable({ bills }) {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(11);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const [billsData, setBillsData] = useState(bills || []);
@@ -204,7 +204,7 @@ export default function RecordsTable({ bills }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={billsData.filter((bill) => bill != null).length}
         rowsPerPage={rowsPerPage}

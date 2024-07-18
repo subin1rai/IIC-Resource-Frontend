@@ -1,26 +1,60 @@
-import React from "react";
+import axios from "axios";
 
 import filter from "../assets/filter.svg";
 import "../styles/userrequest.css";
 import Navbar from "../components/Navbar";
+import React, { useEffect, useState } from "react";
 
 const UserRequest = () => {
   const [request, setRequest] = React.useState({
-    user_id: "",
-    category_name: "",
     item_name: "",
     quantity: "",
+    purpose: "",
   });
+  const token = localStorage.getItem("token");
 
   const handleChange = (e) => {
     setRequest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await axios.post("http://localhost:8898/api/addRequest");
-    console.log(response);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8898/api/addRequest",
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setItems(response.data.items || []);
+      } catch (error) {
+        console.log(error);
+        setItems([]);
+      }
+    };
+
+    getAllItems();
+  }, [token]);
 
   console.log(request);
 
@@ -29,7 +63,7 @@ const UserRequest = () => {
       <Navbar />
       <div className="requestcontent">
         {/* this is a request form for users */}
-        <form action="" className="request-form">
+        <form className="request-form" onSubmit={handleSubmit}>
           <div className="headings">
             <h1>Request Resource</h1>
             <h5>You can request the resource of your choice</h5>
@@ -37,20 +71,14 @@ const UserRequest = () => {
 
           {/* creating required fields for the form */}
           <div className="singleField">
-            <label htmlFor="categoryName">Category Name</label>
-            <select name="category_name" id="" onChange={handleChange}>
-              <option value="">Select a category</option>
-              <option value="Books">Books</option>
-              <option value="Pens">Pens</option>
-            </select>
-          </div>
-          <div className="singleField">
-            <label htmlFor="itemCategory">Item Category</label>
-            <select name="item_category" id="" onChange={handleChange}>
-              <option value="">Select a category</option>
-              <option value="Books">Books</option>
-              <option value="Pens">Pens</option>
-              <option value="Pencil">Pencil</option>
+            <label htmlFor="item_name">Item Name</label>
+            <select name="item_name" id="item_name" onChange={handleChange}>
+              <option value="">Select an Item</option>
+              {items.map((item) => (
+                <option key={item.id} value={item.item_name}>
+                  {item.item_name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -59,8 +87,18 @@ const UserRequest = () => {
             <input
               type="number"
               name="quantity"
-              id=""
+              id="quantity"
               placeholder="Enter quantity"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="singleField">
+            <label htmlFor="purpose">Purpose</label>
+            <textarea
+              type="text"
+              name="purpose"
+              id="purpose"
+              placeholder="Enter your purpose"
               onChange={handleChange}
             />
           </div>
@@ -90,33 +128,31 @@ const UserRequest = () => {
           <form action="" className="Historyform">
             <div className="left-column">
               <div className="History">
-                <label htmlFor="Item">Item:</label>
+                <label htmlFor="Item">Item</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Quantity">Quantity:</label>
+                <label htmlFor="Quantity">Quantity</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Requested date">Requested date:</label>
-               
+                <label htmlFor="Requested date">Requested date</label>
+
               </div>
             </div>
 
             <div className="right-column">
               <div className="History">
-                <label htmlFor="Status">Status:</label>
-               
+                <label htmlFor="Status">Status</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Issued by">Issued by:</label>
-                
+                <label htmlFor="Issued by">Issued by</label>
               </div>
 
               <div className="History">
-                <label htmlFor="Issued date">Issued date:</label>
-               
+                <label htmlFor="Issued date">Issued date</label>
+
               </div>
             </div>
           </form>
