@@ -4,6 +4,7 @@ import axios from "axios";
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
 
+  // gettting token from localstorage
   const token = localStorage.getItem("token");
 
   useEffect(() => {

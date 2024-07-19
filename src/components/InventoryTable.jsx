@@ -49,6 +49,7 @@ export default function InventoryTable({ items }) {
 
   const navigate = useNavigate();
 
+  // gettting token from localstorage
   const token = localStorage.getItem("token");
 
   React.useEffect(() => {
