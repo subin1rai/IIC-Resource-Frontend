@@ -47,7 +47,9 @@ export default function InventoryTable({ items }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const navigate = useNavigate();
+
+  const [itemsData, setItems] = React.useState([]);
+    const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -68,6 +70,7 @@ export default function InventoryTable({ items }) {
 
     getAllItems();
   }, []);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -115,7 +118,7 @@ export default function InventoryTable({ items }) {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(items, getComparator(order, orderBy)).slice(
+      stableSort(itemsData, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),

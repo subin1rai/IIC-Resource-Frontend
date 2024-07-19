@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import filter from "../assets/filter.svg";
 import "../styles/userrequest.css";
 import Navbar from "../components/Navbar";
@@ -120,6 +121,7 @@ const UserRequest = () => {
             </form>
           </div>
 
+
           {/* history starts here */}
           <div className="flex flex-col gap-4  p-5">
             <div className="flex justify-between ">
@@ -138,6 +140,7 @@ const UserRequest = () => {
                   {" "}
                   Date
                 </button>
+
               </div>
             </div>
 
@@ -189,6 +192,7 @@ const UserRequest = () => {
                   <p>Rejected</p>
                 </div>
               </div>
+
             </div>
             <div className="flex  flex-col gap-3 bg-background rounded p-7">
               <h2>Charger</h2>
@@ -212,6 +216,7 @@ const UserRequest = () => {
                 <div className="flex justify-between items-start text-green-600">
                   <p>Approved</p>
                 </div>
+
               </div>
             </div>
           </div>
