@@ -21,7 +21,6 @@ const Navbar = () => {
   };
 
   const token = localStorage.getItem("token");
-  console.log(token);
   return (
     <div className="navbar">
       <div className="logo">
