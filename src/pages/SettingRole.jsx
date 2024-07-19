@@ -11,6 +11,14 @@ const SettingRole = () => {
     <Sidebar /> {/* Rendering Sidebar component */}
     <div className="flex flex-col mx-auto gap-3">
       <Topbar /> {/* Rendering Topbar component */}
+    
+
+    {/* Start of top container */}
+      <div className="bg-white w-[85.5vw] mx-auto  h-[100vh] flex p-5 rounded-md  relative ">
+        <div className="flex justify-between gap-4">
+
+        </div>
+      </div>
       </div>
       </div>
   )
