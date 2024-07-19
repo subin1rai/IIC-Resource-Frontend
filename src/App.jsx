@@ -51,13 +51,14 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/settingRole" element={<SettingRole />} />
-          <Route path="/specificItem/:id" element={<SingleItem />} />
 
+
+          <Route path="/settingRole" element={<SettingRole />} />
+
+          <Route path="/specificItem/:id" element={<SingleItem />} />
           <Route path="/reset" element ={<Reset />} />
           <Route path= "/otp" element={<Otp />} />
-          
-
+          <Route path= "/adminprofile" element={<AdminProfile />} />
           <Route path="/userPassword" element={<UserPassword />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/request" element={<Request />} />
