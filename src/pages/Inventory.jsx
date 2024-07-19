@@ -42,6 +42,8 @@ const Inventory = () => {
     setItemData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // gettting token from localstorage
+
   const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
