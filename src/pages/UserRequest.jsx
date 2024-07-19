@@ -4,7 +4,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
-import "../styles/userrequest.css";
 import filter from "../assets/filter.svg";
 
 const UserRequest = () => {

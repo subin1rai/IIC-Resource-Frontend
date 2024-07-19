@@ -25,16 +25,23 @@ const Login = () => {
       const response = await axios.post(
         `http://localhost:8898/api/login`,
         user,
-         {withCredentials: true }
+        { withCredentials: true }
       );
+
+      console.log(response);
       localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
+      localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("role", response.data.role);
+      if (response.data.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/userhome");
+      }
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
     }
   };
-  console.log(error);
 
   return (
     <div className="login">
