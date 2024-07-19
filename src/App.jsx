@@ -58,7 +58,7 @@ function App() {
           <Route path="/specificItem/:id" element={<SingleItem />} />
           <Route path="/reset" element ={<Reset />} />
           <Route path= "/otp" element={<Otp />} />
-          <Route path= "/adminprofile" element={<AdminProfile />} />
+         
           <Route path="/userPassword" element={<UserPassword />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/request" element={<Request />} />
