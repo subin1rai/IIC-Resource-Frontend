@@ -1,16 +1,19 @@
-import axios from "axios";
-
-import filter from "../assets/filter.svg";
-import "../styles/userrequest.css";
-import Navbar from "../components/Navbar";
+// src/pages/UserRequest.js
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Navbar from "../components/Navbar";
+import "../styles/userrequest.css";
+import filter from "../assets/filter.svg";
 
 const UserRequest = () => {
-  const [request, setRequest] = React.useState({
+  const [request, setRequest] = useState({
     item_name: "",
     quantity: "",
     purpose: "",
   });
+  const [items, setItems] = useState([]);
   const token = localStorage.getItem("token");
 
   const handleChange = (e) => {
@@ -30,13 +33,18 @@ const UserRequest = () => {
           },
         }
       );
+      setRequest({
+        item_name: "",
+        quantity: "",
+        purpose: "",
+      });
+      toast.success("Request submitted successfully!");
       console.log(response);
     } catch (error) {
+      toast.error("Failed to submit request. Please try again.");
       console.log(error);
     }
   };
-
-  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const getAllItems = async () => {
@@ -48,6 +56,7 @@ const UserRequest = () => {
         });
         setItems(response.data.items || []);
       } catch (error) {
+        toast.error("Failed to fetch items. Please try again.");
         console.log(error);
         setItems([]);
       }
@@ -56,109 +65,173 @@ const UserRequest = () => {
     getAllItems();
   }, [token]);
 
-  console.log(request);
-
   return (
-    <div className="userRequest">
-      <Navbar />
-      <div className="requestcontent">
-        {/* this is a request form for users */}
-        <form className="request-form" onSubmit={handleSubmit}>
-          <div className="headings">
-            <h1>Request Resource</h1>
-            <h5>You can request the resource of your choice</h5>
-          </div>
-
-          {/* creating required fields for the form */}
-          <div className="singleField">
-            <label htmlFor="item_name">Item Name</label>
-            <select name="item_name" id="item_name" onChange={handleChange}>
-              <option value="">Select an Item</option>
-              {items.map((item) => (
-                <option key={item.id} value={item.item_name}>
-                  {item.item_name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="singleField">
-            <label htmlFor="quantity">Quantity</label>
-            <input
-              type="number"
-              name="quantity"
-              id="quantity"
-              placeholder="Enter quantity"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="singleField">
-            <label htmlFor="purpose">Purpose</label>
-            <textarea
-              type="text"
-              name="purpose"
-              id="purpose"
-              placeholder="Enter your purpose"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="request-buttons">
-            <button type="submit" className="request-btn">
-              Request
-            </button>
-          </div>
-        </form>
-
-        {/* Vertical line */}
-        <div className="divider"></div>
-
-        {/* Creating a div for keeping history records */}
-        <div className="requestHistory">
-          <div className="heading2">
-            <div>
-              <h1>History</h1>
-              <h5>You can view your request history.</h5>
-            </div>
-            <div className="filter-options">
-              <button className="month-btn">By date</button>
-              <button className="date-btn">By month</button>
-            </div>
-          </div>
-
-          <form action="" className="Historyform">
-            <div className="left-column">
-              <div className="History">
-                <label htmlFor="Item">Item</label>
-              </div>
-
-              <div className="History">
-                <label htmlFor="Quantity">Quantity</label>
-              </div>
-
-              <div className="History">
-                <label htmlFor="Requested date">Requested date</label>
-
-              </div>
+    <>
+      {/* main container */}
+      <div className="flex flex-col gap-6 h-screen w-screen">
+        <Navbar />
+        <div className="flex justify-evenly w-screen mt-5">
+          <div className="flex flex-col bg-white p-8 shadow-lg gap-3 rounded h-fit ">
+            <div className="flex flex-col">
+              <h2 className="font-bold text-2xl">Request Resource</h2>
+              <p className="font-light text-sm text-slate-500">
+                You can request resource of your choice
+              </p>
             </div>
 
-            <div className="right-column">
-              <div className="History">
-                <label htmlFor="Status">Status</label>
+            {/* line */}
+            <div className="h-1 bg-background width-full"></div>
+            {/* line closed */}
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-3">
+              <div className="flex justify-between gap-24 items-center ">
+                <label htmlFor="item_name">Item Name</label>
+                <select
+                  name="item_name"
+                  id="item_name"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
+                  onChange={handleChange}
+                  value={request.item_name}
+                >
+                  <option value="">Select an Item</option>
+                  {items.map((item) => (
+                    <option key={item.id} value={item.item_name}>
+                      {item.item_name}
+                    </option>
+                  ))}
+                </select>
               </div>
-
-              <div className="History">
-                <label htmlFor="Issued by">Issued by</label>
+              <div className="flex justify-between gap-11 items-center ">
+                <label htmlFor="quantity">Quantity</label>
+                <input
+                  type="number"
+                  name="quantity"
+                  placeholder="Enter quantity"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
+                  onChange={handleChange}
+                  value={request.quantity}
+                />
               </div>
+              <div className="flex justify-between gap-11 items-center ">
+                <label htmlFor="purpose" className="flex self-start mt-3">
+                  Purpose
+                </label>
+                <textarea
+                  name="purpose"
+                  placeholder="Enter purpose"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
+                  onChange={handleChange}
+                  value={request.purpose}
+                />
+              </div>
+              <button
+                type="submit"
+                className="flex justify-between items-center text-white bg-blue-600 w-fit h-fit py-2 px-4 rounded self-end"
+              >
+                Request
+              </button>
+            </form>
+          </div>
 
-              <div className="History">
-                <label htmlFor="Issued date">Issued date</label>
-
+          {/* history starts here */}
+          <div className="flex flex-col gap-4 p-5">
+            <div className="flex justify-between ">
+              <div className="flex flex-col">
+                <h2 className="font-bold text-2xl">Request History</h2>
+                <p className="font-light text-sm text-slate-500">
+                  You can view your request history.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
+                  {" "}
+                  Date
+                </button>
+                <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
+                  {" "}
+                  Date
+                </button>
               </div>
             </div>
-          </form>
+
+            {/* list of history */}
+            <div className="flex flex-col gap-3 bg-background rounded p-7">
+              <h2>Charger</h2>
+              <div className="flex justify-between gap-36 ">
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex justify-between items-start text-green-600">
+                  <p>Approved</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 bg-background rounded p-7">
+              <h2>Charger</h2>
+              <div className="flex justify-between gap-36 ">
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex justify-between items-start text-red-600">
+                  <p>Rejected</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 bg-background rounded p-7">
+              <h2>Charger</h2>
+              <div className="flex justify-between gap-36 ">
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Issued Date: <span className="text-black">2024/12/12</span>{" "}
+                  </p>
+                  <p className="text-l text-slate-500 font-semibold flex gap-3">
+                    Quantity: <span className="text-black">12</span>
+                  </p>
+                </div>
+                <div className="flex justify-between items-start text-green-600">
+                  <p>Approved</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <ToastContainer />
       </div>
-    </div>
+    </>
   );
 };
 

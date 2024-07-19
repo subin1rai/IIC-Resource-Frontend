@@ -5,6 +5,7 @@ import axios from "axios";
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
 
+  // gettting token from localstorage
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const RequestTable = () => {
               <p>
                 Requested Date:{" "}
                 <span className="font-medium">
-                  {new Date(request.created_at).toLocaleDateString()}
+                  {new Date(request.request_date).toLocaleDateString()}
                 </span>
               </p>
             </div>

@@ -19,6 +19,8 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
+  const token = localStorage.getItem("token");
   return (
     <div className="navbar">
       <div className="logo">
@@ -37,12 +39,16 @@ const Navbar = () => {
           {" "}
           Request History{" "}
         </NavLink>
-        <button className="btn">
-          <NavLink to="/" onClick={handleLogin} className={setActiveClass}>
-            {" "}
-            Login{" "}
-          </NavLink>
-        </button>
+        {!token ? (
+          <button className="btn">
+            <NavLink to="/" onClick={handleLogin} className={setActiveClass}>
+              {" "}
+              Login{" "}
+            </NavLink>
+          </button>
+        ) : (
+          <span></span>
+        )}
       </div>
     </div>
   );
