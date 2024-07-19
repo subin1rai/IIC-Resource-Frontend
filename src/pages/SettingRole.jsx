@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import SettingsSide from "../components/SettingsSide";
+
 
 
 const SettingRole = () => {
@@ -15,8 +15,11 @@ const SettingRole = () => {
 
     {/* Start of top container */}
       <div className="bg-white w-[85.5vw] mx-auto  h-[100vh] flex p-5 rounded-md  relative ">
-        <div className="flex justify-between gap-4">
-
+        <div className="justify-between gap-4">
+        <h1 className="font-bold text-xl"> Settings </h1>
+        <div className="gap-12">
+        <SettingsSide />
+        </div>
         </div>
       </div>
       </div>
