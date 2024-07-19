@@ -147,6 +147,7 @@ function App() {
 
           {/* Catch-all route for undefined paths */}
           <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </BrowserRouter>
     </div>
