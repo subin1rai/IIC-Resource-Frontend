@@ -24,12 +24,12 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex  bg-background h-screen w-screen gap-1">
     <Sidebar />
-    <div className ="settop">
+    <div className ="flex flex-col mx-auto gap-3">
         <Topbar />
-        <div className = "p-5 ml-12 mt-20"> 
-            <h1 className="font-bold text-xl"> Settings </h1>
+        <div className = "  bg-white w-[85.5vw] h-[100vh] rounded-md p-5 "> 
+            <h1 className="font-bold text-xl mt-5"> Settings </h1>
             <div className="flex gap-12">
             <SettingsSide />
             <div className="flex p-10 flex-col w-[55vw]">
