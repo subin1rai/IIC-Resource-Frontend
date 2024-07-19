@@ -156,7 +156,7 @@ const Vendor = () => {
           <div className="vendor_field">
             <label htmlFor="vat_number">Vendor Vat</label>
             <input
-              type="text"
+              type="number"
               name="vat_number"
               placeholder="Vendor VAT number"
               onChange={handleChange}
