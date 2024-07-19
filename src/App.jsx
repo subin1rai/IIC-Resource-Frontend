@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import Settings from "./pages/Settings";
+import AdminProfile from "./pages/AdminProfile";
 import SingleItem from "./pages/SingleItem";
 
 function App() {
@@ -50,13 +51,10 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
-
           <Route path="/specificItem/:id" element={<SingleItem />} />
-
           <Route path="/reset" element ={<Reset />} />
           <Route path= "/otp" element={<Otp />} />
-          
-
+          <Route path= "/adminprofile" element={<AdminProfile />} />
           <Route path="/userPassword" element={<UserPassword />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/request" element={<Request />} />
