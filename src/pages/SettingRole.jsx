@@ -4,10 +4,10 @@ import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
 
 
-
 const SettingRole = () => {
   return (
     <div className="flex bg-background h-screen w-screen gap-1">
+
     <Sidebar /> {/* Rendering Sidebar component */}
     <div className="flex flex-col mx-auto gap-3">
       <Topbar /> {/* Rendering Topbar component */}
@@ -22,9 +22,8 @@ const SettingRole = () => {
         </div>
         </div>
       </div>
-      </div>
-      </div>
-  )
-}
+    </div>
+  );
+};
 
-export default SettingRole
+export default SettingRole;

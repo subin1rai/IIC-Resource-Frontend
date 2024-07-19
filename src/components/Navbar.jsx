@@ -1,8 +1,10 @@
 import React from "react";
 import "../styles/navbar.css";
 import logo from "../assets/Top.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import userProfile from "../assets/profile.png";
+import logout from "../assets/logout.svg";
 
 const Navbar = () => {
   const setActiveClass = ({ isActive }) =>
@@ -10,16 +12,23 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogout = async () => {
     try {
-      const response = await axios.post(" http://localhost:8898/api/login");
+      console.log("Sending logout request");
+      const response = await axios.post(
+        "http://localhost:8898/api/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.clear();
+      console.log("Logout response:", response);
       navigate("/");
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
     }
   };
-
   const token = localStorage.getItem("token");
   return (
     <div className="navbar">
@@ -35,10 +44,6 @@ const Navbar = () => {
           {" "}
           Request{" "}
         </NavLink>
-        <NavLink to="/aboutus" className={setActiveClass}>
-          {" "}
-          Request History{" "}
-        </NavLink>
         {!token ? (
           <button className="btn">
             <NavLink to="/" onClick={handleLogin} className={setActiveClass}>
@@ -47,7 +52,14 @@ const Navbar = () => {
             </NavLink>
           </button>
         ) : (
-          <span></span>
+          <>
+            <Link to="/userProfile">
+              <img src={userProfile} alt="" srcset="" className="w-10" />
+            </Link>
+            <button onClick={handleLogout}>
+              <img src={logout} alt="" />
+            </button>
+          </>
         )}
       </div>
     </div>
