@@ -22,6 +22,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import Settings from "./pages/Settings";
 import SettingRole from "./pages/SettingRole";
+import Help from "./pages/Help";
+import Notify from "./pages/Notify";
 import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 

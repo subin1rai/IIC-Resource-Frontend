@@ -17,25 +17,25 @@ const SettingsSide =() =>{
             </div>
             </div>
             <div className="sidebar-items">
-          <div className="item">
+          <div className="flex font-md text-2xl items-center gap-5">
             <img src={profile} alt="" />
-            <NavLink to="/userProfile" >
+            <NavLink to="/settings" >
               Profile
             </NavLink>
           </div>
-          <div className="item">
+          <div className="flex font-md text-2xl items-center gap-5">
             <img src={manage} alt="" />
             <NavLink to="/manageroles" >
               Manage Roles
             </NavLink>
           </div>
-          <div className="item">
+          <div className="flex text-2xl font-md items-center gap-5">
             <img src={help} alt="" />
             <NavLink to="/manageroles" >
               Help & Support
             </NavLink>
           </div>
-          <div className="item">
+          <div className="flex text-2xl font-md items-center gap-5">
             <img src={notify} alt="" />
             <NavLink to="/notify" >
               Notification
