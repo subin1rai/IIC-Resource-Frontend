@@ -24,6 +24,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import Settings from "./pages/Settings";
 import SettingRole from "./pages/SettingRole";
+import Help from "./pages/Help";
+import Notify from "./pages/Notify";
 import SingleItem from "./pages/SingleItem";
 
 function App() {
@@ -52,7 +54,8 @@ function App() {
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
 
-
+          <Route path= "/help" elememt={<Help />} />
+          <Route path= "/notify" element={<Notify />} />
           <Route path="/settingRole" element={<SettingRole />} />
 
           <Route path="/specificItem/:id" element={<SingleItem />} />
