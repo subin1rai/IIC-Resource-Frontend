@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/sidebar.css";
 import sideBarLogo from "../assets/top.svg";
 import dashboard from "../assets/dashboard.svg";
-import inventory from "../assets/Inventory.svg";
+import inventory from "../assets/inventory.svg";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
 import request from "../assets/request.svg";
@@ -31,6 +31,7 @@ const Sidebar = () => {
           withCredentials: true,
         }
       );
+      localStorage.clear();
       console.log("Logout response:", response);
       navigate("/");
     } catch (error) {
