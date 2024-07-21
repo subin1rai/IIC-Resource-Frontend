@@ -8,27 +8,92 @@ import { Link, useParams } from "react-router-dom";
 import ItemHistory from "../components/ItemHistory";
 import axios from "axios";
 
-const SingleItem = () => {
+const SingleItem = () => { 
+  const[item, setItem] = useState({
+  item_name:"",
+  category :"",
+  item_category_name :"",
+  product_category_name :"",
+  measuring_unit :"",
+  low_limit :"",
+});
+
+const [editedItem, setEditedItem] = useState({
+  item_name:"",
+  category :"",
+  item_category:"",
+  product_category:"",
+  measuring_unit :"",
+  low_limit :"",
+})
+  
   const [editFormVisibility, setEditFormVisibility] = useState(false);
-  const [item, setItem] = useState("");
   const { id } = useParams();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const getSingleItem = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8898/api/items/${id}`
-        );
-        setItem(response.data.itemData);
+        const [itemResponse, categoriesResponse, itemCategoriesResponse, productCategoriesResponse] = await Promise.all([
+          axios.get(`http://localhost:8898/api/items/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('http://localhost:8898/api/categories', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('http://localhost:8898/api/itemCategories', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('http://localhost:8898/api/productCategories', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+        setItem(itemResponse.data.itemData);
+        setCategories(categoriesResponse.data);
+        setItemCategories(itemCategoriesResponse.data);
+        setProductCategories(productCategoriesResponse.data);
       } catch (error) {
-        console.error("Error fetching item data:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    getSingleItem();
+
+    fetchData();
   }, [id]);
 
+
   const handlePopupForm = () => {
+    setEditedItem({
+      item_name:item.item_name,
+      category: item.category,
+      item_category: item.item_category_name,
+      product_category: item.product_category_name,
+      measuring_unit : item.measuring_unit,
+      low_limit: item.low_limit,
+    });
     setEditFormVisibility(true);
+  };
+
+  const handleChange = (e) => {
+    setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.put(
+        `http://localhost:8898/api/updateItem/${id}`,
+        editedItem,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setItem({ ...item, ...editedItem });
+      setEditFormVisibility(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (  // JSX for rendering the component
@@ -82,19 +147,19 @@ const SingleItem = () => {
               <div className="flex gap-4">
                 <p className="font-semibold">Category:</p>
                 <span className="font-medium">
-                  {item.category?.category_name}
+                  {item.category}
                 </span>
               </div>
               <div className="flex gap-4">
                 <p className="font-semibold">Product Category:</p>
                 <span className="font-medium">
-                  {item.productCategory?.product_category_name}
+                  {item.product_category_name}
                 </span>
               </div>
               <div className="flex gap-4">
                 <p className="font-semibold">Item Category:</p>
                 <span className="font-medium">
-                  {item.itemCategory?.item_category_name}
+                  {item.item_category_name}
                 </span>
               </div>
             </div>
@@ -123,7 +188,7 @@ const SingleItem = () => {
         <>
           <form
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
-            onSubmit={(e) => e.preventDefault()}   // Preventing default form submission
+            onSubmit={handleSubmit}   // Preventing default form submission
           >
             <button
               type="button"
@@ -140,6 +205,8 @@ const SingleItem = () => {
                 id="item_name"
                 placeholder="Enter item name"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                onChange={handleChange}
+                value={editedItem.item_name}
                 autoFocus
               />
             </div>
@@ -148,6 +215,8 @@ const SingleItem = () => {
               <select
                 id="category"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                onChange ={handleChange}
+                value={editedItem.category}
               >
                 <option value="">Select category</option> {/* Placeholder option */}
               </select>
@@ -157,6 +226,8 @@ const SingleItem = () => {
               <select
                 id="item_category"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                onChange ={handleChange}
+                value={editedItem.item_category}
               >
                 <option value="">Select item category</option>
               </select>
@@ -166,6 +237,8 @@ const SingleItem = () => {
               <select
                 id="product_category"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                onChange ={handleChange}
+                value={editedItem.product_category}
               >
                 <option value="">Select product category</option>
               </select>
@@ -175,20 +248,24 @@ const SingleItem = () => {
               <input
                 type="text"
                 id="measuring_unit"
-                placeholder="Enter measuring unit"
+                placeholder="Edit measuring unit"
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"  // Measuring unit input
-              />
+                onChange ={handleChange}
+                value={editedItem.measuring_unit}
+                />
             </div>
             <div className="flex justify-between items-center">
               <label htmlFor="low_limit">Low Limit</label>
               <input
                 type="number"
                 id="low_limit"
-                placeholder="Enter low limit"
+                placeholder="Edit low limit"
+                onChange ={handleChange}
                 className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                value={editedItem.low_limit}
               />
             </div>
-            <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
+            <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end" >
               Save Edit
             </button>
           </form>

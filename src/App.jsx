@@ -77,6 +77,8 @@ function App() {
                 />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/settingRole" element={<SettingRole />} />
+                <Route path= "/help" element ={<Help />} />
+                <Route path= "/notify" element ={<Notify />} />
                 {/* Redirect admin to dashboard if they try to access user routes */}
                 <Route
                   path="/userhome"
