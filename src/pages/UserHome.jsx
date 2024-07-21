@@ -1,31 +1,22 @@
-import React from "react";
-import "../styles/userhome.css";
-import Navbar from "../components/Navbar";
-// import big from "../assets/biglayout.png";
-// import small from "../assets/smalllayout.png";
-// import search from "../assets/search.png";
-import person from "../assets/person.png";
-
+import React from 'react'
+import Navbar from '../components/Navbar'
+import resource from "../assets/person.png"
 
 const UserHome = () => {
     return (
-        <div className="homecontainer">
+        <>
             <Navbar />
-            <div className="homecontent">
-                <div className="right2">
-                    {/* <img className="big" src={big} alt="biglayout" />
-                    <img className="small" src={small} alt="smalllayout" /> */}
-                    <img className="person" src={person} alt="person-image" />
-                </div>
-                <div className="content">
-                    <h1> Find resources <br/>for you</h1>
-                    <h3>One stop for all your needs</h3>
-                    <div className="btn">
-                        <button>Request</button>
-                    </div>
+            <div>
+                {/* resource image */}
+                <div className='flex justify-center w-screen h-[70vh] flex-col items-center'>
+                    <img src={resource} alt="" className='max-w-xl' />
+                    <p className='text-7xl font-semibold'>Find Resources For You</p>
+                    <p className='text-xl py-5 font-medium'>One stop for all your needs</p>
+                    <button className='bg-blue-700 font-normal px-10 py-4 rounded-md text-xl text-white'>Request Now</button>
                 </div>
             </div>
-        </div>
-    );
+        </>
+    )
 }
-export default UserHome;
+
+export default UserHome

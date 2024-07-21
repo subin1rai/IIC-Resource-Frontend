@@ -1,68 +1,24 @@
-import React from "react";
-import "../styles/navbar.css";
-import logo from "../assets/Top.png";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-import userProfile from "../assets/profile.png";
-import logout from "../assets/logout.svg";
+import React from 'react'
+import logo from "../assets/Top.png"
+import userprofile from "../assets/user.svg"
 
 const Navbar = () => {
-  const setActiveClass = ({ isActive }) =>
-    isActive ? "active item-text" : "item-text";
+  return (<>
+    {/* navbar main container */}
+    <nav className='w-screen bg-white h-28 flex justify-around items-center px-10 shadow-md gap-48' >
+      <img className='' src={logo} />
+      {/* Nav items */}
+      <div className='flex justify-between items-center gap-20 text-xl font-normal text-black'>
+        <span>Home</span>
+        <span>Request</span>
 
-  const navigate = useNavigate();
+      <div className='flex gap-10 '>
+        <img src={userprofile} alt="userProfile" className='h-8 w-8 '/>
+      </div>
+      </div>
+    </nav>
+  </>
+  )
+}
 
-  const handleLogout = async () => {
-    try {
-      console.log("Sending logout request");
-      const response = await axios.post(
-        "http://localhost:8898/api/logout",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      localStorage.clear();
-      console.log("Logout response:", response);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-  const token = localStorage.getItem("token");
-  return (
-    <div className="navbar">
-      <div className="logo">
-        <img src={logo} alt="main logo" />
-      </div>
-      <div className="navright">
-        <NavLink to="/userhome" className={setActiveClass}>
-          {" "}
-          Home{" "}
-        </NavLink>
-        <NavLink to="/userrequest" className={setActiveClass}>
-          {" "}
-          Request{" "}
-        </NavLink>
-        {!token ? (
-          <button className="btn">
-            <NavLink to="/" onClick={handleLogin} className={setActiveClass}>
-              {" "}
-              Login{" "}
-            </NavLink>
-          </button>
-        ) : (
-          <>
-            <Link to="/userProfile">
-              <img src={userProfile} alt="" srcset="" className="w-10" />
-            </Link>
-            <button onClick={handleLogout}>
-              <img src={logout} alt="" />
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-export default Navbar;
+export default Navbar
