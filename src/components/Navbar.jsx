@@ -13,7 +13,7 @@ const Navbar = () => {
         <span>Request</span>
 
       <div className='flex gap-10 '>
-        <img src={userprofile} alt="userProfile" className='h-10 w-10 '/>
+        <img src={userprofile} alt="userProfile" className='h-8 w-8 '/>
       </div>
       </div>
     </nav>
