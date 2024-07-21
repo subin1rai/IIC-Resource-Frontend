@@ -22,6 +22,7 @@ const SettingRole = () => {
         </div>
         </div>
       </div>
+      </div>
     </div>
   );
 };
