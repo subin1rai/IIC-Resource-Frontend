@@ -25,7 +25,7 @@ const SettingsSide =() =>{
           </div>
           <div className="flex items-center gap-5">
             <img src={manage} alt="" />
-            <NavLink to="/manageroles" >
+            <NavLink to="/settingRole" >
               Manage Roles
             </NavLink>
           </div>
