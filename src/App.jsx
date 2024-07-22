@@ -36,32 +36,30 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
-          <Route
-            path="/"
-            element={<Login />}
-          />
+
+          <Route path="/" element={<Login />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/otp" element={<Otp />} />
 
           {/* Protected routes */}
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/specificItem/:id" element={<SingleItem />} />
-
+          <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
             {userType === "admin" ? (
               <>
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/issue" element={<Issue />} />
+                <Route path="/category" element={<Category />} />
                 <Route path="/vendors" element={<Vendor />} />
                 <Route path="/records" element={<Records />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/payment" element={<Payment />} />
                 <Route
                   path="/specificVendor/:vendor_id"
                   element={<SpecificVendor />}
                 />
-                <Route path="/category" element={<Category />} />
-                <Route path="/payment" element={<Payment />} />
+                <Route path="/request" element={<Request />} />
                 <Route
                   path="/specificbill/:bill_id"
                   element={<SpecificBill />}
@@ -70,6 +68,8 @@ function App() {
                 <Route path="/settingRole" element={<SettingRole />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/notify" element={<Notify />} />
+                <Route path="/specificItem/:id" element={<SingleItem />} />
+
                 {/* Redirect admin to dashboard if they try to access user routes */}
                 <Route
                   path="/userhome"
@@ -84,10 +84,6 @@ function App() {
                   element={<Navigate to="/dashboard" replace />}
                 />
                 <Route
-                  path="/request"
-                  element={<Navigate to="/dashboard" replace />}
-                />
-                <Route
                   path="/userRequest"
                   element={<Navigate to="/dashboard" replace />}
                 />
@@ -97,9 +93,12 @@ function App() {
                 <Route path="/userhome" element={<UserHome />} />
                 <Route path="/userProfile" element={<UserProfile />} />
                 <Route path="/userPassword" element={<UserPassword />} />
-                <Route path="/request" element={<Request />} />
                 <Route path="/userRequest" element={<UserRequest />} />
                 {/* Redirect non-admin users to userhome if they try to access admin routes */}
+                <Route
+                  path="/dashboard"
+                  element={<Navigate to="/userhome" replace />}
+                />
                 <Route
                   path="/inventory"
                   element={<Navigate to="/userhome" replace />}
@@ -109,19 +108,15 @@ function App() {
                   element={<Navigate to="/userhome" replace />}
                 />
                 <Route
+                  path="/category"
+                  element={<Navigate to="/userhome" replace />}
+                />
+                <Route
                   path="/vendors"
                   element={<Navigate to="/userhome" replace />}
                 />
                 <Route
                   path="/records"
-                  element={<Navigate to="/userhome" replace />}
-                />
-                <Route
-                  path="/dashboard"
-                  element={<Navigate to="/userhome" replace />}
-                />
-                <Route
-                  path="/category"
                   element={<Navigate to="/userhome" replace />}
                 />
                 <Route
@@ -142,7 +137,6 @@ function App() {
 
           {/* Catch-all route for undefined paths */}
           <Route path="*" element={<Navigate to="/" replace />} />
-
         </Routes>
       </BrowserRouter>
     </div>
