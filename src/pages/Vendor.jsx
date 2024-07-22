@@ -9,6 +9,7 @@ import axios from "axios";
 import VendorTable from "../components/VendorTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 const Vendor = () => {
   const [vendor, setVendor] = useState({
