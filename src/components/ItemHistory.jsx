@@ -47,6 +47,8 @@ function PurchaseHistory() {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
+
+        console.log(response);
         setItems(response.data.itemData.bills);
         setLoading(false);
       } catch (err) {
