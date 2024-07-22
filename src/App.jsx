@@ -38,16 +38,7 @@ function App() {
           {/* Public routes */}
           <Route
             path="/"
-            element={
-              isLoggedIn ? (
-                <Navigate
-                  to={userType === "admin" ? "/dashboard" : "/userhome"}
-                  replace
-                />
-              ) : (
-                <Login />
-              )
-            }
+            element={<Login />}
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
@@ -77,8 +68,8 @@ function App() {
                 />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/settingRole" element={<SettingRole />} />
-                <Route path= "/help" element ={<Help />} />
-                <Route path= "/notify" element ={<Notify />} />
+                <Route path="/help" element={<Help />} />
+                <Route path="/notify" element={<Notify />} />
                 {/* Redirect admin to dashboard if they try to access user routes */}
                 <Route
                   path="/userhome"
