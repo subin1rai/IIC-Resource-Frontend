@@ -36,7 +36,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
+
           <Route path="/" element={<Login />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset" element={<Reset />} />
@@ -67,6 +69,7 @@ function App() {
                 <Route path="/help" element={<Help />} />
                 <Route path="/notify" element={<Notify />} />
                 <Route path="/specificItem/:id" element={<SingleItem />} />
+
                 {/* Redirect admin to dashboard if they try to access user routes */}
                 <Route
                   path="/userhome"

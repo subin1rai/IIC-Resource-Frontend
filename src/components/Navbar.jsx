@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../assets/Top.png";
 import userprofile from "../assets/user.svg";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -10,11 +11,14 @@ const Navbar = () => {
         <img className="" src={logo} />
         {/* Nav items */}
         <div className="flex justify-between items-center gap-20 text-xl font-normal text-black">
-          <span>Home</span>
-          <span>Request</span>
+          <Link to="/userhome">Home</Link>
+          <Link to="/userRequest">Request</Link>
 
           <div className="flex gap-10 ">
-            <img src={userprofile} alt="userProfile" className="h-8 w-8 " />
+
+            <Link to="/userProfile">
+              <img src={userprofile} alt="userProfile" className="h-8 w-8 " />
+            </Link>
           </div>
         </div>
       </nav>
