@@ -47,9 +47,8 @@ export default function InventoryTable({ items }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-
   const [itemsData, setItems] = React.useState([]);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // gettting token from localstorage
   const token = localStorage.getItem("token");
@@ -71,7 +70,6 @@ export default function InventoryTable({ items }) {
 
     getAllItems();
   }, []);
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

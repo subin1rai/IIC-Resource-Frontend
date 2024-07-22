@@ -9,6 +9,7 @@ import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -27,7 +28,47 @@ const Inventory = () => {
   const [productCategory, setProductCategory] = useState([]);
   const [itemCategory, setItemCategory] = useState([]);
 
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [productCategoryOptions, setProductCategoryOptions] = useState([]);
+  const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
+
   const [addFormVisibility, setAddFormVisibility] = useState(false);
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "#ccc",
+      boxShadow: "none",
+      minHeight: "38px",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0px",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+    }),
+  };
 
   const displayAddPopup = () => {
     setAddFormVisibility(true);
@@ -42,7 +83,12 @@ const Inventory = () => {
     setItemData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // gettting token from localstorage
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    setItemData((prev) => ({
+      ...prev,
+      [actionMeta.name]: selectedOption.value,
+    }));
+  };
 
   const token = localStorage.getItem("token");
 
@@ -64,10 +110,8 @@ const Inventory = () => {
       setAddFormVisibility(false);
       setLoading(false);
 
-      // Add the new item to the items state
       setItems((prevItems) => [...prevItems, response.data.newItem]);
 
-      // Reset the form
       setItemData({
         item_name: "",
         category: "",
@@ -122,6 +166,25 @@ const Inventory = () => {
         setProductCategory(productCategoryResponse.data.allData);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
+
+        setCategoryOptions(
+          categoryResponse.data.category.map((cat) => ({
+            value: cat.category_name,
+            label: cat.category_name,
+          }))
+        );
+        setProductCategoryOptions(
+          productCategoryResponse.data.allData.map((prodCat) => ({
+            value: prodCat.product_category_name,
+            label: prodCat.product_category_name,
+          }))
+        );
+        setItemCategoryOptions(
+          itemCategoryResponse.data.allData.map((itemCat) => ({
+            value: itemCat.item_category_name,
+            label: itemCat.item_category_name,
+          }))
+        );
       } catch (error) {
         console.log(error);
       }
@@ -206,51 +269,59 @@ const Inventory = () => {
           </div>
           <div className="field">
             <label htmlFor="category">Category</label>
-            <select
-              name="category"
-              id="category"
-              value={itemData.category}
-              onChange={handleChange}
-            >
-              <option value="">Choose Category</option>
-              {category.map((cat, index) => (
-                <option key={index} value={cat.category_name}>
-                  {cat.category_name}
-                </option>
-              ))}
-            </select>
+            <div className="select-wrapper">
+              <Select
+                options={categoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "category" })
+                }
+                value={categoryOptions.find(
+                  (option) => option.value === itemData.category
+                )}
+                placeholder="Choose Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
           <div className="field">
             <label htmlFor="product_category">Product Category</label>
-            <select
-              name="productCategory"
-              id="product_category"
-              value={itemData.productCategory}
-              onChange={handleChange}
-            >
-              <option value="">Select Product Category</option>
-              {productCategory.map((prodCat, index) => (
-                <option key={index} value={prodCat.product_category_name}>
-                  {prodCat.product_category_name}
-                </option>
-              ))}
-            </select>
+            <div className="select-wrapper">
+              <Select
+                options={productCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, {
+                    name: "productCategory",
+                  })
+                }
+                value={productCategoryOptions.find(
+                  (option) => option.value === itemData.productCategory
+                )}
+                placeholder="Select Product Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
           <div className="field">
             <label htmlFor="item_category">Item Category</label>
-            <select
-              name="itemCategory"
-              id="item_category"
-              value={itemData.itemCategory}
-              onChange={handleChange}
-            >
-              <option value="">Choose Item Category</option>
-              {itemCategory.map((itemCat, index) => (
-                <option key={index} value={itemCat.item_category_name}>
-                  {itemCat.item_category_name}
-                </option>
-              ))}
-            </select>
+            <div className="select-wrapper">
+              <Select
+                options={itemCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "itemCategory" })
+                }
+                value={itemCategoryOptions.find(
+                  (option) => option.value === itemData.itemCategory
+                )}
+                placeholder="Choose Item Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
           <div className="field">
             <label htmlFor="measuring_unit">Measuring Unit</label>

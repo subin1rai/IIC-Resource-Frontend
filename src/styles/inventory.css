@@ -201,3 +201,24 @@
     }
   }
 }
+
+.select-wrapper {
+  width: 275px;
+}
+
+.react-select-container {
+  width: 275px;
+}
+
+.react-select__control {
+  min-height: 38px;
+}
+
+.react-select__value-container {
+  padding: 2px 8px;
+}
+
+.react-select__input {
+  margin: 0;
+  padding: 0;
+}
