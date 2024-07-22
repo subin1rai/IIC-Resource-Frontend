@@ -110,6 +110,7 @@ const SpecificVendor = () => {
     fetchSingleVendor();
   }, [vendor_id]);
 
+  
   return (
     <div className="side">
       <Sidebar />
