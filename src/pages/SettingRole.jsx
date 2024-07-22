@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
+import axios from "axios";
 
 const SettingRole = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const Token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/allUsers", {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        });
+        console.log(response.data);
+        if (response.data && response.data.user) {
+          setUsers(response.data.user);
+        } else {
+          setError("Unexpected response structure");
+        }
+      } catch (err) {
+        console.log(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getUsers();
+  }, [Token]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="flex bg-background h-screen w-screen gap-1">
       <Sidebar /> {/* Rendering Sidebar component */}
@@ -21,7 +55,7 @@ const SettingRole = () => {
                   <h1 className="text-3xl font-semibold">Roles</h1>
                   <p className="text-sm font-medium">Manage user roles</p>
                 </div>
-                <button className="text-white bg-blue-600 rounded-md  p-3 flex justify-center items-center gap-3 px-4 h-fit">
+                <button className="text-white bg-blue-600 rounded-md p-3 flex justify-center items-center gap-3 px-4 h-fit">
                   <i className="fa-solid fa-plus"></i> Add User
                 </button>
               </div>
@@ -49,70 +83,27 @@ const SettingRole = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      {users.map((user, index) => (
+                        <tr
+                          key={user.id}
+                          className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
                         >
-                          1
-                        </th>
-                        <td className="px-10 py-4">Subin Rai</td>
-                        <td className="px-10 py-4">NP05CPA220125@iic.edu.np</td>
-                        <td className="px-10 py-4">user</td>
-                        <td className="px-10 py-4">
-                          <button>
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap"
-                        >
-                          2
-                        </th>
-                        <td className="px-10 py-4">Anir Jung Thapa</td>
-                        <td className="px-10 py-4">NP05CPA220125@iic.edu.np</td>
-                        <td className="px-10 py-4">user</td>
-                        <td className="px-10 py-4">
-                          <button>
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap"
-                        >
-                          3
-                        </th>
-                        <td className="px-10 py-4">Mahima Gurung</td>
-                        <td className="px-10 py-4">NP05CPA220125@iic.edu.np</td>
-                        <td className="px-10 py-4">Admin</td>
-                        <td className="px-10 py-4">
-                          <button>
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap"
-                        >
-                          4
-                        </th>
-                        <td className="px-10 py-4">Lizan Shrestha</td>
-                        <td className="px-10 py-4">NP05CPA220125@iic.edu.np</td>
-                        <td className="px-10 py-4">Admin</td>
-                        <td className="px-10 py-4">
-                          <button>
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                        </td>
-                      </tr>
+                          <th
+                            scope="row"
+                            className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap"
+                          >
+                            {index + 1}
+                          </th>
+                          <td className="px-10 py-4">{user.user_name}</td>
+                          <td className="px-10 py-4">{user.user_email}</td>
+                          <td className="px-10 py-4">{user.role}</td>
+                          <td className="px-10 py-4">
+                            <button>
+                              <i className="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -123,6 +114,7 @@ const SettingRole = () => {
       </div>{" "}
       {/* End of flex-grow div */}
     </div>
+    
   );
 };
 
