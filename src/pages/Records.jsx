@@ -9,12 +9,16 @@ import filterIcon from "../assets/filter.svg";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const Records = () => {
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
     invoice_no: "",
+    vendor_vat: "",
     vendor_name: "",
     item_name: "",
     unit_price: "",
@@ -24,6 +28,42 @@ const Records = () => {
     actual_amount: "",
     paid_amount: "",
   });
+  const [date, setDate] = useState("");
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "#ccc",
+      boxShadow: "none",
+      minHeight: "38px",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0px",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+    }),
+  };
 
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -84,6 +124,7 @@ const Records = () => {
       bill_no: "",
       bill_date: "",
       invoice_no: "",
+      vendor_vat: "",
       vendor_name: "",
       item_name: "",
       unit_price: "",
@@ -97,6 +138,17 @@ const Records = () => {
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setBill((prev) => ({
+      ...prev,
+      [name]: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
+  const handleDateChange = ({ bsDate }) => {
+    setBill((prev) => ({ ...prev, bill_date: bsDate }));
   };
 
   const handleSubmit = async (event) => {
@@ -172,17 +224,26 @@ const Records = () => {
                   </div>
                   <div className="for">
                     <label htmlFor="bill_date">Bill Date:</label>
-                    <input
+                    {/* <input
                       type="date"
-                      placeholder="Enter bill date"
                       name="bill_date"
                       id="bill_date"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setBill({ ...bill, bill_date: e.target.value })
+                      }
                       value={bill.bill_date}
+                    /> */}
+
+                    <NepaliDatePicker
+                      inputClassName="form-control"
+                      className=""
+                      value={date}
+                      onChange={(value) => setDate(value)}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
                 </div>
-                <div className="single">
+                <div className="double">
                   <div className="for">
                     <label htmlFor="invoice_no">Voucher No:</label>
                     <input
@@ -194,41 +255,58 @@ const Records = () => {
                       value={bill.invoice_no}
                     />
                   </div>
+                  <div className="for">
+                    <label htmlFor="vendor_vat">Vat No:</label>
+                    <input
+                      type="text"
+                      placeholder="Enter vendor vat"
+                      name="vendor_vat"
+                      id="vendor_vat"
+                      onChange={handleChange}
+                      value={bill.vendor_vat}
+                    />
+                  </div>
                 </div>
                 <div className="single">
                   <div className="for">
                     <label htmlFor="vendor_name">Vendor:</label>
-                    <select
-                      id="vendor_name"
-                      name="vendor_name"
-                      onChange={handleChange}
-                      value={bill.vendor_name}
-                    >
-                      <option value="">Select Vendor</option>
-                      {vendors.map((vendor, index) => (
-                        <option key={index} value={vendor.vendor_name}>
-                          {vendor.vendor_name}
-                        </option>
-                      ))}
-                    </select>
+                    <Select
+                      options={vendors.map((vendor) => ({
+                        value: vendor.vendor_name,
+                        label: vendor.vendor_name,
+                      }))}
+                      onChange={(option) =>
+                        handleSelectChange(option, { name: "vendor_name" })
+                      }
+                      value={
+                        vendors.find(
+                          (vendor) => vendor.vendor_name === bill.vendor_name
+                        ) || null
+                      }
+                      placeholder="Select Vendor"
+                      styles={customStyles}
+                    />
                   </div>
                 </div>
                 <div className="single">
                   <div className="for">
                     <label htmlFor="item_name">Item Name:</label>
-                    <select
-                      id="item_name"
-                      name="item_name"
-                      onChange={handleChange}
-                      value={bill.item_name}
-                    >
-                      <option value="">Select Items</option>
-                      {items.map((item, index) => (
-                        <option key={index} value={item.item_name}>
-                          {item.item_name}
-                        </option>
-                      ))}
-                    </select>
+                    <Select
+                      options={items.map((item) => ({
+                        value: item.item_name,
+                        label: item.item_name,
+                      }))}
+                      onChange={(option) =>
+                        handleSelectChange(option, { name: "item_name" })
+                      }
+                      value={
+                        items.find(
+                          (item) => item.item_name === bill.item_name
+                        ) || null
+                      }
+                      placeholder="Choose Item"
+                      styles={customStyles}
+                    />
                   </div>
                 </div>
                 <div className="double">
