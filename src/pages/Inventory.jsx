@@ -13,6 +13,9 @@ import Select from "react-select";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [itemData, setItemData] = useState({
     item_name: "",
     category: "",
@@ -111,6 +114,7 @@ const Inventory = () => {
       setLoading(false);
 
       setItems((prevItems) => [...prevItems, response.data.newItem]);
+      setFilteredItems((prevItems) => [...prevItems, response.data.newItem]); // Update filteredItems
 
       setItemData({
         item_name: "",
@@ -136,6 +140,7 @@ const Inventory = () => {
           },
         });
         setItems(response.data.items);
+        setFilteredItems(response.data.items); // Initialize filtered items
 
         const categoryResponse = await axios.get(
           "http://localhost:8898/api/category",
@@ -191,7 +196,19 @@ const Inventory = () => {
     };
 
     getAllItems();
-  }, []);
+  }, [token]);
+
+  useEffect(() => {
+    const filterItems = () => {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const newFilteredItems = items.filter((item) =>
+        item.item_name.toLowerCase().includes(lowercasedTerm)
+      );
+      setFilteredItems(newFilteredItems);
+    };
+
+    filterItems();
+  }, [searchTerm, items]);
 
   return (
     <div className="inventory">
@@ -231,7 +248,12 @@ const Inventory = () => {
               <p>Items</p>
             </div>
             <div className="icon-actions">
-              <input type="text" placeholder="Search items" />
+              <input
+                type="text"
+                placeholder="Search items"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <button className="filter-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Filter
@@ -241,7 +263,7 @@ const Inventory = () => {
               </button>
             </div>
           </div>
-          <InventoryTable items={items} />
+          <InventoryTable items={filteredItems} />
         </div>
       </div>
 
