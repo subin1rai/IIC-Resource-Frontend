@@ -23,6 +23,9 @@ const Vendor = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [vendors, setVendors] = useState([]);
+  const [filteredVendors, setFilteredVendors] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -68,7 +71,7 @@ const Vendor = () => {
       });
     } catch (error) {
       console.log(error);
-      setError(error.response.data.error);
+      setError(error.response?.data?.error || "An error occurred");
     }
   };
 
@@ -81,14 +84,40 @@ const Vendor = () => {
           },
         });
         setVendors(response.data.vendors || []);
+        setFilteredVendors(response.data.vendors || []);
       } catch (error) {
         console.log("Error fetching vendors:", error);
         setVendors([]);
+        setFilteredVendors([]);
       }
     };
 
     getAllVendors();
   }, [token]);
+
+  useEffect(() => {
+    let results = vendors;
+
+    if (searchTerm) {
+      results = results.filter((vendor) =>
+        vendor.vendor_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedCategory) {
+      results = results.filter(
+        (vendor) => vendor.category === selectedCategory.value
+      );
+    }
+
+    setFilteredVendors(results);
+  }, [searchTerm, selectedCategory, vendors]);
+
+  const categoryOptions = [
+    { value: "Category1", label: "Category1" },
+    { value: "Category2", label: "Category2" },
+    // Add more categories as needed
+  ];
 
   return (
     <div className="vendor">
@@ -116,20 +145,23 @@ const Vendor = () => {
             </div>
 
             <div className="right">
-              <input type="text" placeholder="Search Items..." />
-
+              <input
+                type="text"
+                placeholder="Search Vendors..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <button className="category-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
                 Category
               </button>
-
               <button className="add-button" onClick={openAddVendorForm}>
                 Add Vendor
               </button>
             </div>
           </div>
 
-          <VendorTable vendors={vendors} setVendors={setVendors} />
+          <VendorTable vendors={filteredVendors} />
         </div>
       </div>
       {addFormVisibility && (

@@ -9,7 +9,6 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const columns = [
   { id: "item_name", label: "Item Name", maxWidth: 120 },
@@ -47,35 +46,12 @@ export default function InventoryTable({ items }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [itemsData, setItems] = React.useState([]);
   const navigate = useNavigate();
-
-  // gettting token from localstorage
-  const token = localStorage.getItem("token");
-
-  React.useEffect(() => {
-    const getAllItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setItems(response.data.items || []);
-      } catch (error) {
-        console.log(error);
-        setItems([]);
-      }
-    };
-
-    getAllItems();
-  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  // handle change
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -118,7 +94,7 @@ export default function InventoryTable({ items }) {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(itemsData, getComparator(order, orderBy)).slice(
+      stableSort(items, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
