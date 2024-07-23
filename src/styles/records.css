@@ -176,13 +176,6 @@
         border: 1px solid grey;
       }
 
-      select {
-        border-radius: 6px;
-        border: 1px solid grey;
-        width: 650px;
-        height: 48px;
-      }
-
       .tdsselect {
         padding: 10px;
         width: 291px;
@@ -212,5 +205,26 @@
         }
       }
     }
+  }
+
+  .select-wrapper {
+    width: 650px;
+  }
+
+  .react-select-container {
+    width: 650px;
+  }
+
+  .react-select__control {
+    min-height: 650px;
+  }
+
+  .react-select__value-container {
+    padding: 2px 8px;
+  }
+
+  .react-select__input {
+    margin: 0;
+    padding: 0;
   }
 }
