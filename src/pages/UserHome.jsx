@@ -14,6 +14,7 @@ const UserHome = () => {
                     <p className='text-7xl font-semibold'>Find Resources For You</p>
                     <p className='text-xl py-5 font-medium'>One stop for all your needs</p>
                     <Link to="/userRequest">
+                    {/* request button */}
                         <button className='bg-blue-700 font-normal px-10 py-4 rounded-md text-xl text-white'>Request Now</button>
                     </Link>
                 </div>

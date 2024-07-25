@@ -29,6 +29,7 @@ const SpecificBill = () => {
   console.log(bill_ID.bill_id);
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +60,7 @@ const SpecificBill = () => {
         setVendors(vendorsResponse.data.vendors);
       } catch (error) {
         console.log(error);
+        setError(error.response?.data?.error || "An error occurred");
       }
     };
     fetchData();
@@ -311,7 +313,7 @@ const SpecificBill = () => {
                     name="paid_amt"
                     id="paid_amt"
                     onChange={handleChange}
-                    // value={bill.paid_amt}
+                  // value={bill.paid_amt}
                   />
                 </div>
                 <div className="field">
