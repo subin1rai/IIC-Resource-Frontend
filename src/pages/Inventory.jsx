@@ -21,7 +21,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    productCategory: "",
+    // productCategory: "",
     low_limit: 0,
   });
 
