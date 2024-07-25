@@ -147,7 +147,10 @@ const Records = () => {
     }));
   };
 
-  const handleDateChange = ({ bsDate }) => {
+  const handleDateChange = (event) => {
+    console.log("Event:", event); // Log the entire event object to the console
+    const { bsDate } = event;
+    console.log("Selected date:", bsDate); // Log the selected date to the console
     setBill((prev) => ({ ...prev, bill_date: bsDate }));
   };
 
@@ -224,21 +227,11 @@ const Records = () => {
                   </div>
                   <div className="for">
                     <label htmlFor="bill_date">Bill Date:</label>
-                    {/* <input
-                      type="date"
-                      name="bill_date"
-                      id="bill_date"
-                      onChange={(e) =>
-                        setBill({ ...bill, bill_date: e.target.value })
-                      }
-                      value={bill.bill_date}
-                    /> */}
-
                     <NepaliDatePicker
                       inputClassName="form-control"
                       className=""
                       value={date}
-                      onChange={(value) => setDate(value)}
+                      onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
