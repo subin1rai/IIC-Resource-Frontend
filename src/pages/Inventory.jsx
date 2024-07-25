@@ -253,6 +253,7 @@ const Inventory = () => {
                 placeholder="Search items"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="border-2 border-slate-300 rounded"
               />
               <button className="filter-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
