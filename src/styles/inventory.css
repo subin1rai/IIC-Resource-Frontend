@@ -26,11 +26,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 1050px;
+    padding: 30px; 
     background-color: #fff;
     z-index: 999;
     padding: 30px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
 
     gap: 40px;
     border-radius: 8px;
@@ -41,6 +42,8 @@
       font-size: 18px;
       font-weight: 500;
       margin-left: -10px;
+      display: flex;
+      grid-column: span 2; 
     }
 
     .discard-btn {
@@ -58,22 +61,40 @@
       }
     }
 
-    select {
-      width: 275px;
+    select{
+
+      width: 279px;
       padding: 5px 10px;
       border: 1px solid gray;
     }
-
+    
+    
     input {
-      width: 275px;
+      width: 269px;
       padding: 5px 10px;
       border: 1px solid gray;
+    
     }
+.values {
+  display:flex;
+  gap:30px;
+  
 
+
+
+img{
+ 
+  width:24px;
+
+}
+}
+ 
+ 
     .buttons {
       display: flex;
       justify-content: flex-end;
       gap: 30px;
+      grid-column: span 2; 
 
       .add-btn {
         display: flex;
@@ -95,8 +116,16 @@
     .field {
       display: flex;
       justify-content: space-between;
+      flex-direction: row;
       gap: 30px;
     }
+
+   
+
+    
+
+  
+   
   }
   .inventory-summary {
     display: flex;

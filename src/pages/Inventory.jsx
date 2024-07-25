@@ -5,6 +5,7 @@ import Topbar from "../components/Topbar";
 import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
 import close from "../assets/close.svg";
+import Group from "../assets/Group.svg";
 import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -34,6 +35,7 @@ const Inventory = () => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [productCategoryOptions, setProductCategoryOptions] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
+  const [featureOptions, setFeatureOptions] = useState([]);
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
 
@@ -168,9 +170,19 @@ const Inventory = () => {
           }
         );
 
+        const featureResponse = await axios.get(
+          "http://localhost:8898/api/feature",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         setProductCategory(productCategoryResponse.data.allData);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
+        setFeature(featureResponse.data.feature);
 
         setCategoryOptions(
           categoryResponse.data.category.map((cat) => ({
@@ -188,6 +200,12 @@ const Inventory = () => {
           itemCategoryResponse.data.allData.map((itemCat) => ({
             value: itemCat.item_category_name,
             label: itemCat.item_category_name,
+          }))
+        );
+        setFeatureOptions(
+          featureResponse.data.feature.map((feat) => ({
+            value: feat.feature_name,
+            label: feat.feature_name,
           }))
         );
       } catch (error) {
@@ -308,6 +326,7 @@ const Inventory = () => {
             </div>
           </div>
           <div className="field">
+
             <label htmlFor="product_category">Product Category</label>
             <div className="select-wrapper">
               <Select
@@ -326,8 +345,11 @@ const Inventory = () => {
                 classNamePrefix="react-select"
               />
             </div>
-          </div>
+            </div>
+
+
           <div className="field">
+          
             <label htmlFor="item_category">Item Category</label>
             <div className="select-wrapper">
               <Select
@@ -344,8 +366,8 @@ const Inventory = () => {
                 classNamePrefix="react-select"
               />
             </div>
-          </div>
-          <div className="field">
+              </div>    
+              <div className="field">
             <label htmlFor="measuring_unit">Measuring Unit</label>
             <input
               type="text"
@@ -356,7 +378,9 @@ const Inventory = () => {
               onChange={handleChange}
             />
           </div>
+         
           <div className="field">
+         
             <label htmlFor="low_limit">Low Limit</label>
             <input
               type="number"
@@ -366,7 +390,48 @@ const Inventory = () => {
               value={itemData.low_limit}
               onChange={handleChange}
             />
+        
           </div>
+          <div className="field">
+            
+          <label htmlFor="feature">Feature</label>
+            <div className="select-wrapper">
+              <Select
+                options={featureOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "feature" })
+                }
+                value={featureOptions.find(
+                  (option) => option.value === feature.feature
+                )}
+                placeholder="Choose Feature"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+               
+                
+              />
+              
+              
+            </div>
+            
+            
+          </div>
+          <div className="values">
+              <input
+              
+                type="text"
+                placeholder="Enter the value"
+                name="values"
+                id="values"
+                  
+
+                
+              />
+              <img src={Group} alt="" />
+              </div>
+              
+         
 
           {error && <span className="text-red-500">{error}</span>}
 
