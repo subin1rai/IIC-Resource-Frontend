@@ -153,7 +153,7 @@ const Vendor = () => {
               />
               <button className="category-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
-                Category
+                Filter
               </button>
               <button className="add-button" onClick={openAddVendorForm}>
                 Add Vendor

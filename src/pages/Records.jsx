@@ -182,15 +182,17 @@ const Records = () => {
         <div className="records-container">
           <div className="top">
             <div className="container-title">
-              <p>Bill Records</p>
+              <p >Bill Records</p>
             </div>
-            <button className="filter-btn" aria-label="Menu">
+            <div className=" w-[10vw] flex justify-between gap-2 mr-8">
+            <button className="filterbill" aria-label="Menu">
               <img src={filterIcon} alt="filter icon" />
               Filter
             </button>
-            <button onClick={openAddBillForm} className="add-btn">
+            <button onClick={openAddBillForm} className="addbillbtn">
               Add Bill
             </button>
+            </div>
           </div>
           <RecordsTable bills={bills} />
         </div>
