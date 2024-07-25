@@ -72,10 +72,10 @@
           border-radius: 6px;
           border: 1px solid grey;
         }
-        select{
+        select {
           padding-left: 10px;
           width: 291px;
-          padding:10px;
+          padding: 10px;
           border-radius: 6px;
           border: 1px solid grey;
         }
@@ -106,11 +106,14 @@
       margin: 2% 2%;
       border-radius: 1px;
       width: fit-content;
-      height: 350px;
+      height: fit-content;
       padding: 20px;
       outline: auto;
       outline-color: lightgray;
       border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
 
       .title {
         display: flex;
@@ -150,18 +153,17 @@
           margin-right: 350px;
         }
       }
-      .btn {
-        padding: 10px;
-        margin-left: 1385px;
 
-        .edit {
-          background-color: #1570ef;
-          color: #fff;
-          padding: 10px;
-          border-radius: 5px;
-          border: none;
-          cursor: pointer;
-        }
+      .edit {
+        background-color: #1570ef;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-self: end;
+        align-self: flex-end;
       }
     }
   }
