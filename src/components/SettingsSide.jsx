@@ -8,12 +8,11 @@ import {NavLink} from "react-router-dom";
 
 const SettingsSide =() =>{
     return(
-        <div className="bg-blue-50 rounded-xl w-fit h-[32vw] p-5 mt-4">
-          <div className="flex gap-3">
-          <img className= "h-20 w-20" src ={user}></img>
-            <div className="flex flex-col">
-            <p className=" font-semibold text-3xl"> Mahima Gurung </p>
-            <p className=" font-light text-xl"> Your Personal Account</p>
+        <div className="bg-blue-50 rounded-xl w-fit h-[39vw] p-5 mt-4">
+          <div className="flex gap-3 justify-center ">
+            <div className="flex flex-col items-center">
+            <p className=" font-semibold text-xl"> Mahima Gurung </p>
+            <p className=" font-light text-l"> Your Personal Account</p>
             </div>
             </div>
             <div className="sidebar-items">

@@ -26,8 +26,10 @@ const SpecificBill = () => {
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
   const bill_ID = useParams();
+  console.log(bill_ID.bill_id);
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,33 +37,30 @@ const SpecificBill = () => {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(
-              `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`, 
+              `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
               }
             ),
-            axios.get("http://localhost:8898/api/items",
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            ),
-            axios.get("http://localhost:8898/api/vendor",
-            {
+            axios.get("http://localhost:8898/api/items", {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            }
-          ),
+            }),
+            axios.get("http://localhost:8898/api/vendor", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
           ]);
         setBillDetails(singleBillResponse.data.bill);
         setItems(itemsResponse.data.items);
         setVendors(vendorsResponse.data.vendors);
       } catch (error) {
         console.log(error);
+        setError(error.response?.data?.error || "An error occurred");
       }
     };
     fetchData();
@@ -91,11 +90,13 @@ const SpecificBill = () => {
   const handleChange = (e) => {
     setBill({ ...bill, [e.target.name]: e.target.value });
   };
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:8898/api/updateBill/${bill_ID}`, bill,
+      await axios.put(
+        `http://localhost:8898/api/updateBill/${bill_ID.bill_id}`,
+        bill,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -104,14 +105,14 @@ const SpecificBill = () => {
       );
       closeEditBillDetailsForm();
       // Refresh bill details
+
       const updatedBill = await axios.get(
-        `http://localhost:8898/api/singleBill/${bill_ID,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        }`
+        `http://localhost:8898/api/singleBill/${bill_ID.bill_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setBillDetails(updatedBill.data.bill);
     } catch (error) {
@@ -168,11 +169,9 @@ const SpecificBill = () => {
                 </div>
               </div>
             </>
-            <div className="btn">
-              <button onClick={openEditBillDetailsForm} className="edit">
-                Edit details
-              </button>
-            </div>
+            <button onClick={openEditBillDetailsForm} className="edit">
+              Edit details
+            </button>
           </div>
         </div>
       </div>
@@ -314,7 +313,7 @@ const SpecificBill = () => {
                     name="paid_amt"
                     id="paid_amt"
                     onChange={handleChange}
-                    // value={bill.paid_amt}
+                  // value={bill.paid_amt}
                   />
                 </div>
                 <div className="field">

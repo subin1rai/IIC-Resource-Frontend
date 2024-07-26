@@ -19,8 +19,9 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
-    z-index: 99;
+    z-index: 40;
   }
+
   .filter-form {
     position: absolute;
     top: 50%;
@@ -66,6 +67,7 @@
       width: 279px;
       padding: 5px 10px;
       border: 1px solid gray;
+      border-radius: 4px;
     }
     
     
@@ -73,6 +75,7 @@
       width: 269px;
       padding: 5px 10px;
       border: 1px solid gray;
+      border-radius: 4px;
     
     }
 .values {
