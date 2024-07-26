@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/payment.css";
+import close from "../assets/close.svg";
 import Topbar from "../components/Topbar";
 import PaymentTable from "../components/PaymentTable";
 import payment from "../assets/user.svg";
+import Select from "react-select";
 import filterIcon from "../assets/filter.svg";
 import axios from "axios";
 
@@ -32,7 +34,7 @@ const Payment = () => {
       <div className="flex justify-around ">
       <div className="flex flex-col items-center justify-center gap-3 ">
                 <img src={payment} alt="" />
-                <h4>{payment.length}</h4>
+                <h4>{payment}</h4>
                 <p>Total Pending Payment</p>
               </div>
         </div>
@@ -119,7 +121,7 @@ const Payment = () => {
             </form>
           )}
           {filterFormVisibility && (
-          <div className ="overlay" onCick={closeFilterForm}> </div>
+          <div className ="absolute bg-overlay z-20 w-screen h-screen" onCick={closeFilterForm}> </div>
         )}
           </div>
           

@@ -305,7 +305,7 @@ const Vendor = () => {
         <div className="overlay-vendor" onClick={closeAddVendorForm}></div>
       )}
        {filterFormVisibility && (
-          <div className ="bg-slate-600 absolute z-20" onCick={closeFilterForm}> </div>
+          <div className ="overlay-vendor" onCick={closeFilterForm}> </div>
         )}
       <ToastContainer pauseOnHover theme="light" />
     </div>
