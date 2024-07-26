@@ -18,8 +18,8 @@ const Records = () => {
     bill_no: "",
     bill_date: "",
     invoice_no: "",
-    vendor_vat: "",
-    vendor_name: "",
+    vat_number: "",
+    // vendor_name: "",
     item_name: "",
     unit_price: "",
     quantity: "",
@@ -29,14 +29,16 @@ const Records = () => {
     paid_amount: "",
   });
   const [date, setDate] = useState("");
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
       width: "100%",
       borderRadius: "4px",
-      borderColor: "#ccc",
+      borderColor: "grey",
       boxShadow: "none",
       minHeight: "38px",
+      color: "black",
       "&:hover": {
         borderColor: "#aaa",
       },
@@ -49,7 +51,9 @@ const Records = () => {
     }),
     input: (provided) => ({
       ...provided,
+      width: "625px",
       margin: "0px",
+      color: "black",
     }),
     placeholder: (provided) => ({
       ...provided,
@@ -58,10 +62,12 @@ const Records = () => {
     container: (provided) => ({
       ...provided,
       width: "100%",
+      color: "black",
     }),
     valueContainer: (provided) => ({
       ...provided,
       padding: "2px 8px",
+      color: "black",
     }),
   };
 
@@ -147,8 +153,11 @@ const Records = () => {
     }));
   };
 
-  const handleDateChange = ({ bsDate }) => {
-    setBill((prev) => ({ ...prev, bill_date: bsDate }));
+  const handleDateChange = (event) => {
+    console.log("Event:", event); // Log the entire event object to the console
+    const date = event;
+    console.log("Selected date:", date); // Log the selected date to the console
+    setBill((prev) => ({ ...prev, bill_date: date }));
   };
 
   const handleSubmit = async (event) => {
@@ -182,15 +191,17 @@ const Records = () => {
         <div className="records-container">
           <div className="top">
             <div className="container-title">
-              <p>Bill Records</p>
+              <p >Bill Records</p>
             </div>
-            <button className="filter-btn" aria-label="Menu">
+            <div className=" w-[10vw] flex justify-between gap-2 mr-8">
+            <button className="filterbill" aria-label="Menu">
               <img src={filterIcon} alt="filter icon" />
               Filter
             </button>
-            <button onClick={openAddBillForm} className="add-btn">
+            <button onClick={openAddBillForm} className="addbillbtn">
               Add Bill
             </button>
+            </div>
           </div>
           <RecordsTable bills={bills} />
         </div>
@@ -224,21 +235,11 @@ const Records = () => {
                   </div>
                   <div className="for">
                     <label htmlFor="bill_date">Bill Date:</label>
-                    {/* <input
-                      type="date"
-                      name="bill_date"
-                      id="bill_date"
-                      onChange={(e) =>
-                        setBill({ ...bill, bill_date: e.target.value })
-                      }
-                      value={bill.bill_date}
-                    /> */}
-
                     <NepaliDatePicker
                       inputClassName="form-control"
                       className=""
                       value={date}
-                      onChange={(value) => setDate(value)}
+                      onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
@@ -256,18 +257,19 @@ const Records = () => {
                     />
                   </div>
                   <div className="for">
-                    <label htmlFor="vendor_vat">Vat No:</label>
+                    <label htmlFor="vat_number">Vat No:</label>
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Enter vendor vat"
-                      name="vendor_vat"
-                      id="vendor_vat"
+                      name="vat_number"
+                      id="vat_number"
                       onChange={handleChange}
-                      value={bill.vendor_vat}
+                      value={bill.vat_number}
+                      min="0"
                     />
                   </div>
                 </div>
-                <div className="single">
+                {/* <div className="single">
                   <div className="for">
                     <label htmlFor="vendor_name">Vendor:</label>
                     <Select
@@ -287,7 +289,7 @@ const Records = () => {
                       styles={customStyles}
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="single">
                   <div className="for">
                     <label htmlFor="item_name">Item Name:</label>

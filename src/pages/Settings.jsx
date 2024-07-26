@@ -29,8 +29,8 @@ const Settings = () => {
       <div className="flex flex-col mx-auto gap-3">
         <Topbar />
         <div className="  bg-white w-[85.5vw] h-[100vh] rounded-md p-5 ">
-          <h1 className="font-bold text-xl ml-20 mt-20"> Settings </h1>
-          <div className="flex gap-12 ml-20">
+          <h1 className="font-semibold text-2xl"> Settings </h1>
+          <div className="flex gap-12 ">
             <SettingsSide />
             <div className="flex p-10 flex-col w-[55vw]">
               <p className="font-semibold text-3xl ">Profile</p>
@@ -38,15 +38,15 @@ const Settings = () => {
               <div className="flex gap-10 justify-between">
                 <div className="flex flex-col gap-3">
                   <label className=" font-medium text-xl pt-3">Full Name</label>
-                  <input className="p-3 w-[18vw]  border-2 rounded-md " />
+                  <input className="p-3 w-[18vw]  border-2 border-slate-300 rounded-md " />
                   <label className="font-medium text-xl">Email</label>
-                  <input className="p-3 w-[18vw]  border-2 rounded-md" />
+                  <input className="p-3 w-[18vw] border-2 border-slate-300  rounded-md" />
                   <label className="font-medium text-xl"> Department</label>
-                  <input className="p-3 w-[18vw] border-2 rounded-md" />
+                  <input className="p-3 w-[18vw] border-2  border-slate-300 rounded-md" />
                   <label className="font-medium text-xl">Phone Number</label>
-                  <input className="p-3 w-[18vw]  border-2 rounded-md" />
+                  <input className="p-3 w-[18vw]  border-2  border-slate-300 rounded-md" />
                   <button className="bg-blue-900 text-white w-[10vw] p-3 rounded-md">
-                    Save Changes
+                    Save Changesbn
                   </button>
                 </div>
                 <div className="image">

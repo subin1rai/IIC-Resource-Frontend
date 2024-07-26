@@ -150,10 +150,11 @@ const Vendor = () => {
                 placeholder="Search Vendors..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="border-2 border-slate-300 rounded"
               />
               <button className="category-btn" aria-label="Menu">
                 <img src={filterIcon} alt="" />
-                Category
+                Filter
               </button>
               <button className="add-button" onClick={openAddVendorForm}>
                 Add Vendor
