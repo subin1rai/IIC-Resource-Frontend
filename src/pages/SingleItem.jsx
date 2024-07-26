@@ -291,6 +291,7 @@ const SingleItem = () => {
               Save Edit
             </button>
           </form>
+         
           <div
             className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
             onClick={() => setEditFormVisibility(false)}
