@@ -456,7 +456,7 @@ const Inventory = () => {
          {filterFormVisibility && (
             <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
               <div className="flex justify-between">
-               <h2 className="font-semibold text-l"> Select Filtering Option</h2><button
+               <h2 className="font-semibold text-xl"> Select Filtering Option</h2><button
               type="button"
               className="discard-btn"
               onClick={closeFilterForm}
@@ -502,7 +502,7 @@ const Inventory = () => {
                   value={productCategoryOptions.find(
                     (option) => option.value === itemData.productCategory
                   )}
-                  placeholder="Choose Item Category"
+                  placeholder="Choose Product Category"
                   styles={customStyles}
                   className="react-select-container"
                   classNamePrefix="react-select"
@@ -511,8 +511,10 @@ const Inventory = () => {
             <label>
               Select Date:
             </label>
-            <input type = "date" placeholder=" from"/>
-            <input type = "date" placeholder="to"/>
+            <div className="flex gap-6">
+            <input className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder=" from"/>
+            <input className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder="to"/>
+            </div>
             </form>
           )}
         {addFormVisibility && (
