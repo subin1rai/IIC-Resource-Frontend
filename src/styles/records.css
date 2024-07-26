@@ -30,6 +30,7 @@
         display: flex;
         justify-content: space-between;
         width: 85.5vw;
+        align-items: center;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         background-color: #fff;
@@ -37,19 +38,19 @@
         padding-left: 20px;
 
         .container-title {
-          p {
-            font-weight: 500;
-            font-size: x-large;
-          }
+          width: 20vw;
+          font-size: 18px;
+          margin: 15px;
         }
 
-        .filter-btn {
+        .filterbill{
           display: flex;
+          justify-content:center;
           align-items: center;
-          width: 100px;
-          padding: 5px 10px;
-          margin-left: 1200px;
-          gap: 10px;
+          gap:5px;
+          height: 4vh;
+          width: 20vw;
+          padding: 5px;
           color: #5d6679;
           background-color: #fff;
           border: 1px solid #d0d3d9;
@@ -58,14 +59,12 @@
           border-radius: 4px;
         }
 
-        .add-btn {
+        .addbillbtn {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 50px;
-          width: fit-content;
-          padding: 7px 10px;
-          gap: 10px;
+          height: 4vh;
+          width: 20vw;
           color: #fff;
           background-color: #1570ef;
           border: none;

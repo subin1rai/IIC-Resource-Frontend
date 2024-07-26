@@ -38,6 +38,7 @@ const Inventory = () => {
   const [featureOptions, setFeatureOptions] = useState([]);
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
+  const [filterFormVisibility, setFilterFormVisibility] = useState(false);
 
   const customStyles = {
     control: (provided) => ({
@@ -79,9 +80,17 @@ const Inventory = () => {
     setAddFormVisibility(true);
   };
 
+  const displayFilterForm = () =>  {
+      setFilterFormVisibility(true);
+  }
+
   const closeAddItemForm = () => {
     setError("");
     setAddFormVisibility(false);
+  };
+
+  const closeFilterForm = () => {
+    setFilterFormVisibility(false);
   };
 
   const handleChange = (e) => {
@@ -113,6 +122,7 @@ const Inventory = () => {
       );
       toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
+      setFilterFormVisibility(false);
       setLoading(false);
 
       setItems((prevItems) => [...prevItems, response.data.newItem]);
@@ -273,8 +283,8 @@ const Inventory = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="border-2 border-slate-300 rounded"
               />
-              <button className="filter-btn" aria-label="Menu">
-                <img src={filterIcon} alt="" />
+              <button className="filter-btn" aria-label="Menu" onClick={displayFilterForm}>
+                <img src={filterIcon} alt=""  />
                 Filter
               </button>
               <button className="add-btn" onClick={displayAddPopup}>
@@ -443,9 +453,73 @@ const Inventory = () => {
           </div>
         </form>
       )}
-
+       {filterFormVisibility && (
+          <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+            <div className="flex justify-between">
+             <h2 className="font-semibold text-l"> Select Filtering Option</h2><button
+            type="button"
+            className="discard-btn"
+            onClick={closeFilterForm}
+          >
+            <img src={close} alt="" />
+          </button>
+          </div>
+           <label>
+          Select Category
+           </label>
+           <div className="flex gap-6">
+           <Select
+                options={categoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "feature" })
+                }
+                value={categoryOptions.find(
+                  (option) => option.value === itemData.category
+                )}
+                placeholder="Choose Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+           <Select
+                options={itemCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "itemCategory" })
+                }
+                value={itemCategoryOptions.find(
+                  (option) => option.value === itemData.itemCategory
+                )}
+                placeholder="Choose Item Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+               <Select
+                options={productCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "productCategory" })
+                }
+                value={productCategoryOptions.find(
+                  (option) => option.value === itemData.productCategory
+                )}
+                placeholder="Choose Item Category"
+                styles={customStyles}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+             </div>
+          <label>
+            Select Date:
+          </label>
+          <input type = "date" placeholder=" from"/>
+          <input type = "date" placeholder="to"/>
+          </form>
+        )}
       {addFormVisibility && (
         <div className="overlay" onClick={closeAddItemForm}></div>
+      )}
+      {filterFormVisibility && (
+        <div className ="overlay" onCick={closeFilterForm}> </div>
       )}
       <ToastContainer pauseOnHover theme="light" />
     </div>
