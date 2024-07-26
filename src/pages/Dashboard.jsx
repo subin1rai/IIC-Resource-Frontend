@@ -8,9 +8,6 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <Sidebar />
-
-
-      
       <div className="dashboard-main">
         <Topbar />
         <div className="summary">
