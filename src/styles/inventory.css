@@ -79,6 +79,11 @@
 .values {
   display:flex;
   gap:30px;
+
+.valuess{
+  width:450px;
+}
+
   
 
 
