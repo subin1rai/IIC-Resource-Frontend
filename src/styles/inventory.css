@@ -67,6 +67,7 @@
       width: 279px;
       padding: 5px 10px;
       border: 1px solid gray;
+      border-radius: 4px;
     }
     
     
@@ -74,6 +75,7 @@
       width: 269px;
       padding: 5px 10px;
       border: 1px solid gray;
+      border-radius: 4px;
     
     }
 .values {
