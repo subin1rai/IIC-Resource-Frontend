@@ -27,24 +27,49 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1050px;
-    padding: 30px; 
+    padding: 30px;
     background-color: #fff;
     z-index: 999;
-    padding: 30px;
     display: grid;
-
     gap: 40px;
     border-radius: 8px;
-
+    display: flex;
+    flex-direction: column;
     transition: all ease-in-out 0.5s;
+
+    .double {
+      display: flex;
+      gap: 90px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .features {
+      display: flex;
+      gap: 30px;
+      flex-direction: column;
+      margin-top: -70px;
+      input {
+        width: 400px;
+      }
+    }
+
+    .feature-row {
+      display: flex;
+      gap: 60px;
+      margin-left: 190px;
+    }
 
     .title {
       font-size: 18px;
       font-weight: 500;
       margin-left: -10px;
       display: flex;
-      grid-column: span 2; 
+      grid-column: span 2;
+    }
+
+    label {
+      width: 130px;
     }
 
     .discard-btn {
@@ -62,40 +87,26 @@
       }
     }
 
-    select{
-
-      width: 279px;
-      padding: 5px 10px;
-      border: 1px solid gray;
-    }
-    
-    
     input {
       width: 269px;
       padding: 5px 10px;
       border: 1px solid gray;
-    
+      border-radius: 3px;
     }
-.values {
-  display:flex;
-  gap:30px;
-  
+    .values {
+      display: flex;
+      gap: 30px;
 
+      img {
+        width: 24px;
+      }
+    }
 
-
-img{
- 
-  width:24px;
-
-}
-}
- 
- 
     .buttons {
       display: flex;
       justify-content: flex-end;
       gap: 30px;
-      grid-column: span 2; 
+      grid-column: span 2;
 
       .add-btn {
         display: flex;
@@ -118,15 +129,10 @@ img{
       display: flex;
       justify-content: space-between;
       flex-direction: row;
-      gap: 30px;
+      gap: 60px;
+      align-items: center;
+      width: fit-content;
     }
-
-   
-
-    
-
-  
-   
   }
   .inventory-summary {
     display: flex;
@@ -232,11 +238,11 @@ img{
   }
 
   .select-wrapper {
-    width: 275px;
+    width: 269px;
   }
 
   .react-select-container {
-    width: 275px;
+    width: 269px;
   }
 
   .react-select__control {
