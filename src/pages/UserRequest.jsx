@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
-import filter from "../assets/filter.svg";
+import socket from "../socket.js";
 
 const UserRequest = () => {
   const [request, setRequest] = useState({
@@ -27,7 +27,7 @@ const UserRequest = () => {
         "http://localhost:8898/api/addRequest",
         request,
         {
-          headers: {
+          headers: {  
             Authorization: `Bearer ${token}`,
           },
         }
@@ -44,6 +44,12 @@ const UserRequest = () => {
       console.log(error);
     }
   };
+
+  useEffect(()=>{
+    socket.on("new_request", (data) => {
+      toast.success(`${data.message} by ${data.user}`);
+    });
+  })
 
   useEffect(() => {
     const getAllItems = async () => {
@@ -63,6 +69,8 @@ const UserRequest = () => {
 
     getAllItems();
   }, [token]);
+
+
 
   return (
     <>
@@ -228,7 +236,6 @@ const UserRequest = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </div>
     </>
   );
