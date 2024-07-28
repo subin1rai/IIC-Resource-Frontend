@@ -208,14 +208,6 @@ const Inventory = () => {
             },
           }
         );
-        const productCategoryResponse = await axios.get(
-          "http://localhost:8898/api/productCategory",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
 
         const featureResponse = await axios.get(
           "http://localhost:8898/api/feature",
@@ -226,10 +218,11 @@ const Inventory = () => {
           }
         );
 
-        setProductCategory(productCategoryResponse.data.allData);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);
+
+        console.log(itemCategory);
 
         setCategoryOptions(
           categoryResponse.data.category.map((cat) => ({
@@ -238,12 +231,6 @@ const Inventory = () => {
           }))
         );
 
-        setProductCategoryOptions(
-          productCategoryResponse.data.allData.map((prodCat) => ({
-            value: prodCat.product_category_name,
-            label: prodCat.product_category_name,
-          }))
-        );
         setItemCategoryOptions(
           itemCategoryResponse.data.allData.map((itemCat) => ({
             value: itemCat.item_category_name,
@@ -262,7 +249,7 @@ const Inventory = () => {
     };
 
     getAllItems();
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     const filterItems = () => {
