@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
 
+// all the columns of inventpry table
 const columns = [
   { id: "item_name", label: "Item Name", maxWidth: 120 },
   { id: "unit_price", label: "Unit Price", maxWidth: 80, numeric: true },
