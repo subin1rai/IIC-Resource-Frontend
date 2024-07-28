@@ -22,17 +22,14 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    productCategory: "",
+    // productCategory: "",
     low_limit: 0,
-
-    features: {},
-
+    features: {}, // Add this line
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
-  const [feature, setFeature] = useState([]);
   const [productCategory, setProductCategory] = useState([]);
   const [itemCategory, setItemCategory] = useState([]);
   const [feature, setFeature] = useState([]);
@@ -44,7 +41,6 @@ const Inventory = () => {
 
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
-
 
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
@@ -60,7 +56,6 @@ const Inventory = () => {
     const newFeatures = selectedFeatures.filter((_, i) => i !== index);
     setSelectedFeatures(newFeatures);
   };
-
 
   const customStyles = {
     control: (provided) => ({
@@ -102,11 +97,9 @@ const Inventory = () => {
     setAddFormVisibility(true);
   };
 
-
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
   };
-
 
   const closeAddItemForm = () => {
     setError("");
@@ -116,7 +109,6 @@ const Inventory = () => {
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
   };
-
 
   const handleChange = (e) => {
     setItemData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -179,7 +171,6 @@ const Inventory = () => {
         measuring_unit: "",
         productCategory: "",
         low_limit: 0,
-        feature:"",
       });
     } catch (error) {
       console.log(error);
@@ -216,14 +207,6 @@ const Inventory = () => {
             },
           }
         );
-        const productCategoryResponse = await axios.get(
-          "http://localhost:8898/api/productCategory",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
 
         const featureResponse = await axios.get(
           "http://localhost:8898/api/feature",
@@ -234,10 +217,11 @@ const Inventory = () => {
           }
         );
 
-        setProductCategory(productCategoryResponse.data.allData);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);
+
+        console.log(itemCategory);
 
         setCategoryOptions(
           categoryResponse.data.category.map((cat) => ({
@@ -246,12 +230,6 @@ const Inventory = () => {
           }))
         );
 
-        setProductCategoryOptions(
-          productCategoryResponse.data.allData.map((prodCat) => ({
-            value: prodCat.product_category_name,
-            label: prodCat.product_category_name,
-          }))
-        );
         setItemCategoryOptions(
           itemCategoryResponse.data.allData.map((itemCat) => ({
             value: itemCat.item_category_name,
@@ -270,7 +248,7 @@ const Inventory = () => {
     };
 
     getAllItems();
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     const filterItems = () => {
@@ -285,87 +263,50 @@ const Inventory = () => {
   }, [searchTerm, items]);
 
   return (
-    
-      <div className="inventory">
-        <Sidebar />
-        <div className="inventory-main">
-          <Topbar />
-          <div className="inventory-summary">
-            <div className="overall-inventory">
-              <h3 className="title">Overall Inventory</h3>
-              <div className="inventory-container">
-                <div className="container">
-                  <img src={validVendor} alt="" />
-                  <h4>{category.length}</h4>
-                  <p>Number of categories</p>
-                </div>
-                <div className="container">
-                  <img src={validVendor} alt="" />
-                  <h4>{items.length}</h4>
-                  <p>Number of items</p>
-                </div>
-                <div className="container">
-                  <img src={validVendor} alt="" />
-                  <h4>
-                    {
-                      items.filter((item) => item.stockStatus === "Low Stock")
-                        .length
-                    }
-                  </h4>
-                  <p>Number of low stock</p>
-                </div>
+    <div className="inventory">
+      <Sidebar />
+      <div className="inventory-main">
+        <Topbar />
+        <div className="inventory-summary">
+          <div className="overall-inventory">
+            <h3 className="title">Overall Inventory</h3>
+            <div className="inventory-container">
+              <div className="container">
+                <img src={validVendor} alt="" />
+                <h4>{category.length}</h4>
+                <p>Number of categories</p>
+              </div>
+              <div className="container">
+                <img src={validVendor} alt="" />
+                <h4>{items.length}</h4>
+                <p>Number of items</p>
+              </div>
+              <div className="container">
+                <img src={validVendor} alt="" />
+                <h4>
+                  {
+                    items.filter((item) => item.stockStatus === "Low Stock")
+                      .length
+                  }
+                </h4>
+                <p>Number of low stock</p>
               </div>
             </div>
-          </div>
-          <div className="items-container">
-            <div className="item-container-top">
-              <div className="container-title">
-                <p>Items</p>
-              </div>
-              <div className="icon-actions">
-                <input
-                  type="text"
-                  placeholder="Search items"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border-2 border-slate-300 rounded"
-                />
-                <button className="filter-btn" aria-label="Menu" onClick={displayFilterForm}>
-                  <img src={filterIcon} alt=""  />
-                  Filter
-                </button>
-                <button className="add-btn" onClick={displayAddPopup}>
-                  Add Item
-                </button>
-              </div>
-            </div>
-            <InventoryTable items={filteredItems} />
           </div>
         </div>
-    
-        {addFormVisibility && (
-          <form onSubmit={handleSubmit} className="filter-form">
-            <button
-              type="button"
-              className="discard-btn"
-              onClick={closeAddItemForm}
-            >
-              <img src={close} alt="" />
-            </button>
-            <p className="title">Add Item</p>
-
-            <div className="field">
-              <label htmlFor="item_name">Item Name</label>
+        <div className="items-container">
+          <div className="item-container-top">
+            <div className="container-title">
+              <p>Items</p>
+            </div>
+            <div className="icon-actions">
               <input
                 type="text"
-                placeholder="Enter product name"
-                autoFocus="autofocus"
-                name="item_name"
-                id="item_name"
-                value={itemData.item_name}
-                onChange={handleChange}
+                placeholder="Search items"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border-2 border-slate-300 rounded"
               />
-
               <button
                 className="filter-btn"
                 aria-label="Menu"
@@ -377,9 +318,11 @@ const Inventory = () => {
               <button className="add-btn" onClick={displayAddPopup}>
                 Add Item
               </button>
-
             </div>
-
+          </div>
+          <InventoryTable items={filteredItems} />
+        </div>
+      </div>
 
       {addFormVisibility && (
         <form onSubmit={handleSubmit} className="filter-form">
@@ -416,65 +359,12 @@ const Inventory = () => {
                     (option) => option.value === itemData.category
                   )}
                   placeholder="Choose Category"
-
-            <div className="field">
-              <label htmlFor="category">Category</label>
-              <div className="select-wrapper">
-                <Select
-                  options={categoryOptions}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "category" })
-                  }
-                  value={categoryOptions.find(
-                    (option) => option.value === itemData.category
-                  )}
-                  placeholder="Choose Category"
                   styles={customStyles}
                   className="react-select-container"
                   classNamePrefix="react-select"
                 />
               </div>
             </div>
-            <div className="field">
-              <label htmlFor="product_category">Product Category</label>
-              <div className="select-wrapper">
-                <Select
-                  options={productCategoryOptions}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, {
-                      name: "productCategory",
-                    })
-                  }
-                  value={productCategoryOptions.find(
-                    (option) => option.value === itemData.productCategory
-                  )}
-                  placeholder="Select Product Category"
-                  styles={customStyles}
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                />
-              </div>
-            </div>
-            <div className="field">
-              <label htmlFor="item_category">Item Category</label>
-              <div className="select-wrapper">
-                <Select
-                  options={itemCategoryOptions}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, { name: "itemCategory" })
-                  }
-                  value={itemCategoryOptions.find(
-                    (option) => option.value === itemData.itemCategory
-                  )}
-                  placeholder="Choose Item Category"
-
-                  styles={customStyles}
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                />
-              </div>
-            </div>
-
           </div>
 
           <div className="double">
@@ -496,7 +386,6 @@ const Inventory = () => {
                 />
               </div>
             </div>
-
             <div className="field">
               <label htmlFor="measuring_unit">Measuring Unit</label>
               <input
@@ -508,10 +397,8 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-
           </div>
           <div className="double">
-
             <div className="field">
               <label htmlFor="low_limit">Low Limit</label>
               <input
@@ -523,20 +410,17 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-
           </div>
-
+          {/* features form  */}
           <label htmlFor="">Feature</label>
           <div className="features">
             {selectedFeatures.map((feature, index) => (
               <div key={index} className="feature-row">
                 <div className="field">
-                  
                   <div className="select-wrapper">
                     <Select
                       options={featureOptions}
                       onChange={(selectedOption) =>
-
                         handleFeatureChange(
                           index,
                           "feature",
@@ -545,18 +429,11 @@ const Inventory = () => {
                       }
                       value={featureOptions.find(
                         (option) => option.value === feature.feature
-
-                        handleSelectChange(selectedOption, { name: "feature" })
-                      }
-                      value={featureOptions.find(
-                        (option) => option.value === itemData.feature
-
                       )}
                       placeholder="Choose Feature"
                       styles={customStyles}
                       className="react-select-container"
                       classNamePrefix="react-select"
-
                     />
                   </div>
                 </div>
@@ -601,51 +478,12 @@ const Inventory = () => {
           <div className="flex justify-between">
             <h2 className="font-semibold text-l"> Select Filtering Option</h2>
             <button
-
-                     
-                      
-                    /> 
-                  </div>
-                </div>
-    
-
-    
-                <div className="values">
-                  <input 
-                  
-                    type="text"
-                    placeholder="Enter the value"
-                    className="valuess"
-                    id="values"
-                      
-    
-                    
-                  />
-                  <img src={Group} alt="" />
-                  </div>
-                  
-    
-            {error && <span className="text-red-500">{error}</span>}
-    
-            <div className="buttons">
-              <button type="submit" className="add-btn" disabled={loading}>
-                {loading ? "Adding..." : "Add Item"}
-              </button>
-            </div>
-          </form>
-        )}
-         {filterFormVisibility && (
-            <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
-              <div className="flex justify-between">
-               <h2 className="font-semibold text-xl"> Select Filtering Option</h2><button
-
               type="button"
               className="discard-btn"
               onClick={closeFilterForm}
             >
               <img src={close} alt="" />
             </button>
-
           </div>
           <label>Select Category</label>
           <div className="flex gap-6">
@@ -708,4 +546,3 @@ const Inventory = () => {
 };
 
 export default Inventory;
-
