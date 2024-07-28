@@ -1,11 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import socket from "../socket";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
 
-  // gettting token from localstorage
+  // getting token from localstorage
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -16,9 +18,6 @@ const RequestTable = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(response.data.request);
-
         setRequests(response.data.request);
       } catch (error) {
         console.log(error);
@@ -29,6 +28,20 @@ const RequestTable = () => {
       getRequest();
     }
   }, [token]);
+
+  useEffect(() => {
+    // Listen for the newRequest event
+    socket.on("newRequest", (data) => {
+      toast.success(data.message);
+      // Add the new request to the requests state
+      setRequests((prevRequests) => [...prevRequests, data.requestData]);
+    });
+
+    return () => {
+      // Clean up the socket listener on component unmount
+      socket.off("newRequest");
+    };
+  }, []);
 
   const handleAccept = (requestId) => {
     console.log(`Accepted request with ID: ${requestId}`);
@@ -81,13 +94,13 @@ const RequestTable = () => {
             <div className="flex gap-7 items-center">
               <button
                 className="bg-blue-900 text-white h-fit py-3 px-8 rounded-md"
-                onClick={() => handleAccept(request.request_id)}
+                onClick={() => handleAccept(request.id)}
               >
                 Accept
               </button>
               <button
                 className="bg-white text-red-500 border-2 h-fit py-3 px-8 rounded-md border-red-400"
-                onClick={() => handleDecline(request.request_id)}
+                onClick={() => handleDecline(request.id)}
               >
                 Decline
               </button>
@@ -95,10 +108,9 @@ const RequestTable = () => {
           </div>
         ))
       )}
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };
 
 export default RequestTable;
-
-
