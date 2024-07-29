@@ -32,8 +32,8 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("role", response.data.role);
-
       console.log("Role from response:", response.data.role);
+      
 
       if (response.data.role === "admin") {
         navigate("/dashboard");
