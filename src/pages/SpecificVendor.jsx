@@ -6,6 +6,7 @@ import Topbar from "../components/Topbar";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import filter from "../assets/filter.svg";
 
 const SpecificVendor = () => {
   const [vendor, setVendor] = useState({
@@ -217,6 +218,21 @@ const SpecificVendor = () => {
                   {vendor.next_payment_date || "--"}
                 </span>
               </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md">
+          <div className="flex justify-between mb-7">
+            <h2 className="font-semibold px-4 text-2xl">Purchase History</h2>
+            <div className="flex gap-5">
+              <input
+                type="text"
+                placeholder="Search for history"
+                className="border-2 border-border py-2 pl-3 rounded-md w-64"
+              />
+              <button className="bg-white border-border border-2 rounded-md p-1 px-4 py-2 flex justify-between items-center gap-3">
+                <img src={filter} alt="filter" /> Filter
+              </button>
             </div>
           </div>
         </div>
