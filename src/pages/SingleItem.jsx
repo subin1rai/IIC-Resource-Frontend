@@ -7,6 +7,7 @@ import close from "../assets/close.svg";
 import { Link, useParams } from "react-router-dom";
 import ItemHistory from "../components/ItemHistory";
 import axios from "axios";
+import { Select } from "react-aria-components";
 
 const SingleItem = () => {
   const [item, setItem] = useState({
@@ -16,6 +17,7 @@ const SingleItem = () => {
     product_category_name: "",
     measuring_unit: "",
     low_limit: "",
+    features:""
   });
 
   const [editedItem, setEditedItem] = useState({
@@ -25,8 +27,10 @@ const SingleItem = () => {
     product_category: "",
     measuring_unit: "",
     low_limit: "",
+    faatures:"",
   });
 
+  const [selectedFeatures, setSelectedFeatures] = useState([{ feature: "", value: "" }]);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
 
   const { id } = useParams();
@@ -54,9 +58,33 @@ const SingleItem = () => {
       product_category: item.productCategory?.product_category_name || "",
       measuring_unit: item.measuring_unit || "",
       low_limit: item.low_limit?.toString() || "",
+      features: item.features || [{ feature: "", value: ""}]
     });
     setEditFormVisibility(true);
   };
+
+
+  const handleFeatureChange = (index, field, value) => {
+    const updatedFeatures = [...selectedFeatures];
+    updatedFeatures[index][field] = value;
+    setSelectedFeatures(updatedFeatures);
+  };
+
+  const addFeatureField = () => {
+    setSelectedFeatures([...selectedFeatures, { feature: "", value: "" }]);
+  };
+
+  const removeFeatureField = (index) => {
+    const updatedFeatures = selectedFeatures.filter((_, i) => i !== index);
+    setSelectedFeatures(updatedFeatures);
+  };
+
+    const featureOptions = [
+    { value: "feature1", label: "Feature 1" },
+    { value: "feature2", label: "Feature 2" },
+    // Add more options as needed
+  ];
+
 
   const handleChange = (e) => {
     setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
@@ -81,6 +109,7 @@ const SingleItem = () => {
         product_category_name: editedItem.product_category,
         measuring_unit: editedItem.measuring_unit,
         low_limit: parseInt(editedItem.low_limit, 10),
+        features:editedItem.selectedFeatures,
       };
       const response = await axios.put(
         `http://localhost:8898/api/updateItem/${id}`,
@@ -214,78 +243,135 @@ const SingleItem = () => {
               <img src={close} alt="close" className="w-3.5 h-3.5" />
             </button>
             <h4 className="font-semibold text-xl">Edit Items</h4>
-            <div className="flex justify-between items-center">
-              <label htmlFor="item_name">Item Name</label>
+            <div className="flex gap-16">
+            <div className="flex justify-between items-center gap-24">
+              <label className="w-36" htmlFor="item_name">Item Name</label>
               <input
                 type="text"
                 id="item_name"
                 name="item_name"
                 placeholder="Enter item name"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md "
                 value={editedItem.item_name}
                 onChange={handleChange}
                 autoFocus
               />
             </div>
-            <div className="flex justify-between items-center">
-              <label htmlFor="category">Category</label>
+            <div className="flex justify-between items-center gap-24">
+              <label className="w-36" htmlFor="category">Category</label>
               <input
                 type="text"
                 id="category"
                 name="category"
                 placeholder="Enter category"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md "
                 onChange={handleChange}
                 value={editedItem.category}
               />
             </div>
-            <div className="flex justify-between items-center">
-              <label htmlFor="item_category">Item Category</label>
+            </div>
+            <div className="flex gap-16">
+            <div className="flex justify-between items-center gap-24">
+              <label className="w-36" htmlFor="item_category">Item Category</label>
               <input
                 type="text"
                 id="item_category"
                 name="item_category"
                 placeholder="Enter item category"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md "
                 onChange={handleChange}
                 value={editedItem.item_category}
               />
             </div>
-            <div className="flex justify-between items-center gap-9">
-              <label htmlFor="product_category">Product Category</label>
+            <div className="flex justify-between items-center gap-24">
+              <label className="36" htmlFor="product_category">Product Category</label>
               <input
                 type="text"
                 id="product_category"
                 name="product_category"
                 placeholder="Enter product category"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md"
                 onChange={handleChange}
                 value={editedItem.product_category}
               />
             </div>
-            <div className="flex justify-between items-center">
-              <label htmlFor="measuring_unit">Measuring Unit</label>
+            </div>
+            <div className="flex gap-16">
+            <div className="flex justify-between items-center gap-24">
+              <label className="w-36" htmlFor="measuring_unit">Measuring Unit</label>
               <input
                 type="text"
                 id="measuring_unit"
                 name="measuring_unit"
                 placeholder="Enter measuring unit"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md"
                 value={editedItem.measuring_unit}
                 onChange={handleChange}
               />
             </div>
-            <div className="flex justify-between items-center">
-              <label htmlFor="low_limit">Low Limit</label>
+            <div className="flex justify-between items-center gap-24">
+              <label className="w-36" htmlFor="low_limit">Low Limit</label>
               <input
                 type="number"
                 id="low_limit"
                 name="low_limit"
                 placeholder="Enter low limit"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-gray p-1 pl-3 rounded-md "
                 value={editedItem.low_limit}
                 onChange={handleChange}
               />
+            </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-4">
+            <label className="font-medium text-lg" htmlFor="feature">Feature</label>
+            <div className="gap-6">
+              {selectedFeatures.map((feature, index) => (
+                <div key={index} className="flex gap-16">
+                  <div className="field">
+                    <div className="w-48 rounded-md border-slate-200 border-2">
+                      <select
+                        value={feature.feature}
+                        onChange={(e) =>
+                          handleFeatureChange(index, "feature", e.target.value)
+                        }
+                      >
+                        <option value="">Choose Feature</option>
+                        {featureOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="values">
+                    <input
+                      type="text"
+                      placeholder="Enter the value"
+                      value={feature.value}
+                      onChange={(e) =>
+                        handleFeatureChange(index, "value", e.target.value)
+                      }
+                    />
+                    {index > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => removeFeatureField(index)}
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div className="flex justify-center ">
+              {selectedFeatures.length < featureOptions.length && (
+                <button  className="mt-6" type="button" onClick={addFeatureField}>
+                  Add more field
+                </button>
+              )}
+               </div>
+            </div>
             </div>
             <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
               Save Edit
