@@ -61,7 +61,7 @@ const RequestTable = () => {
         requests.map((request) => (
           <div
             key={request.id}
-            className="flex w-full p-7 justify-between border-2 rounded-md mt-3 text-l text-black font-semibold"
+            className="flex w-fit p-7 justify-between border-2 rounded-md mt-3 text-l text-black font-semibold gap-44"
           >
             <div className="flex flex-col gap-5">
               <p>
