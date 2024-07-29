@@ -3,7 +3,6 @@ import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import "../styles/specificVendor.css";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -36,7 +35,7 @@ const SpecificVendor = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   const openVendorDetailsForm = () => {
@@ -74,16 +73,14 @@ const SpecificVendor = () => {
       console.log(error);
     }
   };
-  
+
   const handleBlackList = async () => {
     try {
-      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        } 
-      );
+      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // You might want to update the vendor state or show a message here
     } catch (error) {
       console.log(error);
@@ -110,84 +107,146 @@ const SpecificVendor = () => {
     fetchSingleVendor();
   }, [vendor_id]);
 
-  
+  console.log(vendor);
   return (
-    <div className="side">
+    <div className="flex bg-background justify-center h-screen w-screen relative">
       <Sidebar />
-      <div className="top">
+
+      <div className="flex flex-col gap-4 mx-auto  items-center">
         <Topbar />
-        <div className="container">
-          <div className="vdetails">
-            <>
-              <div className="title">
-                <h3>
-                  <Link to={"/vendors"}>Vendors</Link>
-                </h3>
-                <img src={front} alt=""></img> <p>{vendor.vendor_name}</p>
+
+        <div className="flex flex-col w-[85.5vw]  bg-white rounded pb-9">
+          <div className="flex justify-between items-center h-fit ">
+            <div className="flex flex-col">
+              <div className="flex px-8 py-5 items-center">
+                <p>vendor</p>
+                <img src={front} alt="" />
+                <p className="text-blue-600  text-base">{vendor.vendor_name}</p>
               </div>
-              <div className="head">
-                <h1>{vendor.vendor_name}</h1>
-                <p>Contact: {vendor.vendor_contact}</p>
-              </div>
-              <hr className="line" />
-              <div className="content">
-                <div className="left">
-                  <p>VAT Number: {vendor.vat_number}</p>
-                  <p>Purchase Amount: {vendor.purchase_amount}</p>
-                  <p>
-                    Last Purchase Date: {formatDate(vendor.last_purchase_date)}
-                  </p>
-                  <p>
-                    Recent Purchase Date:{" "}
-                    {formatDate(vendor.last_purchase_date)}
-                  </p>
-                  <p>Last Paid Date: {formatDate(vendor.last_paid_date)}</p>
-                  <p>Payment Duration: {vendor.payment_duration}</p>
-                </div>
-                <div className="right">
-                  <p>Total Payment: {vendor.total_payment}</p>
-                  <p>Pending Payment: {vendor.pending_payment}</p>
-                  <p>
-                    Next Payment Date: {formatDate(vendor.next_payment_date)}
-                  </p>
-                  <p>
-                    Payment Status:{" "}
-                    {Number(vendor.pending_payment) > 0
-                      ? "Pending"
-                      : "completed"}
-                  </p>
-                </div>
-              </div>
-            </>
-            <div className="btn">
-              <button onClick={openVendorDetailsForm} className="edit">
-                Edit details
+              <h3 className="text-2xl pl-8 font-semibold">
+                {vendor.vendor_name}
+              </h3>
+            </div>
+            <div className="flex gap-4 pr-7 h-[100%] items-center">
+              <button
+                className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
+                onClick={openVendorDetailsForm}
+              >
+                {" "}
+                Edit Details
               </button>
-              <button className="blacklist" onClick={handleBlackList}>
-                Add to blacklist
+              <button
+                className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
+                onClick={handleBlackList}
+              >
+                Add to Balcklist
               </button>
+            </div>
+          </div>
+          <div className="h-1 bg-blue-700 w-[82vw] mt-4 mx-auto"></div>
+
+          <div className="flex justify-between px-10 mt-5">
+            <div className="flex flex-col gap-5">
+              <p className="font-semibold">
+                VAT Number:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.vat_number || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                payment Duration:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.payment_duration || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Paid Amount:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.paid_amount || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Vendor Contact:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.vendor_contact || "--"}
+                </span>
+              </p>
+            </div>
+            <div className="flex flex-col gap-5">
+              <p className="font-semibold">
+                Last Purchase Date:{" "}
+                <span className="font-medium pl-3">
+                  {formatDate(vendor.last_purchase_date) || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Purchase Amount:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.purchase_amount || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Last Paid Date:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.last_paid || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Payment Status:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.payment_status || "--"}
+                </span>
+              </p>
+            </div>
+            <div className="flex flex-col gap-5">
+              <p className="font-semibold">
+                Total Payment:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.total_payment || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Pending Payment:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.pending_payment || "--"}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Next Payment Data:{" "}
+                <span className="font-medium pl-3">
+                  {vendor.next_payment_date || "--"}
+                </span>
+              </p>
             </div>
           </div>
         </div>
       </div>
+
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeVendorDetailsForm}></div>
+          <div
+            className="h-screen  w-screen bg-overlay absolute"
+            onClick={closeVendorDetailsForm}
+          ></div>
 
-          <form onSubmit={handleSubmit} className="vendordetailsform">
-            <div className="toptitle">
-              <p className="title2">Edit Details</p>
+          <form
+            onSubmit={handleSubmit}
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          >
+            <div className="flex justify-between">
+              <p className="font-semibold text-2xl">Edit Details</p>
               <button
                 type="button"
-                className="close"
+                className="w-8 h-8"
                 onClick={closeVendorDetailsForm}
               >
-                <img src={close} alt="close icon" />
+                <img src={close} alt="close icon" className="w-4 h-4 " />
               </button>
             </div>
-            <div className="field">
+            <div className="flex justify-between gap-10 items-center">
               <label htmlFor="vendor_name">Vendor Name</label>
               <input
+                className="w-72 border-2 rounded border-border pl-2 py-2"
                 type="text"
                 placeholder="Edit Vendor Name"
                 name="vendor_name"
@@ -196,9 +255,10 @@ const SpecificVendor = () => {
                 value={editedVendor.vendor_name}
               />
             </div>
-            <div className="field">
+            <div className="flex justify-between gap-10 items-center">
               <label htmlFor="vat_no">VAT Number</label>
               <input
+                className="w-72 border-2 rounded border-border pl-2 py-2"
                 type="text"
                 placeholder="Edit VAT Number"
                 name="vat_number"
@@ -207,9 +267,10 @@ const SpecificVendor = () => {
                 value={editedVendor.vat_number}
               />
             </div>
-            <div className="field">
+            <div className="flex justify-between gap-10 items-center">
               <label htmlFor="contact">Contact Number</label>
               <input
+                className="w-72 border-2 rounded border-border pl-2 py-2"
                 type="text"
                 placeholder="Edit Contact Number"
                 name="vendor_contact"
@@ -218,8 +279,11 @@ const SpecificVendor = () => {
                 value={editedVendor.vendor_contact}
               />
             </div>
-            <div className="btn">
-              <button type="submit" className="save">
+            <div className="flex justify-end  ">
+              <button
+                type="submit"
+                className="bg-blue-700 p-3 rounded text-white"
+              >
                 Save Changes
               </button>
             </div>
@@ -227,6 +291,122 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
+
+    // <div className="side">
+    //   <Sidebar />
+    //   <div className="top">
+    //     <Topbar />
+    //     <div className="container">
+    //       <div className="vdetails">
+    //         <>
+    //           <div className="title">
+    //             <h3>
+    //               <Link to={"/vendors"}>Vendors</Link>
+    //             </h3>
+    //             <img src={front} alt=""></img> <p>{vendor.vendor_name}</p>
+    //           </div>
+    //           <div className="head">
+    //             <h1>{vendor.vendor_name}</h1>
+    //             <p>Contact: {vendor.vendor_contact}</p>
+    //           </div>
+    //           <hr className="line" />
+    //           <div className="content">
+    //             <div className="left">
+    //               <p>VAT Number: {vendor.vat_number}</p>
+    //               <p>Purchase Amount: {vendor.purchase_amount}</p>
+    //               <p>
+    //                 Last Purchase Date: {formatDate(vendor.last_purchase_date)}
+    //               </p>
+    //               <p>
+    //                 Recent Purchase Date:{" "}
+    //                 {formatDate(vendor.last_purchase_date)}
+    //               </p>
+    //               <p>Last Paid Date: {formatDate(vendor.last_paid_date)}</p>
+    //               <p>Payment Duration: {vendor.payment_duration}</p>
+    //             </div>
+    //             <div className="right">
+    //               <p>Total Payment: {vendor.total_payment}</p>
+    //               <p>Pending Payment: {vendor.pending_payment}</p>
+    //               <p>
+    //                 Next Payment Date: {formatDate(vendor.next_payment_date)}
+    //               </p>
+    //               <p>
+    //                 Payment Status:{" "}
+    //                 {Number(vendor.pending_payment) > 0
+    //                   ? "Pending"
+    //                   : "completed"}
+    //               </p>
+    //             </div>
+    //           </div>
+    //         </>
+    //         <div className="btn">
+    //           <button onClick={openVendorDetailsForm} className="edit">
+    //             Edit details
+    //           </button>
+    //           <button className="blacklist" onClick={handleBlackList}>
+    //             Add to blacklist
+    //           </button>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   {addFormVisibility && (
+    //     <>
+    //       <div className="overlay" onClick={closeVendorDetailsForm}></div>
+
+    //       <form onSubmit={handleSubmit} className="vendordetailsform">
+    //         <div className="toptitle">
+    //           <p className="title2">Edit Details</p>
+    //           <button
+    //             type="button"
+    //             className="close"
+    //             onClick={closeVendorDetailsForm}
+    //           >
+    //             <img src={close} alt="close icon" />
+    //           </button>
+    //         </div>
+    //         <div className="field">
+    //           <label htmlFor="vendor_name">Vendor Name</label>
+    //           <input
+    //             type="text"
+    //             placeholder="Edit Vendor Name"
+    //             name="vendor_name"
+    //             id="vendor_name"
+    //             onChange={handleChange}
+    //             value={editedVendor.vendor_name}
+    //           />
+    //         </div>
+    //         <div className="field">
+    //           <label htmlFor="vat_no">VAT Number</label>
+    //           <input
+    //             type="text"
+    //             placeholder="Edit VAT Number"
+    //             name="vat_number"
+    //             id="vat_no"
+    //             onChange={handleChange}
+    //             value={editedVendor.vat_number}
+    //           />
+    //         </div>
+    //         <div className="field">
+    //           <label htmlFor="contact">Contact Number</label>
+    //           <input
+    //             type="text"
+    //             placeholder="Edit Contact Number"
+    //             name="vendor_contact"
+    //             id="vendor_contact"
+    //             onChange={handleChange}
+    //             value={editedVendor.vendor_contact}
+    //           />
+    //         </div>
+    //         <div className="btn">
+    //           <button type="submit" className="save">
+    //             Save Changes
+    //           </button>
+    //         </div>
+    //       </form>
+    //     </>
+    //   )}
+    // </div>
   );
 };
 
