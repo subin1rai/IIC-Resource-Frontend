@@ -4,8 +4,6 @@ import Topbar from "../components/Topbar";
 import close from "../assets/close.svg";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
-import back from "../assets/arrow-left.svg";
-import front from "../assets/arrow-right.svg";
 import IssueTable from "../components/IssueTable";
 const Issue = () => {
   const [issue, setIssue] = "";
@@ -20,59 +18,33 @@ const Issue = () => {
   };
 
   return (
-    <div className="issue">
+    <div className="w-screen h-screen flex justify-between bg-background">
       <Sidebar />
-      <div className="issue-main">
+      <div className="flex flex-col gap-4 mx-auto  items-center">
         <Topbar />
 
         {/* Items table */}
 
-        <div className="issue-container">
-          <div className="issue-container-top">
-            <div className="issue-title">
-              <p>Issues</p>
-            </div>
-            <div className="icon-action" onClick={displayFilterForm}>
-              <button className="filter">
-                {" "}
+        <div className="flex flex-col w-[85.5vw] bg-white p-6 rounded">
+          <div className="flex justify-between w-fill">
+            <div className="flex flex-col">Issue</div>
+
+            <div className="flex gap-6">
+              <button
+                onClick={displayFilterForm}
+                className="border flex items-center gap-4 border-border px-4 py-2 rounded"
+              >
                 <img src={filterIcon} alt="" />
-                Filters
+                Filter
               </button>
-              <button class="bg-blue-500 p-2 text-white ">Add Issue</button>
+              <button className="bg-blue-700 text-white py-2 px-3 rounded">
+                Add Issue
+              </button>
             </div>
           </div>
-
-          <IssueTable />
-          {/* <table>
-            <thead>
-              <tr>
-                <th>Issue ID</th>
-                <th>Issued Item</th>
-                <th>Issue Date</th>
-                <th>Quantity</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Issued By</th>
-                <th>Remarks</th>
-              </tr>
-            </thead>
-        
-          </table>
-          <div className="page-controller">
-            <button className="prev-btn">
-              {" "}
-              <img src={back} alt="" /> Previous
-            </button>
-            <div className="page-details">
-              <p>
-                page <span>1</span> of <span>12</span>{" "}
-              </p>
-            </div>
-            <button className="next-btn">
-              {" "}
-              Next <img src={front} alt="" />
-            </button>
-          </div> */}
+          <div className="mt-10">
+            <IssueTable />
+          </div>
         </div>
       </div>
       {filterFormVisibility && (
@@ -88,47 +60,7 @@ const Issue = () => {
             </button>
           </div>
           <label>Select Category</label>
-          <div className="flex gap-6">
-            <Select
-            // options={categoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "feature" })
-            // }
-            // value={categoryOptions.find(
-            //   (option) => option.value === itemData.category
-            // )}
-            // placeholder="Choose Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={itemCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "itemCategory" })
-            // }
-            // value={itemCategoryOptions.find(
-            //   (option) => option.value === itemData.itemCategory
-            // )}
-            // placeholder="Choose Item Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={productCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "productCategory" })
-            // }
-            // value={productCategoryOptions.find(
-            //   (option) => option.value === itemData.productCategory
-            // )}
-            // placeholder="Choose Product Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-          </div>
+          <div className="flex gap-6"></div>
           <label>Select Date:</label>
           <div className="flex gap-6">
             <input
