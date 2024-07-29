@@ -23,7 +23,7 @@ const Category = () => {
           <CategoryTable />
           <ItemCategoryTable />
           <ProductCategoryTable />
-          <Features/>
+          <Features />
         </div>
       </div>
     </div>
