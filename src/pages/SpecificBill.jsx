@@ -66,6 +66,8 @@ const SpecificBill = () => {
     fetchData();
   }, []);
 
+  console.log(billDetails)
+
   const openEditBillDetailsForm = () => {
     setBill({
       bill_no: billDetails.bill_no || "",
@@ -121,60 +123,91 @@ const SpecificBill = () => {
   };
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), "yyyy-MM-dd");
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
   };
 
   return (
-    <div className="billside">
+    <div className="flex bg-background h-screen w- screen gap-1" >
       <Sidebar />
-      <div className="billtop">
+      <div className="flex flex-col gap-3">
         <Topbar />
-        <div className="billcontainer">
-          <div className="billcontent">
-            <>
-              <div className="title">
-                <h3>
-                  <Link to={"/records"} className="redeirect">
-                    Bill Records
-                  </Link>
-                </h3>
-                <img src={front} alt="" />
-                <p>{billDetails.bill_no}</p>
+
+        <div className="bg-white w-[98%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+          <div className="flex justify-between items-center ml-2">
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-2">
+                <h4 className="text-base">
+                  Bill Records
+                </h4>
+                <img src={front} alt="arrow" />
+                <h4 className="text-base text-blue-400 ">
+                  {billDetails.bill_no}
+                </h4>
               </div>
-              <div className="head">
-                <h1># {billDetails.bill_no}</h1>
-              </div>
-              <hr className="line" />
-              <div className="content">
-                <div className="left">
-                  <p>
-                    Bill Date:{" "}
-                    {billDetails.bill_date
-                      ? formatDate(billDetails.bill_date)
-                      : ""}
-                  </p>
-                  <p>Voucher Number: {billDetails.invoice_no}</p>
-                  <p>Vendor: {billDetails.vendors?.vendor_name}</p>
-                </div>
-                <div className="middle">
-                  <p>Item Name: {billDetails.items?.item_name}</p>
-                  <p>Quantity: {billDetails.quantity}</p>
-                  <p>Unit Price: {billDetails.unit_price}</p>
-                </div>
-                <div className="right">
-                  <p>TDS: {billDetails.TDS}</p>
-                  <p>Total Amount: {billDetails.actual_amount}</p>
-                  <p>Paid Amount: {billDetails.paid_amount}</p>
-                  <p>Pending Amount: {billDetails.vendors?.pending_payment}</p>
-                </div>
-              </div>
-            </>
-            <button onClick={openEditBillDetailsForm} className="edit">
-              Edit details
-            </button>
+              <h2 className="font-semibold text-2xl">
+                {billDetails.bill_no}
+              </h2>
+            </div>
+            <button onClick={openEditBillDetailsForm} className="flex justify-end bg-blue-600 px-7 py-2 h-fit w-fit rounded text-white mr-5">Edit Bill</button>
+          </div>
+          {/* line  */}
+          <div className="h-1 w-[99%] bg-blue-700 mx-auto mt-5"></div>
+
+          <div className="flex justify-between w-[75%]">
+            <div className="flex flex-col gap-5 mt-7 pl-9">
+              <p className="font-semibold">
+                Bill Date:
+                <span className="font-medium pl-4" >{formatDate(billDetails.bill_date) || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Voucher No:
+                <span className="font-medium pl-4">{billDetails.voucher_no || "--"}</span>
+              </p>
+              {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
+              <p className="font-semibold">
+                Item Name:
+                {/* <span className="font-medium pl-4">{billDetails.items.item_name || "--"}</span> */}
+              </p>
+              <p className="font-semibold">
+                Quantity:
+                <span className="font-medium pl-4">{billDetails.quantity || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Unit Price:
+                <span className="font-medium pl-4">{billDetails.unit_price || "--"}</span>
+              </p>
+            </div>
+            {/* right side  */}
+            <div className="flex flex-col gap-5 mt-7 pl-9 ">
+              <p className="font-semibold">
+                TDS:
+                <span className="font-medium pl-4" >{billDetails.TDS}</span>
+              </p>
+              <p className="font-semibold">
+                Bill Amount:
+                <span className="font-medium pl-4">{billDetails.voucher_no || "--"}</span>
+              </p>
+              {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
+              <p className="font-semibold">
+                Paid Amount:
+                <span className="font-medium pl-4">{billDetails.paid_amount || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Pending Amount:
+                <span className="font-medium pl-4">{billDetails.quantity || "--"}</span>
+              </p>
+              
+            </div>
+
+
+
           </div>
         </div>
       </div>
+
+
       {addFormVisibility && (
         <>
           <div className="overlay" onClick={closeEditBillDetailsForm}></div>
