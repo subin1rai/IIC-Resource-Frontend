@@ -23,9 +23,6 @@ const Topbar = () => {
     SetNotificationPopUp(true);
 
   };
-  // const closeNotification = () => {
-  //   SetNotificationPopUp(false);
-  // };
   return (
     <div className="topbar">
       <div className="topbar-left">
@@ -33,7 +30,7 @@ const Topbar = () => {
       </div>
       <div className="topbar-right">
         <button
-          className="text-3xl text-neutral-700 p-5 relative"
+          className="text-3xl text-blue-600 p-5 relative "
           onClick={popUpNotifcation}
         >
           <i className="fa-regular fa-bell "></i>
@@ -47,10 +44,36 @@ const Topbar = () => {
       </div>
 
       {NotificationPopUp && <>
-        <div className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-purple-50 z-20">
-  <div className=" flex p-4 text-xl gap-2">
+        <div className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-purple-100 z-20 overflow-scroll">
+  <div className=" flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white">
     <h2>Notification</h2>
-    <p className=" text-sm p-1 bg-red-200 rounded-full">12</p>
+    <p className=" text-sm text-blue-600">12 Messages</p>
+  </div>
+
+  {/* message */}
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
+  </div>
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
+  </div>
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
+  </div>
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
+  </div>
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
+  </div>
+  <div className="border-b border-neutral-300  px-6 py-3" >
+    <h3 className="text-sml font-medium">New item requested by Mahima !</h3>
+    <p className="text-[0.8rem] py-1 text-neutral-500">July 29, 2024 at 1:03PM</p>
   </div>
 </div>
 
