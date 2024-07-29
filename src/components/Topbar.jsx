@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../styles/topbar.css";
+import socket from "../socket";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
+  const [requests, setRequests] = useState([]);
 
   const morningStart = 5;
   const afternoonStart = 12;
@@ -43,6 +47,20 @@ const Topbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Listen for the newRequest event
+    socket.on("newRequest", (data) => {
+      toast.success(data.message);
+      // Add the new request to the requests state
+      setRequests((prevRequests) => [...prevRequests, data.requestData]);
+    });
+
+    return () => {
+      // Clean up the socket listener on component unmount
+      socket.off("newRequest");
+    };
+  }, []);
+
   return (
     <div className="topbar">
       <div className="topbar-left">
@@ -50,14 +68,13 @@ const Topbar = () => {
       </div>
       <div className="topbar-right">
         <button
-          className="text-3xl text-blue-600 p-5 relative"
+          className="text-2xl text-neutral-600 p-5 relative"
           onClick={popUpNotification}
         >
           <i className="fa-regular fa-bell"></i>
         </button>
         <img className="profile" src="" alt="" />
       </div>
-
       {notificationPopUp && (
         <>
           <div
@@ -70,19 +87,23 @@ const Topbar = () => {
             </div>
 
             {/* Example message list, you may replace with dynamic content */}
-            {[...Array(5)].map((_, index) => (
-              <div
-                key={index}
-                className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
-              >
-                <h3 className="text-sml font-medium">
-                  New item requested by Mahima!
-                </h3>
-                <p className="text-[0.8rem] py-1 text-neutral-500">
-                  July 29, 2024 at 1:03PM
-                </p>
-              </div>
-            ))}
+            {requests.length === 0 ? (
+              <div>No requests found.</div>
+            ) : (
+              requests.map((request) => (
+                <div
+                  key={request.id}
+                  className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
+                >
+                  <h3 className="text-sml font-medium">
+                    New item requested {request.users?.user_name}
+                  </h3>
+                  <p className="text-[0.8rem] py-1 text-neutral-500">
+                    July 29, 2024 at 1:03PM
+                  </p>
+                </div>
+              ))
+            )}
           </div>
           <div
             className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96 mt-20"
