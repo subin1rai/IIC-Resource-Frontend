@@ -17,7 +17,7 @@ const SingleItem = () => {
     product_category_name: "",
     measuring_unit: "",
     low_limit: "",
-    features:""
+    features: "",
   });
 
   const [editedItem, setEditedItem] = useState({
@@ -27,10 +27,12 @@ const SingleItem = () => {
     product_category: "",
     measuring_unit: "",
     low_limit: "",
-    faatures:"",
+    faatures: "",
   });
 
-  const [selectedFeatures, setSelectedFeatures] = useState([{ feature: "", value: "" }]);
+  const [selectedFeatures, setSelectedFeatures] = useState([
+    { feature: "", value: "" },
+  ]);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
 
   const { id } = useParams();
@@ -58,11 +60,10 @@ const SingleItem = () => {
       product_category: item.productCategory?.product_category_name || "",
       measuring_unit: item.measuring_unit || "",
       low_limit: item.low_limit?.toString() || "",
-      features: item.features || [{ feature: "", value: ""}]
+      features: item.features || [{ feature: "", value: "" }],
     });
     setEditFormVisibility(true);
   };
-
 
   const handleFeatureChange = (index, field, value) => {
     const updatedFeatures = [...selectedFeatures];
@@ -79,12 +80,11 @@ const SingleItem = () => {
     setSelectedFeatures(updatedFeatures);
   };
 
-    const featureOptions = [
+  const featureOptions = [
     { value: "feature1", label: "Feature 1" },
     { value: "feature2", label: "Feature 2" },
     // Add more options as needed
   ];
-
 
   const handleChange = (e) => {
     setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
@@ -109,7 +109,7 @@ const SingleItem = () => {
         product_category_name: editedItem.product_category,
         measuring_unit: editedItem.measuring_unit,
         low_limit: parseInt(editedItem.low_limit, 10),
-        features:editedItem.selectedFeatures,
+        features: editedItem.selectedFeatures,
       };
       const response = await axios.put(
         `http://localhost:8898/api/updateItem/${id}`,
@@ -133,16 +133,10 @@ const SingleItem = () => {
           ...updatedItem,
         }));
       }
-
-      alert("Item updated successfully!");
+      console.log(item);
       setEditFormVisibility(false);
     } catch (error) {
       console.error("Update error:", error);
-      alert(
-        `Failed to update item: ${
-          error.response?.data?.message || error.message
-        }`
-      );
     }
   };
 
@@ -198,11 +192,17 @@ const SingleItem = () => {
                 </span>
               </div>
               <div className="flex gap-4">
-                <p className="font-semibold">Product Category:</p>
-                <span className="font-medium">
-                  {item.productCategory?.product_category_name}
-                </span>
+                <p className="font-semibold">Brand:</p>
+                <div className="font-medium">
+                  {item.itemsOnFeatures?.map((feature, index) => (
+                    <span key={index}>
+                      {feature.value}
+                      {index < item.itemsOnFeatures.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
+                </div>
               </div>
+
               <div className="flex gap-4">
                 <p className="font-semibold">Item Category:</p>
                 <span className="font-medium">
@@ -219,14 +219,14 @@ const SingleItem = () => {
               <input
                 type="text"
                 placeholder="Search for history"
-                className="border-2 border-gray p-1 pl-3 rounded-md w-64"
+                className="border-2 border-border py-2 pl-3 rounded-md w-64"
               />
-              <button className="bg-white border-2 rounded-md p-1 px-4 flex justify-between items-center gap-3">
+              <button className="bg-white border-border border-2 rounded-md p-1 px-4 py-2 flex justify-between items-center gap-3">
                 <img src={filter} alt="filter" /> Filter
               </button>
             </div>
           </div>
-          <ItemHistory />
+          <ItemHistory hostory={item} />
         </div>
       </div>
       {editFormVisibility && (
@@ -244,140 +244,162 @@ const SingleItem = () => {
             </button>
             <h4 className="font-semibold text-xl">Edit Items</h4>
             <div className="flex gap-16">
-            <div className="flex justify-between items-center gap-24">
-              <label className="w-36" htmlFor="item_name">Item Name</label>
-              <input
-                type="text"
-                id="item_name"
-                name="item_name"
-                placeholder="Enter item name"
-                className="border-2 border-gray p-1 pl-3 rounded-md "
-                value={editedItem.item_name}
-                onChange={handleChange}
-                autoFocus
-              />
-            </div>
-            <div className="flex justify-between items-center gap-24">
-              <label className="w-36" htmlFor="category">Category</label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                placeholder="Enter category"
-                className="border-2 border-gray p-1 pl-3 rounded-md "
-                onChange={handleChange}
-                value={editedItem.category}
-              />
-            </div>
-            </div>
-            <div className="flex gap-16">
-            <div className="flex justify-between items-center gap-24">
-              <label className="w-36" htmlFor="item_category">Item Category</label>
-              <input
-                type="text"
-                id="item_category"
-                name="item_category"
-                placeholder="Enter item category"
-                className="border-2 border-gray p-1 pl-3 rounded-md "
-                onChange={handleChange}
-                value={editedItem.item_category}
-              />
-            </div>
-            <div className="flex justify-between items-center gap-24">
-              <label className="36" htmlFor="product_category">Product Category</label>
-              <input
-                type="text"
-                id="product_category"
-                name="product_category"
-                placeholder="Enter product category"
-                className="border-2 border-gray p-1 pl-3 rounded-md"
-                onChange={handleChange}
-                value={editedItem.product_category}
-              />
-            </div>
+              <div className="flex justify-between items-center gap-24">
+                <label className="w-36" htmlFor="item_name">
+                  Item Name
+                </label>
+                <input
+                  type="text"
+                  id="item_name"
+                  name="item_name"
+                  placeholder="Enter item name"
+                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  value={editedItem.item_name}
+                  onChange={handleChange}
+                  autoFocus
+                />
+              </div>
+              <div className="flex justify-between items-center gap-24">
+                <label className="w-36" htmlFor="category">
+                  Category
+                </label>
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                  placeholder="Enter category"
+                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  onChange={handleChange}
+                  value={editedItem.category}
+                />
+              </div>
             </div>
             <div className="flex gap-16">
-            <div className="flex justify-between items-center gap-24">
-              <label className="w-36" htmlFor="measuring_unit">Measuring Unit</label>
-              <input
-                type="text"
-                id="measuring_unit"
-                name="measuring_unit"
-                placeholder="Enter measuring unit"
-                className="border-2 border-gray p-1 pl-3 rounded-md"
-                value={editedItem.measuring_unit}
-                onChange={handleChange}
-              />
+              <div className="flex justify-between items-center gap-24">
+                <label className="w-36" htmlFor="item_category">
+                  Item Category
+                </label>
+                <input
+                  type="text"
+                  id="item_category"
+                  name="item_category"
+                  placeholder="Enter item category"
+                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  onChange={handleChange}
+                  value={editedItem.item_category}
+                />
+              </div>
+              <div className="flex justify-between items-center gap-24">
+                <label className="36" htmlFor="product_category">
+                  Product Category
+                </label>
+                <input
+                  type="text"
+                  id="product_category"
+                  name="product_category"
+                  placeholder="Enter product category"
+                  className="border-2 border-gray p-1 pl-3 rounded-md"
+                  onChange={handleChange}
+                  value={editedItem.product_category}
+                />
+              </div>
             </div>
-            <div className="flex justify-between items-center gap-24">
-              <label className="w-36" htmlFor="low_limit">Low Limit</label>
-              <input
-                type="number"
-                id="low_limit"
-                name="low_limit"
-                placeholder="Enter low limit"
-                className="border-2 border-gray p-1 pl-3 rounded-md "
-                value={editedItem.low_limit}
-                onChange={handleChange}
-              />
-            </div>
+            <div className="flex gap-16">
+              <div className="flex justify-between items-center gap-24">
+                <label className="w-36" htmlFor="measuring_unit">
+                  Measuring Unit
+                </label>
+                <input
+                  type="text"
+                  id="measuring_unit"
+                  name="measuring_unit"
+                  placeholder="Enter measuring unit"
+                  className="border-2 border-gray p-1 pl-3 rounded-md"
+                  value={editedItem.measuring_unit}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex justify-between items-center gap-24">
+                <label className="w-36" htmlFor="low_limit">
+                  Low Limit
+                </label>
+                <input
+                  type="number"
+                  id="low_limit"
+                  name="low_limit"
+                  placeholder="Enter low limit"
+                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  value={editedItem.low_limit}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
             <div className="flex flex-col justify-center items-center gap-4">
-            <label className="font-medium text-lg" htmlFor="feature">Feature</label>
-            <div className="gap-6">
-              {selectedFeatures.map((feature, index) => (
-                <div key={index} className="flex gap-16">
-                  <div className="field">
-                    <div className="w-48 rounded-md border-slate-200 border-2">
-                      <select
-                        value={feature.feature}
+              <label className="font-medium text-lg" htmlFor="feature">
+                Feature
+              </label>
+              <div className="gap-6">
+                {selectedFeatures.map((feature, index) => (
+                  <div key={index} className="flex gap-16">
+                    <div className="field">
+                      <div className="w-48 rounded-md border-slate-200 border-2">
+                        <select
+                          value={feature.feature}
+                          onChange={(e) =>
+                            handleFeatureChange(
+                              index,
+                              "feature",
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="">Choose Feature</option>
+                          {featureOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="values">
+                      <input
+                        type="text"
+                        placeholder="Enter the value"
+                        value={feature.value}
                         onChange={(e) =>
-                          handleFeatureChange(index, "feature", e.target.value)
+                          handleFeatureChange(index, "value", e.target.value)
                         }
-                      >
-                        <option value="">Choose Feature</option>
-                        {featureOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
+                      />
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeFeatureField(index)}
+                        >
+                          -
+                        </button>
+                      )}
                     </div>
                   </div>
-                  <div className="values">
-                    <input
-                      type="text"
-                      placeholder="Enter the value"
-                      value={feature.value}
-                      onChange={(e) =>
-                        handleFeatureChange(index, "value", e.target.value)
-                      }
-                    />
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => removeFeatureField(index)}
-                      >
-                        -
-                      </button>
-                    )}
-                  </div>
+                ))}
+                <div className="flex justify-center ">
+                  {selectedFeatures.length < featureOptions.length && (
+                    <button
+                      className="mt-6"
+                      type="button"
+                      onClick={addFeatureField}
+                    >
+                      Add more field
+                    </button>
+                  )}
                 </div>
-              ))}
-              <div className="flex justify-center ">
-              {selectedFeatures.length < featureOptions.length && (
-                <button  className="mt-6" type="button" onClick={addFeatureField}>
-                  Add more field
-                </button>
-              )}
-               </div>
-            </div>
+              </div>
             </div>
             <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
               Save Edit
             </button>
           </form>
-         
+
           <div
             className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
             onClick={() => setEditFormVisibility(false)}

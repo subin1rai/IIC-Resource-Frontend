@@ -18,14 +18,21 @@ import { useParams } from "react-router-dom";
 
 const columns = [
   { id: "sNo", label: "S.No.", minWidth: 70, align: "center" },
-  { id: "bill_number", label: "Bill Number", minWidth: 130, align: "left" },
-  { id: "vendor_name", label: "Vendor Name", minWidth: 200, align: "left" },
-  { id: "quantity", label: "Quantity", minWidth: 110, align: "right" },
+  { id: "bill_number", label: "Bill Number", minWidth: 130, align: "center" },
+  { id: "vendor_name", label: "Vendor Name", minWidth: 200, align: "center" },
+  { id: "quantity", label: "Quantity", minWidth: 110, align: "center" },
+  { id: "paid_amount", label: "Paid Amount", minWidth: 110, align: "center" },
   {
-    id: "measuring_unit",
-    label: "Measuring Unit",
+    id: "actual_amount",
+    label: "Actual Amount",
+    minWidth: 110,
+    align: "center",
+  },
+  {
+    id: "bill_date",
+    label: "Purchase Date",
     minWidth: 130,
-    align: "left",
+    align: "center",
   },
 ];
 
@@ -41,6 +48,12 @@ function PurchaseHistory() {
 
   const { id } = useParams();
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+  };
+
   useEffect(() => {
     const fetchPurchaseHistory = async () => {
       try {
@@ -48,8 +61,9 @@ function PurchaseHistory() {
           `http://localhost:8898/api/items/${id}`
         );
 
-        console.log(response);
-        setItems(response.data.itemData.bills);
+        // Assuming the response structure is { itemData: { bills: [...] } }
+        const bills = response.data.itemData.bills || [];
+        setItems(bills);
         setLoading(false);
       } catch (err) {
         setError("Error fetching purchase history");
@@ -191,18 +205,42 @@ function PurchaseHistory() {
               {visibleRows.map((row, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                   {columns.map((column) => {
-                    const value =
-                      column.id === "sNo"
-                        ? page * rowsPerPage + index + 1
-                        : row[column.id];
+                    let value;
+                    if (column.id === "sNo") {
+                      value = page * rowsPerPage + index + 1;
+                    }
+                    if (column.id === "vendor_name") {
+                      value = row.vendors.vendor_name;
+                    }
+                    if (column.id === "bill_number") {
+                      value = row.bill_no;
+                    }
+                    if (column.id === "bill_number") {
+                      value = row.bill_no;
+                    }
+
+                    if (column.id === "quantity") {
+                      value = row.quantity;
+                    }
+
+                    if (column.id === "actual_amount") {
+                      value = row.actual_amount;
+                    }
+
+                    if (column.id === "paid_amount") {
+                      value = row.paid_amount;
+                    }
+                    if (column.id === "bill_date") {
+                      value = formatDate(row.bill_date);
+                    }
+
                     return (
                       <TableCell
                         key={column.id}
                         align={column.align}
                         style={cellStyle}
                       >
-                        {column.id === "quantity" ? value : value}
-                        {column.id === "vendor_name" ? value : value}
+                        {value}
                       </TableCell>
                     );
                   })}
