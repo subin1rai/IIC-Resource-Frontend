@@ -306,7 +306,7 @@ const Inventory = () => {
                 placeholder="Search items"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border-2 border-slate-300 rounded"
+                className="border-2 border-border rounded"
               />
               <button
                 className="filter-btn"
