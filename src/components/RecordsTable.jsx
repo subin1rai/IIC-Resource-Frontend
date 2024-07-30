@@ -181,25 +181,28 @@ export default function RecordsTable({ bills }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((bill) =>
-              bill ? (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={bill.bill_ID || "unknown"}
-                  onClick={() => handleRowClick(bill.bill_ID)}
-                >
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && bill[column.id] != null
-                        ? column.format(bill[column.id])
-                        : bill[column.id] ?? "N/A"}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ) : null
-            )}
+            {visibleRows
+              .slice()
+              .reverse()
+              .map((bill) =>
+                bill ? (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={bill.bill_ID || "unknown"}
+                    onClick={() => handleRowClick(bill.bill_ID)}
+                  >
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && bill[column.id] != null
+                          ? column.format(bill[column.id])
+                          : bill[column.id] ?? "N/A"}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ) : null
+              )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -19,7 +19,7 @@ const Records = () => {
     bill_date: "",
     invoice_no: "",
     vat_number: "",
-    // vendor_name: "",
+    vendor_name: "",
     item_name: "",
     unit_price: "",
     quantity: "",
@@ -124,9 +124,9 @@ const Records = () => {
     setAddFormVisibility(true);
   };
 
-  const displayFilterForm = () =>  {
+  const displayFilterForm = () => {
     setFilterFormVisibility(true);
-}
+  };
 
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
@@ -158,14 +158,14 @@ const Records = () => {
   const handleSelectChange = (selectedOption, { name }) => {
     setBill((prev) => ({
       ...prev,
-      [name]: selectedOption ? selectedOption.value : "",
+      [name]: selectedOption.value,
     }));
   };
 
   const handleDateChange = (event) => {
-    console.log("Event:", event); // Log the entire event object to the console
+    console.log("Event:", event);
     const date = event;
-    console.log("Selected date:", date); // Log the selected date to the console
+    console.log("Selected date:", date);
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
 
@@ -200,16 +200,20 @@ const Records = () => {
         <div className="records-container">
           <div className="top">
             <div className="container-title">
-              <p >Bill Records</p>
+              <p>Bill Records</p>
             </div>
             <div className=" w-[10vw] flex justify-between gap-2 mr-8">
-            <button className="filterbill" aria-label="Menu" onClick={displayFilterForm}>
-              <img src={filterIcon} alt="filter icon" />
-              Filter
-            </button>
-            <button onClick={openAddBillForm} className="addbillbtn">
-              Add Bill
-            </button>
+              <button
+                className="filterbill"
+                aria-label="Menu"
+                onClick={displayFilterForm}
+              >
+                <img src={filterIcon} alt="filter icon" />
+                Filter
+              </button>
+              <button onClick={openAddBillForm} className="addbillbtn">
+                Add Bill
+              </button>
             </div>
           </div>
           <RecordsTable bills={bills} />
@@ -290,9 +294,9 @@ const Records = () => {
                         handleSelectChange(option, { name: "vendor_name" })
                       }
                       value={
-                        vendors.find(
-                          (vendor) => vendor.vendor_name === bill.vendor_name
-                        ) || null
+                        bill.vendor_name
+                          ? { value: bill.vendor_name, label: bill.vendor_name }
+                          : null
                       }
                       placeholder="Select Vendor"
                       styles={customStyles}
@@ -311,9 +315,9 @@ const Records = () => {
                         handleSelectChange(option, { name: "item_name" })
                       }
                       value={
-                        items.find(
-                          (item) => item.item_name === bill.item_name
-                        ) || null
+                        bill.item_name
+                          ? { value: bill.item_name, label: bill.item_name }
+                          : null
                       }
                       placeholder="Choose Item"
                       styles={customStyles}
@@ -427,72 +431,86 @@ const Records = () => {
         </>
       )}
       {filterFormVisibility && (
-            <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
-              <div className="flex justify-between">
-               <h2 className="font-semibold text-xl"> Select Filtering Option</h2><button
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+          <div className="flex justify-between">
+            <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
+            <button
               type="button"
               className="discard-btn"
               onClick={closeFilterForm}
             >
               <img src={close} alt="" />
             </button>
-            </div>
-             <label>
-            Select Category
-             </label>
-             <div className="flex gap-6">
-             <Select
-                  // options={categoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "feature" })
-                  // }
-                  // value={categoryOptions.find(
-                  //   (option) => option.value === itemData.category
-                  // )}
-                  // placeholder="Choose Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-             <Select
-                  // options={itemCategoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "itemCategory" })
-                  // }
-                  // value={itemCategoryOptions.find(
-                  //   (option) => option.value === itemData.itemCategory
-                  // )}
-                  // placeholder="Choose Item Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-                 <Select
-                  // options={productCategoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "productCategory" })
-                  // }
-                  // value={productCategoryOptions.find(
-                  //   (option) => option.value === itemData.productCategory
-                  // )}
-                  // placeholder="Choose Product Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-               </div>
-            <label>
-              Select Date:
-            </label>
-            <div className="flex gap-6">
-            <input className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder=" from"/>
-            <input className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder="to"/>
-            </div>
-            </form>
-          )}
-        {filterFormVisibility && (
-          <div className ="overlay" onCick={closeFilterForm}> </div>
-        )}
+          </div>
+          <label>Select Category</label>
+          <div className="flex gap-6">
+            <Select
+              // options={categoryOptions}
+              // onChange={(selectedOption) =>
+              //   handleSelectChange(selectedOption, { name: "feature" })
+              // }
+              // value={categoryOptions.find(
+              //   (option) => option.value === itemData.category
+              // )}
+              placeholder="Choose Category"
+              styles={customStyles}
+              className="react-select-container"
+              classNamePrefix="react-select"
+            />
+            <Select
+              // options={itemCategoryOptions}
+              // onChange={(selectedOption) =>
+              //   handleSelectChange(selectedOption, { name: "itemCategory" })
+              // }
+              // value={itemCategoryOptions.find(
+              //   (option) => option.value === itemData.itemCategory
+              // )}
+              placeholder="Choose Item Category"
+              styles={customStyles}
+              className="react-select-container"
+              classNamePrefix="react-select"
+            />
+            <Select
+              // options={productCategoryOptions}
+              // onChange={(selectedOption) =>
+              //   handleSelectChange(selectedOption, { name
+              // options={productCategoryOptions}
+              // onChange={(selectedOption) =>
+              //   handleSelectChange(selectedOption, { name: "productCategory" })
+              // }
+              // value={productCategoryOptions.find(
+              //   (option) => option.value === itemData.productCategory
+              // )}
+              placeholder="Choose Product Category"
+              styles={customStyles}
+              className="react-select-container"
+              classNamePrefix="react-select"
+            />
+          </div>
+          <label>Select Date:</label>
+          <div className="flex gap-6">
+            <input
+              className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
+              type="date"
+              placeholder=" from"
+            />
+            <input
+              className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
+              type="date"
+              placeholder="to"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+          >
+            Apply Filter
+          </button>
+        </form>
+      )}
+      {filterFormVisibility && (
+        <div className="overlay" onClick={closeFilterForm}></div>
+      )}
       <ToastContainer pauseOnHover theme="light" />
     </div>
   );

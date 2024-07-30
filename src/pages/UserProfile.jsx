@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import "../styles/userprofile.css";
 import Navbar from "../components/Navbar";
 import ProfileSide from "../components/Profileside";
-import img from "../assets/img.png";
+import img from "../assets/user.svg";
 
 const UserProfile = () => {
   const [profileImg, setProfileImg] = useState(img);
