@@ -51,7 +51,7 @@ function PurchaseHistory() {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   useEffect(() => {
@@ -61,11 +61,12 @@ function PurchaseHistory() {
           `http://localhost:8898/api/items/${id}`
         );
 
-        // Assuming the response structure is { itemData: { bills: [...] } }
-        const bills = response.data.itemData.bills || [];
-        setItems(bills);
+        console.log("API Response:", response.data);
+        const history = Array.isArray(response.data) ? response.data : [];
+        setItems(history);
         setLoading(false);
       } catch (err) {
+        console.error("Error fetching purchase history:", err);
         setError("Error fetching purchase history");
         setLoading(false);
       }
@@ -73,7 +74,9 @@ function PurchaseHistory() {
     fetchPurchaseHistory();
   }, [id]);
 
-  console.log(items);
+  useEffect(() => {
+    console.log("Current items state:", items);
+  }, [items]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -116,13 +119,15 @@ function PurchaseHistory() {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  const filteredRows = items.filter((row) =>
-    Object.values(row).some(
-      (value) =>
-        value &&
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredRows = Array.isArray(items)
+    ? items.filter((row) =>
+        Object.values(row).some(
+          (value) =>
+            value &&
+            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    : [];
 
   const visibleRows = React.useMemo(
     () =>
@@ -208,29 +213,17 @@ function PurchaseHistory() {
                     let value;
                     if (column.id === "sNo") {
                       value = page * rowsPerPage + index + 1;
-                    }
-                    if (column.id === "vendor_name") {
-                      value = row.vendors.vendor_name;
-                    }
-                    if (column.id === "bill_number") {
+                    } else if (column.id === "vendor_name") {
+                      value = row.vendors?.vendor_name || "";
+                    } else if (column.id === "bill_number") {
                       value = row.bill_no;
-                    }
-                    if (column.id === "bill_number") {
-                      value = row.bill_no;
-                    }
-
-                    if (column.id === "quantity") {
+                    } else if (column.id === "quantity") {
                       value = row.quantity;
-                    }
-
-                    if (column.id === "actual_amount") {
+                    } else if (column.id === "actual_amount") {
                       value = row.actual_amount;
-                    }
-
-                    if (column.id === "paid_amount") {
+                    } else if (column.id === "paid_amount") {
                       value = row.paid_amount;
-                    }
-                    if (column.id === "bill_date") {
+                    } else if (column.id === "bill_date") {
                       value = formatDate(row.bill_date);
                     }
 
