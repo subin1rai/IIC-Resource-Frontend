@@ -44,6 +44,8 @@ const SingleItem = () => {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
+
+        console.log(response);
         setItem(response.data.itemData);
       } catch (error) {
         console.error("Error fetching item data:", error);
