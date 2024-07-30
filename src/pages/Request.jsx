@@ -14,9 +14,10 @@ const Request = () => {
         <div className="flex flex-col bg-white w-[85.5vw] px-9 py-5 rounded gap-2 h-[88vh] ">
           <h3 className=" font-semibold text-2xl">Requests</h3>
           <p>You can view your request here</p>
+
           <div className="w-[100%] mx-auto mt-5 bg-blue-600 h-1"></div>
           <div className="h-[82vh] overflow-y-scroll mt-3 ">
-            <RequestTable  />
+            <RequestTable />
           </div>
         </div>
       </div>
