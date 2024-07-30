@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/inventory.css";
@@ -12,6 +11,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
+
 
 const Inventory = () => {
   const [items, setItems] = useState([]);

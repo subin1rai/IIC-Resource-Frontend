@@ -106,7 +106,7 @@ const Topbar = () => {
             )}
           </div>
           <div
-            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96 mt-20"
+            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96"
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
