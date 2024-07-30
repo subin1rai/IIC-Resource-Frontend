@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import socket from "../socket";
+import close from "../assets/close.svg";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,6 +11,28 @@ const RequestTable = () => {
 
   // getting token from localstorage
   const token = localStorage.getItem("token");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+     
+    } catch (error) {
+      console.log(error);
+      
+    }
+  };
+  const [addFormVisibility, setAddFormVisibility] = useState(false);
+
+
+
+  const openAcceptForm = () => {
+    setAddFormVisibility(true);
+  };
+
+  const closeAcceptForm = () => {
+    setError("");
+    setAddFormVisibility(false);
+  };
 
   useEffect(() => {
     const getRequest = async () => {
@@ -44,6 +68,7 @@ const RequestTable = () => {
   }, []);
 
   const handleAccept = (requestId) => {
+    openAcceptForm(requestId);
     console.log(`Accepted request with ID: ${requestId}`);
     // Implement the accept logic here
   };
@@ -98,19 +123,42 @@ const RequestTable = () => {
               >
                 Accept
               </button>
+              
+              
+              
+
               <button
                 className="bg-white text-red-500 border-2 h-fit py-3 px-8 rounded-md border-red-400"
                 onClick={() => handleDecline(request.id)}
               >
                 Decline
               </button>
+
+              
             </div>
+
+            
+            
           </div>
+          
         ))
+        
+
+        
       )}
+      
+      {addFormVisibility && (
+        <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0" onClick={closeAcceptForm}></div>
+      )}
+
+
       <ToastContainer pauseOnHover theme="light" />
+      
     </div>
+    
+    
   );
+  
 };
 
 export default RequestTable;

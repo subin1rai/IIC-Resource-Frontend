@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import ProfileSide from "../components/Profileside";
 import img from "../assets/user.svg";
 
+
 const UserProfile = () => {
   const [profileImg, setProfileImg] = useState(img);
   const fileInputRef = useRef(null);
