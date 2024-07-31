@@ -4,6 +4,7 @@ import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
 
 const Settings = () => {
+
   const fileInputRef = useRef(null);
 
   const uploadFile = () => {
