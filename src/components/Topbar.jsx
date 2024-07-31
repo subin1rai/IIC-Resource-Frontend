@@ -10,9 +10,10 @@ const Topbar = () => {
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
-const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
+  const [notREadCount, setNotReadCount] = useState(0);
 
-const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const morningStart = 5;
   const afternoonStart = 12;
   const eveningStart = 17;
@@ -29,7 +30,6 @@ const token = localStorage.getItem("token");
   const popUpNotification = () => {
     setNotificationPopUp(true);
   };
-
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -54,10 +54,10 @@ const token = localStorage.getItem("token");
   useEffect(() => {
     // Listen for the newRequest event
     socket.on("newRequest", (data) => {
-    
-    const newNotification = data['message']
+      const newNotification = data["message"];
 
-   setNotification((prevRequests) => [ newNotification,...prevRequests ]);
+      setNotification((prevRequests) => [newNotification, ...prevRequests]);
+      setNotReadCount((prevCount) => prevCount + 1);
       toast.success(data.message);
     });
     return () => {
@@ -66,28 +66,29 @@ const token = localStorage.getItem("token");
     };
   }, []);
 
-  useEffect(()=>{
-const fetchNotification =async ()=>{
-    try {
-      const response = await axios.get("http://localhost:8898/api/notificaiton",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/notificaiton",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setNotification(response.data.notification || []);
+        const a = response.data.notification.filter((req) => !req.state).length;
+        setNotReadCount(a);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request Canceled", error.message);
+          setNotification([]);
         }
-      )
-      setNotification(response.data.notification || []);
-      console.log("hii"+ notification)
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        setNotification([]);
       }
-    }
-} 
-fetchNotification()
-  },[])
-
+    };
+    fetchNotification();
+  }, []);
 
   return (
     <div className="topbar">
@@ -100,6 +101,14 @@ fetchNotification()
           onClick={popUpNotification}
         >
           <i className="fa-regular fa-bell"></i>
+
+          {notREadCount == 0 ? (
+            <></>
+          ) : (
+            <span className="absolute right-2 text-sm top-3 bg-red-500 rounded-[50%] h-5 w-5 text-white">
+              {notREadCount}
+            </span>
+          )}
         </button>
         <img className="profile" src="../assets/adminuser.png" alt="" />
       </div>
@@ -118,19 +127,22 @@ fetchNotification()
             {notification.length === 0 ? (
               <div className="px-6 py-3">No requests found.</div>
             ) : (
-              notification.slice().reverse().map((notification) => (
-                <div
-                  key={notification.notification_id}
-                  className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
-                >
-                  <h3 className="text-sml font-medium">
-                  {notification.message}
-                  </h3>
-                  <p className="text-[0.8rem] py-1 text-neutral-500">
-                    July 29, 2024 at 1:03PM
-                  </p>
-                </div>
-              ))
+              notification
+                .slice()
+                .reverse()
+                .map((notification) => (
+                  <div
+                    key={notification.notification_id}
+                    className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
+                  >
+                    <h3 className="text-sml font-medium">
+                      {notification.message}
+                    </h3>
+                    <p className="text-[0.8rem] py-1 text-neutral-500">
+                      July 29, 2024 at 1:03PM
+                    </p>
+                  </div>
+                ))
             )}
           </div>
           <div
@@ -140,7 +152,6 @@ fetchNotification()
         </>
       )}
       <ToastContainer pauseOnHover theme="dark" />
-
     </div>
   );
 };
