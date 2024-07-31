@@ -5,8 +5,9 @@ import ProfileSide from "../components/Profileside";
 import img from "../assets/user.svg";
 
 
+
 const UserProfile = () => {
-  const [profileImg, setProfileImg] = useState(img);
+  const [profileImg, setProfileImg] = useState();
   const fileInputRef = useRef(null);
 
   const uploadFile = () => {

@@ -159,6 +159,58 @@ const SpecificBill = () => {
           </div>
           {/* line  */}
           <div className="h-1 w-[99%] bg-blue-700 mx-auto mt-5"></div>
+
+
+          <div className="flex justify-between w-[75%]">
+            <div className="flex flex-col gap-5 mt-7 pl-9">
+              <p className="font-semibold">
+                Bill Date:
+                <span className="font-medium pl-4" >{formatDate(billDetails.bill_date) || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Voucher No:
+                <span className="font-medium pl-4">{billDetails.voucher_no || "--"}</span>
+              </p>
+              {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
+              <p className="font-semibold">
+                Item Name:
+                {/* <span className="font-medium pl-4">{billDetails.items.item_name || "--"}</span> */}
+              </p>
+              <p className="font-semibold">
+                Quantity:
+                <span className="font-medium pl-4">{billDetails.quantity || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Unit Price:
+                <span className="font-medium pl-4">{billDetails.unit_price || "--"}</span>
+              </p>
+            </div>
+            {/* right side  */}
+            <div className="flex flex-col gap-5 mt-7 pl-9 ">
+              <p className="font-semibold">
+                TDS:
+                <span className="font-medium pl-4" >{billDetails.TDS}</span>
+              </p>
+              <p className="font-semibold">
+                Bill Amount:
+                <span className="font-medium pl-4">{billDetails.voucher_no || "--"}</span>
+              </p>
+              {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
+              <p className="font-semibold">
+                Paid Amount:
+                <span className="font-medium pl-4">{billDetails.paid_amount || "--"}</span>
+              </p>
+              <p className="font-semibold">
+                Pending Amount:
+                <span className="font-medium pl-4">{billDetails.quantity || "--"}</span>
+              </p>
+
+            </div>
+
+
+
+          </div>
+
           {!loading ? (
             <>
               <div className="flex justify-between w-[75%]">
@@ -226,12 +278,18 @@ const SpecificBill = () => {
           ) : (
             <div>Loading...</div>
           )}
+
         </div>
       </div>
 
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeEditBillDetailsForm}></div>
+          <div className="z-20 bg-overlay w-screen h-screen absolute" onClick={closeEditBillDetailsForm}></div>
+
+
+          <form onSubmit={handleSubmit} className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 rounded " >
+            <div className="flex">
+              <p className="font-bold text-base">Edit Bill Details</p>
 
           <form onSubmit={handleSubmit} className="billdetailsform">
             <div className="toptitle">
@@ -387,11 +445,13 @@ const SpecificBill = () => {
               <button type="submit" className="save">
                 Save Edit
               </button>
+
             </div>
           </form>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
