@@ -27,16 +27,20 @@ const SpecificBill = () => {
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
-  const { bill_id } = useParams();
+
+
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState("");
+
+
+  const { bill_id } = useParams();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         const [singleBillResponse, itemsResponse, vendorsResponse] =
@@ -63,13 +67,15 @@ const SpecificBill = () => {
         setVendors(vendorsResponse.data.vendors);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setError(error.response?.data?.error || "An error occurred");
         setLoading(false);
       }
     };
     fetchData();
-  }, [bill_id]);
+
+  }, [bill_id, token]);
+
 
   const openEditBillDetailsForm = () => {
     setBill({
@@ -99,15 +105,13 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+
       await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
       closeEditBillDetailsForm();
-
       // Refresh bill details
       const updatedBill = await axios.get(
         `http://localhost:8898/api/singleBill/${bill_id}`,
@@ -119,7 +123,7 @@ const SpecificBill = () => {
       );
       setBillDetails(updatedBill.data.bill);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -136,12 +140,13 @@ const SpecificBill = () => {
         <Topbar />
 
         <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+\
           <div className="flex justify-between items-center ml-2">
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
                 <Link to="/records" className="text-base">Bill Records</Link>
                 <img src={front} alt="arrow" />
-                <h4 className="text-base text-blue-400 ">
+                <h4 className="text-base text-blue-400">
                   {billDetails.bill_no}
                 </h4>
               </div>
@@ -154,72 +159,67 @@ const SpecificBill = () => {
               Edit Bill
             </button>
           </div>
-          {/* line  */}
           <div className="h-1 w-[99%] bg-blue-700 mx-auto mt-5"></div>
+
           {!loading ? (
-            <>
-              <div className="flex justify-between w-[75%]">
-                <div className="flex flex-col gap-5 mt-7 pl-9">
-                  <p className="font-semibold">
-                    Bill Date:
-                    <span className="font-medium pl-4">
-                      {formatDate(billDetails.bill_date) || "--"}
-                    </span>
-                  </p>
-                  <p className="font-semibold">
-                    Voucher No:
-                    <span className="font-medium pl-4">
-                      {billDetails.voucher_no || "--"}
-                    </span>
-                  </p>
-                  {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
-                  <p className="font-semibold">
-                    Item Name:
-                    <span className="font-medium pl-4">
-                      {billDetails?.items?.item_name || "--"}
-                    </span>
-                  </p>
-                  <p className="font-semibold">
-                    Quantity:
-                    <span className="font-medium pl-4">
-                      {billDetails.quantity || "--"}
-                    </span>
-                  </p>
-                  <p className="font-semibold">
-                    Unit Price:
-                    <span className="font-medium pl-4">
-                      {billDetails.unit_price || "--"}
-                    </span>
-                  </p>
-                </div>
-                {/* right side  */}
-                <div className="flex flex-col gap-5 mt-7 pl-9 ">
-                  <p className="font-semibold">
-                    TDS:
-                    <span className="font-medium pl-4">{billDetails.TDS}</span>
-                  </p>
-                  <p className="font-semibold">
-                    Bill Amount:
-                    <span className="font-medium pl-4">
-                      {billDetails.voucher_no || "--"}
-                    </span>
-                  </p>
-                  {/* <p>Item ID: <span>{billDetails.items.item_id}</span></p> */}
-                  <p className="font-semibold">
-                    Paid Amount:
-                    <span className="font-medium pl-4">
-                      {billDetails.paid_amount || "--"}
-                    </span>
-                  </p>
-                  <p className="font-semibold">
-                    Pending Amount:
-                    <span className="font-medium pl-4">
-                      {billDetails.quantity || "--"}
-                    </span>
-                  </p>
-                </div>
+            <div className="flex justify-between w-[75%]">
+              <div className="flex flex-col gap-5 mt-7 pl-9">
+                <p className="font-semibold">
+                  Bill Date:
+                  <span className="font-medium pl-4">
+                    {formatDate(billDetails.bill_date) || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Voucher No:
+                  <span className="font-medium pl-4">
+                    {billDetails.voucher_no || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Item Name:
+                  <span className="font-medium pl-4">
+                    {billDetails?.items?.item_name || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Quantity:
+                  <span className="font-medium pl-4">
+                    {billDetails.quantity || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Unit Price:
+                  <span className="font-medium pl-4">
+                    {billDetails.unit_price || "--"}
+                  </span>
+                </p>
               </div>
-            </>
+              <div className="flex flex-col gap-5 mt-7 pl-9">
+                <p className="font-semibold">
+                  TDS:
+                  <span className="font-medium pl-4">{billDetails.TDS}</span>
+                </p>
+                <p className="font-semibold">
+                  Bill Amount:
+                  <span className="font-medium pl-4">
+                    {billDetails.voucher_no || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Paid Amount:
+                  <span className="font-medium pl-4">
+                    {billDetails.paid_amount || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Pending Amount:
+                  <span className="font-medium pl-4">
+                    {billDetails.quantity || "--"}
+                  </span>
+                </p>
+              </div>
+            </div>
           ) : (
             <div>Loading...</div>
           )}
@@ -377,6 +377,7 @@ const SpecificBill = () => {
                 Save Changes
               </button>
             </div>
+
           </form>
 
 
