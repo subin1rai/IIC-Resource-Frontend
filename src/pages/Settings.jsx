@@ -5,10 +5,6 @@ import SettingsSide from "../components/SettingsSide";
 
 
 
-const Settings = () => {
-  const [profileImg, setProfileImg] = useState();
-
-
 
 
 const Settings = () => {

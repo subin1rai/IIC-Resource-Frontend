@@ -139,7 +139,6 @@ fetchNotification()
           ></div>
         </>
       )}
-      <ToastContainer pauseOnHover theme="dark" />
 
     </div>
   );
