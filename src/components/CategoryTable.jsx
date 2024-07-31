@@ -16,7 +16,7 @@ const Category = () => {
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
-      try {
+      try{
         const response = await axios.get("http://localhost:8898/api/category", 
           {
             headers: {
