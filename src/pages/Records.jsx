@@ -202,16 +202,16 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
-            <div className=" w-[10vw] flex justify-between gap-2 mr-8">
+            <div className=" w-[10vw] flex justify-between gap-6 mr-12">
               <button
-                className="filterbill"
+                className="flex justify-center items-center w-fit px-5 py-1 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
-                <img src={filterIcon} alt="filter icon" />
+                <img  src={filterIcon} alt="filter icon" />
                 Filter
               </button>
-              <button onClick={openAddBillForm} className="addbillbtn">
+              <button onClick={openAddBillForm} className="flex justify-center bg-blue-600 text-white rounded items-center w-fit px-6 whitespace-nowrap">
                 Add Bill
               </button>
             </div>
@@ -279,10 +279,10 @@ const Records = () => {
                     />
                   </div>
                 </div>
-                {/* <div className="single">
+                <div className="double">
                   <div className="for">
                     <label htmlFor="vendor_name">Vendor:</label>
-                    <Select
+                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
                       options={vendors.map((vendor) => ({
                         value: vendor.vendor_name,
                         label: vendor.vendor_name,
@@ -299,11 +299,10 @@ const Records = () => {
                       styles={customStyles}
                     />
                   </div>
-                </div> */}
-                <div className="single">
                   <div className="for">
                     <label htmlFor="item_name">Item Name:</label>
-                    <Select
+                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
+                      
                       options={items.map((item) => ({
                         value: item.item_name,
                         label: item.item_name,
@@ -349,7 +348,7 @@ const Records = () => {
                   <div className="for">
                     <label htmlFor="bill_amount">Bill Amount:</label>
                     <input
-                      type="number"
+                
                       placeholder="Enter bill amount"
                       name="bill_amount"
                       id="bill_amount"
@@ -378,7 +377,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="actual_amount">Actual Amount:</label>
                       <input
-                        type="number"
+         
                         placeholder="Enter actual amount"
                         name="actual_amount"
                         id="actual_amount"
@@ -389,7 +388,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="paid_amount">Paid Amount:</label>
                       <input
-                        type="number"
+                
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"

@@ -21,7 +21,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    // productCategory: "",
+
     low_limit: 0,
     features: {}, // Add this line
   });
@@ -29,7 +29,7 @@ const Inventory = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
-  const [productCategory, setProductCategory] = useState([]);
+
   const [itemCategory, setItemCategory] = useState([]);
   const [feature, setFeature] = useState([]);
 
