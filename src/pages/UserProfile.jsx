@@ -2,10 +2,10 @@ import React, { useRef, useState } from "react";
 import "../styles/userprofile.css";
 import Navbar from "../components/Navbar";
 import ProfileSide from "../components/Profileside";
-import img from "../assets/img.png";
+
 
 const UserProfile = () => {
-  const [profileImg, setProfileImg] = useState(img);
+  const [profileImg, setProfileImg] = useState();
   const fileInputRef = useRef(null);
 
   const uploadFile = () => {
