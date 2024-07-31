@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import "../styles/inventory.css";
+
 import Topbar from "../components/Topbar";
 import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
@@ -316,7 +316,7 @@ const Inventory = () => {
                 <img className= "mt-1 justify-center align-center" src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="flex justify-center bg-button text-white rounded items-center w-fit px-6" onClick={displayAddPopup}>
+              <button className="flex justify-center bg-blue-600 text-white rounded items-center w-fit px-6" onClick={displayAddPopup}>
                 Add Item
               </button>
             </div>
@@ -468,7 +468,7 @@ const Inventory = () => {
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-            <button type="submit" className="flex justify-center bg-button text-white rounded items-center w-fit p-2 px-6" disabled={loading}>
+            <button type="submit" className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6" disabled={loading}>
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>

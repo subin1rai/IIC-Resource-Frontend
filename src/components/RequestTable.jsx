@@ -93,7 +93,7 @@ const RequestTable = () => {
             </div>
             <div className="flex gap-7 items-center">
               <button
-                className="bg-blue-900 text-white h-fit py-3 px-8 rounded-md"
+                className="bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
                 onClick={() => handleAccept(request.id)}
               >
                 Accept

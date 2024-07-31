@@ -220,15 +220,12 @@ const Records = () => {
           <div className="overlay" onClick={closeAddBillForm}></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
-              <div className="left">
-                <button
-                  type="button"
-                  className="closebtn"
-                  onClick={closeAddBillForm}
-                >
-                  <img src={close} alt="close icon" />
-                </button>
+            <div className="flex justify-between items-center mb-2">
                 <p className="title">Add Bill Details</p>
+                  <img className="cursor-pointer p-3 " src={close} alt="close icon" onClick={closeAddBillForm} />
+                </div>
+                <div className="flex">
+              <div className="left"> 
                 <div className="double">
                   <div className="for">
                     <label htmlFor="bill_no">Bill No:</label>
@@ -238,7 +235,7 @@ const Records = () => {
                       autoFocus="autofocus"
                       name="bill_no"
                       id="bill_no"
-                      onChange={handleChange}
+                      onChange={handleChange}  
                       value={bill.bill_no}
                     />
                   </div>
@@ -422,6 +419,7 @@ const Records = () => {
                   </button>
                 </div>
               </div>
+            </div>
             </div>
           </form>
         </>
