@@ -3,13 +3,16 @@ import "../styles/topbar.css";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
+const [notification, setNotification] = useState([]);
 
+const token = localStorage.getItem("token");
   const morningStart = 5;
   const afternoonStart = 12;
   const eveningStart = 17;
@@ -26,6 +29,7 @@ const Topbar = () => {
   const popUpNotification = () => {
     setNotificationPopUp(true);
   };
+
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -50,16 +54,40 @@ const Topbar = () => {
   useEffect(() => {
     // Listen for the newRequest event
     socket.on("newRequest", (data) => {
-      toast.success(data.message);
-      // Add the new request to the requests state
-      setRequests((prevRequests) => [...prevRequests, data.requestData]);
-    });
+    
+    const newNotification = data['message']
 
+   setNotification((prevRequests) => [ newNotification,...prevRequests ]);
+      toast.success(data.message);
+    });
     return () => {
       // Clean up the socket listener on component unmount
       socket.off("newRequest");
     };
   }, []);
+
+  useEffect(()=>{
+const fetchNotification =async ()=>{
+    try {
+      const response = await axios.get("http://localhost:8898/api/notificaiton",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      setNotification(response.data.notification || []);
+      console.log("hii"+ notification)
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request Canceled", error.message);
+        setNotification([]);
+      }
+    }
+} 
+fetchNotification()
+  },[])
+
 
   return (
     <div className="topbar">
@@ -73,7 +101,7 @@ const Topbar = () => {
         >
           <i className="fa-regular fa-bell"></i>
         </button>
-        <img className="profile" src="" alt="" />
+        <img className="profile" src="../assets/adminuser.png" alt="" />
       </div>
       {notificationPopUp && (
         <>
@@ -87,16 +115,16 @@ const Topbar = () => {
             </div>
 
             {/* Example message list, you may replace with dynamic content */}
-            {requests.length === 0 ? (
-              <div>No requests found.</div>
+            {notification.length === 0 ? (
+              <div className="px-6 py-3">No requests found.</div>
             ) : (
-              requests.map((request) => (
+              notification.slice().reverse().map((notification) => (
                 <div
-                  key={request.id}
+                  key={notification.notification_id}
                   className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
                 >
                   <h3 className="text-sml font-medium">
-                    New item requested {request.users?.user_name}
+                  {notification.message}
                   </h3>
                   <p className="text-[0.8rem] py-1 text-neutral-500">
                     July 29, 2024 at 1:03PM
@@ -106,11 +134,13 @@ const Topbar = () => {
             )}
           </div>
           <div
-            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96 mt-20"
+            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96"
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
       )}
+      <ToastContainer pauseOnHover theme="dark" />
+
     </div>
   );
 };

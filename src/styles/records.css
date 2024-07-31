@@ -43,11 +43,11 @@
           margin: 15px;
         }
 
-        .filterbill{
+        .filterbill {
           display: flex;
-          justify-content:center;
+          justify-content: center;
           align-items: center;
-          gap:5px;
+          gap: 5px;
           height: 4vh;
           width: 20vw;
           padding: 5px;
