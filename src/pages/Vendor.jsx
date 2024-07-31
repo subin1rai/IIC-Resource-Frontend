@@ -32,10 +32,9 @@ const Vendor = () => {
     setAddFormVisibility(true);
   };
 
-  const displayFilterForm = () =>  {
+  const displayFilterForm = () => {
     setFilterFormVisibility(true);
-}
-
+  };
 
   const closeAddVendorForm = () => {
     setError("");
@@ -162,7 +161,11 @@ const Vendor = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="border-2 border-border rounded"
               />
-              <button className="category-btn" aria-label="Menu" onClick={displayFilterForm}>
+              <button
+                className="category-btn"
+                aria-label="Menu"
+                onClick={displayFilterForm}
+              >
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
@@ -237,76 +240,83 @@ const Vendor = () => {
           </div>
         </form>
       )}
-       {filterFormVisibility && (
-            <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
-              <div className="flex justify-between">
-               <h2 className="font-semibold text-xl"> Select Filtering Option</h2><button
+      {filterFormVisibility && (
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+          <div className="flex justify-between">
+            <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
+            <button
               type="button"
               className="discard-btn"
               onClick={closeFilterForm}
             >
               <img src={close} alt="" />
             </button>
-            </div>
-             <label>
-            Select Category
-             </label>
-             <div className="flex gap-6">
-             <Select
-                  // options={categoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "feature" })
-                  // }
-                  // value={categoryOptions.find(
-                  //   (option) => option.value === itemData.category
-                  // )}
-                  // placeholder="Choose Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-             <Select
-                  // options={itemCategoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "itemCategory" })
-                  // }
-                  // value={itemCategoryOptions.find(
-                  //   (option) => option.value === itemData.itemCategory
-                  // )}
-                  // placeholder="Choose Item Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-                 <Select
-                  // options={productCategoryOptions}
-                  // onChange={(selectedOption) =>
-                  //   handleSelectChange(selectedOption, { name: "productCategory" })
-                  // }
-                  // value={productCategoryOptions.find(
-                  //   (option) => option.value === itemData.productCategory
-                  // )}
-                  // placeholder="Choose Product Category"
-                  // styles={customStyles}
-                  // className="react-select-container"
-                  // classNamePrefix="react-select"
-                />
-               </div>
-            <label>
-              Select Date:
-            </label>
-            <div className="flex gap-6">
-            <input className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder=" from"/>
-            <input className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]" type = "date" placeholder="to"/>
-            </div>
-            </form>
-          )}
+          </div>
+          <label>Select Category</label>
+          <div className="flex gap-6">
+            <Select
+            // options={categoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "feature" })
+            // }
+            // value={categoryOptions.find(
+            //   (option) => option.value === itemData.category
+            // )}
+            // placeholder="Choose Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
+            />
+            <Select
+            // options={itemCategoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "itemCategory" })
+            // }
+            // value={itemCategoryOptions.find(
+            //   (option) => option.value === itemData.itemCategory
+            // )}
+            // placeholder="Choose Item Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
+            />
+            <Select
+            // options={productCategoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "productCategory" })
+            // }
+            // value={productCategoryOptions.find(
+            //   (option) => option.value === itemData.productCategory
+            // )}
+            // placeholder="Choose Product Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
+            />
+          </div>
+          <label>Select Date:</label>
+          <div className="flex gap-6">
+            <input
+              className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
+              type="date"
+              placeholder=" from"
+            />
+            <input
+              className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
+              type="date"
+              placeholder="to"
+            />
+          </div>
+        </form>
+      )}
       {addFormVisibility && (
         <div className="overlay-vendor" onClick={closeAddVendorForm}></div>
       )}
-       {filterFormVisibility && (
-          <div className ="overlay-vendor" onCick={closeFilterForm}> </div>
-        )}
+      {filterFormVisibility && (
+        <div className="overlay-vendor" onCick={closeFilterForm}>
+          {" "}
+        </div>
+      )}
       <ToastContainer pauseOnHover theme="light" />
     </div>
   );
