@@ -5,13 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
+import { format } from 'date-fns';
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
-  const [notification, setNotification] = useState([]);
+    const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
   const token = localStorage.getItem("token");
@@ -53,7 +54,6 @@ const Topbar = () => {
   }, []);
 
   useEffect(() => {
-    // Listen for the newRequest event
     socket.on("newRequest", (data) => {
       const newNotification = data["message"];
 
@@ -62,7 +62,6 @@ const Topbar = () => {
       toast.success(data.message);
     });
     return () => {
-      // Clean up the socket listener on component unmount
       socket.off("newRequest");
     };
   }, []);
@@ -91,8 +90,10 @@ const Topbar = () => {
     fetchNotification();
   }, []);
 
+  
+
   return (
-    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center ">
+    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
         <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
@@ -119,14 +120,15 @@ const Topbar = () => {
             className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-white z-20 overflow-y-scroll custom-scrollbar"
             style={{ overflowY: "scroll" }}
           >
-            <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white">
+            <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white ">
               <h2>Notification</h2>
-              <button className="text-sm text-blue-600">
+              <button className="text-sm text-blue-600 cursor-default ">
                 Mark all as read
               </button>
             </div>
             <div className="w-full m-auto bg-background h-0.5"></div>
             {/* Example message list, you may replace with dynamic content */}
+
             {notification.length === 0 ? (
               <div className="px-6 py-3">No notifications found.</div>
             ) : (
@@ -137,7 +139,7 @@ const Topbar = () => {
                   <div
                     key={notification.notification_id}
                     className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state ? "bg-white" : "bg-purple-100"
+                      notification.state ? "bg-white" : "bg-purple-100 cursor-default"
                     }`}
                   >
                     <h3 className="text-sml font-medium">
@@ -151,7 +153,7 @@ const Topbar = () => {
             )}
           </div>
           <div
-            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96"
+            className="absolute z-10 w-[99%] h-[100%] mt-16 mr-16 transform -translate-x-60 translate-y-96 "
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
