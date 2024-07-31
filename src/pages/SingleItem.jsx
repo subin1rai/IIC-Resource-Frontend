@@ -147,11 +147,11 @@ const SingleItem = () => {
   };
 
   return (
-    <div className="flex bg-background h-screen w-screen gap-1">
+    <div className="flex bg-background h-screen w-screen">
       <Sidebar />
-      <div className="flex flex-col mx-auto gap-3">
+      <div className="flex flex-col mx-auto gap-4">
         <Topbar />
-        <div className="bg-white w-[98%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
           <div className="flex justify-between w-[98%]">
             <div className="flex flex-col gap-1">
               <div className="flex justify-center items-end gap-2 h-10 p-4">
@@ -230,7 +230,7 @@ const SingleItem = () => {
             <>Loading</>
           )}
         </div>
-        <div className="bg-white w-[98%] mx-auto flex flex-col p-5 rounded-md">
+        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md">
           <div className="flex justify-between mb-7">
             <h2 className="font-semibold px-4 text-2xl">Purchase History</h2>
             <div className="flex gap-5">

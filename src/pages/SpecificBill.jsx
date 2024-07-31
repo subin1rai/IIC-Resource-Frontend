@@ -7,6 +7,8 @@ import Sidebar from "../components/Sidebar";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -25,10 +27,14 @@ const SpecificBill = () => {
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
+
+
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+
   const { bill_id } = useParams();
   const token = localStorage.getItem("token");
 
@@ -36,6 +42,7 @@ const SpecificBill = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const token = localStorage.getItem("token");
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(`http://localhost:8898/api/singleBill/${bill_id}`, {
@@ -54,6 +61,7 @@ const SpecificBill = () => {
               },
             }),
           ]);
+
         setBillDetails(singleBillResponse.data.bill);
         setItems(itemsResponse.data.items);
         setVendors(vendorsResponse.data.vendors);
@@ -65,7 +73,9 @@ const SpecificBill = () => {
       }
     };
     fetchData();
+
   }, [bill_id, token]);
+
 
   const openEditBillDetailsForm = () => {
     setBill({
@@ -95,6 +105,7 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+
       await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -123,15 +134,17 @@ const SpecificBill = () => {
   };
 
   return (
-    <div className="flex bg-background h-screen w-screen gap-1">
+    <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
-      <div className="flex flex-col gap-3 w-full">
+      <div className="flex flex-col gap-4 mx-auto">
         <Topbar />
-        <div className="bg-white w-[98%] mx-auto flex flex-col p-5 rounded-md relative">
+
+        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+\
           <div className="flex justify-between items-center ml-2">
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
-                <h4 className="text-base">Bill Records</h4>
+                <Link to="/records" className="text-base">Bill Records</Link>
                 <img src={front} alt="arrow" />
                 <h4 className="text-base text-blue-400">
                   {billDetails.bill_no}
@@ -215,173 +228,159 @@ const SpecificBill = () => {
 
       {addFormVisibility && (
         <>
-          <div
-            className="z-20 bg-overlay w-screen h-screen absolute"
-            onClick={closeEditBillDetailsForm}
-          ></div>
+          <div className="h-screen w-screen bg-overlay absolute " onClick={closeEditBillDetailsForm}></div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 rounded"
+          <form onSubmit={handleSubmit}
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded w-[55%]"
           >
-            <div className="flex justify-between items-center">
-              <p className="font-bold text-base">Edit Bill Details</p>
+            <div className="flex flex-col gap-10 justify-between ">
+              <div className="flex justify-between items-center mx-11 ">
+                <p className="font-bold text-xl">Edit Bill Details</p>
+                <img src={close} alt="close" className="h-4 w-4 " />
+              </div>
+              <div className="flex gap-10 justify-around ">
+                <div className="flex flex-col gap-6">
+                  {/* bill number */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="bill_no" className="w-32 font-medium">
+                      Bill No. :
+                    </label>
+                    <input
+                      type="text"
+                      id="bill_no"
+                      name="bill_no"
+                      placeholder="Enter Bill Number"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* bill date */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="bill_date" className="w-32 font-medium">Bill Date:</label>
+                    <NepaliDatePicker
+                      inputClassName=""
+                      className="border-2 border-border p-1 pl-3 rounded-md"
+                      value={date}
+                      onChange={handleChange}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
+                    />
+                  </div>
+                  {/* item name */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="item_name" className="w-32 font-medium">
+                      Item Name :
+                    </label>
+                    <input
+                      type="text"
+                      id="item_name"
+                      name="item_name"
+                      placeholder="Enter Item Name"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* quantity */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="quantity" className="w-32 font-medium">
+                      Quantity :
+                    </label>
+                    <input
+                      type="text"
+                      id="quantity"
+                      name="quantity"
+                      placeholder="Enter Quantity"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* Unit Price */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="unit_price" className="w-32 font-medium">
+                      Unit Price :
+                    </label>
+                    <input
+                      type="text"
+                      id="unit_price"
+                      name="unit_price"
+                      placeholder="Enter Unit Price"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                {/* right side edit page */}
+                <div className="flex flex-col gap-6">
+                  {/* TDS */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="tds" className="w-32 font-medium">
+                      TDS :
+                    </label>
+                    <select
+                      className="border-2 border-border p-1 pl-3 rounded-md w-56"
+                      id="tds"
+                      name="tds"
+                      onChange={handleChange}
+                    >
+                      <option value="">Select TDS</option>
+                      <option value="ten">10</option>
+                      <option value="twenty">20</option>
+                      <option value="thirty">30</option>
+                    </select>
+                  </div>
+                  {/* Bill Amount */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="bill_amount" className="w-32 font-medium">
+                      Bill Amount :
+                    </label>
+                    <input
+                      type="text"
+                      id="bill_amount"
+                      name="bill_amount"
+                      placeholder="Enter Bill Amount"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* Paid Amount */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="paid_amount" className="w-32 font-medium">
+                      Paid Amount :
+                    </label>
+                    <input
+                      type="text"
+                      id="paid_amount"
+                      name="paid_amount"
+                      placeholder="Enter Paid Amount"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* Left Amount */}
+                  <div className="flex items-center gap-5">
+                    <label htmlFor="left_amount" className="w-32 font-medium">
+                      Left Amount :
+                    </label>
+                    <input
+                      type="text"
+                      id="left_amount"
+                      name="left_amount"
+                      placeholder="Enter Left Amount"
+                      className="border-2 border-border p-1 pl-3 rounded-md "
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
               <button
-                type="button"
-                className="close"
-                onClick={closeEditBillDetailsForm}
+                className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex"
               >
-                <img src={close} alt="close icon" />
+                Save Changes
               </button>
             </div>
-            <div className="flex flex-wrap gap-5 mt-5">
-              <div className="w-1/2">
-                <div className="field">
-                  <label htmlFor="bill_no">Bill Number:</label>
-                  <input
-                    type="text"
-                    placeholder="Edit bill number"
-                    name="bill_no"
-                    id="bill_no"
-                    onChange={handleChange}
-                    value={bill.bill_no}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="bill_date">Bill Date:</label>
-                  <input
-                    type="date"
-                    placeholder="Edit bill date"
-                    name="bill_date"
-                    id="bill_date"
-                    onChange={handleChange}
-                    value={bill.bill_date}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="voucher_no">Voucher Number:</label>
-                  <input
-                    type="text"
-                    placeholder="Edit voucher number"
-                    name="voucher_no"
-                    id="voucher_no"
-                    onChange={handleChange}
-                    value={bill.voucher_no}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="vendor_name">Vendor Name:</label>
-                  <select
-                    name="vendor_name"
-                    id="vendor_name"
-                    onChange={handleChange}
-                    value={bill.vendor_name}
-                  >
-                    <option value="" disabled>
-                      Select vendor name
-                    </option>
-                    {vendors.map((vendor) => (
-                      <option key={vendor.id} value={vendor.vendor_name}>
-                        {vendor.vendor_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field">
-                  <label htmlFor="item_name">Item Name:</label>
-                  <select
-                    name="item_name"
-                    id="item_name"
-                    onChange={handleChange}
-                    value={bill.item_name}
-                  >
-                    <option value="" disabled>
-                      Select item name
-                    </option>
-                    {items.map((item) => (
-                      <option key={item.id} value={item.item_name}>
-                        {item.item_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="w-1/2">
-                <div className="field">
-                  <label htmlFor="quantity">Quantity:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit quantity"
-                    name="quantity"
-                    id="quantity"
-                    onChange={handleChange}
-                    value={bill.quantity}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="unit_price">Unit Price:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit unit price"
-                    name="unit_price"
-                    id="unit_price"
-                    onChange={handleChange}
-                    value={bill.unit_price}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="tds">TDS:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit TDS"
-                    name="tds"
-                    id="tds"
-                    onChange={handleChange}
-                    value={bill.tds}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="total_amt">Total Amount:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit total amount"
-                    name="total_amt"
-                    id="total_amt"
-                    onChange={handleChange}
-                    value={bill.total_amt}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="paid_amt">Paid Amount:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit paid amount"
-                    name="paid_amt"
-                    id="paid_amt"
-                    onChange={handleChange}
-                    value={bill.paid_amt}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="pending_amt">Pending Amount:</label>
-                  <input
-                    type="number"
-                    placeholder="Edit pending amount"
-                    name="pending_amt"
-                    id="pending_amt"
-                    onChange={handleChange}
-                    value={bill.pending_amt}
-                  />
-                </div>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white mt-7 py-2 rounded"
-            >
-              Save Changes
-            </button>
+
           </form>
+
+
         </>
       )}
     </div>
@@ -389,3 +388,26 @@ const SpecificBill = () => {
 };
 
 export default SpecificBill;
+
+
+{/* <label htmlFor="bill_date">Bill Date:</label>
+                  <NepaliDatePicker
+                    inputClassName="form-control"
+                    className="border-2 border-gray p-1 pl-3 rounded-md "
+                    value={date}
+                    onChange={handleChange}
+
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
+                  />
+                  <label htmlFor="Voucher_no">
+                    Voucher No. :
+                  </label>
+                  <input
+                    type="text"
+                    id="voucher_no"
+                    name="voucher_no"
+                    placeholder="Enter Voucher Number"
+                    className="border-2 border-gray p-1 pl-3 rounded-md "
+                    onChange={handleChange}
+
+                  /> */}
