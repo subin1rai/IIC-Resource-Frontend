@@ -90,8 +90,10 @@ const Topbar = () => {
     fetchNotification();
   }, []);
 
+  
+
   return (
-    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center ">
+    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
         <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
@@ -118,9 +120,9 @@ const Topbar = () => {
             className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-white z-20 overflow-y-scroll custom-scrollbar"
             style={{ overflowY: "scroll" }}
           >
-            <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white">
+            <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white ">
               <h2>Notification</h2>
-              <button className="text-sm text-blue-600">
+              <button className="text-sm text-blue-600 cursor-default ">
                 Mark all as read
               </button>
             </div>
@@ -137,7 +139,7 @@ const Topbar = () => {
                   <div
                     key={notification.notification_id}
                     className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state ? "bg-white" : "bg-purple-100"
+                      notification.state ? "bg-white" : "bg-purple-100 cursor-default"
                     }`}
                   >
                     <h3 className="text-sml font-medium">
@@ -151,7 +153,7 @@ const Topbar = () => {
             )}
           </div>
           <div
-            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96"
+            className="absolute z-10 w-[99%] h-[100%] mt-16 mr-16 transform -translate-x-60 translate-y-96 "
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
