@@ -3,14 +3,6 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
 
-
-
-const Settings = () => {
-  const [profileImg, setProfileImg] = useState();
-
-
-
-
 const Settings = () => {
 
   const fileInputRef = useRef(null);
