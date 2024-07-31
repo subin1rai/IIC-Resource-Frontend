@@ -4,15 +4,16 @@ import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { format } from 'date-fns';
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
-const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
 
-const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const morningStart = 5;
   const afternoonStart = 12;
   const eveningStart = 17;
@@ -29,7 +30,6 @@ const token = localStorage.getItem("token");
   const popUpNotification = () => {
     setNotificationPopUp(true);
   };
-
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -52,42 +52,40 @@ const token = localStorage.getItem("token");
   }, []);
 
   useEffect(() => {
-    // Listen for the newRequest event
     socket.on("newRequest", (data) => {
-    
-    const newNotification = data['message']
-
-   setNotification((prevRequests) => [ newNotification,...prevRequests ]);
+      const newNotification = data.message;
+      setNotification((prevRequests) => [newNotification, ...prevRequests]);
       toast.success(data.message);
     });
     return () => {
-      // Clean up the socket listener on component unmount
       socket.off("newRequest");
     };
   }, []);
 
-  useEffect(()=>{
-const fetchNotification =async ()=>{
-    try {
-      const response = await axios.get("http://localhost:8898/api/notificaiton",
-        {
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/notificaiton", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+        });
+        setNotification(response.data.notification || []);
+        console.log("hii" + notification);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request Canceled", error.message);
+          setNotification([]);
         }
-      )
-      setNotification(response.data.notification || []);
-      console.log("hii"+ notification)
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        setNotification([]);
       }
-    }
-} 
-fetchNotification()
-  },[])
+    };
+    fetchNotification();
+  }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, "MMMM dd, yyyy 'at' h:mmaaa");
+  };
 
   return (
     <div className="topbar">
@@ -114,7 +112,6 @@ fetchNotification()
               <p className="text-sm text-blue-600">12 Messages</p>
             </div>
 
-            {/* Example message list, you may replace with dynamic content */}
             {notification.length === 0 ? (
               <div className="px-6 py-3">No requests found.</div>
             ) : (
@@ -123,11 +120,9 @@ fetchNotification()
                   key={notification.notification_id}
                   className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
                 >
-                  <h3 className="text-sml font-medium">
-                  {notification.message}
-                  </h3>
+                  <h3 className="text-sml font-medium">{notification.message}</h3>
                   <p className="text-[0.8rem] py-1 text-neutral-500">
-                    July 29, 2024 at 1:03PM
+                    {formatDate(notification.created_at)}
                   </p>
                 </div>
               ))
@@ -139,8 +134,6 @@ fetchNotification()
           ></div>
         </>
       )}
-      <ToastContainer pauseOnHover theme="dark" />
-
     </div>
   );
 };
