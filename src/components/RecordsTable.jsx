@@ -81,17 +81,15 @@ export default function RecordsTable({ bills }) {
           },
         });
         setBillsData(response.data.bills || []);
-        console.log(response.data.bills);
       } catch (error) {
         console.log(error);
         setBillsData([]);
       }
     };
-
     if (billsData.length === 0) {
       getAllBills();
     }
-  }, [billsData]);
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
