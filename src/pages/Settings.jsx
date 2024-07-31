@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
-import img from "../assets/img.png";
 
 const Settings = () => {
-  const [profileImg, setProfileImg] = useState(img);
+
   const fileInputRef = useRef(null);
 
   const uploadFile = () => {

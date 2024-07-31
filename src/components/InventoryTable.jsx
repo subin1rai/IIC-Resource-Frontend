@@ -159,45 +159,48 @@ export default function InventoryTable({ items }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((item) => (
-              <TableRow
-                hover
-                role="checkbox"
-                tabIndex={-1}
-                key={item.item_id}
-                onClick={() => handleRowClick(item.item_id)}
-                style={{ cursor: "pointer" }}
-              >
-                {columns.map((column) => {
-                  let value = item[column.id];
-                  if (column.id === "productCategory") {
-                    value = item.productCategory?.product_category_name;
-                  }
-                  if (column.id === "category") {
-                    value = item.category?.category_name;
-                  }
-                  if (column.id === "itemCategory") {
-                    value = item.itemCategory?.item_category_name;
-                  }
+            {visibleRows
+              .slice()
+              .reverse()
+              .map((item) => (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={item.item_id}
+                  onClick={() => handleRowClick(item.item_id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {columns.map((column) => {
+                    let value = item[column.id];
+                    if (column.id === "productCategory") {
+                      value = item.productCategory?.product_category_name;
+                    }
+                    if (column.id === "category") {
+                      value = item.category?.category_name;
+                    }
+                    if (column.id === "itemCategory") {
+                      value = item.itemCategory?.item_category_name;
+                    }
 
-                  return (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={
-                        column.id === "stockStatus"
-                          ? { ...cellStyle, ...getStockStatusStyle(value) }
-                          : cellStyle
-                      }
-                    >
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value || "N/A"}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={
+                          column.id === "stockStatus"
+                            ? { ...cellStyle, ...getStockStatusStyle(value) }
+                            : cellStyle
+                        }
+                      >
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value || "N/A"}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

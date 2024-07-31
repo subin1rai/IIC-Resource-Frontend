@@ -1,86 +1,125 @@
-import React from "react";
-import Sidebar from "../components/Sidebar";
-import "../styles/dashboard.css";
-import Topbar from "../components/Topbar";
-import validVendor from "../assets/user.svg";
+import React from 'react'
+import Sidebar from '../components/Sidebar'
+import Topbar from '../components/Topbar'
+import items from '../assets/items.svg'
+import category from '../assets/category.svg'
 
 const Dashboard = () => {
   return (
-    <div className="dashboard">
+    // main div
+    <div className="w-screen h-screen flex bg-background gap-1">
       <Sidebar />
-      <div className="dashboard-main">
+      {/* top bar div */}
+      <div className='flex flex-col gap-4'>
         <Topbar />
-        <div className="summary">
-          <div className="inventory-overwiew">
-            <h3 className="summary-title">Inventory Overview</h3>
-            <div className="overview-container">
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of Items</p>
+        {/* main container */}
+        <div className='flex flex-col w-[98%] mx-auto gap-5'>
+          {/* inventory summary container */}
+          <div className='flex flex-col bg-white rounded gap-7'>
+            <h1 className='text-lg font-bold m-5'>Inventory Summary</h1>
+            <div className='flex justify-around mb-5'>
+              {/* single summary */}
+              <div className='flex flex-col items-center '>
+                <img src={items} alt="items" className='w-8 h-8' />
+                <p>35</p>
+                <p className='font-medium'>Number of items</p>
               </div>
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of Categories</p>
+              <div className='flex flex-col items-center '>
+                <img src={category} alt="items" className='w-8 h-8' />
+                <p>35</p>
+                <p className='font-medium'>Number of Categories</p>
               </div>
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Returned Items</p>
+              <div className='flex flex-col items-center '>
+                <img src={items} alt="items" className='w-8 h-8' />
+                <p>35</p>
+                <p className='font-medium'>Number of returned items</p>
               </div>
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Low Stock Items</p>
+              <div className='flex flex-col items-center '>
+                <img src={items} alt="items" className='w-8 h-8' />
+                <p>35</p>
+                <p className='font-medium'>Number of low stock items</p>
+              </div>
+            </div>
+          </div>
+          {/* vendor and issue summary */}
+          <div className='flex justify-around gap-5'>
+            {/* vendor summary */}
+            <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
+              <h1 className='text-lg font-bold m-5'>Vendor Overview</h1>
+              <div className='flex justify-around mb-5'>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of vendors</p>
+                </div>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of blacklisted vendors</p>
+                </div>
+              </div>
+            </div>
+
+            {/* issue Summary */}
+            <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
+              <h1 className='text-lg font-bold m-5'>Issue Summary</h1>
+              <div className='flex justify-around mb-5'>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="vendor-overview">
-            <h3 className="summary-title">Vendor Overview</h3>
-            <div className="overview-container">
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of Vendors</p>
+          <div className='flex justify-around gap-5'>
+            {/* Bill summary */}
+            <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
+              <h1 className='text-lg font-bold m-5'>Bill Overview</h1>
+              <div className='flex justify-around mb-5'>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Summary */}
+            <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
+              <h1 className='text-lg font-bold m-5'>Payment Summary</h1>
+              <div className='flex justify-around mb-5'>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
+                <div className='flex flex-col items-center '>
+                  <img src={items} alt="items" className='w-8 h-8' />
+                  <p>35</p>
+                  <p className='font-medium'>Number of items</p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="vendor-overview">
-            <h3 className="summary-title">Issue Overview</h3>
-            <div className="overview-container">
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of Issues</p>
-              </div>
-            </div>
-          </div>
-          <div className="vendor-overview">
-            <h3 className="summary-title">Bill Overview</h3>
-            <div className="overview-container">
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Number of Bills</p>
-              </div>
-            </div>
-          </div>
-          <div className="vendor-overview">
-            <h3 className="summary-title">Payment Overview</h3>
-            <div className="overview-container">
-              <div className="overview">
-                <img src={validVendor} alt="" />
-                <h4>31</h4>
-                <p>Pending Payments</p>
-              </div>
-            </div>
-          </div>
+
+
+
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

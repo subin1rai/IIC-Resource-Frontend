@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import filter from "../assets/filter.svg";
+import VendorHistory from "../components/vendorHistory";
 
 const SpecificVendor = () => {
   const [vendor, setVendor] = useState({
@@ -120,7 +121,7 @@ const SpecificVendor = () => {
           <div className="flex justify-between items-center h-fit ">
             <div className="flex flex-col">
               <div className="flex px-8 py-5 items-center">
-                <p>vendor</p>
+                <Link to="/vendors">Vendor</Link>
                 <img src={front} alt="" />
                 <p className="text-blue-600  text-base">{vendor.vendor_name}</p>
               </div>
@@ -235,6 +236,7 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
+          <VendorHistory history={vendor} />
         </div>
       </div>
 

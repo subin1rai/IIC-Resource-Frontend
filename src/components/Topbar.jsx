@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "../styles/topbar.css";
+// import "../styles/topbar.css";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import user from "../assets/user.svg";
 import { format } from 'date-fns';
 
 const Topbar = () => {
@@ -11,7 +12,8 @@ const Topbar = () => {
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
-  const [notification, setNotification] = useState([]);
+    const [notification, setNotification] = useState([]);
+  const [notREadCount, setNotReadCount] = useState(0);
 
   const token = localStorage.getItem("token");
   const morningStart = 5;
@@ -53,8 +55,10 @@ const Topbar = () => {
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
-      const newNotification = data.message;
+      const newNotification = data["message"];
+
       setNotification((prevRequests) => [newNotification, ...prevRequests]);
+      setNotReadCount((prevCount) => prevCount + 1);
       toast.success(data.message);
     });
     return () => {
@@ -65,13 +69,17 @@ const Topbar = () => {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/notificaiton", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8898/api/notificaiton",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setNotification(response.data.notification || []);
-        console.log("hii" + notification);
+        const a = response.data.notification.filter((req) => !req.state).length;
+        setNotReadCount(a);
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("Request Canceled", error.message);
@@ -82,24 +90,27 @@ const Topbar = () => {
     fetchNotification();
   }, []);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, "MMMM dd, yyyy 'at' h:mmaaa");
-  };
-
   return (
-    <div className="topbar">
-      <div className="topbar-left">
-        <p className="greetings">{greeting}, Admin</p>
+    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center ">
+      <div className="flex pl-5">
+        <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
-      <div className="topbar-right">
+      <div className="flex items-center h-full justify-between gap-3">
         <button
           className="text-2xl text-neutral-600 p-5 relative"
           onClick={popUpNotification}
         >
           <i className="fa-regular fa-bell"></i>
+
+          {notREadCount == 0 ? (
+            <></>
+          ) : (
+            <span className="absolute right-2 text-sm top-3 bg-red-500 rounded-[50%] h-5 w-5 text-white">
+              {notREadCount}
+            </span>
+          )}
         </button>
-        <img className="profile" src="../assets/adminuser.png" alt="" />
+        <img className="profile" src={user} alt="" />
       </div>
       {notificationPopUp && (
         <>
@@ -115,25 +126,34 @@ const Topbar = () => {
             {notification.length === 0 ? (
               <div className="px-6 py-3">No requests found.</div>
             ) : (
-              notification.slice().reverse().map((notification) => (
-                <div
-                  key={notification.notification_id}
-                  className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
-                >
-                  <h3 className="text-sml font-medium">{notification.message}</h3>
-                  <p className="text-[0.8rem] py-1 text-neutral-500">
-                    {formatDate(notification.created_at)}
-                  </p>
-                </div>
-              ))
+              notification
+                .slice()
+                .reverse()
+                .map((notification) => (
+                  <div
+                    key={notification.notification_id}
+                    className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
+                  >
+                    <h3 className="text-sml font-medium">
+                      {notification.message}
+                    </h3>
+                    <p className="text-[0.8rem] py-1 text-neutral-500">
+                      July 29, 2024 at 1:03PM
+                    </p>
+                  </div>
+                ))
             )}
           </div>
           <div
-            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96 mt-20"
+            className="absolute z-10 w-screen h-screen transform -translate-x-60 translate-y-96"
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
       )}
+
+      <div className="absolute">
+        <ToastContainer pauseOnHover theme="dark" className="relative" />
+      </div>
     </div>
   );
 };
