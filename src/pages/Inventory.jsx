@@ -319,7 +319,7 @@ const Inventory = () => {
                 Filter
               </button>
               <button
-                className="flex justify-center bg-button text-white rounded items-center w-fit px-6"
+                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit px-6"
                 onClick={displayAddPopup}
               >
                 Add Item

@@ -2,16 +2,10 @@ import React, { useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SettingsSide from "../components/SettingsSide";
-
-
+import img from "../assets/user.svg";
 
 const Settings = () => {
   const [profileImg, setProfileImg] = useState();
-
-import img from "../assets/user.svg";
-
-
-const Settings = () => {
 
   const fileInputRef = useRef(null);
 

@@ -34,7 +34,7 @@ const SpecificBill = () => {
 
   useEffect(() => {
     setLoading(true);
-    const fetchData = async () => {
+    const fetchData = async () => { 
       try {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
@@ -285,15 +285,9 @@ const SpecificBill = () => {
       {addFormVisibility && (
         <>
           <div className="z-20 bg-overlay w-screen h-screen absolute" onClick={closeEditBillDetailsForm}></div>
-
-
           <form onSubmit={handleSubmit} className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 rounded " >
             <div className="flex">
               <p className="font-bold text-base">Edit Bill Details</p>
-
-          <form onSubmit={handleSubmit} className="billdetailsform">
-            <div className="toptitle">
-              <p className="title2">Edit Details</p>
               <button
                 type="button"
                 className="close"
