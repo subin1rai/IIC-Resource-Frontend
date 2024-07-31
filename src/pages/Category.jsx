@@ -4,7 +4,6 @@ import Topbar from "../components/Topbar";
 import CategoryTable from "../components/CategoryTable";
 import Features from "../components/Features";
 import ItemCategoryTable from "../components/ItemCategoryTable";
-import ProductCategoryTable from "../components/ProductCategoryTable";
 import "../styles/category.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ const Category = () => {
           {/* importing category tables from components */}
           <CategoryTable />
           <ItemCategoryTable />
-          <ProductCategoryTable />
+
           <Features />
         </div>
       </div>

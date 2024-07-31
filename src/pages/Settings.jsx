@@ -8,7 +8,7 @@ import SettingsSide from "../components/SettingsSide";
 const Settings = () => {
   const [profileImg, setProfileImg] = useState();
 
-import img from "../assets/user.svg";
+
 
 
 const Settings = () => {
