@@ -30,6 +30,8 @@ const SingleItem = () => {
     faatures: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
   ]);
@@ -44,9 +46,8 @@ const SingleItem = () => {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
-
-        console.log(response);
-        setItem(response.data.itemData);
+        console.log(response.data.itemsOnFeatures.color);
+        setItem(response.data);
       } catch (error) {
         console.error("Error fetching item data:", error);
       }
@@ -94,10 +95,13 @@ const SingleItem = () => {
 
   const fetchItemData = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`http://localhost:8898/api/items/${id}`);
       setItem(response.data.itemData);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching item data:", error);
+      setLoading(false);
     }
   };
 
@@ -171,48 +175,60 @@ const SingleItem = () => {
             </div>
           </div>
           <div className="w-[98%] mx-auto mt-5 bg-blue-600 h-1"></div>
-          <div className="flex px-11 justify-between mt-7 w-9/12">
-            <div className="flex flex-col gap-5">
-              <div className="flex gap-4">
-                <p className="font-semibold">Item Name:</p>
-                <span className="font-medium">{item.item_name}</span>
-              </div>
-              <div className="flex gap-4">
-                <p className="font-semibold">Measuring Unit:</p>
-                <span className="font-medium">{item.measuring_unit}</span>
-              </div>
-              <div className="flex gap-4">
-                <p className="font-semibold">Low Limit:</p>
-                <span className="font-medium">{item.low_limit}</span>
-              </div>
-            </div>
-            <div className="flex flex-col gap-5">
-              <div className="flex gap-4">
-                <p className="font-semibold">Category:</p>
-                <span className="font-medium">
-                  {item.category?.category_name}
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <p className="font-semibold">Brand:</p>
-                <div className="font-medium">
-                  {item.itemsOnFeatures?.map((feature, index) => (
-                    <span key={index}>
-                      {feature.value}
-                      {index < item.itemsOnFeatures.length - 1 ? ", " : ""}
-                    </span>
-                  ))}
+          {!loading ? (
+            <div className="flex px-11 justify-between mt-7 w-9/12">
+              <div className="flex flex-col gap-5">
+                <div className="flex gap-4">
+                  <p className="font-semibold">Item Name:</p>
+                  <span className="font-medium">{item.item_name}</span>
+                </div>
+                <div className="flex gap-4">
+                  <p className="font-semibold">Measuring Unit:</p>
+                  <span className="font-medium">{item.measuring_unit}</span>
+                </div>
+                <div className="flex gap-4">
+                  <p className="font-semibold">Low Limit:</p>
+                  <span className="font-medium">{item.low_limit}</span>
                 </div>
               </div>
-
-              <div className="flex gap-4">
+              <div className="flex flex-col gap-5">
+                <div className="flex gap-4">
+                  <p className="font-semibold">Category:</p>
+                  <span className="font-medium">{item.category}</span>
+                </div>
+                <div className="flex gap-4">
+                  <p className="font-semibold">Brand:</p>
+                  <div className="font-medium">
+                    <span>{item?.itemsOnFeatures?.brand || "--"}</span>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <p className="font-semibold">Item Category:</p>
+                  <span className="font-medium">{item.itemCategory}</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-5">
+                <div className="flex gap-4">
+                  <p className="font-semibold">Size:</p>
+                  <span className="font-medium">
+                    {item?.itemsOnFeatures?.size || "--"}
+                  </span>
+                </div>
+                <div className="flex gap-4">
+                  <p className="font-semibold">Color:</p>
+                  <div className="font-medium">
+                    <span>{item?.itemsOnFeatures?.color || "--"}</span>
+                  </div>
+                </div>
+                {/* <div className="flex gap-4">
                 <p className="font-semibold">Item Category:</p>
-                <span className="font-medium">
-                  {item.itemCategory?.item_category_name}
-                </span>
+                <span className="font-medium">{item.itemCategory}</span>
+              </div> */}
               </div>
             </div>
-          </div>
+          ) : (
+            <>Loading</>
+          )}
         </div>
         <div className="bg-white w-[98%] mx-auto flex flex-col p-5 rounded-md">
           <div className="flex justify-between mb-7">
