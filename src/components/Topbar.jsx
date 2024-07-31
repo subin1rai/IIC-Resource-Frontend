@@ -116,17 +116,19 @@ const Topbar = () => {
       {notificationPopUp && (
         <>
           <div
-            className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-purple-50 z-20 overflow-y-scroll custom-scrollbar"
+            className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-white z-20 overflow-y-scroll custom-scrollbar"
             style={{ overflowY: "scroll" }}
           >
             <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white">
               <h2>Notification</h2>
-              <p className="text-sm text-blue-600">12 Messages</p>
+              <button className="text-sm text-blue-600">
+                Mark all as read
+              </button>
             </div>
-
+            <div className="w-full m-auto bg-background h-0.5"></div>
             {/* Example message list, you may replace with dynamic content */}
             {notification.length === 0 ? (
-              <div className="px-6 py-3">No requests found.</div>
+              <div className="px-6 py-3">No notifications found.</div>
             ) : (
               notification
                 .slice()
@@ -134,7 +136,9 @@ const Topbar = () => {
                 .map((notification) => (
                   <div
                     key={notification.notification_id}
-                    className="border-b border-neutral-300 px-6 py-3 bg-purple-100"
+                    className={`border-b border-neutral-300 px-6 py-3  ${
+                      notification.state ? "bg-white" : "bg-purple-100"
+                    }`}
                   >
                     <h3 className="text-sml font-medium">
                       {notification.message}
