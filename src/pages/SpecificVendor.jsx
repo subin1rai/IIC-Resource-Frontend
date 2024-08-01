@@ -129,7 +129,7 @@ const SpecificVendor = () => {
                 {vendor.vendor_name}
               </h3>
             </div>
-            <div className="flex gap-4 pr-7 h-[100%] items-center">
+            <div className="flex gap-4 pr-10 h-[100%] items-center mt-5">
               <button
                 className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
@@ -141,7 +141,7 @@ const SpecificVendor = () => {
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={handleBlackList}
               >
-                Add to Balcklist
+                Add to Blacklist
               </button>
             </div>
           </div>

@@ -142,7 +142,7 @@ export default function VendorTable({ vendors }) {
     >
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+          <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
                 <TableCell

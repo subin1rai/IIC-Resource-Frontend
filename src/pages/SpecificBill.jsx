@@ -9,6 +9,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import Select from "react-select";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -24,6 +25,47 @@ const SpecificBill = () => {
     paid_amt: "",
     pending_amt: "",
   });
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "grey",
+      boxShadow: "none",
+      minHeight: "38px",
+      color: "black",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      width: "45px",
+      margin: "0px",
+      color: "black",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+      color: "black",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+      color: "black",
+    }),
+  };
 
   const [date, setDate] = useState("");
 
@@ -234,12 +276,14 @@ const SpecificBill = () => {
             <div className="flex flex-col gap-10 justify-between ">
               <div className="flex justify-between items-center mx-11 ">
                 <p className="font-bold text-xl">Edit Bill Details</p>
-                <img
-                  src={close}
-                  alt="close"
-                  className="h-4 w-4  cursor-pointer"
-                  onClick={closeEditBillDetailsForm}
-                />
+                <button className="p-3">
+                  <img
+                    src={close}
+                    alt="close"
+                    className="h-4 w-4  cursor-pointer"
+                    onClick={closeEditBillDetailsForm}
+                  />
+                </button>
               </div>
               <div className="flex gap-10 justify-around ">
                 <div className="flex flex-col gap-6">
@@ -275,13 +319,21 @@ const SpecificBill = () => {
                     <label htmlFor="item_name" className="w-32 font-medium">
                       Item Name :
                     </label>
-                    <input
-                      type="text"
-                      id="item_name"
-                      name="item_name"
-                      placeholder="Enter Item Name"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
+                    <Select
+                      options={items.map((item) => ({
+                        value: item.item_name,
+                        label: item.item_name,
+                      }))}
+                      onChange={(option) =>
+                        handleSelectChange(option, { name: "item_name" })
+                      }
+                      value={
+                        bill.item_name
+                          ? { value: bill.item_name, label: bill.item_name }
+                          : null
+                      }
+                      placeholder="Choose Item"
+                      styles={customStyles}
                     />
                   </div>
                   {/* quantity */}
@@ -376,7 +428,7 @@ const SpecificBill = () => {
                   </div>
                 </div>
               </div>
-              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end mr-5">
+              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end mr-14">
                 Save Changes
               </button>
             </div>
