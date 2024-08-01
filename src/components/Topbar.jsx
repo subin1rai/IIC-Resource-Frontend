@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// import "../styles/topbar.css";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,7 +11,6 @@ const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
-
   const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
@@ -87,7 +87,6 @@ const Topbar = () => {
     };
     fetchNotification();
   }, []);
-
 
   const handleState = async () => {
     try {
@@ -218,12 +217,8 @@ const Topbar = () => {
         </>
       )}
 
-      <div className="absolute right-0">
-        <ToastContainer
-          pauseOnHover
-          theme="light"
-          className="relative right-0"
-        />
+      <div className="absolute">
+        <ToastContainer pauseOnHover theme="dark" className="relative" />
       </div>
     </div>
   );
