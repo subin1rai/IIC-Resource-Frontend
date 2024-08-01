@@ -131,7 +131,7 @@ const SpecificVendor = () => {
             </div>
             <div className="flex gap-4 pr-7 h-[100%] items-center">
               <button
-                className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
+                className="bg-button h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
               >
                 {" "}
@@ -145,7 +145,7 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
-          <div className="h-1 bg-blue-700 w-[82vw] mt-4 mx-auto"></div>
+          <div className="h-1 bg-button w-[82vw] mt-4 mx-auto"></div>
 
           <div className="flex justify-between px-10 mt-5">
             <div className="flex flex-col gap-5">
@@ -300,7 +300,7 @@ const SpecificVendor = () => {
             <div className="flex justify-end  ">
               <button
                 type="submit"
-                className="bg-blue-700 p-3 rounded text-white"
+                className="bg-button p-3 rounded text-white"
               >
                 Save Changes
               </button>
@@ -309,122 +309,6 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
-
-    // <div className="side">
-    //   <Sidebar />
-    //   <div className="top">
-    //     <Topbar />
-    //     <div className="container">
-    //       <div className="vdetails">
-    //         <>
-    //           <div className="title">
-    //             <h3>
-    //               <Link to={"/vendors"}>Vendors</Link>
-    //             </h3>
-    //             <img src={front} alt=""></img> <p>{vendor.vendor_name}</p>
-    //           </div>
-    //           <div className="head">
-    //             <h1>{vendor.vendor_name}</h1>
-    //             <p>Contact: {vendor.vendor_contact}</p>
-    //           </div>
-    //           <hr className="line" />
-    //           <div className="content">
-    //             <div className="left">
-    //               <p>VAT Number: {vendor.vat_number}</p>
-    //               <p>Purchase Amount: {vendor.purchase_amount}</p>
-    //               <p>
-    //                 Last Purchase Date: {formatDate(vendor.last_purchase_date)}
-    //               </p>
-    //               <p>
-    //                 Recent Purchase Date:{" "}
-    //                 {formatDate(vendor.last_purchase_date)}
-    //               </p>
-    //               <p>Last Paid Date: {formatDate(vendor.last_paid_date)}</p>
-    //               <p>Payment Duration: {vendor.payment_duration}</p>
-    //             </div>
-    //             <div className="right">
-    //               <p>Total Payment: {vendor.total_payment}</p>
-    //               <p>Pending Payment: {vendor.pending_payment}</p>
-    //               <p>
-    //                 Next Payment Date: {formatDate(vendor.next_payment_date)}
-    //               </p>
-    //               <p>
-    //                 Payment Status:{" "}
-    //                 {Number(vendor.pending_payment) > 0
-    //                   ? "Pending"
-    //                   : "completed"}
-    //               </p>
-    //             </div>
-    //           </div>
-    //         </>
-    //         <div className="btn">
-    //           <button onClick={openVendorDetailsForm} className="edit">
-    //             Edit details
-    //           </button>
-    //           <button className="blacklist" onClick={handleBlackList}>
-    //             Add to blacklist
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   {addFormVisibility && (
-    //     <>
-    //       <div className="overlay" onClick={closeVendorDetailsForm}></div>
-
-    //       <form onSubmit={handleSubmit} className="vendordetailsform">
-    //         <div className="toptitle">
-    //           <p className="title2">Edit Details</p>
-    //           <button
-    //             type="button"
-    //             className="close"
-    //             onClick={closeVendorDetailsForm}
-    //           >
-    //             <img src={close} alt="close icon" />
-    //           </button>
-    //         </div>
-    //         <div className="field">
-    //           <label htmlFor="vendor_name">Vendor Name</label>
-    //           <input
-    //             type="text"
-    //             placeholder="Edit Vendor Name"
-    //             name="vendor_name"
-    //             id="vendor_name"
-    //             onChange={handleChange}
-    //             value={editedVendor.vendor_name}
-    //           />
-    //         </div>
-    //         <div className="field">
-    //           <label htmlFor="vat_no">VAT Number</label>
-    //           <input
-    //             type="text"
-    //             placeholder="Edit VAT Number"
-    //             name="vat_number"
-    //             id="vat_no"
-    //             onChange={handleChange}
-    //             value={editedVendor.vat_number}
-    //           />
-    //         </div>
-    //         <div className="field">
-    //           <label htmlFor="contact">Contact Number</label>
-    //           <input
-    //             type="text"
-    //             placeholder="Edit Contact Number"
-    //             name="vendor_contact"
-    //             id="vendor_contact"
-    //             onChange={handleChange}
-    //             value={editedVendor.vendor_contact}
-    //           />
-    //         </div>
-    //         <div className="btn">
-    //           <button type="submit" className="save">
-    //             Save Changes
-    //           </button>
-    //         </div>
-    //       </form>
-    //     </>
-    //   )}
-    // </div>
   );
 };
 

@@ -208,7 +208,7 @@ const Records = () => {
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
-                <img src={filterIcon} alt="filter icon" />
+                <img  src={filterIcon} alt="filter icon" />
                 Filter
               </button>
               <button
@@ -236,6 +236,10 @@ const Records = () => {
                   />
                 </button>
                 <p className="title">Add Bill Details</p>
+                  <img className="cursor-pointer p-3 " src={close} alt="close icon" onClick={closeAddBillForm} />
+                </div>
+                <div className="flex">
+              <div className="left"> 
                 <div className="double">
                   <div className="for">
                     <label htmlFor="bill_no">Bill No:</label>
@@ -245,7 +249,7 @@ const Records = () => {
                       autoFocus="autofocus"
                       name="bill_no"
                       id="bill_no"
-                      onChange={handleChange}
+                      onChange={handleChange}  
                       value={bill.bill_no}
                     />
                   </div>
@@ -285,10 +289,10 @@ const Records = () => {
                     />
                   </div>
                 </div>
-                {/* <div className="single">
+                <div className="double">
                   <div className="for">
                     <label htmlFor="vendor_name">Vendor:</label>
-                    <Select
+                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
                       options={vendors.map((vendor) => ({
                         value: vendor.vendor_name,
                         label: vendor.vendor_name,
@@ -305,11 +309,10 @@ const Records = () => {
                       styles={customStyles}
                     />
                   </div>
-                </div> */}
-                <div className="single">
                   <div className="for">
                     <label htmlFor="item_name">Item Name:</label>
-                    <Select
+                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
+                      
                       options={items.map((item) => ({
                         value: item.item_name,
                         label: item.item_name,
@@ -355,7 +358,7 @@ const Records = () => {
                   <div className="for">
                     <label htmlFor="bill_amount">Bill Amount:</label>
                     <input
-                      type="number"
+                
                       placeholder="Enter bill amount"
                       name="bill_amount"
                       id="bill_amount"
@@ -384,7 +387,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="actual_amount">Actual Amount:</label>
                       <input
-                        type="number"
+         
                         placeholder="Enter actual amount"
                         name="actual_amount"
                         id="actual_amount"
@@ -395,7 +398,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="paid_amount">Paid Amount:</label>
                       <input
-                        type="number"
+                
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"
@@ -429,6 +432,7 @@ const Records = () => {
                   </button>
                 </div>
               </div>
+            </div>
             </div>
           </form>
         </>
@@ -512,7 +516,7 @@ const Records = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <div className="overlay" onClick={closeFilterForm}></div>
+        <div className="overlay"></div>
       )}
       {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
