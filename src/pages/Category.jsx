@@ -11,17 +11,17 @@ import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   return (
-    <div className="w-screen h-screen flex bg-background">
-    <Sidebar />
-    <div className="flex flex-col gap-4 mx-auto  items-center  w-full">
-      <Topbar />
-        <div className='flex flex-col mx-auto gap-5'>
-          {/* importing category tables from components */}
+      <div className="w-screen h-screen flex bg-background gap-1">
+      <Sidebar />
+      {/* top bar div */}
+      <div className='flex flex-col gap-4'>
+        <Topbar />
+  
           <CategoryTable />
           <ItemCategoryTable />
-
+      
           <Features />
-      </div>
+     
       </div>
     </div>
   );

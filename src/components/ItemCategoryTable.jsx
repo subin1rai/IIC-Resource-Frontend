@@ -108,17 +108,15 @@ const Category = () => {
 
   return (
     <>
-   <div className='flex justify-around flex-col ml-4'>
-  <div className='flex flex-col bg-white w-[50%] rounded'>
-    <div className="flex justify-between m-5">
-      <h1 className='text-lg font-bold'> Item Category</h1>
-      <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
-        Add Category
-      </button>
-    </div>
-    <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
-  </div>
-</div>
+    <div className="flex flex-col bg-white w-[50%] rounded p-4 mt-4">
+          <div className="flex justify-between m-5">
+            <h1 className="text-lg font-bold">Item Category</h1>
+            <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
+              Add Category
+            </button>
+          </div>
+          <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
+        </div>
     
         {addFormVisibility && (
           <form action="" onSubmit={handleSUBmit} className="category-form">

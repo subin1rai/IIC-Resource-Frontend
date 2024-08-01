@@ -103,17 +103,16 @@ const Category = () => {
 
   return (
     <>
-  <div className='flex flex-col ml-4'>
-  <div className='flex flex-col bg-white w-[50%] rounded'>
-    <div className="flex justify-between m-5">
-      <h1 className='text-lg font-bold'>Category</h1>
-      <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
-        Add Category
-      </button>
-    </div>
-    <Ctable category={category} onDelete={handleDeleteSubmit} />
-  </div>
-</div>
+   
+            <div className='flex flex-col bg-white w-[50%] gap-4 rounded p-4 mt-4'>
+              <div className="flex  justify-between m-5 ">
+            <h1 className="text-lg font-bold ">Category</h1>
+            <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
+              Add Category
+            </button>
+            </div>
+            <Ctable category={category} onDelete={handleDeleteSubmit} />
+      </div>
 
        
 
@@ -152,7 +151,7 @@ const Category = () => {
             </form>
           </>
         )}
-     
+    
     </>
   );
 };
