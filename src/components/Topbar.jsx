@@ -55,12 +55,11 @@ const Topbar = () => {
   useEffect(() => {
     socket.on("newRequest", (data) => {
       const newNotification = data["message"];
-      setNotification((prevRequests) => [...prevRequests,newNotification]);
+      setNotification((prevRequests) => [...prevRequests, newNotification]);
       setNotReadCount((prevCount) => prevCount + 1);
     });
     return () => {
       socket.off("newRequest");
-
     };
   }, []);
 
@@ -127,7 +126,7 @@ const Topbar = () => {
             : notify
         )
       );
-     setNotReadCount((prevCount) => prevCount - 1);
+      setNotReadCount((prevCount) => prevCount - 1);
     } catch (error) {
       console.log(error);
     }
