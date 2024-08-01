@@ -224,16 +224,16 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeAddBillForm}></div>
+          <div className="overlay"></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
-                <button
-                  type="button"
-                  className="closebtn"
-                  onClick={closeAddBillForm}
-                >
-                  <img src={close} alt="close icon" />
+                <button type="button" className="closebtn cursor-pointer">
+                  <img
+                    src={close}
+                    alt="close icon"
+                    onClick={closeAddBillForm}
+                  />
                 </button>
                 <p className="title">Add Bill Details</p>
                 <div className="double">
@@ -514,7 +514,7 @@ const Records = () => {
       {filterFormVisibility && (
         <div className="overlay" onClick={closeFilterForm}></div>
       )}
-      <ToastContainer pauseOnHover theme="light" />
+      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };
