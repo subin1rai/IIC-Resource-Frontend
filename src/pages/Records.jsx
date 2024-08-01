@@ -37,7 +37,7 @@ const Records = () => {
       borderRadius: "4px",
       borderColor: "grey",
       boxShadow: "none",
-      minHeight: "38px",
+      minHeight: "48px",
       color: "black",
       "&:hover": {
         borderColor: "#aaa",
@@ -228,15 +228,10 @@ const Records = () => {
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
-                <button type="button" className="closebtn cursor-pointer">
-                  <img
-                    src={close}
-                    alt="close icon"
-                    onClick={closeAddBillForm}
-                  />
-                </button>
+                <div className="flex justify-between mb-3">
                 <p className="title">Add Bill Details</p>
                   <img className="cursor-pointer p-3 " src={close} alt="close icon" onClick={closeAddBillForm} />
+                </div>
                 </div>
                 <div className="flex">
               <div className="left"> 
@@ -289,10 +284,10 @@ const Records = () => {
                     />
                   </div>
                 </div>
-                <div className="double">
+                <div className="single">
                   <div className="for">
-                    <label htmlFor="vendor_name">Vendor:</label>
-                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
+                    <label htmlFor="vendor_name">Vendor Name:</label>
+                    <Select 
                       options={vendors.map((vendor) => ({
                         value: vendor.vendor_name,
                         label: vendor.vendor_name,
@@ -311,8 +306,7 @@ const Records = () => {
                   </div>
                   <div className="for">
                     <label htmlFor="item_name">Item Name:</label>
-                    <select className="p-2 w-72 rounded-md border-neutral-500 border-[1px]"
-                      
+                    <Select 
                       options={items.map((item) => ({
                         value: item.item_name,
                         label: item.item_name,
@@ -325,7 +319,7 @@ const Records = () => {
                           ? { value: bill.item_name, label: bill.item_name }
                           : null
                       }
-                      placeholder="Choose Item"
+                      placeholder="Select Item"
                       styles={customStyles}
                     />
                   </div>
