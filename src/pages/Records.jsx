@@ -202,16 +202,19 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
-            <div className=" w-[10vw] flex justify-between gap-6 mr-12">
+            <div className=" flex justify-between gap-2 mr-3">
               <button
-                className="flex justify-center items-center w-fit px-5 py-1 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
                 <img  src={filterIcon} alt="filter icon" />
                 Filter
               </button>
-              <button onClick={openAddBillForm} className="flex justify-center bg-blue-600 text-white rounded items-center w-fit px-6 whitespace-nowrap">
+              <button
+                onClick={openAddBillForm}
+                className="flex bg-blue-700 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
+              >
                 Add Bill
               </button>
             </div>
@@ -221,10 +224,17 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" ></div>
+          <div className="overlay"></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
-            <div className="flex justify-between items-center mb-2">
+              <div className="left">
+                <button type="button" className="closebtn cursor-pointer">
+                  <img
+                    src={close}
+                    alt="close icon"
+                    onClick={closeAddBillForm}
+                  />
+                </button>
                 <p className="title">Add Bill Details</p>
                   <img className="cursor-pointer p-3 " src={close} alt="close icon" onClick={closeAddBillForm} />
                 </div>
@@ -508,7 +518,7 @@ const Records = () => {
       {filterFormVisibility && (
         <div className="overlay"></div>
       )}
-      <ToastContainer pauseOnHover theme="light" />
+      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };

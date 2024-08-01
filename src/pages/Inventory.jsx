@@ -573,7 +573,7 @@ const Inventory = () => {
           {" "}
         </div>
       )}
-      <ToastContainer pauseOnHover theme="light" />
+      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };

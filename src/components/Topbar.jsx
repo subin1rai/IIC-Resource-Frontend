@@ -5,14 +5,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
-  const [requests, setRequests] = useState([]);
-    const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
   const token = localStorage.getItem("token");
@@ -56,13 +55,12 @@ const Topbar = () => {
   useEffect(() => {
     socket.on("newRequest", (data) => {
       const newNotification = data["message"];
-
       setNotification((prevRequests) => [newNotification, ...prevRequests]);
       setNotReadCount((prevCount) => prevCount + 1);
-      toast.success(data.message);
     });
     return () => {
       socket.off("newRequest");
+
     };
   }, []);
 
@@ -90,7 +88,55 @@ const Topbar = () => {
     fetchNotification();
   }, []);
 
-  
+  const handleState = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/updateNotification`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  socket.on("all_request", (data) => {
+    const newNotification = data["message"];
+    setNotification(newNotification);
+    setNotReadCount(0);
+  });
+
+  const handleSingleState = async (notification_id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/singleNotification/${notification_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setNotification((prevNotifications) =>
+        prevNotifications.map((notify) =>
+          notify.notification_id === notification_id
+            ? { ...notify, state: false }
+            : notify
+        )
+      );
+     setNotReadCount((prevCount) => prevCount - 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, "MMMM dd, yyyy 'at' h:mmaaa");
+  };
 
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
@@ -122,7 +168,10 @@ const Topbar = () => {
           >
             <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white ">
               <h2>Notification</h2>
-              <button className="text-sm text-blue-600 cursor-default ">
+              <button
+                className="text-sm text-blue-600 cursor-default "
+                onClick={handleState}
+              >
                 Mark all as read
               </button>
             </div>
@@ -139,15 +188,24 @@ const Topbar = () => {
                   <div
                     key={notification.notification_id}
                     className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state ? "bg-white" : "bg-purple-100 cursor-default"
+                      notification.state
+                        ? "bg-white"
+                        : "bg-purple-100 cursor-default"
                     }`}
                   >
-                    <h3 className="text-sml font-medium">
-                      {notification.message}
-                    </h3>
-                    <p className="text-[0.8rem] py-1 text-neutral-500">
-                      July 29, 2024 at 1:03PM
-                    </p>
+                    <div
+                      onClick={() =>
+                        handleSingleState(notification.notification_id)
+                      }
+                    >
+                      <h3 className="text-sml font-medium">
+                        {notification.message}
+                      </h3>
+
+                      <p className="text-[0.8rem] py-1 text-neutral-500">
+                        {formatDate(notification.created_at)}
+                      </p>
+                    </div>
                   </div>
                 ))
             )}
