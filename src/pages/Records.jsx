@@ -221,7 +221,7 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeAddBillForm}></div>
+          <div className="overlay" ></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
             <div className="flex justify-between items-center mb-2">
@@ -506,7 +506,7 @@ const Records = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <div className="overlay" onClick={closeFilterForm}></div>
+        <div className="overlay"></div>
       )}
       <ToastContainer pauseOnHover theme="light" />
     </div>

@@ -87,6 +87,7 @@
   .forms {
     display: flex;
     flex-direction: column;
+    line-height: 30;
   }
 
   .double {
