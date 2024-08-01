@@ -202,16 +202,19 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
-            <div className=" w-[10vw] flex justify-between gap-2 mr-8">
+            <div className=" flex justify-between gap-2 mr-3">
               <button
-                className="filterbill"
+                className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
                 <img src={filterIcon} alt="filter icon" />
                 Filter
               </button>
-              <button onClick={openAddBillForm} className="addbillbtn">
+              <button
+                onClick={openAddBillForm}
+                className="flex bg-blue-700 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
+              >
                 Add Bill
               </button>
             </div>
@@ -221,16 +224,16 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay" onClick={closeAddBillForm}></div>
+          <div className="overlay"></div>
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
-                <button
-                  type="button"
-                  className="closebtn"
-                  onClick={closeAddBillForm}
-                >
-                  <img src={close} alt="close icon" />
+                <button type="button" className="closebtn cursor-pointer">
+                  <img
+                    src={close}
+                    alt="close icon"
+                    onClick={closeAddBillForm}
+                  />
                 </button>
                 <p className="title">Add Bill Details</p>
                 <div className="double">
@@ -511,7 +514,7 @@ const Records = () => {
       {filterFormVisibility && (
         <div className="overlay" onClick={closeFilterForm}></div>
       )}
-      <ToastContainer pauseOnHover theme="light" />
+      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };
