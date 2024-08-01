@@ -275,12 +275,12 @@ const Inventory = () => {
               <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{category.length}</h4>
-                <p className='font-medium'>Number of categories</p>
+                <p className="font-medium">Number of categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{items.length}</h4>
-                <p className='font-medium'>Number of items</p>
+                <p className="font-medium">Number of items</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
@@ -290,7 +290,7 @@ const Inventory = () => {
                       .length
                   }
                 </h4>
-                <p className='font-medium'>Number of low stock</p>
+                <p className="font-medium">Number of low stock</p>
               </div>
             </div>
           </div>
@@ -492,7 +492,13 @@ const Inventory = () => {
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-            <button type="submit" className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6 " disabled={loading}>
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+              disabled={loading}
+            >
+
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>
@@ -567,7 +573,6 @@ const Inventory = () => {
           {" "}
         </div>
       )}
-      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };
