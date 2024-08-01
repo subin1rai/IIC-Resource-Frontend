@@ -243,7 +243,7 @@ const SingleItem = () => {
               </button>
             </div>
           </div>
-          <ItemHistory hostory={item} />
+          <ItemHistory history={item} />
         </div>
       </div>
       {editFormVisibility && (

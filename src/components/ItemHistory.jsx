@@ -65,14 +65,13 @@ function PurchaseHistory() {
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm] = useState(""); // Assuming searchTerm is used elsewhere
+  const [searchTerm] = useState("");
 
   const { id } = useParams();
 
   const navigate = useNavigate();
 
   const handleRowClick = (id) => {
-    console.log(id);
     navigate(`/specificbill/${id}`);
   };
 

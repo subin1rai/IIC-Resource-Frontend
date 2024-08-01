@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/forgorPassword.css";
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -41,7 +41,12 @@ const ForgotPassword = () => {
       <form onSubmit={handleEmailSubmit} className="forgotForm">
         <h2>Forgot Password?</h2>
         <h3> Enter the email address you used to register</h3>
-        <input type="email" placeholder="Enter your email..." autoFocus="autofocus" onChange ={handleEmail} />
+        <input
+          type="email"
+          placeholder="Enter your email..."
+          autoFocus="autofocus"
+          onChange={handleEmail}
+        />
         <button className="submit-btn">Request OTP</button>
       </form>
     </div>

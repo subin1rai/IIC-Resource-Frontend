@@ -109,7 +109,6 @@ const SpecificVendor = () => {
     fetchSingleVendor();
   }, [vendor_id]);
 
-  console.log(vendor);
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
       <Sidebar />
@@ -236,7 +235,7 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
-          <VendorHistory history={vendor} />
+          <VendorHistory />
         </div>
       </div>
 
