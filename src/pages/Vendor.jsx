@@ -241,7 +241,7 @@ const Vendor = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
             <button
@@ -310,10 +310,10 @@ const Vendor = () => {
         </form>
       )}
       {addFormVisibility && (
-        <div className="overlay-vendor" onClick={closeAddVendorForm}></div>
+        <div className="overlay-vendor"></div>
       )}
       {filterFormVisibility && (
-        <div className="overlay-vendor" onCick={closeFilterForm}>
+        <div className="overlay-vendor">
           {" "}
         </div>
       )}
