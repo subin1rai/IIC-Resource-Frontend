@@ -37,7 +37,7 @@ const Issue = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="bg-blue-600 text-white py-2 px-3 rounded">
+              <button className="bg-blue-600 text-white py-2 px-3 rounded" >
                 Add Issue
               </button>
             </div>

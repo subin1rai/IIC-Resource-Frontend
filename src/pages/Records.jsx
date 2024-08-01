@@ -200,9 +200,9 @@ const Records = () => {
         <div className="records-container">
           <div className="top">
             <div className="container-title">
-              <p>Bill Records</p>
+              <p className="text-lg font-bold m-1">Bill Records</p>
             </div>
-            <div className=" flex justify-between gap-2 mr-3">
+            <div className=" flex justify-between gap-2 mr-3 mt-3">
               <button
                 className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"

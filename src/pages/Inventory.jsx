@@ -270,19 +270,19 @@ const Inventory = () => {
         <Topbar />
         <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
           <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
-            <h3 className="flex ml-4 font-medium">Overall Inventory</h3>
+            <h3 className="flex text-lg font-bold m-3">Overall Inventory</h3>
             <div className="flex justify-around">
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{category.length}</h4>
-                <p>Number of categories</p>
+                <p className="font-medium">Number of categories</p>
               </div>
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{items.length}</h4>
-                <p>Number of items</p>
+                <p className="font-medium">Number of items</p>
               </div>
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>
                   {
@@ -290,7 +290,7 @@ const Inventory = () => {
                       .length
                   }
                 </h4>
-                <p>Number of low stock</p>
+                <p className="font-medium">Number of low stock</p>
               </div>
             </div>
           </div>
@@ -298,9 +298,9 @@ const Inventory = () => {
         <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
           <div className="flex w-[85.8vw] justify-between">
             <div className="text-lg m-4">
-              <p>Items</p>
+              <p className="flex text-lg font-bold m-3">Items</p>
             </div>
-            <div className="flex justify-between gap-5 m-4 mr-10">
+            <div className="flex justify-between gap-5 m-4 mr-10 h-fit">
               <input
                 type="text"
                 placeholder="Search items"
@@ -309,7 +309,7 @@ const Inventory = () => {
                 className="border-2 px-5 w-80 border-border rounded"
               />
               <button
-                className="flex justify-center align-center w-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                className="flex justify-center items-center w-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
@@ -492,7 +492,13 @@ const Inventory = () => {
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-            <button type="submit" className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6 " disabled={loading}>
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+              disabled={loading}
+            >
+
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>
@@ -567,7 +573,6 @@ const Inventory = () => {
           {" "}
         </div>
       )}
-      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };
