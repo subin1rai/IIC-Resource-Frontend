@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FeatureTable from "../components/FeatureTable";
 import axios from "axios";
-import "../styles/category.css";
+
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
 
@@ -78,21 +78,20 @@ const Features = () => {
 
   return (
     <>
-      <div className="first">
-        <div className="head">
-          <div className="container">
-            <p>Features</p>
-          </div>
+    <div className='flex gap-5 ml-4'>
+    <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
+      <div className="flex justify-between m-5">
+        <h1 className='text-lg font-bold'>Feature</h1>
+        <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
+          Add Category
+        </button>
+      </div>
+      <FeatureTable feature={feature} setFeature={setFeature} />
 
-          <div className="icons">
-            <button className="add-buttons" onClick={displayAddPopup}>
-              Add Feature
-            </button>
-          </div>
-        </div>
+    </div>
+  </div>
 
-        <FeatureTable feature={feature} setFeature={setFeature} />
-
+        
         {addFormVisibility && (
           <form action= "" onSubmit={handleSubmit} className="category-form">
             <button
@@ -128,7 +127,7 @@ const Features = () => {
         {addFormVisibility && (
           <div className="overlay-category" onClick={closeCategoryForm}></div>
         )}
-      </div>
+      
     </>
   );
 };

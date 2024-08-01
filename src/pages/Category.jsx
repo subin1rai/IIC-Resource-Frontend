@@ -4,26 +4,24 @@ import Topbar from "../components/Topbar";
 import CategoryTable from "../components/CategoryTable";
 import Features from "../components/Features";
 import ItemCategoryTable from "../components/ItemCategoryTable";
-import "../styles/category.css";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
 const Category = () => {
   return (
-    <div className="category">
-      {/* Importing sidebar */}
+      <div className="w-screen h-screen flex bg-background gap-1">
       <Sidebar />
-      <div className="category-main">
-        {/* Importing topbar */}
+      {/* top bar div */}
+      <div className='flex flex-col gap-4'>
         <Topbar />
-        <div className="main-container">
-          {/* importing category tables from components */}
+  
           <CategoryTable />
           <ItemCategoryTable />
-
+      
           <Features />
-        </div>
+     
       </div>
     </div>
   );

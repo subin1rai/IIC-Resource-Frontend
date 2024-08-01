@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/category.css";
+
 import Itable from "../components/Itable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -108,18 +108,16 @@ const Category = () => {
 
   return (
     <>
-      <div className="first">
-        <div className="head">
-          <div className="container">
-            <p>Item Category</p>
-          </div>
-          <div className="icons">
-            <button className="add-buttons" onClick={displayAddPopup}>
+    <div className="flex flex-col bg-white w-[50%] rounded p-4 mt-4">
+          <div className="flex justify-between m-5">
+            <h1 className="text-lg font-bold">Item Category</h1>
+            <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
               Add Category
             </button>
           </div>
+          <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
         </div>
-        <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
+    
         {addFormVisibility && (
           <form action="" onSubmit={handleSUBmit} className="category-form">
             <button
@@ -159,8 +157,7 @@ const Category = () => {
       {addFormVisibility && (
         <div className="overlay-category" onClick={closeCategoryForm}></div>
       )}
-      </div>
-    </>
+         </>
   );
 };
 

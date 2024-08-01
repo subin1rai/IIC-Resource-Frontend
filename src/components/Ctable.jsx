@@ -67,9 +67,11 @@ export default function Ctable({ category, setCategory }) {
       <Paper
         sx={{
           width: "100%",
+          maxWidth:"810px",
           overflow: "hidden",
           cursor: "pointer",
           fontSize: "18px",
+          gap:"10px",
         }}
       >
         <TableContainer sx={{ maxHeight: 500 }}>
