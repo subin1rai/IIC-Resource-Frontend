@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/sidebar.css";
 import sideBarLogo from "../assets/top.svg";
 import dashboard from "../assets/dashboard.svg";
-import inventory from "../assets/Inventory.svg";
+import inventory from "../assets/inventory.svg";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
 import request from "../assets/request.svg";
@@ -12,14 +12,34 @@ import issue from "../assets/issue.svg";
 import category from "../assets/category.svg";
 import vendor from "../assets/vendor.svg";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Sidebar = () => {
-  const setActiveClass = ({ isActive }) =>
-    isActive ? "active item-text" : "item-text";
-
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const checkSpecificRoute = (pathname, parentPath) => {
+    const specificRoutes = ["/specificItem", "/specificVendor"];
+    return specificRoutes.some(
+      (route) => pathname.startsWith(route) && pathname.includes(parentPath)
+    );
+  };
+
+  const setActiveClass = ({ isActive, to }) => {
+    const pathname = location.pathname;
+
+    if (isActive) {
+      return "active item-text";
+    }
+
+    // Check if the current route is a specific route and set the parent path to active
+    if (checkSpecificRoute(pathname, to)) {
+      return "active item-text";
+    }
+
+    return "item-text";
+  };
 
   const handleLogout = async () => {
     try {
