@@ -25,15 +25,15 @@ const SpecificBill = () => {
     pending_amt: "",
   });
 
+  const [date, setDate] = useState("");
+
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
-
 
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const { bill_id } = useParams();
   const token = localStorage.getItem("token");
@@ -73,9 +73,7 @@ const SpecificBill = () => {
       }
     };
     fetchData();
-
   }, [bill_id, token]);
-
 
   const openEditBillDetailsForm = () => {
     setBill({
@@ -105,7 +103,6 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-
       await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -140,11 +137,12 @@ const SpecificBill = () => {
         <Topbar />
 
         <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
-\
           <div className="flex justify-between items-center ml-2">
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
-                <Link to="/records" className="text-base">Bill Records</Link>
+                <Link to="/records" className="text-base">
+                  Bill Records
+                </Link>
                 <img src={front} alt="arrow" />
                 <h4 className="text-base text-blue-400">
                   {billDetails.bill_no}
@@ -160,7 +158,6 @@ const SpecificBill = () => {
             </button>
           </div>
           <div className="h-1 w-[99%] bg-blue-700 mx-auto mt-5"></div>
-
           {!loading ? (
             <div className="flex justify-between w-[75%]">
               <div className="flex flex-col gap-5 mt-7 pl-9">
@@ -228,15 +225,21 @@ const SpecificBill = () => {
 
       {addFormVisibility && (
         <>
-          <div className="h-screen w-screen bg-overlay absolute " onClick={closeEditBillDetailsForm}></div>
+          <div className="h-screen w-screen bg-overlay absolute "></div>
 
-          <form onSubmit={handleSubmit}
+          <form
+            onSubmit={handleSubmit}
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded w-[55%]"
           >
             <div className="flex flex-col gap-10 justify-between ">
               <div className="flex justify-between items-center mx-11 ">
                 <p className="font-bold text-xl">Edit Bill Details</p>
-                <img src={close} alt="close" className="h-4 w-4 " />
+                <img
+                  src={close}
+                  alt="close"
+                  className="h-4 w-4  cursor-pointer"
+                  onClick={closeEditBillDetailsForm}
+                />
               </div>
               <div className="flex gap-10 justify-around ">
                 <div className="flex flex-col gap-6">
@@ -256,7 +259,9 @@ const SpecificBill = () => {
                   </div>
                   {/* bill date */}
                   <div className="flex items-center gap-5">
-                    <label htmlFor="bill_date" className="w-32 font-medium">Bill Date:</label>
+                    <label htmlFor="bill_date" className="w-32 font-medium">
+                      Bill Date:
+                    </label>
                     <NepaliDatePicker
                       inputClassName=""
                       className="border-2 border-border p-1 pl-3 rounded-md"
@@ -371,16 +376,11 @@ const SpecificBill = () => {
                   </div>
                 </div>
               </div>
-              <button
-                className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex"
-              >
+              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end mr-5">
                 Save Changes
               </button>
             </div>
-
           </form>
-
-
         </>
       )}
     </div>
@@ -389,8 +389,8 @@ const SpecificBill = () => {
 
 export default SpecificBill;
 
-
-{/* <label htmlFor="bill_date">Bill Date:</label>
+{
+  /* <label htmlFor="bill_date">Bill Date:</label>
                   <NepaliDatePicker
                     inputClassName="form-control"
                     className="border-2 border-gray p-1 pl-3 rounded-md "
@@ -410,4 +410,5 @@ export default SpecificBill;
                     className="border-2 border-gray p-1 pl-3 rounded-md "
                     onChange={handleChange}
 
-                  /> */}
+                  /> */
+}

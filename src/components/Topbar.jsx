@@ -5,14 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [requests, setRequests] = useState([]);
-    const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
   const token = localStorage.getItem("token");
@@ -90,8 +90,6 @@ const Topbar = () => {
     fetchNotification();
   }, []);
 
-  
-
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
@@ -139,7 +137,9 @@ const Topbar = () => {
                   <div
                     key={notification.notification_id}
                     className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state ? "bg-white" : "bg-purple-100 cursor-default"
+                      notification.state
+                        ? "bg-white"
+                        : "bg-purple-100 cursor-default"
                     }`}
                   >
                     <h3 className="text-sml font-medium">
@@ -159,8 +159,12 @@ const Topbar = () => {
         </>
       )}
 
-      <div className="absolute">
-        <ToastContainer pauseOnHover theme="dark" className="relative" />
+      <div className="absolute right-0">
+        <ToastContainer
+          pauseOnHover
+          theme="light"
+          className="relative right-0"
+        />
       </div>
     </div>
   );
