@@ -202,16 +202,19 @@ const Records = () => {
             <div className="container-title">
               <p>Bill Records</p>
             </div>
-            <div className=" w-[10vw] flex justify-between gap-2 mr-8">
+            <div className=" flex justify-between gap-2 mr-3">
               <button
-                className="filterbill"
+                className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
                 <img src={filterIcon} alt="filter icon" />
                 Filter
               </button>
-              <button onClick={openAddBillForm} className="addbillbtn">
+              <button
+                onClick={openAddBillForm}
+                className="flex bg-blue-700 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
+              >
                 Add Bill
               </button>
             </div>
