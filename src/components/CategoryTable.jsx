@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/category.css";
+
 import Ctable from "../components/Ctable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -103,24 +103,19 @@ const Category = () => {
 
   return (
     <>
-      <div className="overall-category">
-        <h3 className="category-title">Categories</h3>
-      </div>
+  <div className='flex flex-col ml-4'>
+  <div className='flex flex-col bg-white w-[50%] rounded'>
+    <div className="flex justify-between m-5">
+      <h1 className='text-lg font-bold'>Category</h1>
+      <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
+        Add Category
+      </button>
+    </div>
+    <Ctable category={category} onDelete={handleDeleteSubmit} />
+  </div>
+</div>
 
-      <div className="first">
-        <div className="head">
-          <div className="container">
-            <p>Category</p>
-
-          </div>
-
-          <div className="icons">
-            <button className="add-buttons" onClick={displayAddPopup}>
-              Add Category
-            </button>
-          </div>
-        </div>
-        <Ctable category={category} onDelete={handleDeleteSubmit} />
+       
 
         {addFormVisibility && (
           <>
@@ -157,7 +152,7 @@ const Category = () => {
             </form>
           </>
         )}
-      </div>
+     
     </>
   );
 };
