@@ -7,8 +7,6 @@ import close from "../assets/close.svg";
 import { Link, useParams } from "react-router-dom";
 import ItemHistory from "../components/ItemHistory";
 import axios from "axios";
-import { Select } from "react-aria-components";
-import { Audio } from "react-loader-spinner";
 
 const SingleItem = () => {
   const [item, setItem] = useState({
