@@ -21,7 +21,7 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-    // productCategory: "",
+
     low_limit: 0,
     features: {}, // Add this line
   });
@@ -29,7 +29,7 @@ const Inventory = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
-  const [productCategory, setProductCategory] = useState([]);
+
   const [itemCategory, setItemCategory] = useState([]);
   const [feature, setFeature] = useState([]);
 
@@ -319,7 +319,7 @@ const Inventory = () => {
                 Filter
               </button>
               <button
-                className="flex justify-center bg-button text-white rounded items-center w-fit px-6"
+                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit px-6"
                 onClick={displayAddPopup}
               >
                 Add Item
@@ -494,11 +494,7 @@ const Inventory = () => {
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-            <button
-              type="submit"
-              className="flex justify-center bg-button text-white rounded items-center w-fit p-2 px-6"
-              disabled={loading}
-            >
+            <button type="submit" className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6" disabled={loading}>
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>

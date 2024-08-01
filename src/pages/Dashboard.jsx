@@ -1,8 +1,12 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
 import Topbar from '../components/Topbar'
-import items from '../assets/items.svg'
+import returneditems from '../assets/returned.png'
+import items from "../assets/items.svg"
+import lowstock from "../assets/lowstock.png"
 import category from '../assets/category.svg'
+import vendors from "../assets/vendor.svg"
+import blacklist from "../assets/blacklist.png"
 
 const Dashboard = () => {
   return (
@@ -30,12 +34,12 @@ const Dashboard = () => {
                 <p className='font-medium'>Number of Categories</p>
               </div>
               <div className='flex flex-col items-center '>
-                <img src={items} alt="items" className='w-8 h-8' />
+                <img src={returneditems} alt="items" className='w-8 h-8' />
                 <p>35</p>
                 <p className='font-medium'>Number of returned items</p>
               </div>
               <div className='flex flex-col items-center '>
-                <img src={items} alt="items" className='w-8 h-8' />
+                <img src={lowstock} alt="items" className='w-8 h-8' />
                 <p>35</p>
                 <p className='font-medium'>Number of low stock items</p>
               </div>
@@ -48,12 +52,12 @@ const Dashboard = () => {
               <h1 className='text-lg font-bold m-5'>Vendor Overview</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={vendors} alt="items" className='w-8 h-8' />
                   <p>35</p>
                   <p className='font-medium'>Number of vendors</p>
                 </div>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={blacklist} alt="items" className='w-8 h-8' />
                   <p>35</p>
                   <p className='font-medium'>Number of blacklisted vendors</p>
                 </div>

@@ -14,8 +14,6 @@ import SpecificVendor from "./pages/SpecificVendor";
 import SpecificBill from "./pages/SpecificBill";
 import UserHome from "./pages/UserHome";
 import UserRequest from "./pages/UserRequest";
-import UserProfile from "./pages/UserProfile";
-import UserPassword from "./pages/UserPassword";
 import Reset from "./pages/Reset";
 import Otp from "./pages/Otp";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -91,8 +89,7 @@ function App() {
             ) : (
               <>
                 <Route path="/userhome" element={<UserHome />} />
-                <Route path="/userProfile" element={<UserProfile />} />
-                <Route path="/userPassword" element={<UserPassword />} />
+
                 <Route path="/userRequest" element={<UserRequest />} />
                 {/* Redirect non-admin users to userhome if they try to access admin routes */}
                 <Route

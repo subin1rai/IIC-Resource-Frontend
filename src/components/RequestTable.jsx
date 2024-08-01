@@ -86,7 +86,7 @@ const RequestTable = () => {
         requests.map((request) => (
           <div
             key={request.id}
-            className="flex w-[79vw] p-7 justify-between border-2 rounded-md mt-3 text-l text-black font-semibold "
+            className="flex w-[79vw] p-7 justify-between border-2 border-neutral-300 rounded-md mt-3 text-l text-black font-semibold "
           >
             <div className="flex flex-col gap-5">
               <p>
@@ -118,7 +118,7 @@ const RequestTable = () => {
             </div>
             <div className="flex gap-7 items-center">
               <button
-                className="bg-blue-900 text-white h-fit py-3 px-8 rounded-md"
+                className="bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
                 onClick={() => handleAccept(request.id)}
               >
                 Accept
