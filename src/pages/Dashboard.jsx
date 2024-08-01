@@ -17,9 +17,9 @@ const Dashboard = () => {
       <div className='flex flex-col gap-4'>
         <Topbar />
         {/* main container */}
-        <div className='flex flex-col w-[98%] mx-auto gap-5'>
+        <div className='flex flex-col w-[98.5%] mx-auto gap-4'>
           {/* inventory summary container */}
-          <div className='flex flex-col bg-white rounded gap-7'>
+          <div className='flex flex-col bg-white rounded-lg gap-7'>
             <h1 className='text-lg font-bold m-5'>Inventory Summary</h1>
             <div className='flex justify-around mb-5'>
               {/* single summary */}
