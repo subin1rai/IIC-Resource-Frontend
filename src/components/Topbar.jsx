@@ -216,8 +216,8 @@ const Topbar = () => {
         </>
       )}
 
-      <div className="absolute">
-        <ToastContainer pauseOnHover theme="dark" className="relative" />
+      <div className="absolute right-0">
+        <ToastContainer pauseOnHover theme="light" className="relative" />
       </div>
     </div>
   );
