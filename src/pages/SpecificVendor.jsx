@@ -261,9 +261,9 @@ const SpecificVendor = () => {
               </button>
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vendor_name">Vendor Name</label>
+              <label htmlFor="vendor_name" className="font-medium">Vendor Name</label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit Vendor Name"
                 name="vendor_name"
@@ -273,9 +273,9 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vat_no">VAT Number</label>
+              <label htmlFor="vat_no" className="font-medium">VAT Number</label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit VAT Number"
                 name="vat_number"
@@ -285,9 +285,9 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="contact">Contact Number</label>
+              <label htmlFor="contact" className="font-medium">Contact Number</label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit Contact Number"
                 name="vendor_contact"
@@ -299,7 +299,9 @@ const SpecificVendor = () => {
             <div className="flex justify-end  ">
               <button
                 type="submit"
-                className="bg-button p-3 rounded text-white"
+
+                className="bg-blue-700 p-2 px-5 rounded text-white"
+
               >
                 Save Changes
               </button>
@@ -308,6 +310,7 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
+
   );
 };
 
