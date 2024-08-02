@@ -7,6 +7,9 @@ import close from "../assets/close.svg";
 import { Link, useParams } from "react-router-dom";
 import ItemHistory from "../components/ItemHistory";
 import axios from "axios";
+import Select from "react-select";
+import addIcon from "../assets/addIcon.svg";
+import removeIcon from "../assets/removeIcon.svg";
 
 const SingleItem = () => {
   const [item, setItem] = useState({
@@ -144,6 +147,41 @@ const SingleItem = () => {
       console.error("Update error:", error);
     }
   };
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "#ccc",
+      boxShadow: "none",
+      minHeight: "46px",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0px",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+    }),
+  };
 
   return (
     <div className="flex bg-background h-screen w-screen">
@@ -256,9 +294,8 @@ const SingleItem = () => {
               <img src={close} alt="close" className="w-3.5 h-3.5" onClick={() => setEditFormVisibility(false)}/>
             <h4 className="font-semibold text-xl">Edit Items</h4>
             </div>
-            <div className="flex flex-col gap-8">
-              <div className="flex justify-between items-center gap-24">
-                <label className="w-36" htmlFor="item_name">
+              <div className="flex justify-between items-center">
+                <label className="w-[20vw] whitespace-nowrap" htmlFor="item_name">
                   Item Name
                 </label>
                 <input
@@ -266,46 +303,48 @@ const SingleItem = () => {
                   id="item_name"
                   name="item_name"
                   placeholder="Enter item name"
-                  className="border-2 border-neutral-300 p-2 pl-3 rounded-md "
+                  className="border-[1px] border-neutral-300 p-2 pl-3 w-[100%] rounded-md "
                   value={editedItem.item_name}
                   onChange={handleChange}
                   autoFocus
                 />
               </div>
-              <div className="flex justify-between items-center gap-24">
-                <label className="w-36" htmlFor="category">
+              <div className="flex justify-between items-center">
+                <label className="w-[20vw]" htmlFor="category">
                   Category
                 </label>
-                <select
+                < Select
                   type="text"
                   id="category"
                   name="category"
                   placeholder="Enter category"
-                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
+                  styles={customStyles}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
                   onChange={handleChange}
                   value={editedItem.category}
                 />
               </div>
-            </div>
             <div className="flex flex-col gap-8">
-              <div className="flex justify-between items-center gap-24">
-                <label className="w-36" htmlFor="item_category">
+              <div className="flex justify-between items-center">
+                <label className="w-[20vw] whitespace-nowrap" htmlFor="item_category">
                   Item Category
                 </label>
-                <select
+                <Select
                   type="text"
                   id="item_category"
                   name="item_category"
                   placeholder="Enter item category"
-                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  styles={customStyles}
                   onChange={handleChange}
                   value={editedItem.item_category}
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-8">
-              <div className="flex justify-between items-center gap-24">
-                <label className="w-36" htmlFor="measuring_unit">
+              <div className="flex justify-between items-center ">
+                <label className=" w-[20vw] whitespace-nowrap" htmlFor="measuring_unit">
                   Measuring Unit
                 </label>
                 <input
@@ -313,13 +352,13 @@ const SingleItem = () => {
                   id="measuring_unit"
                   name="measuring_unit"
                   placeholder="Enter measuring unit"
-                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md"
+                  className="border-[1px]  border-neutral-300 p-2 pl-3 rounded-md  w-[100%]"
                   value={editedItem.measuring_unit}
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex justify-between items-center gap-24">
-                <label className="w-36" htmlFor="low_limit">
+              <div className="flex justify-between items-center ">
+                <label className="w-[20vw] whitespace-nowrap" htmlFor="low_limit">
                   Low Limit
                 </label>
                 <input
@@ -327,13 +366,12 @@ const SingleItem = () => {
                   id="low_limit"
                   name="low_limit"
                   placeholder="Enter low limit"
-                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
+                  className="border-[1px]  border-neutral-300 p-2 pl-3 rounded-md  w-[100%] "
                   value={editedItem.low_limit}
                   onChange={handleChange}
                 />
               </div>
-            </div>
-            <div className="flex flex-col justify-center items-center gap-4">
+            {/* <div className="flex flex-col justify-center items-center gap-4">
               <label className="font-medium text-lg" htmlFor="feature">
                 Feature
               </label>
@@ -394,7 +432,69 @@ const SingleItem = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
+            <hr className="text-neutral-200 border-2 w-full"></hr>
+              <label
+                className=" text-xl font-semibold flex self-start"
+                htmlFor=""
+              >
+                Features
+              </label>
+              {/* features form  */}
+              <div className="flex gap-2 items-end  w-[100%] justify-start ">
+                {" "}
+                <div className="flex flex-col gap-4 ">
+                  {selectedFeatures.map((feature, index) => (
+                    <div key={index} className="flex gap-4 ">
+                      <div className="flex justify-between gap-4 flex-row  items-center w-fit">
+                        <Select
+                          options={featureOptions}
+                          onChange={(selectedOption) =>
+                            handleFeatureChange(
+                              index,
+                              "feature",
+                              selectedOption.value
+                            )
+                          }
+                          value={featureOptions.find(
+                            (option) => option.value === feature.feature
+                          )}
+                          placeholder="Choose Feature"
+                          // styles={customStyles}
+                          className="w-[190px]"
+                          classNamePrefix="react-select"
+                        />
+                        <input
+                          className="border-[1px] rounded border-neutral-200 w-[210px] px-2 py-2"
+                          type="text"
+                          placeholder="Enter the value"
+                          value={feature.value}
+                          onChange={(e) =>
+                            handleFeatureChange(index, "value", e.target.value)
+                          }
+                        />
+                      </div>
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeFeatureField(index)}
+                        >
+                          <img src={removeIcon} className="w-8 h-8" alt="" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {selectedFeatures.length < featureOptions.length && (
+                  <button type="button" onClick={addFeatureField}>
+                    <img
+                      src={addIcon}
+                      className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
+                      alt=""
+                    />
+                  </button>
+                )}
+              </div>
             <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
               Save Edit
             </button>
