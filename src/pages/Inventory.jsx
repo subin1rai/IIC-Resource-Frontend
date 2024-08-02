@@ -335,9 +335,9 @@ const Inventory = () => {
       {addFormVisibility && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  rounded-md w-fit "
         >
-          <div className="flex justify-between items-center relative">
+          <div className="flex justify-between items-center relative px-9 pt-9">
             <p className=" text-xl font-semibold ">Add Item</p>
             <img
               className="rounded-md cursor-pointer p-4"
@@ -346,8 +346,8 @@ const Inventory = () => {
               onClick={closeAddItemForm}
             />
           </div>
-          <div className="h-[53vh] overflow-auto p-7">
-            <div className="flex flex-col gap-6  justify-between items-center ">
+          <div className="flex flex-col gap-10 p-9 max-h-[65vh] overflow-auto">
+            <div className="flex flex-col gap-6  justify-between  ">
               <div className="flex justify-between gap-16 items-center h-fit w-fit">
                 <label className="w-44 " htmlFor="item_name">
                   Item Name
@@ -459,8 +459,18 @@ const Inventory = () => {
                             (option) => option.value === feature.feature
                           )}
                           placeholder="Choose Feature"
-                          // styles={customStyles}
-                          className="w-[190px]"
+                          styles={{
+                            menu: (provided) => ({
+                              ...provided,
+                              maxHeight: "80px",
+                              overflowY: "auto",
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              padding: 0,
+                            }),
+                          }}
+                          className="w-[190px] menu:height: 80px"
                           classNamePrefix="react-select"
                         />
                         <input
@@ -495,19 +505,17 @@ const Inventory = () => {
                 )}
               </div>
             </div>
+            <div className="flex justify-end ">
+              <button
+                type="submit"
+                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+                disabled={loading}
+              >
+                {loading ? "Adding..." : "Add Item"}
+              </button>
+            </div>
           </div>
-
           {error && <span className="text-red-500">{error}</span>}
-
-          <div className="flex justify-end gap-8 grid-cols-2">
-            <button
-              type="submit"
-              className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
-              disabled={loading}
-            >
-              {loading ? "Adding..." : "Add Item"}
-            </button>
-          </div>
         </form>
       )}
       {filterFormVisibility && (
