@@ -492,7 +492,6 @@ const Inventory = () => {
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-
             <button
               type="submit"
               className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"

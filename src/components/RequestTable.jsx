@@ -21,17 +21,14 @@ const RequestTable = () => {
       
     }
   };
-  const [addFormVisibility, setAddFormVisibility] = useState(false);
-
-
+  const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
 
   const openAcceptForm = () => {
-    setAddFormVisibility(true);
+    setAcceptFormVisibility(true);
   };
 
   const closeAcceptForm = () => {
-    setError("");
-    setAddFormVisibility(false);
+    setAcceptFormVisibility(false);
   };
 
   useEffect(() => {
@@ -119,7 +116,8 @@ const RequestTable = () => {
             <div className="flex gap-7 items-center">
               <button
                 className="bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
-                onClick={() => handleAccept(request.id)}
+                // onClick={() => handleAccept(request.id)}
+                onClick={openAcceptForm}
               >
                 Accept
               </button>
@@ -143,12 +141,38 @@ const RequestTable = () => {
           
         ))
         
-
-        
+      )}
+      {acceptFormVisibility && (
+       <form
+       onSubmit={handleSubmit}
+       className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit "
+     >
+       <div className="flex justify-between items-center">
+         <p className=" text-xl font-semibold">Accept Request</p>
+         <img
+           className="rounded-md cursor-pointer p-4"
+           src={close}
+           alt=""
+           onClick={closeAcceptForm}
+         />
+         </div>
+         <div className="flex justify-between items-center gap-4">
+         <label>Item Name: </label>
+         <input className=" border-b-2"/>
+         </div>
+         <div className="flex justify-between items-center gap-4">
+         <label>Quantity:</label>
+         <input className="border-2 rounded border-neutral-300 p-2" />
+         </div>
+         <div className="flex justify-between items-center gap-2">
+         <label> Remarks: </label>
+         <textarea className="border-2 rounded border-neutral-300"> </textarea>
+         </div>
+        </form>
       )}
       
-      {addFormVisibility && (
-        <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0" onClick={closeAcceptForm}></div>
+      {acceptFormVisibility && (
+        <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0" ></div>
       )}
 
 

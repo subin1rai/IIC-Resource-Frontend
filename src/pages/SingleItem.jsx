@@ -252,15 +252,11 @@ const SingleItem = () => {
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
             onSubmit={handleSubmit}
           >
-            <button
-              type="button"
-              className="absolute p-2 top-5 right-5"
-              onClick={() => setEditFormVisibility(false)}
-            >
-              <img src={close} alt="close" className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex flex-row-reverse justify-between items-center">
+              <img src={close} alt="close" className="w-3.5 h-3.5" onClick={() => setEditFormVisibility(false)}/>
             <h4 className="font-semibold text-xl">Edit Items</h4>
-            <div className="flex gap-16">
+            </div>
+            <div className="flex flex-col gap-8">
               <div className="flex justify-between items-center gap-24">
                 <label className="w-36" htmlFor="item_name">
                   Item Name
@@ -270,7 +266,7 @@ const SingleItem = () => {
                   id="item_name"
                   name="item_name"
                   placeholder="Enter item name"
-                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  className="border-2 border-neutral-300 p-2 pl-3 rounded-md "
                   value={editedItem.item_name}
                   onChange={handleChange}
                   autoFocus
@@ -280,48 +276,34 @@ const SingleItem = () => {
                 <label className="w-36" htmlFor="category">
                   Category
                 </label>
-                <input
+                <select
                   type="text"
                   id="category"
                   name="category"
                   placeholder="Enter category"
-                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
                   onChange={handleChange}
                   value={editedItem.category}
                 />
               </div>
             </div>
-            <div className="flex gap-16">
+            <div className="flex flex-col gap-8">
               <div className="flex justify-between items-center gap-24">
                 <label className="w-36" htmlFor="item_category">
                   Item Category
                 </label>
-                <input
+                <select
                   type="text"
                   id="item_category"
                   name="item_category"
                   placeholder="Enter item category"
-                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
                   onChange={handleChange}
                   value={editedItem.item_category}
                 />
               </div>
-              <div className="flex justify-between items-center gap-24">
-                <label className="36" htmlFor="product_category">
-                  Product Category
-                </label>
-                <input
-                  type="text"
-                  id="product_category"
-                  name="product_category"
-                  placeholder="Enter product category"
-                  className="border-2 border-gray p-1 pl-3 rounded-md"
-                  onChange={handleChange}
-                  value={editedItem.product_category}
-                />
-              </div>
             </div>
-            <div className="flex gap-16">
+            <div className="flex flex-col gap-8">
               <div className="flex justify-between items-center gap-24">
                 <label className="w-36" htmlFor="measuring_unit">
                   Measuring Unit
@@ -331,7 +313,7 @@ const SingleItem = () => {
                   id="measuring_unit"
                   name="measuring_unit"
                   placeholder="Enter measuring unit"
-                  className="border-2 border-gray p-1 pl-3 rounded-md"
+                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md"
                   value={editedItem.measuring_unit}
                   onChange={handleChange}
                 />
@@ -345,7 +327,7 @@ const SingleItem = () => {
                   id="low_limit"
                   name="low_limit"
                   placeholder="Enter low limit"
-                  className="border-2 border-gray p-1 pl-3 rounded-md "
+                  className="border-2  border-neutral-300 p-2 pl-3 rounded-md "
                   value={editedItem.low_limit}
                   onChange={handleChange}
                 />
@@ -359,7 +341,7 @@ const SingleItem = () => {
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-16">
                     <div className="field">
-                      <div className="w-48 rounded-md border-slate-200 border-2">
+                      <div className="border-2  border-neutral-300 p-2 pl-3  rounded-md">
                         <select
                           value={feature.feature}
                           onChange={(e) =>
@@ -381,6 +363,7 @@ const SingleItem = () => {
                     </div>
                     <div className="values">
                       <input
+                        className="border-2  border-neutral-300 p-1 pl-3 rounded-md"
                         type="text"
                         placeholder="Enter the value"
                         value={feature.value}
