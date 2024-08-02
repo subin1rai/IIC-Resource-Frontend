@@ -100,7 +100,8 @@ const SpecificVendor = () => {
             },
           }
         );
-        setVendor(response.data.VendorById);
+
+        setVendor(response.data);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }
@@ -118,9 +119,9 @@ const SpecificVendor = () => {
         <Topbar />
 
         <div className="flex flex-col w-[85.5vw]  bg-white rounded pb-9">
-          <div className="flex justify-between items-center h-fit ">
+          <div className="flex justify-between items-end h-fit ">
             <div className="flex flex-col">
-              <div className="flex px-8 py-5 items-center">
+              <div className="flex px-8 py-5 items-center gap-2">
                 <Link to="/vendors">Vendor</Link>
                 <img src={front} alt="" />
                 <p className="text-blue-600  text-base">{vendor.vendor_name}</p>
@@ -129,7 +130,7 @@ const SpecificVendor = () => {
                 {vendor.vendor_name}
               </h3>
             </div>
-            <div className="flex gap-4 pr-10 h-[100%] items-center mt-5">
+            <div className="flex gap-4 pr-10 items-end  ">
               <button
                 className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
@@ -145,77 +146,77 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
-          <div className="h-1 bg-blue-700 w-[82vw] mt-4 mx-auto"></div>
+          <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
 
           <div className="flex justify-between mt-5 w-[75vw] ml-12">
             <div className="flex flex-col gap-5">
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 VAT Number:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.vat_number || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 payment Duration:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.payment_duration || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Paid Amount:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.paid_amount || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Vendor Contact:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.vendor_contact || "--"}
                 </span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Last Purchase Date:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {formatDate(vendor.last_purchase_date) || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Purchase Amount:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.purchase_amount || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Last Paid Date:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.last_paid || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Payment Status:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.payment_status || "--"}
                 </span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Total Payment:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.total_payment || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
+              <p className="font-medium text-[#6D6E70]">
                 Pending Payment:{" "}
-                <span className="font-medium pl-3">
+                <span className="font-medium pl-3 text-black">
                   {vendor.pending_payment || "--"}
                 </span>
               </p>
-              <p className="font-semibold">
-                Next Payment Data:{" "}
-                <span className="font-medium pl-3">
+              <p className="font-medium text-[#6D6E70]">
+                Next Payment Date:{" "}
+                <span className="font-medium pl-3 text-black">
                   {vendor.next_payment_date || "--"}
                 </span>
               </p>
@@ -249,7 +250,7 @@ const SpecificVendor = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7  rounded "
           >
             <div className="flex justify-between">
               <p className="font-semibold text-2xl">Edit Details</p>
