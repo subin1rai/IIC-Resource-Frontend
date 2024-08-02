@@ -18,7 +18,7 @@ const columns = [
   { id: "action", label: "Action", width: 270 },
 ];
 
-export default function FeatureTable({ feature = [], setFeature }) {
+export default function Ftable({ feature = [], setFeature }) {
   const token = localStorage.getItem("token");
 
   const handleDeleteSubmit = async (featureId) => {

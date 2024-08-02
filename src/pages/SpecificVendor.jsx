@@ -109,6 +109,7 @@ const SpecificVendor = () => {
     fetchSingleVendor();
   }, [vendor_id]);
 
+  console.log(vendor);
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
       <Sidebar />
@@ -130,7 +131,7 @@ const SpecificVendor = () => {
             </div>
             <div className="flex gap-4 pr-10 h-[100%] items-center mt-5">
               <button
-                className="bg-button h-fit w-fit p-2 px-4 text-white rounded"
+                className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
               >
                 {" "}
@@ -144,9 +145,9 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
-          <div className="h-1 bg-button w-[82vw] mt-4 mx-auto"></div>
+          <div className="h-1 bg-blue-700 w-[82vw] mt-4 mx-auto"></div>
 
-          <div className="flex justify-between px-10 mt-5">
+          <div className="flex justify-between mt-5 w-[75vw] ml-12">
             <div className="flex flex-col gap-5">
               <p className="font-semibold">
                 VAT Number:{" "}
@@ -235,14 +236,14 @@ const SpecificVendor = () => {
               </button>
             </div>
           </div>
-          <VendorHistory />
+          <VendorHistory history={vendor} />
         </div>
       </div>
 
       {addFormVisibility && (
         <>
           <div
-            className="h-screen  w-screen bg-overlay absolute"
+            className="h-screen  w-screen bg-overlay absolute z-20"
             onClick={closeVendorDetailsForm}
           ></div>
 
@@ -314,6 +315,7 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
+
   );
 };
 
