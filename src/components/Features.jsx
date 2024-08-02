@@ -78,9 +78,8 @@ const Features = () => {
 
   return (
     <>
-    <div className='flex gap-5 ml-4'>
-    <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
-      <div className="flex justify-between m-5">
+    <div className='flex flex-col bg-white w-[50vw] gap-4 rounded'>
+      <div className="flex justify-between p-10">
         <h1 className='text-lg font-bold'>Feature</h1>
         <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
           Add Category
@@ -89,7 +88,6 @@ const Features = () => {
       <FeatureTable feature={feature} setFeature={setFeature} />
 
     </div>
-  </div>
 
         
         {addFormVisibility && (

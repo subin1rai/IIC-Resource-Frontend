@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Ctable from "../components/Ctable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -103,9 +102,8 @@ const Category = () => {
 
   return (
     <>
-   
-            <div className='flex flex-col bg-white w-[50%] gap-4 rounded p-4 mt-4'>
-              <div className="flex  justify-between m-5 ">
+            <div className='flex flex-col bg-white w-[50vw] rounded '>
+              <div className="flex  justify-between p-10 ">
             <h1 className="text-lg font-bold ">Category</h1>
             <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={displayAddPopup}>
               Add Category
