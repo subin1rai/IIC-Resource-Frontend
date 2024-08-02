@@ -53,7 +53,6 @@ const VendorHistory = () => {
           `http://localhost:8898/api/vendor/${vendor_id}`
         );
         setVendors(response.data.VendorById.bills);
-        console.log(vendors);
         setLoading(false);
       } catch (err) {
         console.log(err);

@@ -105,6 +105,7 @@ const SpecificBill = () => {
           ]);
 
         setBillDetails(singleBillResponse.data.bill);
+        console.log(billDetails);
         setItems(itemsResponse.data.items);
         setVendors(vendorsResponse.data.vendors);
         setLoading(false);
@@ -237,7 +238,9 @@ const SpecificBill = () => {
               <div className="flex flex-col gap-5 mt-7 pl-9">
                 <p className="font-semibold">
                   TDS:
-                  <span className="font-medium pl-4">{billDetails.TDS}</span>
+                  <span className="font-medium pl-4">
+                    {billDetails.TDS || "--"}
+                  </span>
                 </p>
                 <p className="font-semibold">
                   Bill Amount:
@@ -379,9 +382,9 @@ const SpecificBill = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select TDS</option>
-                      <option value="ten">10</option>
-                      <option value="twenty">20</option>
-                      <option value="thirty">30</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
                     </select>
                   </div>
                   {/* Bill Amount */}

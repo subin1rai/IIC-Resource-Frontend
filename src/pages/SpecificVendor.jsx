@@ -262,7 +262,9 @@ const SpecificVendor = () => {
               </button>
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vendor_name" className="font-medium">Vendor Name</label>
+              <label htmlFor="vendor_name" className="font-medium">
+                Vendor Name
+              </label>
               <input
                 className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
@@ -274,7 +276,9 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vat_no" className="font-medium">VAT Number</label>
+              <label htmlFor="vat_no" className="font-medium">
+                VAT Number
+              </label>
               <input
                 className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
@@ -286,7 +290,9 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="contact" className="font-medium">Contact Number</label>
+              <label htmlFor="contact" className="font-medium">
+                Contact Number
+              </label>
               <input
                 className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
@@ -309,7 +315,6 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
-
 
   );
 };
