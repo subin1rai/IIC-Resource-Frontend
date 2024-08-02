@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import deleteIcon from "../assets/deleteIcon.svg";
 import { confirmAlert } from "react-confirm-alert"; // Import
-import "/src/App.css"; // Import CSS
+
 
 const columns = [
   { id: "sn", label: "SN", width: 70 },
@@ -67,7 +67,6 @@ export default function Ctable({ category, setCategory }) {
       <Paper
         sx={{
           width: "100%",
-          maxWidth:"810px",
           overflow: "hidden",
           cursor: "pointer",
           fontSize: "18px",
