@@ -24,17 +24,16 @@ const Category = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
-      try{
-        const response = await axios.get("http://localhost:8898/api/category", 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      try {
+        const response = await axios.get("http://localhost:8898/api/category", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response.data);
         setCategory(response.data.category || []);
       } catch (error) {
@@ -48,7 +47,6 @@ const Category = () => {
       controller.abort();
     };
   }, []);
-
 
   useEffect(() => {
     const controller = new AbortController();
@@ -94,7 +92,6 @@ const Category = () => {
         }
       }
     })();
-
     return () => {
       controller.abort();
     };
@@ -115,7 +112,10 @@ const Category = () => {
   };
 
   const handleItemCategoryChange = (e) => {
-    setNewItemCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setNewItemCategory((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
     console.log(e.target.value);
   };
 
@@ -236,13 +236,41 @@ const Category = () => {
         }
       );
       console.log(response);
-      window.location.reload();
+      setFeature((prevFeatures) => [...prevFeatures, response.data.featuresData]);
+      closeCategoryForm();
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
     }
   };
 
+  const handleDeleteFeature = async (featureId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this feature?");
+    if (!confirmDelete) {
+      return;
+    }
+    
+    try {
+      const response = await axios.delete(
+        `http://localhost:8898/api/deleteFeature/${featureId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setFeature((prevFeatures) =>
+        prevFeatures.filter((feature) => feature.feature_id !== featureId)
+      );
+    } catch (error) {
+      console.error("Error deleting feature:", error);
+      if (error.response && error.response.data) {
+        alert(error.response.data.error);
+      }
+    }
+  };
+  
   return (
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
@@ -270,10 +298,13 @@ const Category = () => {
                 className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
                 onClick={() => displayAddPopup("itemCategory")}
               >
-             Item Category
+                Item Category
               </button>
             </div>
-            <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
+            <Itable
+              itemCategory={itemCategory}
+              setItemCategory={setItemCategory}
+            />
           </div>
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
@@ -286,7 +317,7 @@ const Category = () => {
                 Add Feature
               </button>
             </div>
-            <Ftable feature={feature} setFeature={setFeature} />
+            <Ftable feature={feature} onDelete={handleDeleteFeature} />
           </div>
         </div>
       </div>
