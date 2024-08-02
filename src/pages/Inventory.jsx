@@ -11,6 +11,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { WrapText } from "@mui/icons-material";
+import addIcon from "../assets/addIcon.svg";
+import removeIcon from "../assets/removeIcon.svg";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -82,7 +84,6 @@ const Inventory = () => {
     placeholder: (provided) => ({
       ...provided,
       color: "#757575",
-      
     }),
     container: (provided) => ({
       ...provided,
@@ -335,7 +336,7 @@ const Inventory = () => {
       {addFormVisibility && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit max-h-[80vh] overflow-auto"
         >
           <div className="flex justify-between items-center">
             <p className=" text-xl font-semibold">Add Item</p>
@@ -430,75 +431,81 @@ const Inventory = () => {
               />
             </div>
             <hr className="text-neutral-200 border-2 w-full"></hr>
-          {/* features form  */}
-          <div className="flex flex-col gap-8 items-center">
-            <label className=" text-xl font-semibold"  htmlFor="">
-              Features
-            </label>
-            <div className="">
-              {selectedFeatures.map((feature, index) => (
-                <div key={index} className="flex gap-4 ">
-                  <div className="flex justify-between flex-row gap-8 items-center w-fit">
-                    <div className="w-[200px]">
-                      <Select
-                        options={featureOptions}
-                        onChange={(selectedOption) =>
-                          handleFeatureChange(
-                            index,
-                            "feature",
-                            selectedOption.value
-                          )
-                        }
-                        value={featureOptions.find(
-                          (option) => option.value === feature.feature
+            {/* features form  */}
+            <div className="flex flex-col gap-8 items-center">
+              <label className=" text-xl font-semibold" htmlFor="">
+                Features
+              </label>
+              <div className="flex gap-6 items-end">
+                {" "}
+                <div className="flex flex-col gap-6 ">
+                  {selectedFeatures.map((feature, index) => (
+                    <div key={index} className="flex gap-4 ">
+                      <div className="flex justify-between flex-row gap-8 items-center w-fit">
+                        <div className="w-[200px]">
+                          <Select
+                            options={featureOptions}
+                            onChange={(selectedOption) =>
+                              handleFeatureChange(
+                                index,
+                                "feature",
+                                selectedOption.value
+                              )
+                            }
+                            value={featureOptions.find(
+                              (option) => option.value === feature.feature
+                            )}
+                            placeholder="Choose Feature"
+                            styles={customStyles}
+                            className="w-[269px]"
+                            classNamePrefix="react-select"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex gap-8">
+                        <input
+                          className="border-2 rounded border-neutral-200 w-[10vw] p-1 py-2"
+                          type="text"
+                          placeholder="Enter the value"
+                          value={feature.value}
+                          onChange={(e) =>
+                            handleFeatureChange(index, "value", e.target.value)
+                          }
+                        />
+
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => removeFeatureField(index)}
+                          >
+                            <img src={removeIcon} className="w-8 h-8" alt="" />
+                          </button>
                         )}
-                        placeholder="Choose Feature"
-                        styles={customStyles}
-                        className="w-[269px]"
-                        classNamePrefix="react-select"
-                      />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-8">
-                    <input
-                      className="border-2 rounded border-neutral-200 w-[10vw] p-1 py-2"
-                      type="text"
-                      placeholder="Enter the value"
-                      value={feature.value}
-                      onChange={(e) =>
-                        handleFeatureChange(index, "value", e.target.value)
-                      }
-                    />
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => removeFeatureField(index)}
-                      >
-                        -
-                      </button>
-                    )}
-                  </div>
+                  ))}
                 </div>
-              ))}
-              {selectedFeatures.length < featureOptions.length && (
-                <button type="button" onClick={addFeatureField}>
-                  Add more field
-                </button>
-              )}
+                {selectedFeatures.length < featureOptions.length && (
+                  <button type="button" onClick={addFeatureField}>
+                    <img
+                      src={addIcon}
+                      className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
+                      alt=""
+                    />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
           </div>
 
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-
             <button
               type="submit"
               className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
               disabled={loading}
             >
-
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>
@@ -508,7 +515,12 @@ const Inventory = () => {
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-4">
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Filtering Option</h2>
-            <img src={close} alt="" className="rounded-md cursor-pointer" onClick={closeFilterForm} />
+            <img
+              src={close}
+              alt=""
+              className="rounded-md cursor-pointer"
+              onClick={closeFilterForm}
+            />
           </div>
           <label>Select Category: </label>
           <div className="flex flex-col gap-8">
@@ -551,8 +563,16 @@ const Inventory = () => {
           </div>
           <label>Select Date:</label>
           <div className="flex gap-4 ">
-          <input className= "border-2 rounded border-neutral-300 p-2 " type="date" placeholder=" from" />
-          <input className= "border-2 rounded border-neutral-300 p-2 " type="date" placeholder="to" />
+            <input
+              className="border-2 rounded border-neutral-300 p-2 "
+              type="date"
+              placeholder=" from"
+            />
+            <input
+              className="border-2 rounded border-neutral-300 p-2 "
+              type="date"
+              placeholder="to"
+            />
           </div>
           <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
             Filter
@@ -560,18 +580,10 @@ const Inventory = () => {
         </form>
       )}
       {addFormVisibility && (
-        <div
-          className="bg-overlay absolute w-screen h-screen z-40"
-      
-        ></div>
+        <div className="bg-overlay absolute w-screen h-screen z-40"></div>
       )}
       {filterFormVisibility && (
-        <div
-          className="bg-overlay absolute w-screen h-screen z-40"
-      
-        >
-          {" "}
-        </div>
+        <div className="bg-overlay absolute w-screen h-screen z-40"> </div>
       )}
     </div>
   );
