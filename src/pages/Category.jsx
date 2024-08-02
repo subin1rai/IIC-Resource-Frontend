@@ -206,9 +206,13 @@ const Category = () => {
       console.log(response);
       window.location.reload();
 
-    } catch (error) {
-      console.log(error);
-      setError(error.response.data.error);
+    }  catch (error) {
+      if (error.response && error.response.status === 409) {
+        setError("Feature name already exists!");
+      } else {
+        console.log(error);
+        setError("Failed to add the new feature!");
+      }
     }
   };
 
