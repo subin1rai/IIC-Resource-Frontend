@@ -14,8 +14,8 @@ import "/src/App.css";
 
 const columns = [
   { id: "sn", label: "SN", width: 70 },
-  { id: "feature_name", label: "Feature Name", width: 100 },
-  { id: "action", label: "Action", width: 270 },
+  { id: "feature_name", label: "Feature Name", width: 40 },
+  { id: "action", label: "Action", width: 150}
 ];
 
 export default function Ftable({ feature = [], setFeature }) {
@@ -73,7 +73,7 @@ export default function Ftable({ feature = [], setFeature }) {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -90,13 +90,13 @@ export default function Ftable({ feature = [], setFeature }) {
           <TableBody>
             {feature.map((feat, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={feat.feature_id}>
-                <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>
+                <TableCell key={{ width: columns[0].width, padding: "8px 16px" }}>
                   {index + 1}
                 </TableCell>
-                <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>
+                <TableCell key={{ width: columns[1].width, padding: "8px 22px" }}>
                   {feat.feature_name}
                 </TableCell>
-                <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>
+                <TableCell key={{ width: columns[2].width, padding: "8px 22px" }}>
                   <Button
                     sx={{
                       minWidth: "auto", // Adjust button style to your preference

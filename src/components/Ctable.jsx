@@ -13,10 +13,10 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 
 
 const columns = [
-  { id: "sn", label: "SN", width: 70 },
-  { id: "category_name", label: "Category Name", width: 100 },
-  { id: "items", label: "Items", width: 100 },
-  { id: "action", label: "Action", width: 170 },
+  { id: "sn", label: "SN", maxWidth: 70 },
+  { id: "category_name", label: "Category Name", maxWidth: 70 },
+  { id: "items", label: "Items",  maxWidth: 70 },
+  { id: "action", label: "Action", maxWidth: 70 },
 ];
 export default function Ctable({ category, setCategory }) {
   const token = localStorage.getItem("token");
@@ -63,19 +63,19 @@ export default function Ctable({ category, setCategory }) {
   };
 
   return (
-    <>
+
       <Paper
         sx={{
           width: "100%",
           overflow: "hidden",
           cursor: "pointer",
           fontSize: "18px",
-          gap:"10px",
+         
         }}
       >
         <TableContainer sx={{ maxHeight: 500 }}>
-          <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
-            <TableHead>
+        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
+        <TableHead>
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
@@ -91,15 +91,15 @@ export default function Ctable({ category, setCategory }) {
             <TableBody>
               {category.map((cat, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
-                  <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
-                  <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.category_name}</TableCell>
-                  <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                  <TableCell sx={{ width: columns[3].width, padding: "8px 22px" }}>
+                  <TableCell key={{ width: columns[0].width, padding: "8px 16px"}}>{index + 1}</TableCell>
+                  <TableCell key={{ width: columns[1].width, padding: "8px 22px" }}>{cat.category_name}</TableCell>
+                  <TableCell key={{ width: columns[2].width, padding: "8px 22px"}}>{cat.items.length}</TableCell>
+                  <TableCell key={{ width: columns[3].width, padding: "8px 22px"}}>
                     <Button 
-                      sx={{ 
+                      sx={{
                         minWidth: "auto", // Adjust button style to your preference
                         padding: 0,
-                      }} 
+                      }}
                       onClick={() => showDeleteConfirm(cat.category_id)}
                     >
                       <img src={deleteIcon} alt="delete" />
@@ -111,7 +111,7 @@ export default function Ctable({ category, setCategory }) {
           </Table>
         </TableContainer>
       </Paper>
-    </>
+
   );
 }
 
