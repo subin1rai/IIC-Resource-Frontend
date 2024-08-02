@@ -92,9 +92,10 @@ const Vendor = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setVendors(response.data.vendors || []);
 
-        const count = response.data.vendors.filter(
+        setVendors(response.data.vendor || []);
+
+        const count = response.data.vendor.filter(
           (req) => req.black_list
         ).length;
 
@@ -360,7 +361,6 @@ const Vendor = () => {
         </>
       )}
 
-
       {filterFormVisibility && (
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
@@ -430,16 +430,9 @@ const Vendor = () => {
           </div>
         </form>
       )}
-      {addFormVisibility && (
-        <div className="overlay-vendor"></div>
-      )}
-      {filterFormVisibility && (
-        <div className="overlay-vendor">
-          {" "}
-        </div>
-      )}
+      {addFormVisibility && <div className="overlay-vendor"></div>}
+      {filterFormVisibility && <div className="overlay-vendor"> </div>}
       <ToastContainer pauseOnHover theme="light" />
-
     </div>
   );
 };

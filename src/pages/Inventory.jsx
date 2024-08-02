@@ -189,8 +189,9 @@ const Inventory = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setItems(response.data.items);
-        setFilteredItems(response.data.items); // Initialize filtered items
+
+        setItems(response.data);
+        setFilteredItems(response.data); // Initialize filtered items
 
         const categoryResponse = await axios.get(
           "http://localhost:8898/api/category",
