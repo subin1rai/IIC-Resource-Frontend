@@ -248,7 +248,7 @@ const SpecificVendor = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7  rounded "
           >
             <div className="flex justify-between">
               <p className="font-semibold text-2xl">Edit Details</p>
