@@ -236,7 +236,10 @@ const Category = () => {
         }
       );
       console.log(response);
-      setFeature((prevFeatures) => [...prevFeatures, response.data.featuresData]);
+      setFeature((prevFeatures) => [
+        ...prevFeatures,
+        response.data.featuresData,
+      ]);
       closeCategoryForm();
     } catch (error) {
       console.log(error);
@@ -245,11 +248,13 @@ const Category = () => {
   };
 
   const handleDeleteFeature = async (featureId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this feature?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this feature?"
+    );
     if (!confirmDelete) {
       return;
     }
-    
+
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteFeature/${featureId}`,
@@ -270,7 +275,7 @@ const Category = () => {
       }
     }
   };
-  
+
   return (
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
