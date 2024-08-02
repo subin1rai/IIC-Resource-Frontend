@@ -19,7 +19,12 @@ const columns = [
   { id: "item_name", label: "Item Name", minWidth: 200, align: "center" },
   { id: "quantity", label: "Quantity", minWidth: 110, align: "center" },
   { id: "paid_amount", label: "Paid Amount", minWidth: 110, align: "center" },
-  { id: "actual_amount", label: "Actual Amount", minWidth: 110, align: "center" },
+  {
+    id: "actual_amount",
+    label: "Actual Amount",
+    minWidth: 110,
+    align: "center",
+  },
   { id: "bill_date", label: "Purchase Date", minWidth: 130, align: "center" },
 ];
 
@@ -33,7 +38,7 @@ const VendorHistory = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { id } = useParams();
+  const { vendor_id } = useParams();
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -45,18 +50,17 @@ const VendorHistory = () => {
     const fetchPurchaseHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8898/api/vendors/${id}`
+          `http://localhost:8898/api/vendor/${vendor_id}`
         );
-        const bills = response.data.vendorData.bills || [];
-        setVendors(bills);
+        setVendors(response.data.VendorById.bills);
         setLoading(false);
       } catch (err) {
-        setError("Error fetching purchase history");
+        console.log(err);
         setLoading(false);
       }
     };
     fetchPurchaseHistory();
-  }, [id]);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

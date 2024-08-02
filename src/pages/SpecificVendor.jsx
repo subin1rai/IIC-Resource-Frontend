@@ -129,9 +129,9 @@ const SpecificVendor = () => {
                 {vendor.vendor_name}
               </h3>
             </div>
-            <div className="flex gap-4 pr-7 h-[100%] items-center">
+            <div className="flex gap-4 pr-10 h-[100%] items-center mt-5">
               <button
-                className="bg-button h-fit w-fit p-2 px-4 text-white rounded"
+                className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
               >
                 {" "}
@@ -141,11 +141,11 @@ const SpecificVendor = () => {
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={handleBlackList}
               >
-                Add to Balcklist
+                Add to Blacklist
               </button>
             </div>
           </div>
-          <div className="h-1 bg-button w-[82vw] mt-4 mx-auto"></div>
+          <div className="h-1 bg-blue-700 w-[82vw] mt-4 mx-auto"></div>
 
           <div className="flex justify-between px-10 mt-5">
             <div className="flex flex-col gap-5">
@@ -243,7 +243,7 @@ const SpecificVendor = () => {
       {addFormVisibility && (
         <>
           <div
-            className="h-screen  w-screen bg-overlay absolute"
+            className="h-screen  w-screen bg-overlay absolute z-20"
             onClick={closeVendorDetailsForm}
           ></div>
 
@@ -262,9 +262,11 @@ const SpecificVendor = () => {
               </button>
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vendor_name">Vendor Name</label>
+              <label htmlFor="vendor_name" className="font-medium">
+                Vendor Name
+              </label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit Vendor Name"
                 name="vendor_name"
@@ -274,9 +276,11 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vat_no">VAT Number</label>
+              <label htmlFor="vat_no" className="font-medium">
+                VAT Number
+              </label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit VAT Number"
                 name="vat_number"
@@ -286,9 +290,11 @@ const SpecificVendor = () => {
               />
             </div>
             <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="contact">Contact Number</label>
+              <label htmlFor="contact" className="font-medium">
+                Contact Number
+              </label>
               <input
-                className="w-72 border-2 rounded border-border pl-2 py-2"
+                className="w-72 border-2 rounded border-border pl-2 h-fit py-2"
                 type="text"
                 placeholder="Edit Contact Number"
                 name="vendor_contact"
@@ -300,7 +306,7 @@ const SpecificVendor = () => {
             <div className="flex justify-end  ">
               <button
                 type="submit"
-                className="bg-button p-3 rounded text-white"
+                className="bg-blue-700 p-2 px-5 rounded text-white"
               >
                 Save Changes
               </button>
@@ -309,6 +315,7 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
+
   );
 };
 

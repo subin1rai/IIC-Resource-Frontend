@@ -10,6 +10,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
+import { WrapText } from "@mui/icons-material";
+import addIcon from "../assets/addIcon.svg";
+import removeIcon from "../assets/removeIcon.svg";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -63,7 +66,7 @@ const Inventory = () => {
       borderRadius: "4px",
       borderColor: "#ccc",
       boxShadow: "none",
-      minHeight: "38px",
+      minHeight: "46px",
       "&:hover": {
         borderColor: "#aaa",
       },
@@ -257,7 +260,6 @@ const Inventory = () => {
       );
       setFilteredItems(newFilteredItems);
     };
-
     filterItems();
   }, [searchTerm, items]);
 
@@ -268,19 +270,19 @@ const Inventory = () => {
         <Topbar />
         <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
           <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
-            <h3 className="flex ml-4 font-medium">Overall Inventory</h3>
+            <h3 className="flex text-lg font-bold m-3">Overall Inventory</h3>
             <div className="flex justify-around">
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{category.length}</h4>
-                <p>Number of categories</p>
+                <p className="font-medium">Number of categories</p>
               </div>
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>{items.length}</h4>
-                <p>Number of items</p>
+                <p className="font-medium">Number of items</p>
               </div>
-              <div className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <img src={validVendor} alt="" />
                 <h4>
                   {
@@ -288,7 +290,7 @@ const Inventory = () => {
                       .length
                   }
                 </h4>
-                <p>Number of low stock</p>
+                <p className="font-medium">Number of low stock</p>
               </div>
             </div>
           </div>
@@ -296,9 +298,9 @@ const Inventory = () => {
         <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
           <div className="flex w-[85.8vw] justify-between">
             <div className="text-lg m-4">
-              <p>Items</p>
+              <p className="flex text-lg font-bold m-3">Items</p>
             </div>
-            <div className="flex justify-between gap-5 m-4 mr-10">
+            <div className="flex justify-between gap-5 m-4 mr-10 h-fit">
               <input
                 type="text"
                 placeholder="Search items"
@@ -307,7 +309,7 @@ const Inventory = () => {
                 className="border-2 px-5 w-80 border-border rounded"
               />
               <button
-                className="flex justify-center align-center w-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                className="flex justify-center items-center w-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
@@ -333,10 +335,10 @@ const Inventory = () => {
       {addFormVisibility && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit max-h-[80vh] overflow-auto"
         >
           <div className="flex justify-between items-center">
-            <p className=" ml-4 font-semibold">Add Item</p>
+            <p className=" text-xl font-semibold">Add Item</p>
             <img
               className="rounded-md cursor-pointer p-4"
               src={close}
@@ -344,9 +346,9 @@ const Inventory = () => {
               onClick={closeAddItemForm}
             />
           </div>
-          <div className="flex gap-24 justify-between items-center">
-            <div className="flex justify-between flex-row gap-16 items-center w-fit">
-              <label className="w-44 p-4" htmlFor="item_name">
+          <div className="flex flex-col gap-8 justify-between items-center">
+            <div className="flex justify-between gap-16 items-center w-fit">
+              <label className="w-44 " htmlFor="item_name">
                 Item Name
               </label>
               <input
@@ -361,7 +363,7 @@ const Inventory = () => {
               />
             </div>
             <div className="flex justify-between flex-row gap-16 items-center w-fit">
-              <label className="w-44 p-4" htmlFor="category">
+              <label className="w-44 " htmlFor="category">
                 Category
               </label>
               <div className="w-[269px]">
@@ -380,11 +382,8 @@ const Inventory = () => {
                 />
               </div>
             </div>
-          </div>
-
-          <div className="flex gap-16 justify-between items-center">
             <div className="flex justify-between flex-row gap-16 items-center w-fit">
-              <label className="w-44 p-4" htmlFor="item_category">
+              <label className="w-44 " htmlFor="item_category">
                 Item Category
               </label>
               <div className="w-[269px]">
@@ -403,7 +402,7 @@ const Inventory = () => {
               </div>
             </div>
             <div className="flex justify-between flex-row gap-16 items-center w-fit">
-              <label className="w-44 p-4" htmlFor="measuring_unit">
+              <label className="w-44 " htmlFor="measuring_unit">
                 Measuring Unit
               </label>
               <input
@@ -416,10 +415,8 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-          </div>
-          <div className="flex gap-24 justify-between items-center">
             <div className="flex justify-between flex-row gap-16 items-center w-fit">
-              <label className="w-44 p-4" htmlFor="low_limit">
+              <label className="w-44 " htmlFor="low_limit">
                 Low Limit
               </label>
               <input
@@ -432,88 +429,100 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-          </div>
-          {/* features form  */}
-          <div className="flex gap-16 items-center">
-            <label className="w-44 p-4" htmlFor="">
-              Feature
-            </label>
-            <div className="">
-              {selectedFeatures.map((feature, index) => (
-                <div key={index} className="flex gap-28 ">
-                  <div className="flex justify-between flex-row gap-16 items-center w-fit">
-                    <div className="w-[269px]">
-                      <Select
-                        options={featureOptions}
-                        onChange={(selectedOption) =>
-                          handleFeatureChange(
-                            index,
-                            "feature",
-                            selectedOption.value
-                          )
-                        }
-                        value={featureOptions.find(
-                          (option) => option.value === feature.feature
+            <hr className="text-neutral-200 border-2 w-full"></hr>
+            {/* features form  */}
+            <div className="flex flex-col gap-8 items-center">
+              <label className=" text-xl font-semibold" htmlFor="">
+                Features
+              </label>
+              <div className="flex gap-6 items-end">
+                {" "}
+                <div className="flex flex-col gap-6 ">
+                  {selectedFeatures.map((feature, index) => (
+                    <div key={index} className="flex gap-4 ">
+                      <div className="flex justify-between flex-row gap-8 items-center w-fit">
+                        <div className="w-[200px]">
+                          <Select
+                            options={featureOptions}
+                            onChange={(selectedOption) =>
+                              handleFeatureChange(
+                                index,
+                                "feature",
+                                selectedOption.value
+                              )
+                            }
+                            value={featureOptions.find(
+                              (option) => option.value === feature.feature
+                            )}
+                            placeholder="Choose Feature"
+                            styles={customStyles}
+                            className="w-[269px]"
+                            classNamePrefix="react-select"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex gap-8">
+                        <input
+                          className="border-2 rounded border-neutral-200 w-[10vw] p-1 py-2"
+                          type="text"
+                          placeholder="Enter the value"
+                          value={feature.value}
+                          onChange={(e) =>
+                            handleFeatureChange(index, "value", e.target.value)
+                          }
+                        />
+
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => removeFeatureField(index)}
+                          >
+                            <img src={removeIcon} className="w-8 h-8" alt="" />
+                          </button>
                         )}
-                        placeholder="Choose Feature"
-                        styles={customStyles}
-                        className="w-[269px]"
-                        classNamePrefix="react-select"
-                      />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-8">
-                    <input
-                      className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
-                      type="text"
-                      placeholder="Enter the value"
-                      value={feature.value}
-                      onChange={(e) =>
-                        handleFeatureChange(index, "value", e.target.value)
-                      }
-                    />
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => removeFeatureField(index)}
-                      >
-                        -
-                      </button>
-                    )}
-                  </div>
+                  ))}
                 </div>
-              ))}
-              {selectedFeatures.length < featureOptions.length && (
-                <button type="button" onClick={addFeatureField}>
-                  Add more field
-                </button>
-              )}
+                {selectedFeatures.length < featureOptions.length && (
+                  <button type="button" onClick={addFeatureField}>
+                    <img
+                      src={addIcon}
+                      className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
+                      alt=""
+                    />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
           {error && <span className="text-red-500">{error}</span>}
 
           <div className="flex justify-end gap-8 grid-cols-2">
-            <button type="submit" className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6" disabled={loading}>
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+              disabled={loading}
+            >
               {loading ? "Adding..." : "Add Item"}
             </button>
           </div>
         </form>
       )}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-4">
           <div className="flex justify-between">
-            <h2 className="font-semibold text-l"> Select Filtering Option</h2>
-            <button
-              type="button"
-              className="mr-5 mt-5 absolute rounded-md cursor-pointer p-4"
+            <h2 className="font-semibold text-xl"> Filtering Option</h2>
+            <img
+              src={close}
+              alt=""
+              className="rounded-md cursor-pointer"
               onClick={closeFilterForm}
-            >
-              <img src={close} alt="" />
-            </button>
+            />
           </div>
-          <label>Select Category</label>
-          <div className="flex gap-6">
+          <label>Select Category: </label>
+          <div className="flex flex-col gap-8">
             <Select
               options={categoryOptions}
               onChange={(selectedOption) =>
@@ -524,7 +533,6 @@ const Inventory = () => {
               )}
               placeholder="Choose Category"
               styles={customStyles}
-              className="w-[269px]"
               classNamePrefix="react-select"
             />
             <Select
@@ -537,7 +545,6 @@ const Inventory = () => {
               )}
               placeholder="Choose Item Category"
               styles={customStyles}
-              className="w-[269px]"
               classNamePrefix="react-select"
             />
             <Select
@@ -548,32 +555,35 @@ const Inventory = () => {
               value={productCategoryOptions.find(
                 (option) => option.value === itemData.productCategory
               )}
-              placeholder="Choose Item Category"
+              placeholder="Choose Feature"
               styles={customStyles}
-              className="w-[269px]"
               classNamePrefix="react-select"
             />
           </div>
           <label>Select Date:</label>
-          <input type="date" placeholder=" from" />
-          <input type="date" placeholder="to" />
+          <div className="flex gap-4 ">
+            <input
+              className="border-2 rounded border-neutral-300 p-2 "
+              type="date"
+              placeholder=" from"
+            />
+            <input
+              className="border-2 rounded border-neutral-300 p-2 "
+              type="date"
+              placeholder="to"
+            />
+          </div>
+          <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
+            Filter
+          </button>
         </form>
       )}
       {addFormVisibility && (
-        <div
-          className="bg-overlay absolute w-screen h-screen z-40"
-          onClick={closeAddItemForm}
-        ></div>
+        <div className="bg-overlay absolute w-screen h-screen z-40"></div>
       )}
       {filterFormVisibility && (
-        <div
-          className="bg-overlay absolute w-screen h-screen z-40"
-          onCick={closeFilterForm}
-        >
-          {" "}
-        </div>
+        <div className="bg-overlay absolute w-screen h-screen z-40"> </div>
       )}
-      {/* <ToastContainer pauseOnHover theme="light" /> */}
     </div>
   );
 };
