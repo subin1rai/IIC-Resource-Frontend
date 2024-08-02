@@ -37,7 +37,7 @@ const Records = () => {
       borderRadius: "4px",
       borderColor: "grey",
       boxShadow: "none",
-      minHeight: "48px",
+      minHeight: "46px",
       color: "black",
       "&:hover": {
         borderColor: "#aaa",
@@ -213,7 +213,7 @@ const Records = () => {
               </button>
               <button
                 onClick={openAddBillForm}
-                className="flex bg-blue-700 px-6 w-fit h-fit py-2 justify-center items-center rounded text-white border border-button"
+                className="flex bg-blue-500 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
               >
                 Add Bill
               </button>
@@ -436,8 +436,8 @@ const Records = () => {
           </form>
         </>
       )}
-      {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+     {filterFormVisibility && (
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
             <button
@@ -451,46 +451,43 @@ const Records = () => {
           <label>Select Category</label>
           <div className="flex gap-6">
             <Select
-              // options={categoryOptions}
-              // onChange={(selectedOption) =>
-              //   handleSelectChange(selectedOption, { name: "feature" })
-              // }
-              // value={categoryOptions.find(
-              //   (option) => option.value === itemData.category
-              // )}
-              placeholder="Choose Category"
-              styles={customStyles}
-              className="react-select-container"
-              classNamePrefix="react-select"
+            // options={categoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "feature" })
+            // }
+            // value={categoryOptions.find(
+            //   (option) => option.value === itemData.category
+            // )}
+            // placeholder="Choose Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
             />
             <Select
-              // options={itemCategoryOptions}
-              // onChange={(selectedOption) =>
-              //   handleSelectChange(selectedOption, { name: "itemCategory" })
-              // }
-              // value={itemCategoryOptions.find(
-              //   (option) => option.value === itemData.itemCategory
-              // )}
-              placeholder="Choose Item Category"
-              styles={customStyles}
-              className="react-select-container"
-              classNamePrefix="react-select"
+            // options={itemCategoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "itemCategory" })
+            // }
+            // value={itemCategoryOptions.find(
+            //   (option) => option.value === itemData.itemCategory
+            // )}
+            // placeholder="Choose Item Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
             />
             <Select
-              // options={productCategoryOptions}
-              // onChange={(selectedOption) =>
-              //   handleSelectChange(selectedOption, { name
-              // options={productCategoryOptions}
-              // onChange={(selectedOption) =>
-              //   handleSelectChange(selectedOption, { name: "productCategory" })
-              // }
-              // value={productCategoryOptions.find(
-              //   (option) => option.value === itemData.productCategory
-              // )}
-              placeholder="Choose Product Category"
-              styles={customStyles}
-              className="react-select-container"
-              classNamePrefix="react-select"
+            // options={productCategoryOptions}
+            // onChange={(selectedOption) =>
+            //   handleSelectChange(selectedOption, { name: "productCategory" })
+            // }
+            // value={productCategoryOptions.find(
+            //   (option) => option.value === itemData.productCategory
+            // )}
+            // placeholder="Choose Product Category"
+            // styles={customStyles}
+            // className="react-select-container"
+            // classNamePrefix="react-select"
             />
           </div>
           <label>Select Date:</label>
@@ -506,12 +503,6 @@ const Records = () => {
               placeholder="to"
             />
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
-          >
-            Apply Filter
-          </button>
         </form>
       )}
       {filterFormVisibility && <div className="overlay"></div>}
