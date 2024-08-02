@@ -146,7 +146,7 @@ const SpecificVendor = () => {
           </div>
           <div className="h-1 bg-button w-[82vw] mt-4 mx-auto"></div>
 
-          <div className="flex justify-between px-10 mt-5">
+          <div className="flex justify-between mt-5 w-[75vw] ml-12">
             <div className="flex flex-col gap-5">
               <p className="font-semibold">
                 VAT Number:{" "}
