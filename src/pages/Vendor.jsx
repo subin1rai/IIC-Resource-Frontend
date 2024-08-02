@@ -1,4 +1,4 @@
-import "../styles/vendor.css";
+
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import React, { useEffect, useState } from "react";

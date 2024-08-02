@@ -260,7 +260,6 @@ const Inventory = () => {
       );
       setFilteredItems(newFilteredItems);
     };
-
     filterItems();
   }, [searchTerm, items]);
 
