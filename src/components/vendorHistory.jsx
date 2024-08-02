@@ -52,7 +52,9 @@ const VendorHistory = () => {
         const response = await axios.get(
           `http://localhost:8898/api/vendor/${vendor_id}`
         );
-        setVendors(response.data.VendorById.bills);
+
+        console.log(response.data);
+        setVendors(response.data.bills);
         setLoading(false);
       } catch (err) {
         console.log(err);

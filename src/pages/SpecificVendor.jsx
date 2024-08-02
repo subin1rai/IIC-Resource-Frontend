@@ -100,7 +100,8 @@ const SpecificVendor = () => {
             },
           }
         );
-        setVendor(response.data.VendorById);
+
+        setVendor(response.data);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }

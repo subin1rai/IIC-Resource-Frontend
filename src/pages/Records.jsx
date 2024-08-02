@@ -110,8 +110,8 @@ const Records = () => {
           }),
         ]);
 
-        setItems(itemsResponse.data.items);
-        setVendors(vendorsResponse.data.vendors);
+        setItems(itemsResponse.data);
+        setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
