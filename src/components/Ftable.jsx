@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import deleteIcon from "../assets/deleteIcon.svg";
-import { confirmAlert } from "react-confirm-alert";
+
 import "/src/App.css";
 
 const columns = [
