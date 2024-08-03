@@ -151,7 +151,7 @@ const SingleItem = () => {
       <div className="flex flex-col mx-auto gap-4">
         <Topbar />
         <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
-          <div className="flex justify-between w-[98%]">
+          <div className="flex justify-between w-[99%] ">
             <div className="flex flex-col gap-1">
               <div className="flex justify-center items-end gap-2 h-10 p-4">
                 <h4 className="text-base font-normal">
@@ -166,16 +166,16 @@ const SingleItem = () => {
             </div>
             <div className="flex justify-center items-end">
               <button
-                className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md"
+                className="bg-button  text-white py-2 px-6 w-fit h-fit rounded-md"
                 onClick={handlePopupForm}
               >
                 Edit Item
               </button>
             </div>
           </div>
-          <div className="w-[98%] mx-auto mt-5 bg-blue-600 h-1"></div>
+          <div className="w-[98%] mx-auto mt-4 bg-[#1570ef] h-1"></div>
           {!loading ? (
-            <div className="flex px-11 justify-between mt-7 w-9/12">
+            <div className="flex px-11 justify-between mt-5 w-9/12">
               <div className="flex flex-col gap-5">
                 <div className="flex gap-4">
                   <p className="font-semibold">Item Name:</p>
@@ -243,7 +243,7 @@ const SingleItem = () => {
               </button>
             </div>
           </div>
-          <ItemHistory hostory={item} />
+          <ItemHistory history={item} />
         </div>
       </div>
       {editFormVisibility && (
