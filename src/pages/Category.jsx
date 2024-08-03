@@ -115,10 +115,7 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this category?");
-    if (!confirmDelete) {
-      return;
-    }
+   
 
     try {
       const response = await axios.delete(`http://localhost:8898/api/deleteCategory/${categoryId}`, {
@@ -138,6 +135,8 @@ const Category = () => {
     }
     window.location.reload();
   };
+
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -229,7 +228,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Category</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-[20%]"
                 onClick={() => displayAddPopup("category")}
               >
                 Add Category
@@ -242,7 +241,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Item Category</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-fit "
                 onClick={() => displayAddPopup("itemCategory")}
               >
                 Item Category
@@ -255,7 +254,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Feature</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-[20%] "
                 onClick={() => displayAddPopup("feature")}
               >
                 Add Feature
