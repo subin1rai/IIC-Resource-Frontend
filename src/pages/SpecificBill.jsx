@@ -278,7 +278,7 @@ const SpecificBill = () => {
             onSubmit={handleSubmit}
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded w-[55%]"
           >
-            <div className="flex flex-col gap-10 justify-between ">
+            <div className="flex flex-col gap-8 justify-between ">
               <div className="flex justify-between items-center mx-11 ">
                 <p className="font-bold text-xl">Edit Bill Details</p>
                 <button className="p-3">
@@ -322,7 +322,7 @@ const SpecificBill = () => {
                   {/* item name */}
                   <div className="flex items-center gap-5">
                     <label htmlFor="item_name" className="w-32 font-medium">
-                      Item Name :
+                      Name :
                     </label>
                     <Select
                       options={items.map((item) => ({
