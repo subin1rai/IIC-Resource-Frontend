@@ -87,6 +87,8 @@ const Records = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      console.log(response);
       setBills(response.data.bills || []);
     } catch (error) {
       console.error("Error fetching bills:", error);
@@ -244,7 +246,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="bill_no">Bill No:</label>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -290,7 +292,7 @@ const Records = () => {
                     </div>
                   </div>
                   <div className="single">
-                    <div className="for">
+                    {/* <div className="for">
                       <label htmlFor="vendor_name">Vendor Name:</label>
                       <Select
                         options={vendors.map((vendor) => ({
@@ -311,7 +313,7 @@ const Records = () => {
                         placeholder="Select Vendor"
                         styles={customStyles}
                       />
-                    </div>
+                    </div> */}
                     <div className="for">
                       <label htmlFor="item_name">Item Name:</label>
                       <Select
@@ -336,7 +338,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="unit_price">Unit Price:</label>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter unit price"
                         name="unit_price"
                         id="unit_price"
@@ -360,6 +362,7 @@ const Records = () => {
                     <div className="for">
                       <label htmlFor="bill_amount">Bill Amount:</label>
                       <input
+                        type="number"
                         placeholder="Enter bill amount"
                         name="bill_amount"
                         id="bill_amount"
@@ -377,9 +380,9 @@ const Records = () => {
                         value={bill.TDS}
                       >
                         <option value="">Select TDS</option>
-                        <option value="ten">10</option>
-                        <option value="twenty">20</option>
-                        <option value="thirty">30</option>
+                        <option value="1.5">1.5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
                       </select>
                     </div>
                   </div>
@@ -388,6 +391,7 @@ const Records = () => {
                       <div className="for">
                         <label htmlFor="actual_amount">Actual Amount:</label>
                         <input
+                          type="number"
                           placeholder="Enter actual amount"
                           name="actual_amount"
                           id="actual_amount"
@@ -398,6 +402,7 @@ const Records = () => {
                       <div className="for">
                         <label htmlFor="paid_amount">Paid Amount:</label>
                         <input
+                          type="number"
                           placeholder="Enter paid amount"
                           name="paid_amount"
                           id="paid_amount"
@@ -413,7 +418,7 @@ const Records = () => {
                     <h2>Summary</h2>
                     <p>Bill No: {bill.bill_no}</p>
                     <p>Bill Date: {bill.bill_date}</p>
-                    <p>Vendor: {bill.vendor_name}</p>
+                    <p>Vendor Vat: {bill.vat_number}</p>
                     <p>Item Name: {bill.item_name}</p>
                     <p>Unit Price: {bill.unit_price}</p>
                     <p>Quantity: {bill.quantity}</p>
@@ -436,7 +441,7 @@ const Records = () => {
           </form>
         </>
       )}
-     {filterFormVisibility && (
+      {filterFormVisibility && (
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
