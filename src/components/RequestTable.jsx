@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import socket from "../socket";
 import close from "../assets/close.svg";
+import Select from "react-select";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -156,26 +157,49 @@ const RequestTable = () => {
            onClick={closeAcceptForm}
          />
          </div>
-         <div className="flex justify-between items-center gap-4">
-         <label>Item Name: </label>
-         <input className=" border-b-2"/>
+        
+         <div className="flex justify-between items-center gap-16">
+          <div className="flex justify-between items-center">
+         <label className="w-[10vw]"> Requested By: </label>
+         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
          </div>
-         <div className="flex justify-between items-center gap-4">
-         <label>Quantity:</label>
-         <input className="border-2 rounded border-neutral-300 p-2" />
+         <div className="flex justify-between items-center">
+         <label className="w-[10vw]">Requested for: </label>
+         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
          </div>
-         <div className="flex justify-between items-center gap-2">
-         <label> Remarks: </label>
-         <textarea className="border-2 rounded border-neutral-300"> </textarea>
          </div>
+         <div className="flex justify-between items-center gap-16">
+          <div className="flex justify-between items-center">
+         <label className="w-[10vw]"> Requested Date: </label>
+         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
+         </div>
+         <div className="flex justify-between items-center">
+         <label className="w-[10vw]">Department: </label>
+         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
+         </div>
+         </div>
+         <div className="flex justify-between items-center gap-16">
+          <div className="flex justify-between items-center">
+         <label className="w-[10vw]">Item Name: </label>
+         <Select 
+         />
+         </div>
+         <div className="flex justify-between items-center">
+         <label className="w-[10vw]">Quantity:</label>
+         <input className="border-[1px] rounded border-neutral-300 p-2" />
+         </div>
+         </div>
+         <div className="flex ">
+         <label className="w-[10vw]" > Remarks: </label>
+         <textarea className="border-[1px] p-5 rounded border-neutral-300"> </textarea>
+         </div>
+         <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8 "> Done </button>
         </form>
       )}
       
       {acceptFormVisibility && (
         <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0" ></div>
       )}
-
-
       <ToastContainer pauseOnHover theme="light" />
       
     </div>
