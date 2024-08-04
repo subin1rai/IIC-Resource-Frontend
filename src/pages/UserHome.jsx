@@ -13,7 +13,7 @@ const UserHome = () => {
           <img src={resource} alt="" className="max-w-xl" />
           <p className="text-7xl font-semibold">Find Resources For You</p>
           <p className="text-xl py-5 font-medium">
-            One stop for all your needs
+            One stop for all your needs...
           </p>
           <Link to="/userRequest">
             {/* request button */}
