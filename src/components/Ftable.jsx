@@ -60,6 +60,11 @@ export default function Ftable({ feature = [], setFeature }) {
     handleCloseModal();
   };
 
+  // Assume each row has a height of 64px
+  const rowHeight = 48;
+  const maxVisibleRows = 5;
+  const maxHeight = rowHeight * maxVisibleRows;
+
   return (
     <>
       <Paper
@@ -70,7 +75,7 @@ export default function Ftable({ feature = [], setFeature }) {
           fontSize: "18px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 500 }}>
+        <TableContainer sx={{ maxHeight: maxHeight }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
