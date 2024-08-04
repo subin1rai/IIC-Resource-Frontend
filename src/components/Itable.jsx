@@ -38,10 +38,9 @@ export default function Itable({ itemCategory, setItemCategory }) {
         prevCategory.filter((cat) => cat.item_category_id !== categoryId)
       );
     } catch (error) {
-      console.error("Error deleting category:", error.message);
-      return;
+      console.error("Error deleting item category:", error.message);
+     
     }
-    window.location.reload();
   };
 
   const handleShowModal = (categoryId) => {

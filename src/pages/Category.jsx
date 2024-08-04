@@ -128,12 +128,9 @@ const Category = () => {
         prevCategory.filter((cat) => cat.category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting feature:", error);
     }
-    window.location.reload();
+  
   };
 
   
@@ -170,12 +167,9 @@ const Category = () => {
         prevCategory.filter((cat) => cat.item_category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting category:", error);
     }
-    window.location.reload();
+  
   };
 
   const handleSubmitItemCategory = async (event) => {

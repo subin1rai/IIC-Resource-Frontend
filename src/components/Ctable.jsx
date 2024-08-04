@@ -39,10 +39,7 @@ export default function Ctable({ category, setCategory }) {
         prevCategory.filter((cat) => cat.category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting category:", error);
     }
     window.location.reload();
   };
