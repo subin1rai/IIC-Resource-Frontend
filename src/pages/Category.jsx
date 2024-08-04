@@ -137,12 +137,9 @@ const Category = () => {
         prevCategory.filter((cat) => cat.category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting feature:", error);
     }
-    window.location.reload();
+  
   };
 
   const handleSubmit = async (event) => {
@@ -186,12 +183,9 @@ const Category = () => {
         prevCategory.filter((cat) => cat.item_category_id !== categoryId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
+      console.error("Error deleting category:", error);
     }
-    window.location.reload();
+  
   };
 
   const handleSubmitItemCategory = async (event) => {
@@ -249,7 +243,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Category</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-[20%]"
+                className=" bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[21%]"
                 onClick={() => displayAddPopup("category")}
               >
                 Add Category
@@ -262,7 +256,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Item Category</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-fit "
+                className=" bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[22%] "
                 onClick={() => displayAddPopup("itemCategory")}
               >
                 Item Category
@@ -278,7 +272,7 @@ const Category = () => {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Feature</h1>
               <button
-                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto w-[20%] "
+                className="  bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[21%] "
                 onClick={() => displayAddPopup("feature")}
               >
                 Add Feature

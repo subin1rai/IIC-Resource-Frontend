@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import ConfirmModal from "./ConfirmModal"; // Adjust the import path as necessary
 import deleteIcon from "../assets/deleteIcon.svg";
 
 import "/src/App.css";
@@ -15,10 +16,12 @@ import "/src/App.css";
 const columns = [
   { id: "sn", label: "SN", width: 70 },
   { id: "feature_name", label: "Feature Name", width: 40 },
-  { id: "action", label: "Action", width: 150}
+  { id: "action", label: "Action", width: 150 },
 ];
 
 export default function Ftable({ feature = [], setFeature }) {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
   const token = localStorage.getItem("token");
 
   const handleDeleteSubmit = async (featureId) => {
@@ -36,82 +39,84 @@ export default function Ftable({ feature = [], setFeature }) {
         prevFeature.filter((feat) => feat.feature_id !== featureId)
       );
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Request Canceled", error.message);
-        return;
-      }
       console.error("Error deleting feature:", error);
     }
   };
 
-  const showDeleteConfirm = (featureId) => {
-    confirmAlert({
-      title: "Confirm to delete",
-      message: "Are you sure you want to delete this category?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => handleDeleteSubmit(featureId),
-          className: 'confirm-yes',
-        },
-        {
-          label: "No",
-          onClick: () => {},
-          className: 'confirm-no',
-        },
-      ],
-    });
+  const handleShowModal = (featureId) => {
+    setSelectedFeatureId(featureId);
+    setShowModal(true);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedFeatureId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedFeatureId) {
+      handleDeleteSubmit(selectedFeatureId);
+    }
+    handleCloseModal();
+  };
+
+  // Assume each row has a height of 64px
+  const rowHeight = 48;
+  const maxVisibleRows = 5;
+  const maxHeight = rowHeight * maxVisibleRows;
+
   return (
-    <Paper
-      sx={{
-        width: "100%",
-        overflow: "hidden",
-        cursor: "pointer",
-        fontSize: "18px",
-      }}
-    >
-      <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  sx={{ width: column.width, padding: "8px 14px" }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {feature.map((feat, index) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={feat.feature_id}>
-                <TableCell key={{ width: columns[0].width, padding: "8px 16px" }}>
-                  {index + 1}
-                </TableCell>
-                <TableCell key={{ width: columns[1].width, padding: "8px 22px" }}>
-                  {feat.feature_name}
-                </TableCell>
-                <TableCell key={{ width: columns[2].width, padding: "8px 22px" }}>
-                  <Button
-                    sx={{
-                      minWidth: "auto", // Adjust button style to your preference
-                      padding: 0,
-                    }}
-                    onClick={() => showDeleteConfirm(feat.feature_id)}
+    <>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          cursor: "pointer",
+          fontSize: "18px",
+        }}
+      >
+        <TableContainer sx={{ maxHeight: maxHeight }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    sx={{ width: column.width, padding: "8px 14px" }}
                   >
-                    <img src={deleteIcon} alt="delete" />
-                  </Button>
-                </TableCell>
+                    {column.label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+            </TableHead>
+            <TableBody>
+              {feature.map((feat, index) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={feat.feature_id}>
+                  <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>
+                    {index + 1}
+                  </TableCell>
+                  <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>
+                    {feat.feature_name}
+                  </TableCell>
+                  <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>
+                    <Button
+                      sx={{
+                        minWidth: "auto",
+                        padding: 0,
+                      }}
+                      onClick={() => handleShowModal(feat.feature_id)}
+                    >
+                      <img src={deleteIcon} alt="delete" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      <ConfirmModal show={showModal} onClose={handleCloseModal} onConfirm={handleConfirmDelete} />
+    </>
   );
 }

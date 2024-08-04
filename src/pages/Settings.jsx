@@ -51,7 +51,7 @@ const Settings = () => {
                 <div className="image">
                   <img
                     className=" rounded-full mr-12 p-4"
-                    src={profileImg}
+                    // src={profileImg}
                     alt=""
                     onClick={uploadFile}
                   />

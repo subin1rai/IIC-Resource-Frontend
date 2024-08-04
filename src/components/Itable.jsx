@@ -38,10 +38,8 @@ export default function Itable({ itemCategory, setItemCategory }) {
         prevCategory.filter((cat) => cat.item_category_id !== categoryId)
       );
     } catch (error) {
-      console.error("Error deleting category:", error.message);
-      return;
+      console.error("Error deleting item category:", error.message);
     }
-    window.location.reload();
   };
 
   const handleShowModal = (categoryId) => {
@@ -61,6 +59,11 @@ export default function Itable({ itemCategory, setItemCategory }) {
     handleCloseModal();
   };
 
+  // Assume each row has a height of 64px
+  const rowHeight = 48;
+  const maxVisibleRows = 5;
+  const maxHeight = rowHeight * maxVisibleRows;
+
   return (
     <>
       <Paper
@@ -71,7 +74,7 @@ export default function Itable({ itemCategory, setItemCategory }) {
           fontSize: "18px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 500 }}>
+        <TableContainer sx={{ maxHeight: maxHeight }}>
           <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
             <TableHead>
               <TableRow>
@@ -79,7 +82,7 @@ export default function Itable({ itemCategory, setItemCategory }) {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    sx={{ width: column.width, padding: "8px 14px" }}
+                    sx={{ width: column.maxWidth, padding: "8px 14px" }}
                   >
                     {column.label}
                   </TableCell>
@@ -89,10 +92,10 @@ export default function Itable({ itemCategory, setItemCategory }) {
             <TableBody>
               {itemCategory.map((cat, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
-                  <TableCell sx={{ width: columns[0].width, padding: "8px 16px" }}>{index + 1}</TableCell>
-                  <TableCell sx={{ width: columns[1].width, padding: "8px 22px" }}>{cat.item_category_name}</TableCell>
-                  <TableCell sx={{ width: columns[2].width, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                  <TableCell sx={{ width: columns[3].width, padding: "8px 22px" }}>
+                  <TableCell sx={{ width: columns[0].maxWidth, padding: "8px 16px" }}>{index + 1}</TableCell>
+                  <TableCell sx={{ width: columns[1].maxWidth, padding: "8px 22px" }}>{cat.item_category_name}</TableCell>
+                  <TableCell sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}>{cat.items.length}</TableCell>
+                  <TableCell sx={{ width: columns[3].maxWidth, padding: "8px 22px" }}>
                     <Button
                       sx={{
                         minWidth: "auto",
