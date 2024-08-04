@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 
 const columns = [
-  { id: "bill_ID", label: "Bill Number", maxWidth: 70 },
+  { id: "bill_no", label: "Bill Number", maxWidth: 70 },
   {
     id: "bill_date",
     label: "Bill Date",
@@ -191,13 +191,20 @@ export default function RecordsTable({ bills }) {
                     key={bill.bill_ID || "unknown"}
                     onClick={() => handleRowClick(bill.bill_ID)}
                   >
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && bill[column.id] != null
-                          ? column.format(bill[column.id])
-                          : bill[column.id] ?? "N/A"}
-                      </TableCell>
-                    ))}
+                    {columns.map((column) => {
+                      let value = bill[column.id];
+
+                      if (column.id === "vendor_name") {
+                        value = bill.vendors?.vendor_name;
+                      }
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && value != null
+                            ? column.format(value)
+                            : value ?? "N/A"}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ) : null
               )}

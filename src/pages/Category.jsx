@@ -12,10 +12,12 @@ const Category = () => {
   const [category, setCategory] = useState([]);
   const [newCategory, setNewCategory] = useState({ category_name: "" });
   const [itemCategory, setItemCategory] = useState([]);
-  const [newItemCategory, setNewItemCategory] = useState({ item_category_name: "" });
+  const [newItemCategory, setNewItemCategory] = useState({
+    item_category_name: "",
+  });
   const [feature, setFeature] = useState([]);
   const [newFeature, setNewFeature] = useState({ feature_name: "" });
-  const [visibleForm, setVisibleForm] = useState(""); // Track which form is visible
+  const [visibleForm, setVisibleForm] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -48,11 +50,14 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/itemCategory", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response.data);
         setItemCategory(response.data.allData || []);
       } catch (error) {
@@ -105,7 +110,10 @@ const Category = () => {
   };
 
   const handleItemCategoryChange = (e) => {
-    setNewItemCategory((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setNewItemCategory((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
     console.log(e.target.value);
   };
 
@@ -115,14 +123,15 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
-   
-
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteCategory/${categoryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(
+        `http://localhost:8898/api/deleteCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data);
       setCategory((prevCategory) =>
         prevCategory.filter((cat) => cat.category_id !== categoryId)
@@ -133,16 +142,18 @@ const Category = () => {
   
   };
 
-  
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8898/api/addCategory", newCategory, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8898/api/addCategory",
+        newCategory,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response);
       window.location.reload();
     } catch (error) {
@@ -152,16 +163,21 @@ const Category = () => {
   };
 
   const handleDeleteItemCategory = async (categoryId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this item category?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item category?"
+    );
     if (!confirmDelete) {
       return;
     }
     try {
-      const response = await axios.delete(`http://localhost:8898/api/deleteItemCategory/${categoryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(
+        `http://localhost:8898/api/deleteItemCategory/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data);
       setItemCategory((prevCategory) =>
         prevCategory.filter((cat) => cat.item_category_id !== categoryId)
@@ -175,11 +191,15 @@ const Category = () => {
   const handleSubmitItemCategory = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8898/api/addItemCategory", newItemCategory, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8898/api/addItemCategory",
+        newItemCategory,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response);
       window.location.reload();
     } catch (error) {
@@ -191,15 +211,18 @@ const Category = () => {
   const handleSubmitFeature = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8898/api/addFeature", newFeature, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8898/api/addFeature",
+        newFeature,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response);
       window.location.reload();
-
-    }  catch (error) {
+    } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
       } else {
@@ -209,7 +232,6 @@ const Category = () => {
     }
   };
 
- 
   return (
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
@@ -217,7 +239,6 @@ const Category = () => {
         <Topbar />
 
         <div className="w-[87vw] flex flex-wrap justify-between gap-5 ">
-
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-lg font-bold m-2">Category</h1>
@@ -241,7 +262,10 @@ const Category = () => {
                 Item Category
               </button>
             </div>
-            <Itable itemCategory={itemCategory} setItemCategory={setItemCategory} />
+            <Itable
+              itemCategory={itemCategory}
+              setItemCategory={setItemCategory}
+            />
           </div>
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
@@ -255,7 +279,6 @@ const Category = () => {
               </button>
             </div>
             <Ftable feature={feature} setFeature={setFeature} />
-
           </div>
         </div>
       </div>
@@ -290,7 +313,10 @@ const Category = () => {
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex justify-between items-center mb-6">
-            <button className="bg-blue-600 text-white py-2 px-3 rounded ml-auto " type="submit">
+            <button
+              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              type="submit"
+            >
               Add Category
             </button>
           </div>
@@ -327,7 +353,10 @@ const Category = () => {
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex justify-between items-center mb-6">
-            <button className="bg-blue-600 text-white py-2 px-3 rounded ml-auto " type="submit">
+            <button
+              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              type="submit"
+            >
               Add Item Category
             </button>
           </div>
@@ -361,18 +390,25 @@ const Category = () => {
               id="feature_name"
               onChange={handleFeatureChange}
             />
-            
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex justify-between items-center mb-6">
-            <button className="bg-blue-600 text-white py-2 px-3 rounded ml-auto " type="submit">
+            <button
+              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              type="submit"
+            >
               Add Feature
             </button>
           </div>
         </form>
       )}
 
-      {visibleForm && <div className="bg-overlay absolute w-screen h-screen z-40" onClick={closeCategoryForm}></div>}
+      {visibleForm && (
+        <div
+          className="bg-overlay absolute w-screen h-screen z-40"
+          onClick={closeCategoryForm}
+        ></div>
+      )}
     </div>
   );
 };

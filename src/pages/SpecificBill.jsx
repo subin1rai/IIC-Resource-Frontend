@@ -104,9 +104,11 @@ const SpecificBill = () => {
             }),
           ]);
 
+        console.log(itemsResponse);
+
         setBillDetails(singleBillResponse.data.bill);
         console.log(billDetails);
-        setItems(itemsResponse.data.items);
+        setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendors);
         setLoading(false);
       } catch (error) {
@@ -213,7 +215,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Voucher No:
                   <span className="font-medium pl-4">
-                    {billDetails.voucher_no || "--"}
+                    {billDetails.invoice_no || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
@@ -245,7 +247,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Bill Amount:
                   <span className="font-medium pl-4">
-                    {billDetails.voucher_no || "--"}
+                    {billDetails.bill_amount || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
