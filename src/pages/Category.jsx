@@ -23,6 +23,8 @@ const Category = () => {
 
   const token = localStorage.getItem("token");
 
+
+  //category component
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
