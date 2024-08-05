@@ -143,46 +143,78 @@ const RequestTable = () => {
         ))
         
       )}
-      {acceptFormVisibility && (
-       <form
-       onSubmit={handleSubmit}
-       className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit "
-     >
-       <div className="flex justify-between items-center">
-         <p className=" text-xl font-semibold">Accept Request</p>
-         <img
-           className="rounded-md cursor-pointer p-4"
-           src={close}
-           alt=""
-           onClick={closeAcceptForm}
-         />
-         </div>
-        
-   
-        <div className="flex gap-10 h-[50%] w-[40%]">
-         <div class=" flex flex-col bg-customGray  justify-start rounded-lg p-5 mb-10">
-            <h2 class="text-xl font-semibold mb-4">Summary</h2>
-            <p class="mb-2">Request By:</p>
-            <p class="mb-2">Request For:</p>
-            <p class="mb-2">Department:</p>
-          </div>
+{acceptFormVisibility && (
+  <form
+    onSubmit={handleSubmit}
+    className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit"
+  >
+    <div className="flex justify-between items-center">
+      <p className="text-xl font-semibold">Accept Request</p>
+      <img
+        className="rounded-md cursor-pointer p-4"
+        src={close}
+        alt=""
+        onClick={closeAcceptForm}
+      />
+    </div>
 
-      <div className="flex flex-col justify-between items-center gap-16">
-          <div className="flex justify-between items-center">
-         <label className="w-[10vw]">Item Name: </label>
-         <input className="border-[1px] rounded border-neutral-300 p-2" />
-         </div>
-         <div className="flex justify-between items-center">
-         <label className="w-[10vw]">Quantity:</label>
-         <input className="border-[1px] rounded border-neutral-300 p-2" />
-         </div> 
-        
-         <div className="flex "> 
-         <label className="w-[10vw]" > Remarks: </label>
-         <textarea className="border-[1px] p-5 rounded border-neutral-300"> </textarea>
-          </div> 
+    <div className="flex gap-10">
+      <div className="flex flex-col bg-customGray gap-3 h-[30vh] w-[18vw] justify-start rounded-lg p-5">
+        <h2 className="text-xl font-semibold">Summary</h2>
+        <p className="text-lg">Item Name:</p>
+        <p className="text-lg">Quantity:</p>
+        <p className="text-lg">Request By:</p>
+        <p className="text-lg">Request For:</p>
+        <p className="text-lg">Department:</p>
+      </div>
+
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-8">
+          <div className="flex flex-col justify-between gap-3">
+            <label className="w-40 " htmlFor="item_name" >
+                  Item Name
+                </label>
+            <input className="border-2 rounded border-neutral-200 p-1 py-2 w-[14vw]" 
+             type="text"
+             placeholder="Enter item name"
+             autoFocus="autofocus"
+             name="item_name"
+             id="item_name"
+            // onChange={handleChange}
+            />
+          </div>
+          <div className="flex justify-between flex-col gap-3">
+          <label className="w-40 " htmlFor="quantity" >
+                  Quantity
+                </label>
+            <input className="border-2 rounded border-neutral-200 p-1 py-2 w-[14vw]" 
+             type="number"
+             placeholder=""
+             autoFocus="autofocus"
+             name="quantity"
+             id="quantity"
+            // onChange={handleChange}
+            />
         </div>
         </div>
+
+        <div className="flex flex-col gap-3">
+        <label className="w-40 " htmlFor="remarks" >
+                  Remarks
+                </label>
+                <textarea
+                  name="remarks"
+                  placeholder="Enter remarks"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[14vw] h-32 resize-none "
+                  // onChange={handleChange}
+                  // value={request.purpose}
+                />
+        </div>
+      </div>
+    </div>
+  
+
+
 
 
        
