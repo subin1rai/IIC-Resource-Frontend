@@ -24,7 +24,7 @@ const Category = () => {
   const token = localStorage.getItem("token");
 
 
-  //category component
+  
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -241,6 +241,9 @@ const Category = () => {
   };
 
   return (
+
+    //category 
+
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
       <div className=" m-0 flex flex-col gap-4 items-center relative">
@@ -259,6 +262,8 @@ const Category = () => {
             </div>
             <Ctable category={category}  setCategory={setCategory}/>
           </div>
+
+        
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
             <div className="flex justify-between items-center mb-6">
