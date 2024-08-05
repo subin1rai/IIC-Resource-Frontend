@@ -123,6 +123,12 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteCategory/${categoryId}`,
@@ -249,7 +255,7 @@ const Category = () => {
                 Add Category
               </button>
             </div>
-            <Ctable category={category} onDelete={handleDeleteSubmit} />
+            <Ctable category={category}  setCategory={setCategory}/>
           </div>
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
