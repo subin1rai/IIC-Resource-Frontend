@@ -111,15 +111,16 @@
     z-index: 11;
     padding: 40px;
     border-radius: 8px;
+    line-height: 33px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     .summary {
       margin-left: 50px;
       background-color: rgb(233, 233, 233);
-      height: fit-content;
       border-radius: 8px;
       padding: 20px;
-      margin-top: 40px;
+      line-height: 35px;
+      margin-top: 45px;
 
       p {
         padding: 3px;
@@ -131,6 +132,7 @@
         margin-bottom: 10px;
       }
       .add-btn {
+        display: flex;
         justify-content: center;
         align-items: center;
         color: #fff;
@@ -149,7 +151,6 @@
     .title {
       font-size: 24px;
       font-weight: 500;
-
     }
 
     .closebtn {
@@ -173,7 +174,7 @@
       }
 
       input {
-        padding: 10px;
+        padding: 6px;
         width: 291px;
         border-radius: 6px;
         border: 1px solid grey;
@@ -200,6 +201,7 @@
       .right {
         display: flex;
         flex-direction: column;
+        gap: 20px;
 
         h2 {
           margin: 0;

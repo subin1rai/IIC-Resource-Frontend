@@ -257,10 +257,10 @@ const Records = () => {
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
-                <div className="flex justify-between mb-3">
+                <div className="flex justify-between items-center mb-3">
                   <p className="title">Add Bill Details</p>
                   <img
-                    className="cursor-pointer p-3 "
+                    className="cursor-pointer  h-[2vh] w-[2vw]"
                     src={close}
                     alt="close icon"
                     onClick={closeAddBillForm}
