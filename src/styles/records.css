@@ -117,10 +117,10 @@
     .summary {
       margin-left: 50px;
       background-color: rgb(233, 233, 233);
-      height: fit-content;
       border-radius: 8px;
       padding: 20px;
-      margin-top: 40px;
+      line-height: 35px;
+      margin-top: 45px;
 
       p {
         padding: 3px;
@@ -132,6 +132,7 @@
         margin-bottom: 10px;
       }
       .add-btn {
+        display: flex;
         justify-content: center;
         align-items: center;
         color: #fff;
@@ -150,7 +151,6 @@
     .title {
       font-size: 24px;
       font-weight: 500;
-
     }
 
     .closebtn {
@@ -201,6 +201,7 @@
       .right {
         display: flex;
         flex-direction: column;
+        gap: 20px;
 
         h2 {
           margin: 0;
