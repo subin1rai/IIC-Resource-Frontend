@@ -119,6 +119,12 @@ export default function InventoryTable({ items }) {
     navigate(`/specificItem/${id}`);
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
+
   return (
     <Paper
       sx={{
@@ -178,7 +184,11 @@ export default function InventoryTable({ items }) {
                     }
 
                     if (column.id === "total_purchased") {
-                      value = "Rs " + item.total_amount;
+                      value = "Rs " + Number(item.total_amount).toFixed(2);
+                    }
+
+                    if (column.id === "recent_purchase") {
+                      value = formatDate(item.recent_purchase);
                     }
 
                     return (
