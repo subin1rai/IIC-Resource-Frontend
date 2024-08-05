@@ -59,7 +59,8 @@ const UserRequest = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setItems(response.data.items || []);
+        setItems(response.data || []);
+        console.log(response);
       } catch (error) {
         toast.error("Failed to fetch items. Please try again.");
         console.log(error);

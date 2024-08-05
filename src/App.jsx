@@ -24,6 +24,7 @@ import Help from "./pages/Help";
 import Notify from "./pages/Notify";
 import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import Chat from "./components/Chat";
 
 function App() {
   const userType = localStorage.getItem("role");
@@ -33,6 +34,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+
           {/* Public routes */}
 
           <Route path="/" element={<Login />} />
@@ -42,10 +44,13 @@ function App() {
           <Route path="/reset" element={<Reset />} />
           <Route path="/otp" element={<Otp />} />
 
+          <Route path="/chat" element={<Chat />} />
+
           {/* Protected routes */}
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
             {userType === "admin" ? (
               <>
+              
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/issue" element={<Issue />} />
