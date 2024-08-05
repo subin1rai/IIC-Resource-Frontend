@@ -3,25 +3,26 @@ import axios from "axios";
 import socket from "../socket";
 import close from "../assets/close.svg";
 import Select from "react-select";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // getting token from localstorage
+  // getting token from local storage
   const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-     
+      // Handle form submission logic here
     } catch (error) {
       console.log(error);
-      
     }
   };
+
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
 
   const openAcceptForm = () => {
@@ -48,6 +49,30 @@ const RequestTable = () => {
 
     if (token) {
       getRequest();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    // Fetch item options for the select dropdown
+    const getItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const itemOptions = response.data.items.map((item) => ({
+          value: item.id,
+          label: item.item_name,
+        }));
+        setItems(itemOptions);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (token) {
+      getItems();
     }
   }, [token]);
 
@@ -117,123 +142,102 @@ const RequestTable = () => {
             <div className="flex gap-7 items-center">
               <button
                 className="bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
-                // onClick={() => handleAccept(request.id)}
                 onClick={openAcceptForm}
               >
                 Accept
               </button>
-              
-              
-              
-
               <button
                 className="bg-white text-red-500 border-2 h-fit py-3 px-8 rounded-md border-red-400"
                 onClick={() => handleDecline(request.id)}
               >
                 Decline
               </button>
+            </div>
+          </div>
+        ))
+      )}
+      {acceptFormVisibility && (
+        <form
+          onSubmit={handleSubmit}
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit"
+        >
+          <div className="flex justify-between items-center">
+            <p className="text-xl font-semibold">Accept Request</p>
+            <img
+              className="rounded-md cursor-pointer p-4"
+              src={close}
+              alt=""
+              onClick={closeAcceptForm}
+            />
+          </div>
 
-              
+          <div className="flex gap-10">
+            <div className="flex flex-col bg-customGray gap-3 h-[30vh] w-[18vw] justify-start rounded-lg p-5">
+              <h2 className="text-xl font-semibold">Summary</h2>
+              <p className="text-lg">Item Name:</p>
+              <p className="text-lg">Quantity:</p>
+              <p className="text-lg">Request By:</p>
+              <p className="text-lg">Request For:</p>
+              <p className="text-lg">Department:</p>
             </div>
 
-            
-            
-          </div>
-          
-        ))
-        
-      )}
-{acceptFormVisibility && (
-  <form
-    onSubmit={handleSubmit}
-    className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit"
-  >
-    <div className="flex justify-between items-center">
-      <p className="text-xl font-semibold">Accept Request</p>
-      <img
-        className="rounded-md cursor-pointer p-4"
-        src={close}
-        alt=""
-        onClick={closeAcceptForm}
-      />
-    </div>
+            <div className="flex flex-col gap-8">
+              <div className="flex gap-8">
+                <div className="flex flex-col justify-between gap-3">
+                  <label className="w-40" htmlFor="item_name">
+                    Item Name
+                  </label>
+                  <Select
+                    className="w-[14vw]"
+                    options={items}
+                    value={selectedItem}
+                    onChange={setSelectedItem}
+                    placeholder="Select item"
+                    id="item_name"
+                  />
+                </div>
+                <div className="flex justify-between flex-col gap-3">
+                  <label className="w-40" htmlFor="quantity">
+                    Quantity
+                  </label>
+                  <input
+                    className="border-2 rounded border-neutral-200 p-1 py-2 w-[14vw]"
+                    type="number"
+                    placeholder=""
+                    name="quantity"
+                    id="quantity"
+                    // onChange={handleChange}
+                  />
+                </div>
+              </div>
 
-    <div className="flex gap-10">
-      <div className="flex flex-col bg-customGray gap-3 h-[30vh] w-[18vw] justify-start rounded-lg p-5">
-        <h2 className="text-xl font-semibold">Summary</h2>
-        <p className="text-lg">Item Name:</p>
-        <p className="text-lg">Quantity:</p>
-        <p className="text-lg">Request By:</p>
-        <p className="text-lg">Request For:</p>
-        <p className="text-lg">Department:</p>
-      </div>
-
-      <div className="flex flex-col gap-8">
-        <div className="flex gap-8">
-          <div className="flex flex-col justify-between gap-3">
-            <label className="w-40 " htmlFor="item_name" >
-                  Item Name
-                </label>
-            <input className="border-2 rounded border-neutral-200 p-1 py-2 w-[14vw]" 
-             type="text"
-             placeholder="Enter item name"
-             autoFocus="autofocus"
-             name="item_name"
-             id="item_name"
-            // onChange={handleChange}
-            />
-          </div>
-          <div className="flex justify-between flex-col gap-3">
-          <label className="w-40 " htmlFor="quantity" >
-                  Quantity
-                </label>
-            <input className="border-2 rounded border-neutral-200 p-1 py-2 w-[14vw]" 
-             type="number"
-             placeholder=""
-             autoFocus="autofocus"
-             name="quantity"
-             id="quantity"
-            // onChange={handleChange}
-            />
-        </div>
-        </div>
-
-        <div className="flex flex-col gap-3">
-        <label className="w-40 " htmlFor="remarks" >
+              <div className="flex flex-col gap-3">
+                <label className="w-40" htmlFor="remarks">
                   Remarks
                 </label>
                 <textarea
                   name="remarks"
                   placeholder="Enter remarks"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-[14vw] h-32 resize-none "
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[14vw] h-32 resize-none"
                   // onChange={handleChange}
                   // value={request.purpose}
                 />
-        </div>
-      </div>
-    </div>
-  
+              </div>
+            </div>
+          </div>
 
-
-
-
-       
-
-
-         <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8 "> Done </button>
+          <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8">
+            Done
+          </button>
         </form>
       )}
-      
+
       {acceptFormVisibility && (
-        <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0" ></div>
+        <div className="bg-overlay absolute w-[100%] h-[100%] top-0 left-0"></div>
       )}
       <ToastContainer pauseOnHover theme="light" />
-      
     </div>
-    
-    
   );
-  
 };
 
 export default RequestTable;
