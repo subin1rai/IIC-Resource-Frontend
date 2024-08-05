@@ -344,7 +344,7 @@ const Inventory = () => {
           <div className="flex justify-between items-center relative px-9 pt-9">
             <p className=" text-xl font-semibold ">Add Item</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-5 w-5"
               src={close}
               alt=""
               onClick={closeAddItemForm}
