@@ -158,41 +158,36 @@ const RequestTable = () => {
          />
          </div>
         
-         <div className="flex justify-between items-center gap-16">
-          <div className="flex justify-between items-center">
-         <label className="w-[10vw]"> Requested By: </label>
-         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
-         </div>
-         <div className="flex justify-between items-center">
-         <label className="w-[10vw]">Requested for: </label>
-         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
-         </div>
-         </div>
-         <div className="flex justify-between items-center gap-16">
-          <div className="flex justify-between items-center">
-         <label className="w-[10vw]"> Requested Date: </label>
-         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
-         </div>
-         <div className="flex justify-between items-center">
-         <label className="w-[10vw]">Department: </label>
-         <input className=" border-[1px] rounded border-neutral-300 p-2"/>
-         </div>
-         </div>
-         <div className="flex justify-between items-center gap-16">
+   
+        <div className="flex gap-10 h-[50%] w-[40%]">
+         <div class=" flex flex-col bg-customGray  justify-start rounded-lg p-5 mb-10">
+            <h2 class="text-xl font-semibold mb-4">Summary</h2>
+            <p class="mb-2">Request By:</p>
+            <p class="mb-2">Request For:</p>
+            <p class="mb-2">Department:</p>
+          </div>
+
+      <div className="flex flex-col justify-between items-center gap-16">
           <div className="flex justify-between items-center">
          <label className="w-[10vw]">Item Name: </label>
-         <Select 
-         />
+         <input className="border-[1px] rounded border-neutral-300 p-2" />
          </div>
          <div className="flex justify-between items-center">
          <label className="w-[10vw]">Quantity:</label>
          <input className="border-[1px] rounded border-neutral-300 p-2" />
-         </div>
-         </div>
-         <div className="flex ">
+         </div> 
+        
+         <div className="flex "> 
          <label className="w-[10vw]" > Remarks: </label>
          <textarea className="border-[1px] p-5 rounded border-neutral-300"> </textarea>
-         </div>
+          </div> 
+        </div>
+        </div>
+
+
+       
+
+
          <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8 "> Done </button>
         </form>
       )}
