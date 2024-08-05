@@ -24,6 +24,8 @@ const Category = () => {
 
   const token = localStorage.getItem("token");
 
+
+  
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -124,6 +126,12 @@ const Category = () => {
   };
 
   const handleDeleteSubmit = async (categoryId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
     try {
       const response = await axios.delete(
         `http://localhost:8898/api/deleteCategory/${categoryId}`,
@@ -234,6 +242,9 @@ const Category = () => {
   };
 
   return (
+
+    //category 
+
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
       <div className=" m-0 flex flex-col gap-4 items-center relative">
@@ -251,8 +262,10 @@ const Category = () => {
                 Add Category
               </button>
             </div>
-            <Ctable category={category} onDelete={handleDeleteSubmit} />
+            <Ctable category={category}  setCategory={setCategory}/>
           </div>
+
+        
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
             <div className="flex justify-between items-center mb-6">

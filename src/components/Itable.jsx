@@ -9,7 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import deleteIcon from "../assets/deleteIcon.svg";
-import ConfirmModal from "/src/components/ConfirmModal";
+import Swal from "sweetalert2";
+
 
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
@@ -19,8 +20,7 @@ const columns = [
 ];
 
 export default function Itable({ itemCategory, setItemCategory }) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  
   const token = localStorage.getItem("token");
 
   const handleDeleteSubmit = async (categoryId) => {
@@ -43,20 +43,24 @@ export default function Itable({ itemCategory, setItemCategory }) {
   };
 
   const handleShowModal = (categoryId) => {
-    setSelectedCategoryId(categoryId);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedCategoryId(null);
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedCategoryId) {
-      handleDeleteSubmit(selectedCategoryId);
-    }
-    handleCloseModal();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteSubmit(categoryId);
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+      }
+    });
   };
 
   // Assume each row has a height of 64px
@@ -65,7 +69,7 @@ export default function Itable({ itemCategory, setItemCategory }) {
   const maxHeight = rowHeight * maxVisibleRows;
 
   return (
-    <>
+  
       <Paper
         sx={{
           width: "100%",
@@ -112,7 +116,6 @@ export default function Itable({ itemCategory, setItemCategory }) {
           </Table>
         </TableContainer>
       </Paper>
-      <ConfirmModal show={showModal} onClose={handleCloseModal} onConfirm={handleConfirmDelete} />
-    </>
+      
   );
 }
