@@ -13,6 +13,8 @@ import Select from "react-select";
 import { WrapText } from "@mui/icons-material";
 import addIcon from "../assets/addIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
+import itemIcon from "../assets/Inventory.svg";
+import categoryIcon from "../assets/category.svg";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -190,6 +192,7 @@ const Inventory = () => {
           },
         });
 
+        console.log(response.data);
         setItems(response.data);
         setFilteredItems(response.data); // Initialize filtered items
 
@@ -274,12 +277,12 @@ const Inventory = () => {
             <h3 className="flex text-lg font-bold m-3">Overall Inventory</h3>
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img src={categoryIcon} alt="" />
                 <h4>{category.length}</h4>
                 <p className="font-medium">Number of categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img src={itemIcon} alt="" />
                 <h4>{items.length}</h4>
                 <p className="font-medium">Number of items</p>
               </div>

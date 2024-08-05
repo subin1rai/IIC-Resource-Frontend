@@ -31,9 +31,8 @@ const columns = [
   },
   { id: "category", label: "Category", maxWidth: 120 },
   { id: "itemCategory", label: "Item Category", maxWidth: 120 },
-  { id: "productCategory", label: "Product Category", maxWidth: 120 },
   {
-    id: "recentPurchase",
+    id: "recent_purchase",
     label: "Recent Purchase",
     maxWidth: 120,
     numeric: true,
@@ -173,14 +172,13 @@ export default function InventoryTable({ items }) {
                 >
                   {columns.map((column) => {
                     let value = item[column.id];
-                    if (column.id === "productCategory") {
-                      value = item.productCategory?.product_category_name;
+
+                    if (column.id === "quantity") {
+                      value = item?.quantity;
                     }
-                    if (column.id === "category") {
-                      value = item.category?.category_name;
-                    }
-                    if (column.id === "itemCategory") {
-                      value = item.itemCategory?.item_category_name;
+
+                    if (column.id === "total_purchased") {
+                      value = "Rs " + item.total_amount;
                     }
 
                     return (

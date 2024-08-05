@@ -69,7 +69,7 @@ function App() {
                 />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/settingRole" element={<SettingRole />} />
-             
+
                 <Route path="/notify" element={<Notify />} />
                 <Route path="/specificItem/:id" element={<SingleItem />} />
 
