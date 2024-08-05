@@ -8,6 +8,8 @@ import Ftable from "../components/Featurestable";
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
 import Chat from "../components/Chat";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
@@ -25,7 +27,7 @@ const Category = () => {
   const token = localStorage.getItem("token");
 
 
-  
+
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -148,7 +150,7 @@ const Category = () => {
     } catch (error) {
       console.error("Error deleting feature:", error);
     }
-  
+
   };
 
   const handleSubmit = async (event) => {
@@ -163,8 +165,8 @@ const Category = () => {
           },
         }
       );
-      console.log(response);
-      window.location.reload();
+      toast.success(`${newCategory.category_name} Added successfully!`);
+      setVisibleForm(false);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -194,7 +196,7 @@ const Category = () => {
     } catch (error) {
       console.error("Error deleting category:", error);
     }
-  
+
   };
 
   const handleSubmitItemCategory = async (event) => {
@@ -209,8 +211,9 @@ const Category = () => {
           },
         }
       );
-      console.log(response);
-      window.location.reload();
+      toast.success(`${newItemCategory.item_category_name} Added successfully!`);
+      setVisibleForm(false);
+
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -229,8 +232,9 @@ const Category = () => {
           },
         }
       );
-      console.log(response);
-      window.location.reload();
+      toast.success(`${newFeature.feature_name} Added successfully!`);
+      setVisibleForm(false);
+
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
@@ -262,10 +266,10 @@ const Category = () => {
                 Add Category
               </button>
             </div>
-            <Ctable category={category}  setCategory={setCategory}/>
+            <Ctable category={category} setCategory={setCategory} />
           </div>
 
-        
+
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
             <div className="flex justify-between items-center mb-6">
@@ -424,8 +428,8 @@ const Category = () => {
           onClick={closeCategoryForm}
         ></div>
       )}
-      
- 
+
+
     </div>
   );
 };
