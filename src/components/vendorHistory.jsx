@@ -11,7 +11,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "sNo", label: "S.No.", minWidth: 70, align: "center" },
@@ -66,6 +66,12 @@ const VendorHistory = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const navigate = useNavigate();
+
+  const handleRowClick = (id) => {
+    navigate(`/specificbill/${id}`);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -192,7 +198,14 @@ const VendorHistory = () => {
             </TableHead>
             <TableBody>
               {visibleRows.map((row, index) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={index}
+                  onClick={() => handleRowClick(row.bill_ID)}
+                  style={{ cursor: "pointer" }}
+                >
                   {columns.map((column) => {
                     let value;
                     switch (column.id) {

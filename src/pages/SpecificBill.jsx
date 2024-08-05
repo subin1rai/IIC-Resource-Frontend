@@ -172,7 +172,7 @@ const SpecificBill = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   return (
