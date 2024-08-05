@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import ConfirmModal from "./ConfirmModal"; // Adjust the import path as necessary
+import Swal from "sweetalert2";
 import deleteIcon from "../assets/deleteIcon.svg";
 
 import "/src/App.css";
@@ -20,8 +20,7 @@ const columns = [
 ];
 
 export default function Ftable({ feature = [], setFeature }) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
+ 
   const token = localStorage.getItem("token");
 
   const handleDeleteSubmit = async (featureId) => {
@@ -44,29 +43,32 @@ export default function Ftable({ feature = [], setFeature }) {
   };
 
   const handleShowModal = (featureId) => {
-    setSelectedFeatureId(featureId);
-    setShowModal(true);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteSubmit(featureId);
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+      }
+    });
   };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedFeatureId(null);
-  };
-
-  const handleConfirmDelete = () => {
-    if (selectedFeatureId) {
-      handleDeleteSubmit(selectedFeatureId);
-    }
-    handleCloseModal();
-  };
-
   // Assume each row has a height of 64px
   const rowHeight = 48;
   const maxVisibleRows = 5;
   const maxHeight = rowHeight * maxVisibleRows;
 
   return (
-    <>
+    
       <Paper
         sx={{
           width: "100%",
@@ -116,7 +118,6 @@ export default function Ftable({ feature = [], setFeature }) {
           </Table>
         </TableContainer>
       </Paper>
-      <ConfirmModal show={showModal} onClose={handleCloseModal} onConfirm={handleConfirmDelete} />
-    </>
+     
   );
 }
