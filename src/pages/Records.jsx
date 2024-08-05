@@ -6,6 +6,7 @@ import "../styles/records.css";
 import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
+import record from "../assets/billRecord.svg"
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -199,12 +200,38 @@ const Records = () => {
       <Sidebar />
       <div className="records-main">
         <Topbar />
+        {/* summary section */}
+        <div className="flex flex-col w-[85.5vw]  bg-white rounded-lg p-3 gap-3">
+            <h1 className="flex text-lg font-bold m-3">Bill Summary</h1>
+            <div className="flex justify-around">
+              {/* number of vendor summary */}
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img
+                  src={record}
+                  alt="number of bills"
+                  className="h-6 w-6"
+                />
+                <h4>{bills.length}</h4>
+                <p className="font-medium">Number of Records</p>
+              </div>
+              {/* number of  */}
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img
+                  src={record}
+                  alt="number of bills"
+                  className="h-6 w-6"
+                />
+                <h4>5</h4>
+                <p className="font-medium">Pending payments</p>
+              </div>
+            </div>
+          </div>
         <div className="records-container">
           <div className="top">
             <div className="container-title">
               <p className="text-lg font-bold m-1">Bill Records</p>
             </div>
-            <div className=" flex justify-between gap-2 mr-3 mt-3">
+            <div className=" flex justify-between gap-3 mr-4 mt-3">
               <button
                 className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
