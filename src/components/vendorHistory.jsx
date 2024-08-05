@@ -32,7 +32,7 @@ const VendorHistory = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("sNo");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -236,7 +236,7 @@ const VendorHistory = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[10]}
           component="div"
           count={filteredRows.length}
           rowsPerPage={rowsPerPage}
