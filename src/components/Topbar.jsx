@@ -11,6 +11,7 @@ const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
+  const [profilePopUp, setProfilePopUp] = useState(false);
   const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
@@ -32,6 +33,9 @@ const Topbar = () => {
     setNotificationPopUp(true);
   };
 
+  // const profilePopUp = () => {
+  //     setProfilePopUp(true);
+  // }
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -214,6 +218,11 @@ const Topbar = () => {
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
+      )}
+      {profilePopUp && (
+        <div className="">
+
+        </div>
       )}
 
       <div className="absolute right-0">

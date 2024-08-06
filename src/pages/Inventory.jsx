@@ -342,7 +342,7 @@ const Inventory = () => {
           onSubmit={handleSubmit}
           className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  rounded-md w-fit "
         >
-          <div className="flex justify-between items-center relative px-9 pt-9">
+          <div className="flex justify-between items-center relative overflow-hidden px-9 pt-9">
             <p className=" text-xl font-semibold ">Add Item</p>
             <img
               className="rounded-md cursor-pointer h-5 w-5"
@@ -351,7 +351,7 @@ const Inventory = () => {
               onClick={closeAddItemForm}
             />
           </div>
-          <div className="flex flex-col gap-10 p-9 max-h-[65vh] overflow-auto">
+          <div className="flex flex-col gap-10 p-9 max-h-[70vh] overflow-auto">
             <div className="flex flex-col gap-6  justify-between  ">
               <div className="flex justify-between gap-16 items-center h-fit w-fit">
                 <label className="w-44 " htmlFor="item_name">
