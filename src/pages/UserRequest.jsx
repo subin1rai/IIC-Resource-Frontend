@@ -49,7 +49,7 @@ const UserRequest = () => {
     socket.on("new_request", (data) => {
       toast.success(`${data.message} by ${data.user}`);
     });
-  })
+  });
 
   useEffect(() => {
     const getAllItems = async () => {
@@ -59,8 +59,9 @@ const UserRequest = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setItems(response.data.items || []);
-        console.log(response);
+
+        setItems(response.data || []);
+
       } catch (error) {
         toast.error("Failed to fetch items. Please try again.");
         console.log(error);
@@ -70,8 +71,6 @@ const UserRequest = () => {
 
     getAllItems();
   }, [token]);
-
-
 
   return (
     <>
