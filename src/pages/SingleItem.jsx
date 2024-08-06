@@ -150,7 +150,6 @@ const SingleItem = () => {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      width: "100%",
       self: "end",
       borderRadius: "4px",
       borderColor: "#ccc",
@@ -162,7 +161,6 @@ const SingleItem = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      width: "100%",
       borderRadius: "4px",
       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     }),
@@ -176,7 +174,7 @@ const SingleItem = () => {
     }),
     container: (provided) => ({
       ...provided,
-      width: "100%",
+    width:"250px",
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -288,15 +286,17 @@ const SingleItem = () => {
       {editFormVisibility && (
         <>
           <form
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded max-h-[70vh]"
             onSubmit={handleSubmit}
           >
-            <div className="flex flex-row-reverse justify-between items-center">
+            <div className="flex flex-row-reverse  relative justify-between items-center overflow-hidden">
               <img src={close} alt="close" className="w-3.5 h-3.5" onClick={() => setEditFormVisibility(false)}/>
             <h4 className="font-semibold text-xl">Edit Items</h4>
             </div>
+            <div className=" flex flex-col gap-6 pr-8 max-h-[65vh] overflow-auto">
+            <div className="flex flex-col gap-6  justify-between  ">
               <div className="flex justify-between items-center">
-                <label className="w-[20vw] whitespace-nowrap" htmlFor="item_name">
+                <label  htmlFor="item_name">
                   Item Name
                 </label>
                 <input
@@ -304,14 +304,14 @@ const SingleItem = () => {
                   id="item_name"
                   name="item_name"
                   placeholder="Enter item name"
-                  className="border-[1px] border-neutral-300 p-2 pl-3 w-[100%] rounded-md "
+                  className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
                   value={editedItem.item_name}
                   onChange={handleChange}
                   autoFocus
                 />
               </div>
               <div className="flex justify-between items-center">
-                <label className="w-[20vw]" htmlFor="category">
+                <label  htmlFor="category">
                   Category
                 </label>
                 < Select
@@ -328,7 +328,7 @@ const SingleItem = () => {
               </div>
             <div className="flex flex-col gap-8">
               <div className="flex justify-between items-center">
-                <label className="w-[20vw] whitespace-nowrap" htmlFor="item_category">
+                <label  htmlFor="item_category">
                   Item Category
                 </label>
                 <Select
@@ -345,7 +345,7 @@ const SingleItem = () => {
               </div>
             </div>
               <div className="flex justify-between items-center ">
-                <label className=" w-[20vw] whitespace-nowrap" htmlFor="measuring_unit">
+                <label htmlFor="measuring_unit">
                   Measuring Unit
                 </label>
                 <input
@@ -353,13 +353,13 @@ const SingleItem = () => {
                   id="measuring_unit"
                   name="measuring_unit"
                   placeholder="Enter measuring unit"
-                  className="border-[1px]  border-neutral-300 p-2 pl-3 rounded-md  w-[100%]"
+                  className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
                   value={editedItem.measuring_unit}
                   onChange={handleChange}
                 />
               </div>
               <div className="flex justify-between items-center ">
-                <label className="w-[20vw] whitespace-nowrap" htmlFor="low_limit">
+                <label  htmlFor="low_limit">
                   Low Limit
                 </label>
                 <input
@@ -367,7 +367,7 @@ const SingleItem = () => {
                   id="low_limit"
                   name="low_limit"
                   placeholder="Enter low limit"
-                  className="border-[1px]  border-neutral-300 p-2 pl-3 rounded-md  w-[100%] "
+                  className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
                   value={editedItem.low_limit}
                   onChange={handleChange}
                 />
@@ -461,12 +461,22 @@ const SingleItem = () => {
                             (option) => option.value === feature.feature
                           )}
                           placeholder="Choose Feature"
-                          // styles={customStyles}
-                          className="w-[190px]"
+                          styles={{
+                            menu: (provided) => ({
+                              ...provided,
+                              maxHeight: "80px",
+                              overflowY: "auto",
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              padding: 0,
+                            }),
+                          }}
+                          className="w-[190px] menu:height: 80px"
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-[1px] rounded border-neutral-200 w-[210px] px-2 py-2"
+                          className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
                           type="text"
                           placeholder="Enter the value"
                           value={feature.value}
@@ -496,10 +506,12 @@ const SingleItem = () => {
                   </button>
                 )}
               </div>
+              </div>
             <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
               Save Edit
             </button>
-          </form>
+            </div>
+            </form>
 
           <div
             className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
