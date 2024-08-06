@@ -12,9 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { WrapText } from "@mui/icons-material";
 import addIcon from "../assets/addIcon.svg";
+import low from "../assets/lowstock.png";
 import removeIcon from "../assets/removeIcon.svg";
-import itemIcon from "../assets/Inventory.svg";
-import categoryIcon from "../assets/category.svg";
+import item from "../assets/item.png";
+import categoryIcon from "../assets/categoryno.png";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -277,17 +278,17 @@ const Inventory = () => {
             <h3 className="flex text-lg font-bold m-3">Overall Inventory</h3>
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={categoryIcon} alt="" />
+                <img className="w-8 h-8" src={categoryIcon} alt="" />
                 <h4>{category.length}</h4>
                 <p className="font-medium">Number of categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={itemIcon} alt="" />
+                <img className="w-8 h-8" src={item} alt="" />
                 <h4>{items.length}</h4>
                 <p className="font-medium">Number of items</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img className="w-8 h-8" src={low} alt="" />
                 <h4>
                   {
                     items.filter((item) => item.stockStatus === "Low Stock")
@@ -344,7 +345,7 @@ const Inventory = () => {
           <div className="flex justify-between items-center relative px-9 pt-9">
             <p className=" text-xl font-semibold ">Add Item</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-5 w-5"
               src={close}
               alt=""
               onClick={closeAddItemForm}

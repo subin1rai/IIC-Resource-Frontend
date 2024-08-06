@@ -59,7 +59,9 @@ const UserRequest = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         setItems(response.data || []);
+
       } catch (error) {
         toast.error("Failed to fetch items. Please try again.");
         console.log(error);
@@ -75,8 +77,8 @@ const UserRequest = () => {
       {/* main container */}
       <div className="flex flex-col gap-6 h-screen w-screen">
         <Navbar />
-        <div className="flex justify-evenly w-screen mt-5">
-          <div className="flex flex-col bg-white p-8 shadow-lg gap-3 rounded h-fit ">
+        <div className="flex justify-evenly mt-4 ml-14">
+          <div className="flex flex-col bg-white p-8 shadow-lg border gap-3 rounded h-fit">
             <div className="flex flex-col">
               <h2 className="font-bold text-2xl">Request Resource</h2>
               <p className="font-light text-sm text-slate-500">
@@ -85,12 +87,12 @@ const UserRequest = () => {
             </div>
 
             {/* line */}
-            <div className="h-1 bg-background width-full"></div>
+            <div className="h-2 bg-blue-600 width-full"></div>
             {/* line closed */}
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-3">
               <div className="flex justify-between gap-24 items-center ">
-                <label htmlFor="item_name">Item Name</label>
+                <label htmlFor="item_name" className="font-medium">Item Name</label>
                 <select
                   name="item_name"
                   id="item_name"
@@ -107,18 +109,30 @@ const UserRequest = () => {
                 </select>
               </div>
               <div className="flex justify-between gap-11 items-center ">
-                <label htmlFor="quantity">Quantity</label>
+                <label htmlFor="quantity" className="font-medium">Quantity</label>
                 <input
                   type="number"
                   name="quantity"
                   placeholder="Enter quantity"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
+                  className="border-stone-200 border-2 rounded py-2 px-4  w-80"
                   onChange={handleChange}
                   value={request.quantity}
                 />
               </div>
               <div className="flex justify-between gap-11 items-center ">
-                <label htmlFor="purpose" className="flex self-start mt-3">
+                <label htmlFor="quantity" className="font-medium">Requested For</label>
+                <select
+                  name=""
+                  id=""
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
+                  onChange={handleChange}
+                >
+                  <option value="" className="">Select the teachers name</option>
+
+                </select>
+              </div>
+              <div className="flex justify-between gap-11 items-center ">
+                <label htmlFor="purpose" className="flex self-start mt-3 font-medium">
                   Purpose
                 </label>
                 <textarea
@@ -240,3 +254,8 @@ const UserRequest = () => {
 };
 
 export default UserRequest;
+
+
+
+
+

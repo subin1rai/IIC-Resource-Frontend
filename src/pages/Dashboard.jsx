@@ -2,11 +2,17 @@ import React from 'react'
 import Sidebar from '../components/Sidebar'
 import Topbar from '../components/Topbar'
 import returneditems from '../assets/returned.png'
-import items from "../assets/items.svg"
+import items from "../assets/item.png"
 import lowstock from "../assets/lowstock.png"
-import category from '../assets/category.svg'
+import categoryno from '../assets/categoryno.png'
 import vendors from "../assets/vendor.svg"
+import vendorcount from "../assets/vendorcount.png"
 import blacklist from "../assets/blacklist.png"
+import issuesno from "../assets/issuesno.png";
+import pendingreq from "../assets/pendingreq.png";
+import pendingpay from "../assets/pending.png";
+import records from "../assets/records.png";
+import totpay from "../assets/totalpay.png";
 
 const Dashboard = () => {
   return (
@@ -29,7 +35,7 @@ const Dashboard = () => {
                 <p className='font-medium'>Number of items</p>
               </div>
               <div className='flex flex-col items-center '>
-                <img src={category} alt="items" className='w-8 h-8' />
+                <img src={categoryno} alt="items" className='w-8 h-8' />
                 <p>35</p>
                 <p className='font-medium'>Number of Categories</p>
               </div>
@@ -54,7 +60,7 @@ const Dashboard = () => {
               <h1 className='text-lg font-bold m-5'>Vendor Overview</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
-                  <img src={vendors} alt="items" className='w-8 h-8' />
+                  <img src={vendorcount} alt="items" className='w-8 h-8' />
                   <p>35</p>
                   <p className='font-medium'>Number of vendors</p>
                 </div>
@@ -71,14 +77,14 @@ const Dashboard = () => {
               <h1 className='text-lg font-bold m-5'>Issue Summary</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={issuesno} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Number of issues</p>
                 </div>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={pendingreq} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Number of pending requests</p>
                 </div>
               </div>
             </div>
@@ -90,14 +96,14 @@ const Dashboard = () => {
               <h1 className='text-lg font-bold m-5'>Bill Overview</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={records} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Number of records</p>
                 </div>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={pendingpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Number of pending payments</p>
                 </div>
               </div>
             </div>
@@ -107,14 +113,14 @@ const Dashboard = () => {
               <h1 className='text-lg font-bold m-5'>Payment Summary</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={totpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Total Payment made</p>
                 </div>
                 <div className='flex flex-col items-center '>
-                  <img src={items} alt="items" className='w-8 h-8' />
+                  <img src={pendingpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of items</p>
+                  <p className='font-medium'>Number of pending payments</p>
                 </div>
               </div>
             </div>

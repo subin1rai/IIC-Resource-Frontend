@@ -9,6 +9,8 @@ import axios from "axios";
 import VendorTable from "../components/VendorTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import vendorno from "../assets/vendorcount.png";
+import blacklist from "../assets/blacklist.png";
 import Select from "react-select";
 
 const Vendor = () => {
@@ -145,21 +147,21 @@ const Vendor = () => {
             <h1 className="flex text-lg font-bold m-3">Vendor Summary</h1>
             <div className="flex justify-around">
               {/* number of vendor summary */}
-              <div className="flex flex-col items-center justify-center gap-2">
+              <div className="flex flex-col items-center justify-center gap-1">
                 <img
-                  src={validVendor}
+                  src={vendorno}
                   alt="number of vendors"
-                  className="h-6 w-6"
+                  className="h-8 w-8"
                 />
                 <h4>{vendors.length}</h4>
                 <p className="font-medium">Number of Vendors</p>
               </div>
               {/* number of blacklisted vendors */}
-              <div className="flex flex-col items-center justify-center gap-2">
+              <div className="flex flex-col items-center justify-center gap-1">
                 <img
-                  src={validVendor}
+                  src={blacklist}
                   alt="number of vendors"
-                  className="h-6 w-6"
+                  className="h-8 w-8"
                 />
                 <h4>{blackListCount}</h4>
                 <p className="font-medium">Number of Blacklisted Vendors</p>

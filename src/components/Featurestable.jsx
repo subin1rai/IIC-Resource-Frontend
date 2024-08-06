@@ -8,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import Swal from "sweetalert2";
 import deleteIcon from "../assets/deleteIcon.svg";
 
 import "/src/App.css";
