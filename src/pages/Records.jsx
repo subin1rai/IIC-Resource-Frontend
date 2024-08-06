@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import pending from "../assets/pending.png";
+import records from "../assets/records.png";
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -207,9 +209,9 @@ const Records = () => {
               {/* number of vendor summary */}
               <div className="flex flex-col items-center justify-center gap-2">
                 <img
-                  src={record}
+                  src={records}
                   alt="number of bills"
-                  className="h-6 w-6"
+                  className="h-8 w-8"
                 />
                 <h4>{bills.length}</h4>
                 <p className="font-medium">Number of Records</p>
@@ -217,9 +219,9 @@ const Records = () => {
               {/* number of  */}
               <div className="flex flex-col items-center justify-center gap-2">
                 <img
-                  src={record}
+                  src={pending}
                   alt="number of bills"
-                  className="h-6 w-6"
+                  className="h-8 w-8"
                 />
                 <h4>5</h4>
                 <p className="font-medium">Pending payments</p>
