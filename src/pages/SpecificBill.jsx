@@ -259,7 +259,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Pending Amount:
                   <span className="font-medium pl-4">
-                    {billDetails.quantity || "--"}
+                    {billDetails.left_amount || "--"}
                   </span>
                 </p>
               </div>
