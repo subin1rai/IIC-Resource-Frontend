@@ -23,7 +23,7 @@
       align-items: center;
       width: 85.5vw;
       padding: 10px;
-      gap: 25px;
+      gap: 10px;
       border-radius: 10px;
 
       .top {
@@ -87,8 +87,6 @@
   .forms {
     display: flex;
     flex-direction: column;
-
-    
   }
 
   .double {
