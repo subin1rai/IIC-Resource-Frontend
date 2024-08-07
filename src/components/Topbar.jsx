@@ -11,7 +11,6 @@ const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
-  const [profilePopUp, setProfilePopUp] = useState(false);
   const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
@@ -19,6 +18,8 @@ const Topbar = () => {
   const morningStart = 5;
   const afternoonStart = 12;
   const eveningStart = 17;
+
+  const userName = localStorage.getItem("user_name");
 
   let greeting;
   if (currentHour >= morningStart && currentHour < afternoonStart) {
@@ -33,9 +34,8 @@ const Topbar = () => {
     setNotificationPopUp(true);
   };
 
-  // const profilePopUp = () => {
-  //     setProfilePopUp(true);
-  // }
+
+
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -55,6 +55,8 @@ const Topbar = () => {
       document.head.removeChild(style);
     };
   }, []);
+
+ 
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -113,26 +115,35 @@ const Topbar = () => {
   });
 
   const handleSingleState = async (notification_id) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8898/api/singleNotification/${notification_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const notificationToUpdate = notification.find(
+      (notify) => notify.notification_id === notification_id && !notify.state
+    );
 
-      setNotification((prevNotifications) =>
-        prevNotifications.map((notify) =>
-          notify.notification_id === notification_id
-            ? { ...notify, state: false }
-            : notify
-        )
-      );
-      setNotReadCount((prevCount) => prevCount - 1);
-    } catch (error) {
-      console.log(error);
+    if (notificationToUpdate) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8898/api/singleNotification/${notification_id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setNotification((prevNotifications) =>
+            prevNotifications.map((notify) =>
+              notify.notification_id === notification_id
+                ? { ...notify, state: true } // Update the state to true if successfully updated
+                : notify
+            )
+          );
+          setNotReadCount((prevCount) => prevCount - 1);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -144,7 +155,9 @@ const Topbar = () => {
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
-        <p className="font-semibold text-xl">{greeting}, Admin</p>
+        <p className="font-semibold text-xl">
+          {greeting}, {userName}
+        </p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
         <button
@@ -161,7 +174,19 @@ const Topbar = () => {
             </span>
           )}
         </button>
-        <img className="profile" src={user} alt="" />
+        <nav>
+          <details className="relative ">
+              <summary className="list-none">
+              <img className="profile" src={user} alt="" />
+              </summary>
+                <ul className="absolute right-[98%] bg-white w-fit h-fit border-[1px] border-neutral-500 rounded p-4 ">
+                  <img className="rounded-full" src={user} alt =""/>
+                <li className="p-2">Mahima Gurung</li>
+                <li className ="p-2">grgmahima@gmail.com</li>
+                <li className ="p-2">9800000000</li>
+                </ul>
+          </details>
+        </nav>
       </div>
       {notificationPopUp && (
         <>

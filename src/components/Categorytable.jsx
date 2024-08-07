@@ -83,7 +83,7 @@ export default function Ctable({ category, setCategory }) {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
+                  className="px-10 py-3"
                   sx={{ width: column.maxWidth, padding: "8px 14px" }}
                 >
                   {column.label}
