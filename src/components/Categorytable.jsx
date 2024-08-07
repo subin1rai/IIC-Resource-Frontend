@@ -19,6 +19,20 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 70 },
 ];
 
+
+const cellStyle = {
+  fontSize: "14px",
+  padding: "12px 16px",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
+
+const headerStyle = {
+  fontWeight: 600,
+  backgroundColor: "#f5f5f5",
+};
+
 export default function Ctable({ category, setCategory }) {
   const token = localStorage.getItem("token");
 
@@ -78,13 +92,14 @@ export default function Ctable({ category, setCategory }) {
     >
       <TableContainer sx={{ maxHeight: maxHeight }}>
         <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
-          <TableHead>
+        <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  className="px-10 py-3"
-                  sx={{ width: column.maxWidth, padding: "8px 14px" }}
+                  
+                  sx={{ width: column.maxWidth, padding: "8px 14px",  ...headerStyle,
+                    ...cellStyle, }}
                 >
                   {column.label}
                 </TableCell>
