@@ -7,6 +7,9 @@ import Itable from "../components/Itable";
 import Ftable from "../components/Featurestable";
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
+import itemcat from "../assets/itemcat.png";
+import categoryicon from "../assets/categoryno.png";
+import featureicon from "../assets/feature.png";
 import Chat from "../components/Chat";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -253,6 +256,28 @@ const Category = () => {
       <Sidebar />
       <div className=" m-0 flex flex-col gap-4 items-center relative">
         <Topbar />
+        <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
+          <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
+            <h3 className="flex text-lg font-bold m-3">Category Summary</h3>
+            <div className="flex justify-around">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={categoryicon} alt="" />
+                <h4>35</h4>
+                <p className="font-medium">Number of categories</p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={itemcat} alt="" />
+                <h4>5</h4>
+                <p className="font-medium">Number of item Category</p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={featureicon} alt="" />
+                <h4>9</h4>
+                <p className="font-medium">Number of Features</p>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
         <div className="w-[87vw] flex flex-wrap justify-between gap-5 ">
