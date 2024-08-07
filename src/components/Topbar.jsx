@@ -244,11 +244,11 @@ const Topbar = () => {
           ></div>
         </>
       )}
-      {profilePopUp && (
+      {/* {profilePopUp && (
         <div className="">
 
         </div>
-      )}
+      )} */}
 
       <div className="absolute right-0">
         <ToastContainer pauseOnHover theme="light" className="relative" />
