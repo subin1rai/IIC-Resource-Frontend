@@ -16,7 +16,7 @@ const SpecificBill = () => {
     bill_no: "",
     bill_date: "",
     voucher_no: "",
-    vendor_name: "",
+    vat_number: "",
     item_name: "",
     quantity: "",
     unit_price: "",
@@ -172,7 +172,7 @@ const SpecificBill = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0]; // This will give you YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   return (
@@ -259,7 +259,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Pending Amount:
                   <span className="font-medium pl-4">
-                    {billDetails.quantity || "--"}
+                    {billDetails.left_amount || "--"}
                   </span>
                 </p>
               </div>
@@ -276,166 +276,209 @@ const SpecificBill = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded w-[55%]"
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
           >
-            <div className="flex flex-col gap-8 justify-between ">
-              <div className="flex justify-between items-center mx-11 ">
-                <p className="font-bold text-xl">Edit Bill Details</p>
-                <button className="p-3">
-                  <img
-                    src={close}
-                    alt="close"
-                    className="h-4 w-4  cursor-pointer"
-                    onClick={closeEditBillDetailsForm}
-                  />
-                </button>
+
+            {/* main div */}
+            <div className="flex flex-col gap-7">
+              {/* heading div */}
+              <div className="flex justify-between ">
+                <p className="font-semibold text-2xl">Edit Bill Details</p>
+                <img src={close} alt="close" className="h-5 w-5 cursor-pointer" onClick={closeEditBillDetailsForm} />
               </div>
-              <div className="flex gap-10 justify-around ">
-                <div className="flex flex-col gap-6">
-                  {/* bill number */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="bill_no" className="w-32 font-medium">
-                      Bill No. :
-                    </label>
-                    <input
-                      type="text"
-                      id="bill_no"
-                      name="bill_no"
-                      placeholder="Enter Bill Number"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
+              {/* form div */}
+              <div className="flex gap-20">
+                <div className="flex flex-col gap-5">
+                  {/* 1st row */}
+                  <div className="flex gap-14">
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="bill_no" className="font-medium">
+                        Bill No.:
+                      </label>
+                      <input
+                        type="text"
+                        id="bill_no"
+                        name="bill_no"
+                        placeholder="Enter Bill Number"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="bill_date" className="font-medium">Bill Date:</label>
+                      <NepaliDatePicker
+                        inputClassName="form-control"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
+                        value={date}
+                        onChange={handleChange}
+
+                        options={{ calenderLocale: "en", valueLocale: "en" }}
+                      />
+                    </div>
                   </div>
-                  {/* bill date */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="bill_date" className="w-32 font-medium">
-                      Bill Date:
-                    </label>
-                    <NepaliDatePicker
-                      inputClassName=""
-                      className="border-2 border-border p-1 pl-3 rounded-md"
-                      value={date}
-                      onChange={handleChange}
-                      options={{ calenderLocale: "en", valueLocale: "en" }}
-                    />
+                  {/* 2nd row */}
+                  <div className="flex gap-14">
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="voucher_no" className="font-medium">
+                        Voucher No.:
+                      </label>
+                      <input
+                        type="text"
+                        id="voucher_no"
+                        name="voucher_no"
+                        placeholder="Enter Voucher Number"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="vat_number" className="font-medium">
+                        VAT:
+                      </label>
+                      <input
+                        type="text"
+                        id="vat_number"
+                        name="vat_number"
+                        placeholder="Enter VAT "
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
-                  {/* item name */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="item_name" className="w-32 font-medium">
-                      Name :
+                  {/* third row */}
+                  <div className="flex flex-col gap-3">
+                    <label htmlFor="item_name" className="font-medium">
+                      Item Name:
                     </label>
-                    <Select
-                      options={items.map((item) => ({
-                        value: item.item_name,
-                        label: item.item_name,
-                      }))}
-                      onChange={(option) =>
-                        handleSelectChange(option, { name: "item_name" })
-                      }
-                      value={
-                        bill.item_name
-                          ? { value: bill.item_name, label: bill.item_name }
-                          : null
-                      }
-                      placeholder="Choose Item"
-                      styles={customStyles}
-                    />
+                      <Select
+                        options={items.map((item) => ({
+                          value: item.item_name,
+                          label: item.item_name,
+                        }))}
+                        onChange={(option) =>
+                          handleSelectChange(option, { name: "item_name" })
+                        }
+                        value={
+                          bill.item_name
+                            ? { value: bill.item_name, label: bill.item_name }
+                            : null
+                        }
+                        placeholder="Select Item"
+                      />
                   </div>
-                  {/* quantity */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="quantity" className="w-32 font-medium">
-                      Quantity :
-                    </label>
-                    <input
-                      type="text"
-                      id="quantity"
-                      name="quantity"
-                      placeholder="Enter Quantity"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
+                  {/* 4th row */}
+                  <div className="flex gap-14">
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="unit_price" className="font-medium">
+                        Unit Price:
+                      </label>
+                      <input
+                        type="text"
+                        id="unit_price"
+                        name="unit_price"
+                        placeholder="Enter Unit Price"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="quantity" className="font-medium">
+                        Quantity:
+                      </label>
+                      <input
+                        type="text"
+                        id="quantity"
+                        name="quantity"
+                        placeholder="Enter quantity "
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
-                  {/* Unit Price */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="unit_price" className="w-32 font-medium">
-                      Unit Price :
-                    </label>
-                    <input
-                      type="text"
-                      id="unit_price"
-                      name="unit_price"
-                      placeholder="Enter Unit Price"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
+                  {/* 5th row */}
+                  <div className="flex gap-14">
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="bill_amount" className="font-medium">
+                        Bill Amount:
+                      </label>
+                      <input
+                        type="text"
+                        id="bill_amount"
+                        name="bill_amount"
+                        placeholder="Enter Bill Amount"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="tds" className="font-medium">
+                        TDS:
+                      </label>
+                      <select
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        id="TDS"
+                        name="TDS"
+                        onChange={handleChange}
+                        value={bill.TDS}
+                      >
+                        <option value="">Select TDS</option>
+                        <option value="1.5">1.5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                      </select>
+                    </div>
                   </div>
+
+                  {/* 6th row */}
+                  <div className="flex gap-14">
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="" className="font-medium">
+                        Unit Price:
+                      </label>
+                      <input
+                        type="text"
+                        id=""
+                        name=""
+                        placeholder="Enter Actual Amount"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="quantity" className="font-medium">
+                        Paid Amount:
+                      </label>
+                      <input
+                        type="text"
+                        id="quantity"
+                        name="quantity"
+                        placeholder="Enter Paid Amount   "
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
                 </div>
-                {/* right side edit page */}
-                <div className="flex flex-col gap-6">
-                  {/* TDS */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="tds" className="w-32 font-medium">
-                      TDS :
-                    </label>
-                    <select
-                      className="border-2 border-border p-1 pl-3 rounded-md w-56"
-                      id="tds"
-                      name="tds"
-                      onChange={handleChange}
-                    >
-                      <option value="">Select TDS</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                    </select>
-                  </div>
-                  {/* Bill Amount */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="bill_amount" className="w-32 font-medium">
-                      Bill Amount :
-                    </label>
-                    <input
-                      type="text"
-                      id="bill_amount"
-                      name="bill_amount"
-                      placeholder="Enter Bill Amount"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {/* Paid Amount */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="paid_amount" className="w-32 font-medium">
-                      Paid Amount :
-                    </label>
-                    <input
-                      type="text"
-                      id="paid_amount"
-                      name="paid_amount"
-                      placeholder="Enter Paid Amount"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {/* Left Amount */}
-                  <div className="flex items-center gap-5">
-                    <label htmlFor="left_amount" className="w-32 font-medium">
-                      Left Amount :
-                    </label>
-                    <input
-                      type="text"
-                      id="left_amount"
-                      name="left_amount"
-                      placeholder="Enter Left Amount"
-                      className="border-2 border-border p-1 pl-3 rounded-md "
-                      onChange={handleChange}
-                    />
-                  </div>
+
+                <div className="bg-background h-fit p-6 flex gap-3 flex-col w-[350px]">
+                  <h2 className="font-semibold text-xl">Summary</h2>
+                  <p className="font-medium">Bill No: {bill.bill_no}</p>
+                    <p className="font-medium">Bill Date: {bill.bill_date}</p>
+                    <p className="font-medium">Vendor Vat: {bill.vat_number}</p>
+                    <p className="font-medium">Item Name: {bill.item_name}</p>
+                    <p className="font-medium">Unit Price: {bill.unit_price}</p>
+                    <p className="font-medium">Quantity: {bill.quantity}</p>
+                    <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
+                    <p className="font-medium">TDS: {bill.tds}</p>
+                    <p className="font-medium">Actual Amount: {bill.actual_amount}</p>
+                    <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
+                    <button className="bg-button py-2 rounded-md text-white mt-4">
+                      Save Changes
+                    </button>
                 </div>
               </div>
-              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end mr-14">
-                Save Changes
-              </button>
+
             </div>
           </form>
         </>

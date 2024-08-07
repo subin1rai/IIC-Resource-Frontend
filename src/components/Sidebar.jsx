@@ -11,6 +11,7 @@ import billRecord from "../assets/billRecord.svg";
 import issue from "../assets/issue.svg";
 import category from "../assets/category.svg";
 import vendor from "../assets/vendor.svg";
+import roles from "../assets/roles.png";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -121,18 +122,24 @@ const Sidebar = () => {
               Request
             </NavLink>
           </div>
+          <div className="item whitespace-nowrap">
+            <NavLink to="/roles" className={setActiveClass} >
+              <img src={roles} className="item-img" alt="" />
+              Manage Roles
+            </NavLink>
+          </div>
         </div>
       </div>
 
       <div className="sidebar-bottom">
         <div className="sidebar-items">
           {/* settings nav */}
-          <div className="item">
+          {/* <div className="item">
             <NavLink to="/settings" className={setActiveClass}>
               <img src={settings} className="item-img" alt="" />
               Settings
             </NavLink>
-          </div>
+          </div> */}
           {/* logout nav */}
           <div className="item">
             <NavLink to="/" onClick={handleLogout} className={setActiveClass}>

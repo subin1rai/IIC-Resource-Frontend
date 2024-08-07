@@ -70,6 +70,19 @@ export default function RecordsTable({ bills }) {
     setPage(0);
   };
 
+  const headerStyle = {
+    fontWeight: 600,
+    backgroundColor: "#f5f5f5",
+  };
+
+  const cellStyle = {
+    fontSize: "14px",
+    padding: "12px 16px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -165,7 +178,11 @@ export default function RecordsTable({ bills }) {
                   key={column.id}
                   align={column.align}
                   sortDirection={orderBy === column.id ? order : false}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    ...headerStyle,
+                    ...cellStyle,
+                  }}
                 >
                   <TableSortLabel
                     active={orderBy === column.id}

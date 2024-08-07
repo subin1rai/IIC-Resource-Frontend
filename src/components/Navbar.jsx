@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <>
       {/* navbar main container */}
-      <nav className="w-screen bg-white h-28 flex justify-around items-center px-10 shadow-sm gap-48">
+      <nav className="w-screen bg-white h-28 flex justify-around items-center shadow-md gap-40">
         <img className="" src={logo} />
         {/* Nav items */}
         <div className="flex justify-between items-center gap-20 text-xl font-normal text-black">

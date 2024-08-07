@@ -7,6 +7,7 @@ import payment from "../assets/user.svg";
 import Select from "react-select";
 import filterIcon from "../assets/filter.svg";
 import axios from "axios";
+import pending from "../assets/pending.png";
 
 const Payment = () => {
   const [payment, setPayment] = "";
@@ -29,8 +30,8 @@ const Payment = () => {
           <div className="bg-white w-[99.5%] flex flex-col rounded-xl  p-2 ">
             <h3 className="font-md text-xl ml-3">Summary</h3>
             <div className="flex justify-around ">
-              <div className="flex flex-col items-center justify-center gap-3 ">
-                <img src={payment} alt="" />
+              <div className="flex flex-col items-center justify-center gap-1 ">
+                <img className="w-8 h-8" src={pending} alt="" />
                 <h4>{payment}</h4>
                 <p>Total Pending Payment</p>
               </div>

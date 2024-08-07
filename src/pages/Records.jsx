@@ -6,12 +6,15 @@ import "../styles/records.css";
 import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
+import record from "../assets/billRecord.svg"
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import pending from "../assets/pending.png";
+import records from "../assets/records.png";
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -199,12 +202,38 @@ const Records = () => {
       <Sidebar />
       <div className="records-main">
         <Topbar />
+        {/* summary section */}
+        <div className="flex flex-col w-[85.5vw]  bg-white rounded-lg p-3 gap-3">
+            <h1 className="flex text-lg font-bold m-3">Bill Summary</h1>
+            <div className="flex justify-around">
+              {/* number of vendor summary */}
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img
+                  src={records}
+                  alt="number of bills"
+                  className="h-8 w-8"
+                />
+                <h4>{bills.length}</h4>
+                <p className="font-medium">Number of Records</p>
+              </div>
+              {/* number of  */}
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img
+                  src={pending}
+                  alt="number of bills"
+                  className="h-8 w-8"
+                />
+                <h4>5</h4>
+                <p className="font-medium">Pending payments</p>
+              </div>
+            </div>
+          </div>
         <div className="records-container">
           <div className="top">
             <div className="container-title">
               <p className="text-lg font-bold m-1">Bill Records</p>
             </div>
-            <div className=" flex justify-between gap-2 mr-3 mt-3">
+            <div className=" flex justify-between gap-3 mr-4 mt-3">
               <button
                 className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
@@ -230,10 +259,10 @@ const Records = () => {
           <form onSubmit={handleSubmit} className="addform">
             <div className="forms">
               <div className="left">
-                <div className="flex justify-between mb-3">
+                <div className="flex justify-between items-center mb-3">
                   <p className="title">Add Bill Details</p>
                   <img
-                    className="cursor-pointer p-3 "
+                    className="cursor-pointer  h-[2vh] w-[2vw]"
                     src={close}
                     alt="close icon"
                     onClick={closeAddBillForm}

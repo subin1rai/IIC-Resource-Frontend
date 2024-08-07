@@ -12,7 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { WrapText } from "@mui/icons-material";
 import addIcon from "../assets/addIcon.svg";
+import low from "../assets/lowstock.png";
 import removeIcon from "../assets/removeIcon.svg";
+import item from "../assets/item.png";
+import categoryIcon from "../assets/categoryno.png";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -93,6 +96,11 @@ const Inventory = () => {
       ...provided,
       padding: "2px 8px",
     }),
+  };
+
+  const headerStyle = {
+    fontWeight: 600,
+    backgroundColor: "#f5f5f5",
   };
 
   const displayAddPopup = () => {
@@ -190,6 +198,7 @@ const Inventory = () => {
           },
         });
 
+        console.log(response.data);
         setItems(response.data);
         setFilteredItems(response.data); // Initialize filtered items
 
@@ -274,17 +283,17 @@ const Inventory = () => {
             <h3 className="flex text-lg font-bold m-3">Overall Inventory</h3>
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img className="w-8 h-8" src={categoryIcon} alt="" />
                 <h4>{category.length}</h4>
                 <p className="font-medium">Number of categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img className="w-8 h-8" src={item} alt="" />
                 <h4>{items.length}</h4>
                 <p className="font-medium">Number of items</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img src={validVendor} alt="" />
+                <img className="w-8 h-8" src={low} alt="" />
                 <h4>
                   {
                     items.filter((item) => item.stockStatus === "Low Stock")
@@ -338,16 +347,16 @@ const Inventory = () => {
           onSubmit={handleSubmit}
           className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  rounded-md w-fit "
         >
-          <div className="flex justify-between items-center relative px-9 pt-9">
+          <div className="flex justify-between items-center relative overflow-hidden px-9 pt-9">
             <p className=" text-xl font-semibold ">Add Item</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-5 w-5"
               src={close}
               alt=""
               onClick={closeAddItemForm}
             />
           </div>
-          <div className="flex flex-col gap-10 p-9 max-h-[65vh] overflow-auto">
+          <div className="flex flex-col gap-10 p-9 max-h-[70vh] overflow-auto">
             <div className="flex flex-col gap-6  justify-between  ">
               <div className="flex justify-between gap-16 items-center h-fit w-fit">
                 <label className="w-44 " htmlFor="item_name">

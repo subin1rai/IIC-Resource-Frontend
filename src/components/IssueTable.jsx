@@ -123,6 +123,19 @@ export default function InventoryTable() {
     [rows, order, orderBy, page, rowsPerPage]
   );
 
+  const cellStyle = {
+    fontSize: "14px",
+    padding: "12px 16px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
+  const headerStyle = {
+    fontWeight: 600,
+    backgroundColor: "#f5f5f5",
+  };
+
   return (
     <Paper
       sx={{
@@ -140,7 +153,11 @@ export default function InventoryTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    ...headerStyle,
+                    ...cellStyle,
+                  }}
                   sortDirection={orderBy === column.id ? order : false}
                 >
                   <TableSortLabel

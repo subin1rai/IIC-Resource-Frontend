@@ -24,6 +24,11 @@ const SpecificVendor = () => {
     payment_status: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [dialogboxVisibilty, setDialogboxVisibility] = useState(false);
+
+
+
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
     vat_number: "",
@@ -35,9 +40,13 @@ const SpecificVendor = () => {
   const { vendor_id } = useParams();
 
   const formatDate = (dateString) => {
-    if (!dateString) return "";
+    if (!dateString) return "--";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0];
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   const openVendorDetailsForm = () => {
@@ -92,6 +101,7 @@ const SpecificVendor = () => {
   useEffect(() => {
     const fetchSingleVendor = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `http://localhost:8898/api/vendor/${vendor_id}`,
           {
@@ -100,8 +110,9 @@ const SpecificVendor = () => {
             },
           }
         );
-
+        console.log(response);
         setVendor(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }
@@ -110,7 +121,6 @@ const SpecificVendor = () => {
     fetchSingleVendor();
   }, [vendor_id]);
 
-  console.log(vendor);
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
       <Sidebar />
@@ -135,93 +145,102 @@ const SpecificVendor = () => {
                 className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
               >
-                {" "}
                 Edit Details
               </button>
               <button
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
-                onClick={handleBlackList}
+                onClick={() => setDialogboxVisibility(true)}
+
               >
                 Add to Blacklist
               </button>
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
-
-          <div className="flex justify-between mt-5 w-[75vw] ml-12">
-            <div className="flex flex-col gap-5">
-              <p className="font-medium text-[#6D6E70]">
-                VAT Number:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.vat_number || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                payment Duration:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.payment_duration || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Paid Amount:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.paid_amount || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Vendor Contact:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.vendor_contact || "--"}
-                </span>
-              </p>
+          {!loading ? (
+            <div className="flex justify-between mt-5 w-[75vw] ml-12">
+              <div className="flex flex-col gap-5">
+                <p className="font-medium text-[#6D6E70]">
+                  VAT Number:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.vat_number || "--"}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  payment Duration:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.payment_duration || "--"}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Paid Amount:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {Array.isArray(vendor?.bills) && vendor.bills.length > 0
+                      ? vendor.bills
+                        .reduce(
+                          (sum, bill) =>
+                            sum + (Number(bill.paid_amount) || 0),
+                          0
+                        )
+                        .toFixed(2)
+                      : "--"}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Vendor Contact:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.vendor_contact || "--"}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-col gap-5">
+                <p className="font-medium text-[#6D6E70]">
+                  Last Purchase Date:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {formatDate(vendor.last_purchase_date)}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Purchase Amount:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.total_amount
+                      ? Number(vendor.total_amount).toFixed(2)
+                      : "--"}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Last Paid Date:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {formatDate(vendor.last_paid)}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Payment Status:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.pending_payment > 0 ? "Pending" : "Clear"}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-col gap-5">
+                <p className="font-medium text-[#6D6E70]">
+                  Pending Payment:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {vendor.pending_payment
+                      ? Number(vendor.pending_payment).toFixed(2)
+                      : "--"}
+                  </span>
+                </p>
+                <p className="font-medium text-[#6D6E70]">
+                  Next Payment Date:{" "}
+                  <span className="font-medium pl-3 text-black">
+                    {formatDate(vendor.next_payment_date)}
+                  </span>
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col gap-5">
-              <p className="font-medium text-[#6D6E70]">
-                Last Purchase Date:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {formatDate(vendor.last_purchase_date) || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Purchase Amount:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.purchase_amount || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Last Paid Date:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.last_paid || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Payment Status:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.payment_status || "--"}
-                </span>
-              </p>
-            </div>
-            <div className="flex flex-col gap-5">
-              <p className="font-medium text-[#6D6E70]">
-                Total Payment:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.total_payment || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Pending Payment:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.pending_payment || "--"}
-                </span>
-              </p>
-              <p className="font-medium text-[#6D6E70]">
-                Next Payment Date:{" "}
-                <span className="font-medium pl-3 text-black">
-                  {vendor.next_payment_date || "--"}
-                </span>
-              </p>
-            </div>
-          </div>
+          ) : (
+            "loading..."
+          )}
         </div>
         <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md">
           <div className="flex justify-between mb-7">
@@ -241,6 +260,16 @@ const SpecificVendor = () => {
         </div>
       </div>
 
+      {dialogboxVisibilty && (
+        <>
+          <div className="h-screen w-screen bg-overlay absolute z-20"
+          onClick={() => setDialogboxVisibility(false)}>
+            <div className="bg-white flex absolute top-1/2  left-1/2 items-center transform -translate-x-1/2 -translate-y-1/2 p-9 rounded">
+              <p></p>
+            </div>
+          </div>
+        </>
+      )}
       {addFormVisibility && (
         <>
           <div
@@ -316,7 +345,6 @@ const SpecificVendor = () => {
         </>
       )}
     </div>
-
   );
 };
 

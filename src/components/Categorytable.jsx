@@ -39,7 +39,7 @@ export default function Ctable({ category, setCategory }) {
     } catch (error) {
       console.error("Error deleting category:", error);
     }
-   
+
   };
 
   const handleShowModal = (categoryId) => {

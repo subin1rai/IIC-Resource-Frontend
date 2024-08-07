@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import SettingsSide from "../components/SettingsSide";
+
 import axios from "axios";
 
 const SettingRole = () => {
@@ -47,7 +47,6 @@ const SettingRole = () => {
         <div className="bg-white w-[85.5vw] mx-auto h-full flex p-5 rounded-md relative">
           <div className="flex gap-4 w-full">
             <div className="flex flex-col gap-12">
-              <SettingsSide />
             </div>
             <div className="flex flex-col w-full">
               <div className="head px-10 pt-10 flex justify-between">
