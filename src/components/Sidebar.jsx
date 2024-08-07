@@ -20,6 +20,8 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const role = localStorage.getItem("role");
+
   const checkSpecificRoute = (pathname, parentPath) => {
     const specificRoutes = ["/specificItem", "/specificVendor"];
     return specificRoutes.some(
@@ -109,12 +111,12 @@ const Sidebar = () => {
             </NavLink>
           </div>
           {/* Payment nav */}
-          <div className="item">
+          {/* <div className="item">
             <NavLink to="/payment" className={setActiveClass}>
               <img src={payment} className="item-img" alt="" />
               Payment
             </NavLink>
-          </div>
+          </div> */}
           {/* Request nav */}
           <div className="item">
             <NavLink to="/request" className={setActiveClass}>
@@ -122,12 +124,17 @@ const Sidebar = () => {
               Request
             </NavLink>
           </div>
-          <div className="item whitespace-nowrap">
-            <NavLink to="/roles" className={setActiveClass} >
-              <img src={roles} className="item-img" alt="" />
-              Manage Roles
-            </NavLink>
-          </div>
+
+          {role === "superadmin" ? (
+            <div className="item whitespace-nowrap">
+              <NavLink to="/roles" className={setActiveClass}>
+                <img src={roles} className="item-img" alt="" />
+                Manage Roles
+              </NavLink>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
