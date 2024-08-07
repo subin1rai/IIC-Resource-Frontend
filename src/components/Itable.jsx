@@ -19,6 +19,20 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 70 },
 ];
 
+
+const cellStyle = {
+  fontSize: "14px",
+  padding: "12px 16px",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
+
+const headerStyle = {
+  fontWeight: 600,
+  backgroundColor: "#f5f5f5",
+};
+
 export default function Itable({ itemCategory, setItemCategory }) {
   
   const token = localStorage.getItem("token");
@@ -80,13 +94,16 @@ export default function Itable({ itemCategory, setItemCategory }) {
       >
         <TableContainer sx={{ maxHeight: maxHeight }}>
           <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
-            <TableHead>
+          <TableHead className="z-0">
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
-                    align={column.align}
-                    sx={{ width: column.maxWidth, padding: "8px 14px" }}
+                    style={{
+                      minWidth: column.minWidth,
+                      ...headerStyle,
+                      ...cellStyle,
+                    }}
                   >
                     {column.label}
                   </TableCell>
