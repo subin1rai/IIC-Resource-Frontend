@@ -98,6 +98,11 @@ const Inventory = () => {
     }),
   };
 
+  const headerStyle = {
+    fontWeight: 600,
+    backgroundColor: "#f5f5f5",
+  };
+
   const displayAddPopup = () => {
     setAddFormVisibility(true);
   };
