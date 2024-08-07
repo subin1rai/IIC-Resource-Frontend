@@ -19,6 +19,8 @@ const Topbar = () => {
   const afternoonStart = 12;
   const eveningStart = 17;
 
+  const userName = localStorage.getItem("user_name");
+
   let greeting;
   if (currentHour >= morningStart && currentHour < afternoonStart) {
     greeting = "Good Morning";
@@ -113,26 +115,35 @@ const Topbar = () => {
   });
 
   const handleSingleState = async (notification_id) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8898/api/singleNotification/${notification_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const notificationToUpdate = notification.find(
+      (notify) => notify.notification_id === notification_id && !notify.state
+    );
 
-      setNotification((prevNotifications) =>
-        prevNotifications.map((notify) =>
-          notify.notification_id === notification_id
-            ? { ...notify, state: false }
-            : notify
-        )
-      );
-      setNotReadCount((prevCount) => prevCount - 1);
-    } catch (error) {
-      console.log(error);
+    if (notificationToUpdate) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8898/api/singleNotification/${notification_id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setNotification((prevNotifications) =>
+            prevNotifications.map((notify) =>
+              notify.notification_id === notification_id
+                ? { ...notify, state: true } // Update the state to true if successfully updated
+                : notify
+            )
+          );
+          setNotReadCount((prevCount) => prevCount - 1);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -144,7 +155,9 @@ const Topbar = () => {
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
-        <p className="font-semibold text-xl">{greeting}, Admin</p>
+        <p className="font-semibold text-xl">
+          {greeting}, {userName}
+        </p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
         <button
@@ -230,6 +243,11 @@ const Topbar = () => {
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
+      )}
+      {profilePopUp && (
+        <div className="">
+
+        </div>
       )}
 
       <div className="absolute right-0">
