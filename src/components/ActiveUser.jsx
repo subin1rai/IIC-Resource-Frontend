@@ -39,7 +39,7 @@ const ActiveUser = ({ users }) => {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ minWidth:700 }}>
+        <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 700 }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -74,7 +74,12 @@ const ActiveUser = ({ users }) => {
                 <TableCell className="px-10 py-4">{user.role}</TableCell>
                 <TableCell className="px-10 py-4">
                   <button>
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                    <details>
+                      <summary>
+                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                      </summary>
+                      <span>Set Inactive</span>
+                    </details>
                   </button>
                 </TableCell>
               </TableRow>

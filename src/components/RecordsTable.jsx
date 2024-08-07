@@ -55,7 +55,7 @@ const columns = [
 
 export default function RecordsTable({ bills }) {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(12);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
   const [billsData, setBillsData] = useState(bills || []);

@@ -40,7 +40,7 @@ const Login = () => {
         response.data.role === "superadmin"
       ) {
         navigate("/dashboard");
-      } else {
+      } else if (response.data.role === "user") {
         navigate("/userHome");
       }
     } catch (error) {
