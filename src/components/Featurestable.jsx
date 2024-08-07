@@ -12,10 +12,24 @@ import deleteIcon from "../assets/deleteIcon.svg";
 
 import "/src/App.css";
 
+
+const cellStyle = {
+    
+  fontSize: "14px",
+  padding: "12px 16px",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
+
+const headerStyle = {
+  fontWeight: 600,
+  backgroundColor: "#f5f5f5",
+};
 const columns = [
-  { id: "sn", label: "SN", width: 70 },
-  { id: "feature_name", label: "Feature Name", width: 40 },
-  { id: "action", label: "Action", width: 150 },
+  { id: "sn", label: "SN", width: 120  },
+  { id: "feature_name", label: "Feature Name", width: 70 },
+  { id: "action", label: "Action", width: 225 },
 ];
 
 export default function Ftable({ feature = [], setFeature }) {
@@ -78,13 +92,17 @@ export default function Ftable({ feature = [], setFeature }) {
       >
         <TableContainer sx={{ maxHeight: maxHeight }}>
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
+          <TableHead className="z-0">
+            
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    sx={{ width: column.width, padding: "8px 14px" }}
+                    style={{
+                      minWidth: column.minWidth,
+                      ...headerStyle,
+                      ...cellStyle,}}
                   >
                     {column.label}
                   </TableCell>
