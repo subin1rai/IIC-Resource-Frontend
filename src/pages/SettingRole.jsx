@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import user from "../assets/active.png";
 
 import axios from "axios";
 
@@ -43,6 +44,23 @@ const SettingRole = () => {
       <Sidebar /> {/* Rendering Sidebar component */}
       <div className="flex flex-col flex-grow gap-3">
         <Topbar /> {/* Rendering Topbar component */}
+        <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
+          <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
+            <h3 className="flex text-lg font-bold m-3">User Summary</h3>
+            <div className="flex justify-around">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={user} alt="" />
+                <h4>5</h4>
+                <p className="font-medium">Number of Users</p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={user} alt="" />
+                <h4>5</h4>
+                <p className="font-medium">Number of Active Users</p>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Start of top container */}
         <div className="bg-white w-[85.5vw] mx-auto h-full flex p-5 rounded-md relative">
           <div className="flex gap-4 w-full">

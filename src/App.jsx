@@ -20,6 +20,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import SettingRole from "./pages/SettingRole";
 import Notify from "./pages/Notify";
+import EditProfile from "./pages/EditProfile";
 import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
@@ -55,6 +56,7 @@ function App() {
                 <Route path="/records" element={<Records />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
+                <Route path="/editProfile" element={<EditProfile/>} />
                 <Route
                   path="/specificVendor/:vendor_id"
                   element={<SpecificVendor />}
