@@ -171,8 +171,6 @@ const Inventory = () => {
         }
       );
 
-      dispatch(addItem(response.data.newItem));
-
       toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
       setFilterFormVisibility(false);
