@@ -5,6 +5,9 @@ import close from "../assets/close.svg";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
 import IssueTable from "../components/IssueTable";
+import issuesno from "../assets/issuesno.png";
+import pendingreq from "../assets/pendingreq.png";
+
 const Issue = () => {
   const [issue, setIssue] = "";
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -23,7 +26,23 @@ const Issue = () => {
       <div className="flex flex-col gap-4 mx-auto  items-center">
         <Topbar />
 
-        {/* Items table */}
+        <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
+          <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
+            <h3 className="flex text-lg font-bold m-3">Issue Summary</h3>
+            <div className="flex justify-around">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={issuesno} alt="" />
+                <h4>5</h4>
+                <p className="font-medium">Number of categories</p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <img className="w-8 h-8" src={pendingreq} alt="" />
+                <h4>5</h4>
+                <p className="font-medium">Number of items</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="flex flex-col w-[85.5vw] bg-white p-6 rounded">
           <div className="flex justify-between w-fill">

@@ -5,7 +5,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
+import email from "../assets/email.png";
+import phone from "../assets/phone.png";
+import profile from "../assets/profile.png";
 import { format } from "date-fns";
+import {useNavigate} from "react-router-dom";
 
 const Topbar = () => {
   const currentTime = new Date();
@@ -34,7 +38,12 @@ const Topbar = () => {
     setNotificationPopUp(true);
   };
 
+  
+  const navigate = useNavigate();
 
+  const openEditProfile = () => {
+    navigate('/editProfile');
+  };
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -174,19 +183,38 @@ const Topbar = () => {
             </span>
           )}
         </button>
-        <nav>
-          <details className="relative ">
+       
+          <details className="relative z-50 ">
               <summary className="list-none">
               <img className="profile" src={user} alt="" />
               </summary>
-                <ul className="absolute right-[98%] bg-white w-fit h-fit border-[1px] border-neutral-500 rounded p-4 ">
-                  <img className="rounded-full" src={user} alt =""/>
-                <li className="p-2">Mahima Gurung</li>
-                <li className ="p-2">grgmahima@gmail.com</li>
-                <li className ="p-2">9800000000</li>
+                <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-8 ">
+                  <div className="flex justify-between items-center ">
+                  <img className="rounded-full" src={profile} alt =""/>
+                  <div className="flex flex-col">
+                <h1 className="font-medium text-xl text-nowrap ">Mahima Gurung</h1>
+                <h3 className="font-normal text-l ">Mahima</h3>
+                </div>
+                </div>
+                <hr className="border-[1px] border-neutral-300 m-2"></hr>
+                <div className="flex flex-col px-4">
+                  <div className="flex items-center gap-2">
+                  <img className="w-6 h-6" src={email} alt ="" />
+                <li className="py-2 text-blue-600">grgmahima@gmail.com</li>
+                </div>
+                <div className="flex items-center gap-2">
+                <img className="w-6 h-6" src={phone} alt =""/>
+                <li className="py-2 text-blue-600">9800000000</li>
+                </div>
+                <div className="flex justify-center">
+                <button className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white " onClick={openEditProfile}>
+                  Edit profile 
+                </button>
+                </div>
+                </div>
                 </ul>
           </details>
-        </nav>
+      
       </div>
       {notificationPopUp && (
         <>
@@ -243,11 +271,6 @@ const Topbar = () => {
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
-      )}
-      {profilePopUp && (
-        <div className="">
-
-        </div>
       )}
 
       <div className="absolute right-0">
