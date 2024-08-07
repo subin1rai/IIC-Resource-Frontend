@@ -20,6 +20,8 @@ const Topbar = () => {
   const afternoonStart = 12;
   const eveningStart = 17;
 
+  const userName = localStorage.getItem("user_name");
+
   let greeting;
   if (currentHour >= morningStart && currentHour < afternoonStart) {
     greeting = "Good Morning";
@@ -153,7 +155,9 @@ const Topbar = () => {
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
       <div className="flex pl-5">
-        <p className="font-semibold text-xl">{greeting}, Admin</p>
+        <p className="font-semibold text-xl">
+          {greeting}, {userName}
+        </p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
         <button
@@ -228,11 +232,7 @@ const Topbar = () => {
           ></div>
         </>
       )}
-      {profilePopUp && (
-        <div className="">
-
-        </div>
-      )}
+      {profilePopUp && <div className=""></div>}
 
       <div className="absolute right-0">
         <ToastContainer pauseOnHover theme="light" className="relative" />
