@@ -280,6 +280,8 @@ const Category = () => {
         </div>
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
+
+        
         <div className="w-[87vw] flex flex-wrap justify-between gap-5 ">
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
             <div className="flex justify-between items-center mb-6">
