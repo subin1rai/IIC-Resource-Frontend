@@ -131,6 +131,19 @@ export default function VendorTable({ vendors }) {
     navigate(`/specificVendor/${vendorId}`);
   };
 
+  const cellStyle = {
+    fontSize: "14px",
+    padding: "12px 16px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
+  const headerStyle = {
+    fontWeight: 600,
+    backgroundColor: "#f5f5f5",
+  };
+
   return (
     <Paper
       sx={{
@@ -148,7 +161,11 @@ export default function VendorTable({ vendors }) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    ...headerStyle,
+                    ...cellStyle,
+                  }}
                 >
                   <TableSortLabel
                     active={orderBy === column.id}
@@ -175,8 +192,8 @@ export default function VendorTable({ vendors }) {
                     {column.format && vendor && vendor[column.id] !== undefined
                       ? column.format(vendor[column.id])
                       : vendor && vendor[column.id] !== undefined
-                      ? vendor[column.id]
-                      : "N/A"}
+                        ? vendor[column.id]
+                        : "N/A"}
                   </TableCell>
                 ))}
               </TableRow>
