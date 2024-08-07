@@ -11,7 +11,6 @@ const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
-  const [profilePopUp, setProfilePopUp] = useState(false);
   const [notification, setNotification] = useState([]);
   const [notREadCount, setNotReadCount] = useState(0);
 
@@ -35,9 +34,8 @@ const Topbar = () => {
     setNotificationPopUp(true);
   };
 
-  // const profilePopUp = () => {
-  //     setProfilePopUp(true);
-  // }
+
+
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -57,6 +55,8 @@ const Topbar = () => {
       document.head.removeChild(style);
     };
   }, []);
+
+ 
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -174,7 +174,19 @@ const Topbar = () => {
             </span>
           )}
         </button>
-        <img className="profile" src={user} alt="" />
+        <nav>
+          <details className="relative ">
+              <summary className="list-none">
+              <img className="profile" src={user} alt="" />
+              </summary>
+                <ul className="absolute right-[98%] bg-white w-fit h-fit border-[1px] border-neutral-500 rounded p-4 ">
+                  <img className="rounded-full" src={user} alt =""/>
+                <li className="p-2">Mahima Gurung</li>
+                <li className ="p-2">grgmahima@gmail.com</li>
+                <li className ="p-2">9800000000</li>
+                </ul>
+          </details>
+        </nav>
       </div>
       {notificationPopUp && (
         <>
@@ -232,7 +244,11 @@ const Topbar = () => {
           ></div>
         </>
       )}
-      {profilePopUp && <div className=""></div>}
+      {profilePopUp && (
+        <div className="">
+
+        </div>
+      )}
 
       <div className="absolute right-0">
         <ToastContainer pauseOnHover theme="light" className="relative" />
