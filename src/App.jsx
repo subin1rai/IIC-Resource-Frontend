@@ -32,7 +32,6 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-
           {/* Public routes */}
 
           <Route path="/" element={<Login />} />
@@ -46,9 +45,8 @@ function App() {
 
           {/* Protected routes */}
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
-            {userType === "admin" ? (
+            {userType === "admin" || userType === "superadmin" ? (
               <>
-              
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/issue" element={<Issue />} />
@@ -56,7 +54,7 @@ function App() {
                 <Route path="/vendors" element={<Vendor />} />
                 <Route path="/records" element={<Records />} />
                 <Route path="/payment" element={<Payment />} />
-                <Route path="/roles" element={<SettingRole />}/>
+                <Route path="/roles" element={<SettingRole />} />
                 <Route
                   path="/specificVendor/:vendor_id"
                   element={<SpecificVendor />}
