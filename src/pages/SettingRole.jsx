@@ -35,9 +35,9 @@ const SettingRole = () => {
             Authorization: `Bearer ${Token}`,
           },
         });
-        console.log(response.data);
-        if (response.data && response.data.user) {
-          setUsers(response.data.user);
+        console.log(response.data.users);
+        if (response.data && response.data.users) {
+          setUsers(response.data.users);
         } else {
           setError("Unexpected response structure");
         }
@@ -107,7 +107,6 @@ const SettingRole = () => {
           <h3 className="font-bold text-lg">Roles</h3>
           <div className="flex items-center justify-between ">
             <p className="text-blue-700">You can manage user roles here.</p>
-
           </div>
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 

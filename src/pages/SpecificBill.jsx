@@ -278,13 +278,17 @@ const SpecificBill = () => {
             onSubmit={handleSubmit}
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
           >
-
             {/* main div */}
             <div className="flex flex-col gap-7">
               {/* heading div */}
               <div className="flex justify-between ">
                 <p className="font-semibold text-2xl">Edit Bill Details</p>
-                <img src={close} alt="close" className="h-5 w-5 cursor-pointer" onClick={closeEditBillDetailsForm} />
+                <img
+                  src={close}
+                  alt="close"
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={closeEditBillDetailsForm}
+                />
               </div>
               {/* form div */}
               <div className="flex gap-20">
@@ -305,13 +309,14 @@ const SpecificBill = () => {
                       />
                     </div>
                     <div className="flex flex-col gap-3">
-                      <label htmlFor="bill_date" className="font-medium">Bill Date:</label>
+                      <label htmlFor="bill_date" className="font-medium">
+                        Bill Date:
+                      </label>
                       <NepaliDatePicker
                         inputClassName="form-control"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
                         value={date}
                         onChange={handleChange}
-
                         options={{ calenderLocale: "en", valueLocale: "en" }}
                       />
                     </div>
@@ -350,21 +355,21 @@ const SpecificBill = () => {
                     <label htmlFor="item_name" className="font-medium">
                       Item Name:
                     </label>
-                      <Select
-                        options={items.map((item) => ({
-                          value: item.item_name,
-                          label: item.item_name,
-                        }))}
-                        onChange={(option) =>
-                          handleSelectChange(option, { name: "item_name" })
-                        }
-                        value={
-                          bill.item_name
-                            ? { value: bill.item_name, label: bill.item_name }
-                            : null
-                        }
-                        placeholder="Select Item"
-                      />
+                    <Select
+                      options={items.map((item) => ({
+                        value: item.item_name,
+                        label: item.item_name,
+                      }))}
+                      onChange={(option) =>
+                        handleSelectChange(option, { name: "item_name" })
+                      }
+                      value={
+                        bill.item_name
+                          ? { value: bill.item_name, label: bill.item_name }
+                          : null
+                      }
+                      placeholder="Select Item"
+                    />
                   </div>
                   {/* 4th row */}
                   <div className="flex gap-14">
@@ -458,27 +463,27 @@ const SpecificBill = () => {
                       />
                     </div>
                   </div>
-
                 </div>
 
                 <div className="bg-background h-fit p-6 flex gap-3 flex-col w-[350px]">
                   <h2 className="font-semibold text-xl">Summary</h2>
                   <p className="font-medium">Bill No: {bill.bill_no}</p>
-                    <p className="font-medium">Bill Date: {bill.bill_date}</p>
-                    <p className="font-medium">Vendor Vat: {bill.vat_number}</p>
-                    <p className="font-medium">Item Name: {bill.item_name}</p>
-                    <p className="font-medium">Unit Price: {bill.unit_price}</p>
-                    <p className="font-medium">Quantity: {bill.quantity}</p>
-                    <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
-                    <p className="font-medium">TDS: {bill.tds}</p>
-                    <p className="font-medium">Actual Amount: {bill.actual_amount}</p>
-                    <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
-                    <button className="bg-button py-2 rounded-md text-white mt-4">
-                      Save Changes
-                    </button>
+                  <p className="font-medium">Bill Date: {bill.bill_date}</p>
+                  <p className="font-medium">Vendor Vat: {bill.vat_number}</p>
+                  <p className="font-medium">Item Name: {bill.item_name}</p>
+                  <p className="font-medium">Unit Price: {bill.unit_price}</p>
+                  <p className="font-medium">Quantity: {bill.quantity}</p>
+                  <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
+                  <p className="font-medium">TDS: {bill.tds}</p>
+                  <p className="font-medium">
+                    Actual Amount: {bill.actual_amount}
+                  </p>
+                  <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
+                  <button className="bg-button py-2 rounded-md text-white mt-4">
+                    Save Changes
+                  </button>
                 </div>
               </div>
-
             </div>
           </form>
         </>
@@ -488,27 +493,3 @@ const SpecificBill = () => {
 };
 
 export default SpecificBill;
-
-{
-  /* <label htmlFor="bill_date">Bill Date:</label>
-                  <NepaliDatePicker
-                    inputClassName="form-control"
-                    className="border-2 border-gray p-1 pl-3 rounded-md "
-                    value={date}
-                    onChange={handleChange}
-
-                    options={{ calenderLocale: "en", valueLocale: "en" }}
-                  />
-                  <label htmlFor="Voucher_no">
-                    Voucher No. :
-                  </label>
-                  <input
-                    type="text"
-                    id="voucher_no"
-                    name="voucher_no"
-                    placeholder="Enter Voucher Number"
-                    className="border-2 border-gray p-1 pl-3 rounded-md "
-                    onChange={handleChange}
-
-                  /> */
-}

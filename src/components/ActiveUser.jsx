@@ -66,11 +66,9 @@ const ActiveUser = ({ users }) => {
                 key={user.id}
                 className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
               >
-                <TableCell className="px-10 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  {index + 1}
-                </TableCell>
                 <TableCell className="px-10 py-4">{user.user_name}</TableCell>
                 <TableCell className="px-10 py-4">{user.user_email}</TableCell>
+                <TableCell className="px-10 py-4">{user.department}</TableCell>
                 <TableCell className="px-10 py-4">{user.role}</TableCell>
 
                 <TableCell className="px-10 py-4 ">
@@ -81,7 +79,6 @@ const ActiveUser = ({ users }) => {
                       </summary>
                       <span>Set Inactive</span>
                     </details>
-
                   </button>
                 </TableCell>
               </TableRow>

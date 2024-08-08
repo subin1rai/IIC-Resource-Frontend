@@ -70,7 +70,7 @@ export default function RecordsTable({ bills }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("bill_ID");
-  const [billsData, setBillsData] = useState(bills || []);
+
   const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
@@ -94,27 +94,6 @@ export default function RecordsTable({ bills }) {
     overflow: "hidden",
     textOverflow: "ellipsis",
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const getAllBills = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/bill", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBillsData(response.data.bills || []);
-      } catch (error) {
-        console.log(error);
-        setBillsData([]);
-      }
-    };
-    if (billsData.length === 0) {
-      getAllBills();
-    }
-  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -162,10 +141,10 @@ export default function RecordsTable({ bills }) {
   const visibleRows = React.useMemo(
     () =>
       stableSort(
-        billsData.filter((bill) => bill != null),
+        bills.filter((bill) => bill != null),
         getComparator(order, orderBy)
       ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [billsData, order, orderBy, page, rowsPerPage]
+    [bills, order, orderBy, page, rowsPerPage]
   );
 
   const handleRowClick = (bill_ID) => {
@@ -250,7 +229,7 @@ export default function RecordsTable({ bills }) {
       <TablePagination
         rowsPerPageOptions={[10]}
         component="div"
-        count={billsData.filter((bill) => bill != null).length}
+        count={bills.filter((bill) => bill != null).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

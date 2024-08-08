@@ -8,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 const columns = [
-
   { id: "user_name", label: "User Name", maxWidth: 70, align: "center" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "center" },
   { id: "department", label: "Department", maxWidth: 70, align: "center" },
@@ -16,7 +15,6 @@ const columns = [
 ];
 
 const cellStyle = {
-    
   fontSize: "14px",
   padding: "12px 16px",
   whiteSpace: "nowrap",
@@ -40,13 +38,12 @@ const AllUser = ({ users }) => {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ minWidth:700 }}>
-        <TableHead className="z-0">
+        <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 700 }}>
+          <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  
                   style={{
                     minWidth: column.minWidth,
                     ...headerStyle,
@@ -60,17 +57,10 @@ const AllUser = ({ users }) => {
           </TableHead>
           <TableBody>
             {users.map((user, index) => (
-              <TableRow
-                hover
-                role="checkbox"
-                tabIndex={-1}
-                key={user.id}
-            
-              >
-                
+              <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                 <TableCell className="">{user.user_name}</TableCell>
                 <TableCell className="">{user.user_email}</TableCell>
-                <TableCell className="">{user.role}</TableCell>
+                <TableCell className="">{user.department}</TableCell>
                 <TableCell className="">
                   <button>
                     <i className="fa-solid fa-ellipsis-vertical"></i>
