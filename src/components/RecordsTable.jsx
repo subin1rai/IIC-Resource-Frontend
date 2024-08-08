@@ -213,7 +213,20 @@ export default function RecordsTable({ bills }) {
                       }
 
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{
+                            color:
+                              column.id === "payment_status" &&
+                              value === "Pending"
+                                ? "orange"
+                                : column.id === "payment_status" &&
+                                  value === "Complete"
+                                ? "green"
+                                : "inherit",
+                          }}
+                        >
                           {column.format && value != null
                             ? column.format(value)
                             : value ?? "N/A"}
