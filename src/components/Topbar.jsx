@@ -194,7 +194,7 @@ const Topbar = () => {
           )}
         </button>
 
-        <details className="relative z-50 ">
+        <details className="relative  ">
           <summary className="list-none cursor-pointer ">
             <div className="h-8 w-8 rounded-full bg-red-600 flex justify-center items-center  select-none text-white">
               {initials}

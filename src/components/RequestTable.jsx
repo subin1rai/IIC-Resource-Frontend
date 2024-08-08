@@ -51,7 +51,7 @@ const RequestTable = () => {
     }),
     container: (provided) => ({
       ...provided,
-      width: "300px",
+      width: "250px",
       color: "black",
     }),
     valueContainer: (provided) => ({
@@ -240,7 +240,7 @@ const RequestTable = () => {
       {acceptFormVisibility && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit"
+          className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-[730px]"
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
         >
           <div className="flex flex-col gap-7">
@@ -264,7 +264,8 @@ const RequestTable = () => {
                     Item: <span className="text-neutral-600">Copy</span>
                   </p>
                   <p>
-                    Department: <span className="text-neutral-600">IT Department</span>
+                    Department:{" "}
+                    <span className="text-neutral-600">IT Department</span>
                   </p>
                   <p>
                     Quantity: <span className="text-neutral-600">24</span>
@@ -272,10 +273,12 @@ const RequestTable = () => {
                 </div>
                 <div className="flex flex-col gap-2 ">
                   <p>
-                    Requested By: <span className="text-neutral-600">Mr.Projesh Basnet</span>
+                    Requested By:{" "}
+                    <span className="text-neutral-600">Mr.Projesh Basnet</span>
                   </p>
                   <p>
-                    Requested To: <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
+                    Requested To:{" "}
+                    <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
                   </p>
                 </div>
               </div>
@@ -289,54 +292,62 @@ const RequestTable = () => {
                   </label>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="quantity" className="font-semibold text-md pl-64 ml-2">
+                  <label
+                    htmlFor="quantity"
+                    className="font-semibold text-md pl-64 ml-2"
+                  >
                     Quantity
                   </label>
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex">
-                {itemFields.map((field, index) => (
-                  <div key={index} className="flex flex-col gap-5 items-end">
-                    <div className="flex">
-                    <Select
-                      options={items}
-                      onChange={(option) => handleItemChange(index, 'item', option)}
-                      value={items.find(option => option === field.item)}
-                      placeholder="Select Item"
-                      styles={customStyles}
-                      className="w-[14vw]"
-                    />
-                    <input
-                      className="border-2 rounded border-border px-3 py-2 w-[14vw]"
-                      type="number"
-                      placeholder="Enter a quantity"
-                      name={`quantity-${index}`}
-                      id={`quantity-${index}`}
-                      value={field.quantity}
-                      onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                    />
+              <div className="flex items-end gap-2">
+                <div className="flex flex-col gap-6">
+                  {itemFields.map((field, index) => (
+                    <div key={index} className="flex  gap-5 items-center">
+                      {/* <div className="flex gap-12 bg-red-600  "> */}
+                      <Select
+                        options={items}
+                        onChange={(option) =>
+                          handleItemChange(index, "item", option)
+                        }
+                        value={items.find((option) => option === field.item)}
+                        placeholder="Select Item"
+                        styles={customStyles}
+                      />
+                      <input
+                        className="border-2 rounded border-border px-3 py-2 w-[14vw]"
+                        type="number"
+                        placeholder="Enter a quantity"
+                        name={`quantity-${index}`}
+                        id={`quantity-${index}`}
+                        value={field.quantity}
+                        onChange={(e) =>
+                          handleItemChange(index, "quantity", e.target.value)
+                        }
+                      />
+                      {/* </div> */}
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeItemField(index)}
+                          className="flex items-center"
+                        >
+                          <img src={remove} alt="Remove" className="h-7 w-7" />
+                        </button>
+                      )}
                     </div>
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => removeItemField(index)}
-                        className="flex items-center"
-                      >
-                        <img src={remove} alt="Remove" className="h-7 w-7" />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={addItemField}
-                  className="flex items-center mt-2"
-                >
-                  <img src={add} alt="Add" className="h-7 w-7 ml-3" />
-                </button>
+                  ))}
+                </div>
+                {itemFields.length >= 3 ? null : (
+                  <button
+                    type="button"
+                    onClick={addItemField}
+                    className="flex items-center mb-2"
+                  >
+                    <img src={add} alt="Add" className="h-7 w-7 ml-3" />
+                  </button>
+                )}
               </div>
-            </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
               <label className="w-40 font-semibold text-md" htmlFor="remarks">
