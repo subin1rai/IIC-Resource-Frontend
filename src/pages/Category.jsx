@@ -29,8 +29,6 @@ const Category = () => {
 
   const token = localStorage.getItem("token");
 
-
-
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -153,7 +151,6 @@ const Category = () => {
     } catch (error) {
       console.error("Error deleting feature:", error);
     }
-
   };
 
   const handleSubmit = async (event) => {
@@ -168,6 +165,8 @@ const Category = () => {
           },
         }
       );
+      console.log(response);
+      setCategory((prev) => [...prev, response.data.addData]);
       toast.success(`${newCategory.category_name} Added successfully!`);
       setVisibleForm(false);
     } catch (error) {
@@ -199,7 +198,6 @@ const Category = () => {
     } catch (error) {
       console.error("Error deleting category:", error);
     }
-
   };
 
   const handleSubmitItemCategory = async (event) => {
@@ -214,9 +212,15 @@ const Category = () => {
           },
         }
       );
-      toast.success(`${newItemCategory.item_category_name} Added successfully!`);
-      setVisibleForm(false);
 
+      console.log(response);
+
+      setItemCategory((prev) => [...prev, response.data.addData]);
+
+      toast.success(
+        `${newItemCategory.item_category_name} Added successfully!`
+      );
+      setVisibleForm(false);
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
@@ -235,9 +239,11 @@ const Category = () => {
           },
         }
       );
+
+      setFeature((prev) => [...prev, response.data.featuresData]);
+
       toast.success(`${newFeature.feature_name} Added successfully!`);
       setVisibleForm(false);
-
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
@@ -249,8 +255,7 @@ const Category = () => {
   };
 
   return (
-
-    //category 
+    //category
 
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
@@ -262,17 +267,17 @@ const Category = () => {
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={categoryicon} alt="" />
-                <h4>35</h4>
+                <h4>{category.length}</h4>
                 <p className="font-medium">Number of categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={itemcat} alt="" />
-                <h4>5</h4>
+                <h4>{itemCategory.length}</h4>
                 <p className="font-medium">Number of item Category</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={featureicon} alt="" />
-                <h4>9</h4>
+                <h4>{feature.length}</h4>
                 <p className="font-medium">Number of Features</p>
               </div>
             </div>
@@ -281,7 +286,6 @@ const Category = () => {
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
 
-        
         <div className="w-[87vw] flex flex-wrap justify-between gap-5 ">
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
             <div className="flex justify-between items-center mb-6">
@@ -295,8 +299,6 @@ const Category = () => {
             </div>
             <Ctable category={category} setCategory={setCategory} />
           </div>
-
-
 
           <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
             <div className="flex justify-between items-center mb-6">
@@ -455,8 +457,6 @@ const Category = () => {
           onClick={closeCategoryForm}
         ></div>
       )}
-
-
     </div>
   );
 };

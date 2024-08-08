@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
+import notificationIcon from "../assets/notification.svg";
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import profile from "../assets/profile.png";
@@ -181,11 +182,9 @@ const Topbar = () => {
         <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
-        <button
-          className="text-2xl text-neutral-600 p-5 relative"
-          onClick={popUpNotification}
-        >
-          <i className="fa-regular fa-bell"></i>
+        <button className="  p-5 relative" onClick={popUpNotification}>
+          {/* <i className="fa-regular fa-bell"></i> */}
+          <img src={notificationIcon} alt="" className="w-7 h-7" />
 
           {notReadCount === 0 ? null : (
             <span className="absolute right-2 text-sm top-3 bg-red-500 rounded-[50%] h-5 w-5 text-white">
@@ -196,7 +195,7 @@ const Topbar = () => {
 
         <details className="relative  ">
           <summary className="list-none cursor-pointer ">
-            <div className="h-8 w-8 rounded-full bg-red-600 flex justify-center items-center  select-none text-white">
+            <div className="h-9  w-9 rounded-full bg-red-600 flex justify-center items-center  select-none font-semibold text-white">
               {initials}
             </div>
             {/* <img className="profile" src={user} alt="" /> */}
