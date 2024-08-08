@@ -8,9 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 const columns = [
-  { id: "sn", label: "SN", maxWidth: 70 },
   { id: "user_name", label: "User Name", maxWidth: 70, align: "center" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "center" },
+  { id: "department", label: "Department", maxWidth: 70 },
   { id: "role", label: "Role", maxWidth: 70, align: "center" },
   { id: "action", label: "Action", maxWidth: 70, align: "center" },
 ];
@@ -72,10 +72,10 @@ const ActiveUser = ({ users }) => {
                 <TableCell className="px-10 py-4">{user.user_name}</TableCell>
                 <TableCell className="px-10 py-4">{user.user_email}</TableCell>
                 <TableCell className="px-10 py-4">{user.role}</TableCell>
-                <TableCell className="px-10 py-4">
-                  <button>
+                <TableCell className="px-10 py-4 ">
+                  <button className="flex justify-center w-full">
                     <details>
-                      <summary>
+                      <summary className="list-none">
                         <i className="fa-solid fa-ellipsis-vertical"></i>
                       </summary>
                       <span>Set Inactive</span>
