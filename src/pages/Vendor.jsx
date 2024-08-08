@@ -301,7 +301,7 @@ const Vendor = () => {
                   Name
                 </label>
                 <input
-                  className="border-2 border-border p-1 pl-3 rounded-md"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
                   type="text"
                   placeholder="Enter Vendor Name"
                   autoFocus
@@ -316,7 +316,7 @@ const Vendor = () => {
                   VAT
                 </label>
                 <input
-                  className="border-2 border-border p-1 pl-3 rounded-md"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
                   type="text"
                   placeholder="Enter VAT Number"
                   name="vat_number"
@@ -330,7 +330,7 @@ const Vendor = () => {
                   Contact
                 </label>
                 <input
-                  className="border-2 border-border p-1 pl-3 rounded-md"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
                   type="text"
                   placeholder="Enter Contact Number"
                   name="vendor_contact"
@@ -344,7 +344,7 @@ const Vendor = () => {
                   Payment Duration
                 </label>
                 <input
-                  className="border-2 border-border p-1 pl-3 rounded-md"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
                   type="text"
                   placeholder="Enter Payment Duration"
                   name="payment_duration"
