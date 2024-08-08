@@ -12,6 +12,7 @@ import issue from "../assets/issue.svg";
 import category from "../assets/category.svg";
 import vendor from "../assets/vendor.svg";
 import roles from "../assets/roles.png";
+import Logo1 from "../assets/logo1.png";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -72,42 +73,43 @@ const Sidebar = () => {
           <div className="item">
             <NavLink to="/dashboard" className={setActiveClass}>
               <img src={dashboard} className="item-img" alt="" />
-              Dashboard
+              <p>Dashboard</p>
             </NavLink>
           </div>
           {/* inventory nav */}
           <div className="item">
             <NavLink to="/inventory" className={setActiveClass}>
               <img src={inventory} className="item-img" alt="" />
-              Inventory
+              <p>Invenotry</p>
             </NavLink>
           </div>
           {/* record nav */}
           <div className="item">
             <NavLink to="/records" className={setActiveClass}>
               <img src={billRecord} className="item-img" alt="" />
-              Bill Records
+
+              <p> Bill Records</p>
             </NavLink>
           </div>
           {/* vendors nav */}
           <div className="item">
             <NavLink to="/vendors" className={setActiveClass}>
               <img src={vendor} className="item-img" alt="" />
-              Vendors
+              <p>Vendors</p>
             </NavLink>
           </div>
           {/* category nav */}
           <div className="item">
             <NavLink to="/Category" className={setActiveClass}>
               <img src={category} className="item-img" alt="" />
-              Category
+              <p>Category</p>
             </NavLink>
           </div>
           {/* issue nav */}
           <div className="item">
             <NavLink to="/issue" className={setActiveClass}>
               <img src={issue} className="item-img" alt="" />
-              Issue
+              <p> Issue</p>
             </NavLink>
           </div>
           {/* Payment nav */}
@@ -121,7 +123,7 @@ const Sidebar = () => {
           <div className="item">
             <NavLink to="/request" className={setActiveClass}>
               <img src={request} className="item-img" alt="" />
-              Request
+              <p> Request</p>
             </NavLink>
           </div>
 
@@ -129,7 +131,7 @@ const Sidebar = () => {
             <div className="item whitespace-nowrap">
               <NavLink to="/roles" className={setActiveClass}>
                 <img src={roles} className="item-img" alt="" />
-                Manage Roles
+                <p> Manage Roles</p>
               </NavLink>
             </div>
           ) : (
@@ -151,7 +153,7 @@ const Sidebar = () => {
           <div className="item">
             <NavLink to="/" onClick={handleLogout} className={setActiveClass}>
               <img src={logout} className="item-img" alt="" />
-              Log out
+              <p> Log out</p>
             </NavLink>
           </div>
         </div>

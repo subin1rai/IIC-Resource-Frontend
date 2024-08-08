@@ -15,10 +15,9 @@ import "/src/App.css";
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
   { id: "category_name", label: "Category Name", maxWidth: 70 },
-  { id: "items", label: "Items", maxWidth: 70 },
+
   { id: "action", label: "Action", maxWidth: 70 },
 ];
-
 
 const cellStyle = {
   fontSize: "14px",
@@ -53,26 +52,21 @@ export default function Ctable({ category, setCategory }) {
     } catch (error) {
       console.error("Error deleting category:", error);
     }
-
   };
 
   const handleShowModal = (categoryId) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteSubmit(categoryId);
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
   };
@@ -91,15 +85,22 @@ export default function Ctable({ category, setCategory }) {
       }}
     >
       <TableContainer sx={{ maxHeight: maxHeight }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
-        <TableHead className="z-0">
+        <Table
+          stickyHeader
+          aria-label="sticky table"
+          sx={{ tableLayout: "fixed" }}
+        >
+          <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  
-                  sx={{ width: column.maxWidth, padding: "8px 14px",  ...headerStyle,
-                    ...cellStyle, }}
+                  sx={{
+                    width: column.maxWidth,
+                    padding: "8px 14px",
+                    ...headerStyle,
+                    ...cellStyle,
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -108,11 +109,30 @@ export default function Ctable({ category, setCategory }) {
           </TableHead>
           <TableBody>
             {category.map((cat, index) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={cat.category_id}>
-                <TableCell sx={{ width: columns[0].maxWidth, padding: "8px 16px" }}>{index + 1}</TableCell>
-                <TableCell sx={{ width: columns[1].maxWidth, padding: "8px 22px" }}>{cat.category_name}</TableCell>
-                <TableCell sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                <TableCell sx={{ width: columns[3].maxWidth, padding: "8px 22px" }}>
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={cat.category_id}
+              >
+                <TableCell
+                  sx={{ width: columns[0].maxWidth, padding: "8px 16px" }}
+                >
+                  {index + 1}
+                </TableCell>
+                <TableCell
+                  sx={{ width: columns[1].maxWidth, padding: "8px 22px" }}
+                >
+                  {cat.category_name}
+                </TableCell>
+                {/* <TableCell
+                  sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}
+                >
+                  {cat.items.length}
+                </TableCell> */}
+                <TableCell
+                  sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}
+                >
                   <Button
                     sx={{
                       minWidth: "auto",
