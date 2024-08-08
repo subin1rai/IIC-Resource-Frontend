@@ -11,7 +11,7 @@ const columns = [
 
   { id: "user_name", label: "User Name", maxWidth: 70, align: "center" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "center" },
-  { id: "status", label: "Status", maxWidth: 70, align: "center" },
+  { id: "department", label: "Department", maxWidth: 70, align: "center" },
   { id: "action", label: "Action", maxWidth: 70, align: "center" },
 ];
 
