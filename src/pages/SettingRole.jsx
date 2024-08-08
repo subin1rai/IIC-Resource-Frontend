@@ -103,13 +103,11 @@ const SettingRole = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white w-[85.5vw] px-9 py-5 rounded gap-2 h-[88vh]">
-          <h3 className="font-semibold text-2xl">Roles</h3>
+        <div className="flex flex-col bg-white w-[85.5vw] px-7 py-5 rounded h-[88vh]">
+          <h3 className="font-bold text-lg">Roles</h3>
           <div className="flex items-center justify-between ">
-            <p>You can manage roles here</p>
-            <button className="bg-blue-600 text-white py-2 px-3 rounded">
-              Add Roles
-            </button>
+            <p className="text-blue-700">You can manage user roles here.</p>
+
           </div>
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 
@@ -123,9 +121,27 @@ const SettingRole = () => {
               </div>
             </div>
 
-            <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3 text-l text-black font-semibold">
-              <div className="flex flex-col justify-between mb-6 gap-5">
-                <h1 className="text-lg font-bold m-2">All Users</h1>
+            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3">
+              <div className="flex flex-col mb-5 gap-4">
+                <div className="flex p-2 items-center justify-between">
+                  <h1 className="text-lg font-bold ">All Users</h1>
+                  <div className="flex gap-4">
+                    <div className="flex">
+                      <input
+                        type="text"
+                        placeholder="Search Users"
+                        // onChange={}
+                        className="border-2 px-2 w-46 border-border rounded h-fit py-2"
+                      />
+                    </div>
+                    <div className="flex ">
+                      <button className="bg-button text-white rounded border w-fit h-fit px-6 py-2">
+                        Add User
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="relative overflow-x-auto flex justify-center items-center">
                   <AllUser users={users} />
                 </div>
