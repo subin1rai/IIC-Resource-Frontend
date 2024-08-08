@@ -125,7 +125,6 @@ const Category = () => {
 
   const handleFeatureChange = (e) => {
     setNewFeature((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(e.target.value);
   };
 
   const handleDeleteSubmit = async (categoryId) => {

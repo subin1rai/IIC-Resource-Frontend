@@ -27,8 +27,6 @@ const SpecificVendor = () => {
   const [loading, setLoading] = useState(false);
   const [dialogboxVisibilty, setDialogboxVisibility] = useState(false);
 
-
-
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
     vat_number: "",
@@ -150,7 +148,6 @@ const SpecificVendor = () => {
               <button
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={() => setDialogboxVisibility(true)}
-
               >
                 Add to Blacklist
               </button>
@@ -177,12 +174,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-black">
                     {Array.isArray(vendor?.bills) && vendor.bills.length > 0
                       ? vendor.bills
-                        .reduce(
-                          (sum, bill) =>
-                            sum + (Number(bill.paid_amount) || 0),
-                          0
-                        )
-                        .toFixed(2)
+                          .reduce(
+                            (sum, bill) =>
+                              sum + (Number(bill.paid_amount) || 0),
+                            0
+                          )
+                          .toFixed(2)
                       : "--"}
                   </span>
                 </p>
@@ -242,7 +239,7 @@ const SpecificVendor = () => {
             "loading..."
           )}
         </div>
-        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md">
+        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md ">
           <div className="flex justify-between mb-7">
             <h2 className="font-semibold px-4 text-2xl">Purchase History</h2>
             <div className="flex gap-5">
@@ -262,8 +259,10 @@ const SpecificVendor = () => {
 
       {dialogboxVisibilty && (
         <>
-          <div className="h-screen w-screen bg-overlay absolute z-20"
-          onClick={() => setDialogboxVisibility(false)}>
+          <div
+            className="h-screen w-screen bg-overlay absolute z-20"
+            onClick={() => setDialogboxVisibility(false)}
+          >
             <div className="bg-white flex absolute top-1/2  left-1/2 items-center transform -translate-x-1/2 -translate-y-1/2 p-9 rounded">
               <p></p>
             </div>

@@ -99,7 +99,6 @@ const Topbar = () => {
     };
     fetchNotification();
   }, [token]);
-
   useEffect(() => {
     const fullName = localStorage.getItem("user_name");
     if (fullName) {
@@ -109,8 +108,11 @@ const Topbar = () => {
           nameParts[nameParts.length - 1][0]
         }`;
         setInitials(initials);
+      } else if (nameParts.length === 1) {
+        const initials = nameParts[0][0];
+        setInitials(initials);
       } else {
-        console.log("Please provide both first and last names.");
+        console.log("Please provide a name.");
       }
     }
   }, []);
