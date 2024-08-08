@@ -74,12 +74,7 @@ const ActiveUser = ({ users }) => {
                 <TableCell className="px-10 py-4">{user.role}</TableCell>
                 <TableCell className="px-10 py-4">
                   <button>
-                    <details>
-                      <summary>
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </summary>
-                      <span>Set Inactive</span>
-                    </details>
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
                   </button>
                 </TableCell>
               </TableRow>
