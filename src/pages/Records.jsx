@@ -456,7 +456,7 @@ const Records = () => {
 
                   <div className="buttons">
                     <button type="submit" className="add-btn">
-                      Add Item
+                      Add Bill
                     </button>
                   </div>
                 </div>

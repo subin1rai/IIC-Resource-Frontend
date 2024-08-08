@@ -4,6 +4,7 @@ import socket from "../socket";
 import close from "../assets/close.svg";
 import Select from "react-select";
 import add from "../assets/addIcon.svg";
+import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -11,6 +12,7 @@ const RequestTable = () => {
   const [requests, setRequests] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
   const [quantity, setQuantity] = useState("");
   const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
@@ -94,6 +96,21 @@ const RequestTable = () => {
 
   const closeAcceptForm = () => {
     setAcceptFormVisibility(false);
+  };
+
+  const handleItemChange = (index, field, value) => {
+    const newFields = [...itemFields];
+    newFields[index][field] = value;
+    setItemFields(newFields);
+  };
+
+  const addItemField = () => {
+    setItemFields([...itemFields, { item: "", quantity: "" }]);
+  };
+
+  const removeItemField = (index) => {
+    const newFields = itemFields.filter((_, i) => i !== index);
+    setItemFields(newFields);
   };
 
   useEffect(() => {
@@ -220,11 +237,7 @@ const RequestTable = () => {
         ))
       )}
 
-
-
-
       {acceptFormVisibility && (
-
         <form
           onSubmit={handleSubmit}
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-fit"
@@ -267,37 +280,63 @@ const RequestTable = () => {
                 </div>
               </div>
             </div>
-            {/* Form Section */}
-            <div className="flex p-2 gap-5">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="item" className="font-semibold text-md">
-                  Item
-                </label>
-                <Select
-                  options={items}
-                  onChange={(option) => setSelectedItem(option)}
-                  value={selectedItem}
-                  placeholder="Select Item"
-                  styles={customStyles}
-                />
+
+            <div className="flex flex-col gap-5 p-2">
+              <div className="flex gap-5">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="item" className="font-semibold text-md">
+                    Item
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="quantity" className="font-semibold text-md pl-64 ml-2">
+                    Quantity
+                  </label>
+                </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="quantity" className="font-semibold text-md">
-                  Quantity
-                </label>
-                <input
-                  className="border-2 rounded border-border px-3 py-2 w-[14vw]"
-                  type="number"
-                  placeholder="Enter a quantity"
-                  name="quantity"
-                  id="quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
+                <div className="flex">
+                {itemFields.map((field, index) => (
+                  <div key={index} className="flex flex-col gap-5 items-end">
+                    <div className="flex">
+                    <Select
+                      options={items}
+                      onChange={(option) => handleItemChange(index, 'item', option)}
+                      value={items.find(option => option === field.item)}
+                      placeholder="Select Item"
+                      styles={customStyles}
+                      className="w-[14vw]"
+                    />
+                    <input
+                      className="border-2 rounded border-border px-3 py-2 w-[14vw]"
+                      type="number"
+                      placeholder="Enter a quantity"
+                      name={`quantity-${index}`}
+                      id={`quantity-${index}`}
+                      value={field.quantity}
+                      onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                    />
+                    </div>
+                    {index > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => removeItemField(index)}
+                        className="flex items-center"
+                      >
+                        <img src={remove} alt="Remove" className="h-7 w-7" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addItemField}
+                  className="flex items-center mt-2"
+                >
+                  <img src={add} alt="Add" className="h-7 w-7 ml-3" />
+                </button>
               </div>
-              <div className="mt-10 flex">
-                <img src={add} alt="add" className="h-7 w-7 " />
-              </div>
+            </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
               <label className="w-40 font-semibold text-md" htmlFor="remarks">
@@ -317,7 +356,6 @@ const RequestTable = () => {
           </div>
         </form>
       )}
-
       {acceptFormVisibility && (
         <div
           className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute top-0 left-0"
