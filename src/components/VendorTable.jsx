@@ -192,8 +192,8 @@ export default function VendorTable({ vendors }) {
                     {column.format && vendor && vendor[column.id] !== undefined
                       ? column.format(vendor[column.id])
                       : vendor && vendor[column.id] !== undefined
-                        ? vendor[column.id]
-                        : "N/A"}
+                      ? vendor[column.id]
+                      : "N/A"}
                   </TableCell>
                 ))}
               </TableRow>

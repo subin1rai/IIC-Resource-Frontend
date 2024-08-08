@@ -1,4 +1,3 @@
-
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import React, { useEffect, useState } from "react";
@@ -68,7 +67,7 @@ const Vendor = () => {
       );
 
       // Add the new vendor to the state
-      setVendors((prevVendors) => [...prevVendors, response.data.vendor]);
+      setVendors((prevVendors) => [...prevVendors, response.data.vendorData]);
 
       toast.success(`${vendor.vendor_name} Added Successfully!`);
       setAddFormVisibility(false);

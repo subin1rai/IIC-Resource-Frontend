@@ -6,7 +6,7 @@ import "../styles/records.css";
 import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
-import record from "../assets/billRecord.svg"
+import record from "../assets/billRecord.svg";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -186,9 +186,12 @@ const Records = () => {
           },
         }
       );
+
+      console.log(response.data.result.newBill);
+
+      setBills((prevBills) => [...prevBills, response.data.result.newBill]);
       toast.success(`${bill.bill_no} Added Successfully!`);
       closeAddBillForm();
-      setBills((prevBills) => [...prevBills, response.data.bill]);
     } catch (error) {
       console.error("Error adding bill:", error);
       setError(
@@ -204,30 +207,22 @@ const Records = () => {
         <Topbar />
         {/* summary section */}
         <div className="flex flex-col w-[85.5vw]  bg-white rounded-lg p-3 gap-3">
-            <h1 className="flex text-lg font-bold m-3">Bill Summary</h1>
-            <div className="flex justify-around">
-              {/* number of vendor summary */}
-              <div className="flex flex-col items-center justify-center gap-2">
-                <img
-                  src={records}
-                  alt="number of bills"
-                  className="h-8 w-8"
-                />
-                <h4>{bills.length}</h4>
-                <p className="font-medium">Number of Records</p>
-              </div>
-              {/* number of  */}
-              <div className="flex flex-col items-center justify-center gap-2">
-                <img
-                  src={pending}
-                  alt="number of bills"
-                  className="h-8 w-8"
-                />
-                <h4>5</h4>
-                <p className="font-medium">Pending payments</p>
-              </div>
+          <h1 className="flex text-lg font-bold m-3">Bill Summary</h1>
+          <div className="flex justify-around">
+            {/* number of vendor summary */}
+            <div className="flex flex-col items-center justify-center gap-2">
+              <img src={records} alt="number of bills" className="h-8 w-8" />
+              <h4>{bills.length}</h4>
+              <p className="font-medium">Number of Records</p>
+            </div>
+            {/* number of  */}
+            <div className="flex flex-col items-center justify-center gap-2">
+              <img src={pending} alt="number of bills" className="h-8 w-8" />
+              <h4>5</h4>
+              <p className="font-medium">Pending payments</p>
             </div>
           </div>
+        </div>
         <div className="records-container">
           <div className="top">
             <div className="container-title">
