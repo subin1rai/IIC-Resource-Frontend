@@ -104,10 +104,9 @@ const Topbar = () => {
     const fullName = localStorage.getItem("user_name");
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
-      if (nameParts.length >= 2) {
-        const initials = `${nameParts[0][0]}${
-          nameParts[nameParts.length - 1][0]
-        }`;
+      if (nameParts.length >= 1) {
+        const initials = `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]
+          }`;
         setInitials(initials);
       } else {
         console.log("Please provide both first and last names.");
@@ -257,11 +256,10 @@ const Topbar = () => {
                 .map((notification) => (
                   <div
                     key={notification.notification_id}
-                    className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state
+                    className={`border-b border-neutral-300 px-6 py-3  ${notification.state
                         ? "bg-white"
                         : "bg-purple-100 cursor-default"
-                    }`}
+                      }`}
                   >
                     <div
                       onClick={() =>

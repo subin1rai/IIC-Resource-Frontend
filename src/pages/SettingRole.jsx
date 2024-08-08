@@ -5,6 +5,7 @@ import axios from "axios";
 import ActiveUser from "../components/ActiveUser";
 import AllUser from "../components/AllUser";
 import user from "../assets/active.png";
+import filterIcon from "../assets/filter.svg";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -111,16 +112,44 @@ const SettingRole = () => {
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 
           <div className="flex flex-row gap-6">
-            <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3 text-l text-black font-semibold">
+            <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col  mb-6 gap-5">
-                <h1 className="text-lg font-bold m-2">Active Users</h1>
+                <div className="flex justify-between">
+                  <h1 className="text-lg font-bold m-2">Active Users</h1>
+                  {/* Search button */}
+                  <div className="flex gap-4">
+                    <div className="flex ">
+                      <input
+                        type="text"
+                        placeholder="Search Users"
+                        // onChange={}
+                        className="border-2 px-2 w-46 border-border rounded h-fit py-2"
+                      />
+                    </div>
+                    <div className="flex ">
+                      <button
+                        className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                        aria-label="Menu"
+
+                      >
+                        <img
+                          className="mt-1 justify-center align-center"
+                          src={filterIcon}
+                          alt=""
+                        />
+                        Filter
+                      </button>
+                    </div>
+                    {/* filter */}
+                  </div>
+                </div>
                 <div className="relative  overflow-x-auto  flex justify-center items-center ">
                   <ActiveUser users={activeUsers} />
                 </div>
               </div>
             </div>
 
-            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3">
+            <div className="flex w-fit p-5 border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col mb-5 gap-4">
                 <div className="flex p-2 items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
