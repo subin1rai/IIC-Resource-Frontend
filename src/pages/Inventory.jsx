@@ -16,6 +16,8 @@ import low from "../assets/lowstock.png";
 import removeIcon from "../assets/removeIcon.svg";
 import item from "../assets/item.png";
 import categoryIcon from "../assets/categoryno.png";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/items/itemSlice";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -29,7 +31,7 @@ const Inventory = () => {
     measuring_unit: "",
 
     low_limit: 0,
-    features: {}, // Add this line
+    features: {},
   });
 
   const [error, setError] = useState("");
@@ -166,13 +168,14 @@ const Inventory = () => {
           },
         }
       );
+
       toast.success(`${itemData.item_name} Added successfully!`);
       setAddFormVisibility(false);
       setFilterFormVisibility(false);
       setLoading(false);
 
       setItems((prevItems) => [...prevItems, response.data.newItem]);
-      setFilteredItems((prevItems) => [...prevItems, response.data.newItem]); // Update filteredItems
+      setFilteredItems((prevItems) => [...prevItems, response.data.newItem]);
 
       setItemData({
         item_name: "",
@@ -198,7 +201,6 @@ const Inventory = () => {
           },
         });
 
-        console.log(response.data);
         setItems(response.data);
         setFilteredItems(response.data); // Initialize filtered items
 
@@ -232,8 +234,6 @@ const Inventory = () => {
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);
-
-        console.log(itemCategory);
 
         setCategoryOptions(
           categoryResponse.data.category.map((cat) => ({

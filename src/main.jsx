@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import App from "./App.jsx";
+import { store } from "./app/store";
 import "./index.css";
-import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ThemeProvider>
+  <Provider store={store}>
     <App />
-  </ThemeProvider>
+  </Provider>
 );
