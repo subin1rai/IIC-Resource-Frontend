@@ -54,11 +54,14 @@ const SettingRole = () => {
   useEffect(() => {
     const getActiveUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/activeUsers", {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8898/api/activeUsers",
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
+          }
+        );
         console.log(response.data);
         if (response.data && response.data.user) {
           setActiveUsers(response.data.user);
@@ -76,7 +79,6 @@ const SettingRole = () => {
   }, [Token]);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -139,6 +141,7 @@ const SettingRole = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="relative overflow-x-auto flex justify-center items-center">
                   <AllUser users={users} />
                 </div>

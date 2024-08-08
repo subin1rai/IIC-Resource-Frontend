@@ -38,6 +38,12 @@ const columns = [
     align: "center",
   },
   {
+    id: "item_name",
+    label: "Item Name",
+    maxWidth: 70,
+    align: "center",
+  },
+  {
     id: "actual_amount",
     label: "Total Amount",
     maxWidth: 70,
@@ -50,6 +56,12 @@ const columns = [
     maxWidth: 70,
     align: "center",
     format: (value) => value?.toLocaleString("en-US") ?? "N/A",
+  },
+  {
+    id: "payment_status",
+    label: "Payment Status",
+    maxWidth: 70,
+    align: "center",
   },
 ];
 
@@ -214,6 +226,13 @@ export default function RecordsTable({ bills }) {
                       if (column.id === "vendor_name") {
                         value = bill.vendors?.vendor_name;
                       }
+                      if (column.id === "item_name") {
+                        value = bill.items?.item_name;
+                      }
+                      if (column.id === "payment_status") {
+                        value = bill.left_amount > 0 ? "Pending" : "Complete";
+                      }
+
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && value != null

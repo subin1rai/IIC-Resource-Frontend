@@ -31,10 +31,8 @@ const Inventory = () => {
     measuring_unit: "",
 
     low_limit: 0,
-    features: {}, // Add this line
+    features: {},
   });
-
-  const dispatch = useDispatch();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

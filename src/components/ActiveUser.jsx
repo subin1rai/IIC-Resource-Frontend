@@ -72,6 +72,7 @@ const ActiveUser = ({ users }) => {
                 <TableCell className="px-10 py-4">{user.user_name}</TableCell>
                 <TableCell className="px-10 py-4">{user.user_email}</TableCell>
                 <TableCell className="px-10 py-4">{user.role}</TableCell>
+
                 <TableCell className="px-10 py-4 ">
                   <button className="flex justify-center w-full">
                     <details>
@@ -80,6 +81,7 @@ const ActiveUser = ({ users }) => {
                       </summary>
                       <span>Set Inactive</span>
                     </details>
+
                   </button>
                 </TableCell>
               </TableRow>

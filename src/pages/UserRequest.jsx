@@ -61,7 +61,6 @@ const UserRequest = () => {
         });
 
         setItems(response.data || []);
-
       } catch (error) {
         toast.error("Failed to fetch items. Please try again.");
         console.log(error);
@@ -92,7 +91,9 @@ const UserRequest = () => {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-3">
               <div className="flex justify-between gap-24 items-center ">
-                <label htmlFor="item_name" className="font-medium">Item Name</label>
+                <label htmlFor="item_name" className="font-medium">
+                  Item Name
+                </label>
                 <select
                   name="item_name"
                   id="item_name"
@@ -109,7 +110,9 @@ const UserRequest = () => {
                 </select>
               </div>
               <div className="flex justify-between gap-11 items-center ">
-                <label htmlFor="quantity" className="font-medium">Quantity</label>
+                <label htmlFor="quantity" className="font-medium">
+                  Quantity
+                </label>
                 <input
                   type="number"
                   name="quantity"
@@ -120,19 +123,25 @@ const UserRequest = () => {
                 />
               </div>
               <div className="flex justify-between gap-11 items-center ">
-                <label htmlFor="quantity" className="font-medium">Requested For</label>
+                <label htmlFor="quantity" className="font-medium">
+                  Requested For
+                </label>
                 <select
                   name=""
                   id=""
                   className="border-stone-200 border-2 rounded py-2 px-4 w-80"
                   onChange={handleChange}
                 >
-                  <option value="" className="">Select the teachers name</option>
-
+                  <option value="" className="">
+                    Select the teachers name
+                  </option>
                 </select>
               </div>
               <div className="flex justify-between gap-11 items-center ">
-                <label htmlFor="purpose" className="flex self-start mt-3 font-medium">
+                <label
+                  htmlFor="purpose"
+                  className="flex self-start mt-3 font-medium"
+                >
                   Purpose
                 </label>
                 <textarea
@@ -254,8 +263,3 @@ const UserRequest = () => {
 };
 
 export default UserRequest;
-
-
-
-
-
