@@ -32,18 +32,26 @@ const EditProfile = () => {
           <h1 className="text-xl font-semibold"> My Profile</h1>
           <h3 className="font-light text-light mb-8">Make changes on your profile details.</h3>
           <div className="flex">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Full Name:</label>
               <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
+              </div>
+              <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Nickname:</label>
               <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
+              </div>
+              <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Email Address:</label>
-              <div className="flex flex-col">
+              <div className="flex flex-col gap">
                 <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
                 <p className="font-light text-light">This is your primary email address and will be used to send notification emails.</p>
               </div>
+              </div>
+              <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Phone Number:</label>
               <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
+              </div>
               <button className="flex bg-blue-600 text-white rounded items-center w-fit p-2 px-6">Save Changes</button>
             </div>
             <div className="flex relative">
