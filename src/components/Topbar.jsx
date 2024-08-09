@@ -303,7 +303,7 @@ const Topbar = () => {
         </>
       )}
 
-      <div className="absolute right-0 z-50">
+      <div className="absolute right-0">
         <ToastContainer pauseOnHover theme="light" className="relative" />
       </div>
     </div>
