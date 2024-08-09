@@ -11,6 +11,15 @@ import profile from "../assets/profile.png";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -18,6 +27,7 @@ const Topbar = () => {
   const [notification, setNotification] = useState([]);
   const [notReadCount, setNotReadCount] = useState(0);
   const [initials, setInitials] = useState("");
+  const [bgColor, setBgColor] = useState(getRandomColor());
 
   const token = localStorage.getItem("token");
   const morningStart = 5;
@@ -50,8 +60,8 @@ const Topbar = () => {
         width: 6px;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #adb5bd; /* Gray color */
-        border-radius: 9999px; /* Rounded corners */
+        background-color: #adb5bd;
+        border-radius: 9999px;
       }
       .custom-scrollbar::-webkit-scrollbar-track {
         background: transparent;
@@ -99,6 +109,7 @@ const Topbar = () => {
     };
     fetchNotification();
   }, [token]);
+
   useEffect(() => {
     const fullName = localStorage.getItem("user_name");
     if (fullName) {
@@ -115,6 +126,10 @@ const Topbar = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    setBgColor(getRandomColor());
+  }, [initials]);
 
   const handleState = async () => {
     try {
@@ -184,7 +199,6 @@ const Topbar = () => {
       </div>
       <div className="flex items-center h-full justify-between gap-3">
         <button className="  p-5 relative" onClick={popUpNotification}>
-          {/* <i className="fa-regular fa-bell"></i> */}
           <img src={notificationIcon} alt="" className="w-7 h-7" />
 
           {notReadCount === 0 ? null : (
@@ -196,10 +210,12 @@ const Topbar = () => {
 
         <details className="relative  ">
           <summary className="list-none cursor-pointer ">
-            <div className="h-9  w-9 rounded-full bg-red-600 flex justify-center items-center  select-none font-semibold text-white">
+            <div
+              className="h-9 w-9 rounded-full flex justify-center items-center select-none font-semibold text-white"
+              style={{ backgroundColor: bgColor }}
+            >
               {initials}
             </div>
-            {/* <img className="profile" src={user} alt="" /> */}
           </summary>
           <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-8 ">
             <div className="flex justify-between items-center ">
