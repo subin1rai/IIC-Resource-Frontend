@@ -12,13 +12,75 @@ import vendorno from "../assets/vendorcount.png";
 import blacklist from "../assets/blacklist.png";
 import Select from "react-select";
 
+const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
+  const addCategory = () => {
+    if (categories.length < 5) {
+      setCategories([...categories, ""]);
+    }
+  };
+
+  const removeCategory = (index) => {
+    const newCategories = categories.filter((_, i) => i !== index);
+    setCategories(newCategories);
+  };
+
+  const handleCategoryChange = (index, selectedOption) => {
+    const newCategories = [...categories];
+    newCategories[index] = selectedOption.value;
+    setCategories(newCategories);
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      {categories.map((category, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <Select
+            options={itemCategoryOptions}
+            onChange={(selectedOption) =>
+              handleCategoryChange(index, selectedOption)
+            }
+            value={itemCategoryOptions.find(
+              (option) => option.value === category
+            )}
+            placeholder="Choose Category"
+            className="react-select-container w-[14vw]"
+            classNamePrefix="react-select"
+          />
+          {categories.length > 1 && (
+            <button
+              type="button"
+              onClick={() => removeCategory(index)}
+              className="bg-red-500 text-white px-2 py-1 rounded"
+            >
+              -
+            </button>
+          )}
+          {index === categories.length - 1 && (
+            <button
+              type="button"
+              onClick={addCategory}
+              className="bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              +
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Vendor = () => {
   const [vendor, setVendor] = useState({
     vendor_name: "",
     vat_number: "",
     vendor_contact: "",
+    vendor_profile: "",
     payment_duration: "",
+    categories: [""], // Initialize with one empty category
   });
+
+  console.log(vendor);
 
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -27,12 +89,14 @@ const Vendor = () => {
   const [filteredVendors, setFilteredVendors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [itemCategory, setItemCategory] = useState([]);
+  const [blackListCount, setBlackListCount] = useState(0);
+
+  const token = localStorage.getItem("token");
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
   };
-
-  const [blackListCount, setBlackListCount] = useState(0);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -51,14 +115,43 @@ const Vendor = () => {
     setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Item Category Data:", response.data);
+        setItemCategory(response.data.allData || []);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request Canceled", error.message);
+          return;
+        }
+        console.error("Error fetching item categories:", error);
+      }
+    })();
+    return () => {
+      controller.abort();
+    };
+  }, [token]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const vendorData = {
+        ...vendor,
+        categories: JSON.stringify(vendor.categories), // Convert array to JSON string
+      };
       const response = await axios.post(
         "http://localhost:8898/api/addVendor",
-        vendor,
+        vendorData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,18 +159,16 @@ const Vendor = () => {
         }
       );
 
-      // Add the new vendor to the state
       setVendors((prevVendors) => [...prevVendors, response.data.vendorData]);
-
       toast.success(`${vendor.vendor_name} Added Successfully!`);
       setAddFormVisibility(false);
-
-      // Reset the vendor form
       setVendor({
         vendor_name: "",
         vat_number: "",
         vendor_contact: "",
         payment_duration: "",
+        vendor_profile: "",
+        categories: [""],
       });
     } catch (error) {
       console.log(error);
@@ -95,11 +186,9 @@ const Vendor = () => {
         });
 
         setVendors(response.data.vendor || []);
-
         const count = response.data.vendor.filter(
           (req) => req.black_list
         ).length;
-
         setBlackListCount(count);
         setFilteredVendors(response.data.vendors || []);
       } catch (error) {
@@ -130,22 +219,24 @@ const Vendor = () => {
     setFilteredVendors(results);
   }, [searchTerm, selectedCategory, vendors]);
 
-  const categoryOptions = [
-    { value: "Category1", label: "Category1" },
-    { value: "Category2", label: "Category2" },
-    // Add more categories as needed
-  ];
+  const itemCategoryOptions = itemCategory.map((cat) => ({
+    value: cat._id || cat.item_category_id,
+    label: cat.name || cat.item_category_name,
+  }));
+
+  const handleCategoryChange = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+  };
 
   return (
-    <div className=" bg-background flex justify-between h-screen w-screen relative">
+    <div className="bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
-      <div className=" mx-auto flex flex-col gap-4   items-center relative">
+      <div className="mx-auto flex flex-col gap-4 items-center relative">
         <Topbar />
-        <div className="flex flex-wrap w-[87vw]  gap-4 justify-center">
-          <div className="flex flex-col w-[85.5vw]  bg-white rounded-lg p-3 gap-3">
+        <div className="flex flex-wrap w-[87vw] gap-4 justify-center">
+          <div className="flex flex-col w-[85.5vw] bg-white rounded-lg p-3 gap-3">
             <h1 className="flex text-lg font-bold m-3">Vendor Summary</h1>
             <div className="flex justify-around">
-              {/* number of vendor summary */}
               <div className="flex flex-col items-center justify-center gap-1">
                 <img
                   src={vendorno}
@@ -155,7 +246,6 @@ const Vendor = () => {
                 <h4>{vendors.length}</h4>
                 <p className="font-medium">Number of Vendors</p>
               </div>
-              {/* number of blacklisted vendors */}
               <div className="flex flex-col items-center justify-center gap-1">
                 <img
                   src={blacklist}
@@ -167,7 +257,6 @@ const Vendor = () => {
               </div>
             </div>
           </div>
-          {/* second container */}
         </div>
         <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
           <div className="flex w-[85.8vw] justify-between">
@@ -206,11 +295,10 @@ const Vendor = () => {
         </div>
       </div>
 
-      {/* Filter form */}
       {filterFormVisibility && (
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
-            <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
+            <h2 className="font-semibold text-xl">Select Filtering Option</h2>
             <button
               type="button"
               className="discard-btn"
@@ -222,51 +310,20 @@ const Vendor = () => {
           <label>Select Category</label>
           <div className="flex gap-6">
             <Select
-            // options={categoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "feature" })
-            // }
-            // value={categoryOptions.find(
-            //   (option) => option.value === itemData.category
-            // )}
-            // placeholder="Choose Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={itemCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "itemCategory" })
-            // }
-            // value={itemCategoryOptions.find(
-            //   (option) => option.value === itemData.itemCategory
-            // )}
-            // placeholder="Choose Item Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={productCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "productCategory" })
-            // }
-            // value={productCategoryOptions.find(
-            //   (option) => option.value === itemData.productCategory
-            // )}
-            // placeholder="Choose Product Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
+              options={itemCategoryOptions}
+              onChange={handleCategoryChange}
+              value={selectedCategory}
+              placeholder="Choose Item Category"
+              className="react-select-container"
+              classNamePrefix="react-select"
             />
           </div>
           <label>Select Date:</label>
           <div className="flex gap-6">
             <input
-              className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
+              className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
               type="date"
-              placeholder=" from"
+              placeholder="from"
             />
             <input
               className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
@@ -294,7 +351,6 @@ const Vendor = () => {
               />
             </div>
             <div className="flex flex-col gap-10">
-              {/* vendor name */}
               <div className="flex items-center gap-6">
                 <label htmlFor="vendor_name" className="w-40 font-medium">
                   Name
@@ -309,7 +365,6 @@ const Vendor = () => {
                   onChange={handleChange}
                 />
               </div>
-              {/* Vat number */}
               <div className="flex items-center gap-6">
                 <label htmlFor="vat_number" className="w-40 font-medium">
                   VAT
@@ -323,7 +378,34 @@ const Vendor = () => {
                   onChange={handleChange}
                 />
               </div>
-              {/* Vendor contact number */}
+              <div className="flex items-center gap-6">
+                <label htmlFor="vendor_profile" className="w-40 font-medium">
+                  Vendor Profile
+                </label>
+                <select
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  name="vendor_profile"
+                  id="vendor_profile"
+                  onChange={handleChange}
+                >
+                  <option value="" disabled selected>
+                    Select Vendor Profile
+                  </option>
+                  <option value="big">Big</option>
+                  <option value="medium">Medium</option>
+                  <option value="small">Small</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-6">
+                <label className="w-40 font-medium">Categories</label>
+                <CategoryFields
+                  categories={vendor.categories}
+                  setCategories={(newCategories) =>
+                    setVendor({ ...vendor, categories: newCategories })
+                  }
+                  itemCategoryOptions={itemCategoryOptions}
+                />
+              </div>
               <div className="flex items-center gap-6">
                 <label htmlFor="vendor_contact" className="w-40 font-medium">
                   Contact
@@ -337,7 +419,6 @@ const Vendor = () => {
                   onChange={handleChange}
                 />
               </div>
-              {/* Payment Duration */}
               <div className="flex items-center gap-6">
                 <label htmlFor="payment_duration" className="w-40 font-medium">
                   Payment Duration
@@ -351,9 +432,7 @@ const Vendor = () => {
                   onChange={handleChange}
                 />
               </div>
-              {/* Displaying error message */}
               {error && <span className="text-red-500">{error}</span>}
-
               <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end">
                 Add vendor
               </button>
@@ -362,77 +441,9 @@ const Vendor = () => {
         </>
       )}
 
-      {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
-          <div className="flex justify-between">
-            <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
-            <button
-              type="button"
-              className="discard-btn"
-              onClick={closeFilterForm}
-            >
-              <img src={close} alt="" />
-            </button>
-          </div>
-          <label>Select Category</label>
-          <div className="flex gap-6">
-            <Select
-            // options={categoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "feature" })
-            // }
-            // value={categoryOptions.find(
-            //   (option) => option.value === itemData.category
-            // )}
-            // placeholder="Choose Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={itemCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "itemCategory" })
-            // }
-            // value={itemCategoryOptions.find(
-            //   (option) => option.value === itemData.itemCategory
-            // )}
-            // placeholder="Choose Item Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={productCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "productCategory" })
-            // }
-            // value={productCategoryOptions.find(
-            //   (option) => option.value === itemData.productCategory
-            // )}
-            // placeholder="Choose Product Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-          </div>
-          <label>Select Date:</label>
-          <div className="flex gap-6">
-            <input
-              className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
-              type="date"
-              placeholder=" from"
-            />
-            <input
-              className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
-              type="date"
-              placeholder="to"
-            />
-          </div>
-        </form>
+      {(addFormVisibility || filterFormVisibility) && (
+        <div className="overlay-vendor"></div>
       )}
-      {addFormVisibility && <div className="overlay-vendor"></div>}
-      {filterFormVisibility && <div className="overlay-vendor"> </div>}
       <ToastContainer pauseOnHover theme="light" />
     </div>
   );
