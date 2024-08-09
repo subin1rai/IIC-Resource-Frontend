@@ -8,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import filter from "../assets/filter.svg";
 import VendorHistory from "../components/vendorHistory";
+import Swal from "sweetalert2";
 
 const SpecificVendor = () => {
   const [vendor, setVendor] = useState({
@@ -46,6 +47,24 @@ const SpecificVendor = () => {
       year: "numeric",
       month: "short",
       day: "numeric",
+    });
+  };
+
+
+  const handleShowModal = (vendor_id) => {
+    Swal.fire({
+      title: "Are you sure you want to blacklist?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, do it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleBlackList(vendor_id);
+        Swal.fire("Blacklisted!", "This vendor has been blacklisted.", "success");
+      }
     });
   };
 
@@ -149,7 +168,7 @@ const SpecificVendor = () => {
               </button>
               <button
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
-                onClick={() => setDialogboxVisibility(true)}
+                onClick={() => handleShowModal(vendor_id)}
 
               >
                 Add to Blacklist
@@ -263,7 +282,7 @@ const SpecificVendor = () => {
       {dialogboxVisibilty && (
         <>
           <div className="h-screen w-screen bg-overlay absolute z-20"
-          onClick={() => setDialogboxVisibility(false)}>
+            onClick={() => setDialogboxVisibility(false)}>
             <div className="bg-white flex absolute top-1/2  left-1/2 items-center transform -translate-x-1/2 -translate-y-1/2 p-9 rounded">
               <p></p>
             </div>
