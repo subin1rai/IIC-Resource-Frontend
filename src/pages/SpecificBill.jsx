@@ -26,6 +26,31 @@ const SpecificBill = () => {
     pending_amt: "",
   });
 
+  const [editedBill, setEditedBill] = useState({
+    bill_no: "",
+    bill_date: "",
+    voucher_no: "",
+    vat_number: "",
+    item_name: "",
+    quantity: "",
+    unit_price: "",
+    tds: "",
+    total_amt: "",
+    paid_amt: "",
+    pending_amt: "",
+  });
+
+  const [date, setDate] = useState("");
+
+  const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
+  const [billDetails, setBillDetails] = useState({});
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { bill_id } = useParams();
+  const token = localStorage.getItem("token");
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -67,18 +92,7 @@ const SpecificBill = () => {
     }),
   };
 
-  const [date, setDate] = useState("");
-
-  const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
-  const [billDetails, setBillDetails] = useState({});
-
-  const [vendors, setVendors] = useState([]);
-  const [items, setItems] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const { bill_id } = useParams();
-  const token = localStorage.getItem("token");
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,7 +135,7 @@ const SpecificBill = () => {
   }, [bill_id, token]);
 
   const openEditBillDetailsForm = () => {
-    setBill({
+    setEditedBill({
       bill_no: billDetails.bill_no || "",
       bill_date: billDetails.bill_date ? formatDate(billDetails.bill_date) : "",
       voucher_no: billDetails.invoice_no || "",
@@ -142,32 +156,48 @@ const SpecificBill = () => {
   };
 
   const handleChange = (e) => {
-    setBill({ ...bill, [e.target.name]: e.target.value });
+    setEditedBill({ ...editedBill, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, bill, {
+      await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, editedBill, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      setBill({...bill, ...editedBill});
       closeEditBillDetailsForm();
-      // Refresh bill details
-      const updatedBill = await axios.get(
-        `http://localhost:8898/api/singleBill/${bill_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setBillDetails(updatedBill.data.bill);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
+
+      // Refresh bill details
+      useEffect(() => {
+        const fetchSingleBill = async () => {
+          try {
+            setLoading(true);
+            const response = await axios.get(
+              `http://localhost:8898/api/singleBill/${bill_id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            console.log(response);
+            setBill(response.data);
+            setLoading(false);
+          } catch (error) {
+            console.error("Error fetching Bill data:", error);
+          }
+        };
+    
+        fetchSingleBill();
+      }, [bill_id]);
+
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -306,6 +336,7 @@ const SpecificBill = () => {
                         placeholder="Enter Bill Number"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.bill_no}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -318,6 +349,7 @@ const SpecificBill = () => {
                         value={date}
                         onChange={handleChange}
                         options={{ calenderLocale: "en", valueLocale: "en" }}
+                       
                       />
                     </div>
                   </div>
@@ -325,6 +357,7 @@ const SpecificBill = () => {
                   <div className="flex gap-14">
                     <div className="flex flex-col gap-3">
                       <label htmlFor="voucher_no" className="font-medium">
+                        
                         Voucher No.:
                       </label>
                       <input
@@ -334,6 +367,7 @@ const SpecificBill = () => {
                         placeholder="Enter Voucher Number"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.voucher_no}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -347,6 +381,7 @@ const SpecificBill = () => {
                         placeholder="Enter VAT "
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.vat_number}
                       />
                     </div>
                   </div>
@@ -384,6 +419,7 @@ const SpecificBill = () => {
                         placeholder="Enter Unit Price"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.unit_price}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -397,6 +433,7 @@ const SpecificBill = () => {
                         placeholder="Enter quantity "
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.quantity}
                       />
                     </div>
                   </div>
@@ -413,6 +450,7 @@ const SpecificBill = () => {
                         placeholder="Enter Bill Amount"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.bill_amount}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -424,7 +462,7 @@ const SpecificBill = () => {
                         id="TDS"
                         name="TDS"
                         onChange={handleChange}
-                        value={bill.TDS}
+                        value={editedBill.TDS}
                       >
                         <option value="">Select TDS</option>
                         <option value="1.5">1.5</option>
@@ -438,15 +476,16 @@ const SpecificBill = () => {
                   <div className="flex gap-14">
                     <div className="flex flex-col gap-3">
                       <label htmlFor="" className="font-medium">
-                        Unit Price:
+                        Actual Amount:
                       </label>
                       <input
                         type="text"
-                        id=""
-                        name=""
+                        id="actual_amount"
+                        name="actual_amount"
                         placeholder="Enter Actual Amount"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.actual_amount}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -455,11 +494,12 @@ const SpecificBill = () => {
                       </label>
                       <input
                         type="text"
-                        id="quantity"
-                        name="quantity"
+                        id="paid_amount"
+                        name="paid_amount"
                         placeholder="Enter Paid Amount   "
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
+                        value={editedBill.paid}
                       />
                     </div>
                   </div>
@@ -472,11 +512,10 @@ const SpecificBill = () => {
                   <p className="font-medium">Vendor Vat: {bill.vat_number}</p>
                   <p className="font-medium">Item Name: {bill.item_name}</p>
                   <p className="font-medium">Unit Price: {bill.unit_price}</p>
-                  <p className="font-medium">Quantity: {bill.quantity}</p>
+                  <p className="font-medium">Quantity: {bill.actual_amount}</p>
                   <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
                   <p className="font-medium">TDS: {bill.tds}</p>
-                  <p className="font-medium">
-                    Actual Amount: {bill.actual_amount}
+                  <p className="font-medium"> Actual Amount: {bill.actual_amount}
                   </p>
                   <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
                   <button className="bg-button py-2 rounded-md text-white mt-4">

@@ -112,9 +112,9 @@ const SettingRole = () => {
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 
           <div className="flex flex-row gap-6">
-            <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3">
+            <div className="flex w-fit p-5 justify-between border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col  mb-6 gap-5">
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <h1 className="text-lg font-bold m-2">Active Users</h1>
                   {/* Search button */}
                   <div className="flex gap-4">
@@ -130,7 +130,6 @@ const SettingRole = () => {
                       <button
                         className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                         aria-label="Menu"
-
                       >
                         <img
                           className="mt-1 justify-center align-center"
@@ -150,7 +149,7 @@ const SettingRole = () => {
             </div>
 
             <div className="flex w-fit p-5 border-2 border-neutral-300 rounded-md mt-3">
-              <div className="flex flex-col mb-5 gap-4">
+              <div className="flex flex-col mb-6 gap-5">
                 <div className="flex  items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
                   <div className="flex gap-4">

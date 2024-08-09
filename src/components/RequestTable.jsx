@@ -287,14 +287,14 @@ const RequestTable = () => {
             <div className="flex flex-col gap-5 p-2">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="item" className="font-semibold text-md">
+                  <label htmlFor="item" className="font-medium text-md">
                     Item
                   </label>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="quantity"
-                    className="font-semibold text-md pl-64 ml-2"
+                    className="font-medium text-md pl-64 ml-2"
                   >
                     Quantity
                   </label>
@@ -350,7 +350,7 @@ const RequestTable = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
-              <label className="w-40 font-semibold text-md" htmlFor="remarks">
+              <label className="w-40 font-medium text-md" htmlFor="remarks">
                 Remarks
               </label>
               <textarea
