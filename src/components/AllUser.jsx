@@ -62,21 +62,18 @@ const AllUser = ({ users }) => {
                 <TableCell className="">{user.user_name}</TableCell>
                 <TableCell className="">{user.user_email}</TableCell>
                 <TableCell className="">{user.department}</TableCell>
-                <TableCell className="">{user.status}</TableCell>
                 <TableCell className="">
-                  <details className="relative z-50">
-                    <summary className="list-none w-full p-3">
-                      <button className="focus:outline-none">
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
-                    </summary>
-                    <div className="absolute flex flex-col w-full bg-white border-2 border-neutral-500 rounded-lg shadow-md">
-                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Set active</span>
-                      {/* <hr className=""/> */}
-                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Remove</span>
-                    </div>
-                  </details>
 
+                  {user.status == 0 ? (
+                    <span className="text-red-500">Inactive</span>
+                  ) : (
+                    <span className="text-green-500">Active</span>
+                  )}
+                </TableCell>
+                <TableCell className=" ">
+                  <button className="flex justify-center items-center w-full">
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
 
                 </TableCell>
               </TableRow>
