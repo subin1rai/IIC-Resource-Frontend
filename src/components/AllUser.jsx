@@ -63,6 +63,7 @@ const AllUser = ({ users }) => {
                 <TableCell className="">{user.user_email}</TableCell>
                 <TableCell className="">{user.department}</TableCell>
                 <TableCell className="">
+
                   {user.status == 0 ? (
                     <span className="text-red-500">Inactive</span>
                   ) : (
@@ -73,6 +74,7 @@ const AllUser = ({ users }) => {
                   <button className="flex justify-center items-center w-full">
                     <i className="fa-solid fa-ellipsis-vertical"></i>
                   </button>
+
                 </TableCell>
               </TableRow>
             ))}
