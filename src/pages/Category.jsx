@@ -14,11 +14,9 @@ import Chat from "../components/Chat";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 // Main Category component
 const Category = () => {
-
-   // State to store the categories, item categories, and features
+  // State to store the categories, item categories, and features
   const [category, setCategory] = useState([]);
   const [newCategory, setNewCategory] = useState({ category_name: "" });
   const [itemCategory, setItemCategory] = useState([]);
@@ -31,8 +29,7 @@ const Category = () => {
   const [error, setError] = useState("");
   
 
-
-   // Get the token from local storage
+  // Get the token from local storage
   const token = localStorage.getItem("token");
 
   // Fetch categories from the API on component mount
@@ -83,7 +80,7 @@ const Category = () => {
     };
   }, []);
 
-   // Fetch features from the API on component mount
+  // Fetch features from the API on component mount
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -107,8 +104,7 @@ const Category = () => {
     };
   }, []);
 
-
-   // Function to display the form for adding new categories, item categories, or features
+  // Function to display the form for adding new categories, item categories, or features
   const displayAddPopup = (formName) => {
     setVisibleForm(formName);
   };
