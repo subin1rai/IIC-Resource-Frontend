@@ -11,14 +11,12 @@ import axios from "axios";
 import deleteIcon from "../assets/deleteIcon.svg";
 import Swal from "sweetalert2";
 
-
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
   { id: "category_name", label: "Category Name", maxWidth: 70 },
-  { id: "items", label: "Items", maxWidth: 70 },
+  // { id: "items", label: "Items", maxWidth: 70 },
   { id: "action", label: "Action", maxWidth: 70 },
 ];
-
 
 const cellStyle = {
   fontSize: "14px",
@@ -34,7 +32,6 @@ const headerStyle = {
 };
 
 export default function Itable({ itemCategory, setItemCategory }) {
-  
   const token = localStorage.getItem("token");
 
   const handleDeleteSubmit = async (categoryId) => {
@@ -58,21 +55,17 @@ export default function Itable({ itemCategory, setItemCategory }) {
 
   const handleShowModal = (categoryId) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteSubmit(categoryId);
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
   };
@@ -83,56 +76,77 @@ export default function Itable({ itemCategory, setItemCategory }) {
   const maxHeight = rowHeight * maxVisibleRows;
 
   return (
-  
-      <Paper
-        sx={{
-          width: "100%",
-          overflow: "hidden",
-          cursor: "pointer",
-          fontSize: "18px",
-        }}
-      >
-        <TableContainer sx={{ maxHeight: maxHeight }}>
-          <Table stickyHeader aria-label="sticky table" sx={{ tableLayout: "fixed" }}>
+    <Paper
+      sx={{
+        width: "100%",
+        overflow: "hidden",
+        cursor: "pointer",
+        fontSize: "18px",
+      }}
+    >
+      <TableContainer sx={{ maxHeight: maxHeight }}>
+        <Table
+          stickyHeader
+          aria-label="sticky table"
+          sx={{ tableLayout: "fixed" }}
+        >
           <TableHead className="z-0">
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    style={{
-                      minWidth: column.minWidth,
-                      ...headerStyle,
-                      ...cellStyle,
-                    }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {itemCategory.map((cat, index) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={cat.item_category_id}>
-                  <TableCell sx={{ width: columns[0].maxWidth, padding: "8px 16px" }}>{index + 1}</TableCell>
-                  <TableCell sx={{ width: columns[1].maxWidth, padding: "8px 22px" }}>{cat.item_category_name}</TableCell>
-                  <TableCell sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}>{cat.items.length}</TableCell>
-                  <TableCell sx={{ width: columns[3].maxWidth, padding: "8px 22px" }}>
-                    <Button
-                      sx={{
-                        minWidth: "auto",
-                        padding: 0,
-                      }}
-                      onClick={() => handleShowModal(cat.item_category_id)}
-                    >
-                      <img src={deleteIcon} alt="delete" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  style={{
+                    minWidth: column.minWidth,
+                    ...headerStyle,
+                    ...cellStyle,
+                  }}
+                >
+                  {column.label}
+                </TableCell>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-      
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {itemCategory.map((cat, index) => (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={cat.item_category_id}
+              >
+                <TableCell
+                  sx={{ width: columns[0].maxWidth, padding: "8px 16px" }}
+                >
+                  {index + 1}
+                </TableCell>
+                <TableCell
+                  sx={{ width: columns[1].maxWidth, padding: "8px 22px" }}
+                >
+                  {cat.item_category_name}
+                </TableCell>
+                {/* <TableCell
+                  sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}
+                >
+                  {cat.items.length}
+                </TableCell> */}
+                <TableCell
+                  sx={{ width: columns[2].maxWidth, padding: "8px 22px" }}
+                >
+                  <Button
+                    sx={{
+                      minWidth: "auto",
+                      padding: 0,
+                    }}
+                    onClick={() => handleShowModal(cat.item_category_id)}
+                  >
+                    <img src={deleteIcon} alt="delete" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }

@@ -61,7 +61,7 @@ function PurchaseHistory() {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("sNo");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

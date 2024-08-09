@@ -113,7 +113,6 @@ export default function InventoryTable({ items }) {
 
   const headerStyle = {
     fontWeight: 600,
-    backgroundColor: "#f5f5f5",
   };
 
   const handleRowClick = (id) => {
