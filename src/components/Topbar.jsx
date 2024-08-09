@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
-// import "../styles/topbar.css";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import user from "../assets/user.svg";
+import notificationIcon from "../assets/notification.svg";
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import profile from "../assets/profile.png";
 import { format } from "date-fns";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 const Topbar = () => {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
   const [notification, setNotification] = useState([]);
-  const [notREadCount, setNotReadCount] = useState(0);
+  const [notReadCount, setNotReadCount] = useState(0);
+  const [initials, setInitials] = useState("");
+  const [bgColor, setBgColor] = useState(getRandomColor());
 
   const token = localStorage.getItem("token");
   const morningStart = 5;
@@ -36,11 +47,10 @@ const Topbar = () => {
     setNotificationPopUp(true);
   };
 
-  
   const navigate = useNavigate();
 
   const openEditProfile = () => {
-    navigate('/editProfile');
+    navigate("/editProfile");
   };
 
   useEffect(() => {
@@ -50,8 +60,8 @@ const Topbar = () => {
         width: 6px;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #adb5bd; /* Gray color */
-        border-radius: 9999px; /* Rounded corners */
+        background-color: #adb5bd;
+        border-radius: 9999px;
       }
       .custom-scrollbar::-webkit-scrollbar-track {
         background: transparent;
@@ -62,8 +72,6 @@ const Topbar = () => {
       document.head.removeChild(style);
     };
   }, []);
-
- 
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -88,8 +96,10 @@ const Topbar = () => {
           }
         );
         setNotification(response.data.notification || []);
-        const a = response.data.notification.filter((req) => !req.state).length;
-        setNotReadCount(a);
+        const unreadCount = response.data.notification.filter(
+          (req) => !req.state
+        ).length;
+        setNotReadCount(unreadCount);
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("Request Canceled", error.message);
@@ -98,12 +108,34 @@ const Topbar = () => {
       }
     };
     fetchNotification();
+  }, [token]);
+
+  useEffect(() => {
+    const fullName = localStorage.getItem("user_name");
+    if (fullName) {
+      const nameParts = fullName.trim().split(" ");
+      if (nameParts.length >= 1) {
+        const initials = `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]
+          }`;
+        setInitials(initials);
+      } else if (nameParts.length === 1) {
+        const initials = nameParts[0][0];
+        setInitials(initials);
+      } else {
+        console.log("Please provide a name.");
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    setBgColor(getRandomColor());
+  }, [initials]);
 
   const handleState = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8898/api/updateNotification`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -115,6 +147,7 @@ const Topbar = () => {
       console.log(error);
     }
   };
+
   socket.on("all_request", (data) => {
     const newNotification = data["message"];
     setNotification(newNotification);
@@ -142,7 +175,7 @@ const Topbar = () => {
           setNotification((prevNotifications) =>
             prevNotifications.map((notify) =>
               notify.notification_id === notification_id
-                ? { ...notify, state: true } // Update the state to true if successfully updated
+                ? { ...notify, state: true }
                 : notify
             )
           );
@@ -160,59 +193,61 @@ const Topbar = () => {
   };
 
   return (
-    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center  cursor-default">
+    <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center cursor-default">
       <div className="flex pl-5">
-        <p className="font-semibold text-xl">
-          {greeting}, {} Admin
-        </p>
+        <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
-        <button
-          className="text-2xl text-neutral-600 p-5 relative"
-          onClick={popUpNotification}
-        >
-          <i className="fa-regular fa-bell"></i>
+        <button className="  p-5 relative" onClick={popUpNotification}>
+          <img src={notificationIcon} alt="" className="w-7 h-7" />
 
-          {notREadCount == 0 ? (
-            <></>
-          ) : (
+          {notReadCount === 0 ? null : (
             <span className="absolute right-2 text-sm top-3 bg-red-500 rounded-[50%] h-5 w-5 text-white">
-              {notREadCount}
+              {notReadCount}
             </span>
           )}
         </button>
-       
-          <details className="relative z-50 ">
-              <summary className="list-none">
-              <img className="profile" src={user} alt="" />
-              </summary>
-                <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-8 ">
-                  <div className="flex justify-between items-center ">
-                  <img className="rounded-full" src={profile} alt =""/>
-                  <div className="flex flex-col">
-                <h1 className="font-medium text-xl text-nowrap ">Mahima Gurung</h1>
+
+        <details className="relative  ">
+          <summary className="list-none cursor-pointer ">
+            <div
+              className="h-9 w-9 rounded-full flex justify-center items-center select-none font-semibold text-white"
+              style={{ backgroundColor: bgColor }}
+            >
+              {initials}
+            </div>
+          </summary>
+          <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-8 ">
+            <div className="flex justify-between items-center ">
+              <img className="rounded-full" src={profile} alt="" />
+              <div className="flex flex-col">
+                <h1 className="font-medium text-xl text-nowrap ">
+                  Mahima Gurung
+                </h1>
                 <h3 className="font-normal text-l ">Mahima</h3>
-                </div>
-                </div>
-                <hr className="border-[1px] border-neutral-300 m-2"></hr>
-                <div className="flex flex-col px-4">
-                  <div className="flex items-center gap-2">
-                  <img className="w-6 h-6" src={email} alt ="" />
+              </div>
+            </div>
+            <hr className="border-[1px] border-neutral-300 m-2"></hr>
+            <div className="flex flex-col px-4">
+              <div className="flex items-center gap-2">
+                <img className="w-6 h-6" src={email} alt="" />
                 <li className="py-2 text-blue-600">grgmahima@gmail.com</li>
-                </div>
-                <div className="flex items-center gap-2">
-                <img className="w-6 h-6" src={phone} alt =""/>
+              </div>
+              <div className="flex items-center gap-2">
+                <img className="w-6 h-6" src={phone} alt="" />
                 <li className="py-2 text-blue-600">9800000000</li>
-                </div>
-                <div className="flex justify-center">
-                <button className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white " onClick={openEditProfile}>
-                  Edit profile 
+              </div>
+              <div className="flex justify-center">
+                <button
+                  className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white "
+                  onClick={openEditProfile}
+                >
+                  Edit profile
                 </button>
-                </div>
-                </div>
-                </ul>
-          </details>
-      
+              </div>
+            </div>
+          </ul>
+        </details>
       </div>
       {notificationPopUp && (
         <>
@@ -230,8 +265,6 @@ const Topbar = () => {
               </button>
             </div>
             <div className="w-full m-auto bg-background h-0.5"></div>
-            {/* Example message list, you may replace with dynamic content */}
-
             {notification.length === 0 ? (
               <div className="px-6 py-3">No notifications found.</div>
             ) : (
@@ -241,11 +274,10 @@ const Topbar = () => {
                 .map((notification) => (
                   <div
                     key={notification.notification_id}
-                    className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state
+                    className={`border-b border-neutral-300 px-6 py-3  ${notification.state
                         ? "bg-white"
                         : "bg-purple-100 cursor-default"
-                    }`}
+                      }`}
                   >
                     <div
                       onClick={() =>
@@ -265,12 +297,11 @@ const Topbar = () => {
             )}
           </div>
           <div
-            className="absolute z-10 w-[99%] h-[100%] mt-16 mr-16 transform -translate-x-60 translate-y-96 "
+            className="absolute z-10 w-[98%] h-[100%] mt-16 mr-16 transform -translate-x-60 translate-y-96 "
             onClick={() => setNotificationPopUp(false)}
           ></div>
         </>
       )}
-
 
       <div className="absolute right-0">
         <ToastContainer pauseOnHover theme="light" className="relative" />
