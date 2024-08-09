@@ -64,9 +64,20 @@ const AllUser = ({ users }) => {
                 <TableCell className="">{user.department}</TableCell>
                 <TableCell className="">{user.status}</TableCell>
                 <TableCell className="">
-                  <button>
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                  </button>
+                  <details className="relative z-50">
+                    <summary className="list-none w-full p-3">
+                      <button className="focus:outline-none">
+                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                    </summary>
+                    <div className="absolute flex flex-col w-full bg-white border-2 border-neutral-500 rounded-lg shadow-md">
+                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Set active</span>
+                      {/* <hr className=""/> */}
+                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Remove</span>
+                    </div>
+                  </details>
+
+
                 </TableCell>
               </TableRow>
             ))}
