@@ -189,11 +189,22 @@ export default function VendorTable({ vendors }) {
               >
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.format && vendor && vendor[column.id] !== undefined
-                      ? column.format(vendor[column.id])
-                      : vendor && vendor[column.id] !== undefined
-                      ? vendor[column.id]
-                      : "N/A"}
+                    {column.id === "payment_status" ? (
+                      // Custom condition for payment_status based on pending_payment
+                      vendor.pending_payment > 0 ? (
+                        <span style={{ color: "orange" }}>Pending</span>
+                      ) : (
+                        <span style={{ color: "green" }}>Completed</span>
+                      )
+                    ) : column.format &&
+                      vendor &&
+                      vendor[column.id] !== undefined ? (
+                      column.format(vendor[column.id])
+                    ) : vendor && vendor[column.id] !== undefined ? (
+                      vendor[column.id]
+                    ) : (
+                      "N/A"
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
