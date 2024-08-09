@@ -112,7 +112,7 @@ const SettingRole = () => {
 
           <div className="flex flex-row gap-6">
             <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3 text-l text-black font-semibold">
-              <div className="flex flex-col  mb-6 gap-5">
+              <div className="flex flex-col mb-6 gap-5">
                 <h1 className="text-lg font-bold m-2">Active Users</h1>
                 <div className="relative  overflow-x-auto  flex justify-center items-center ">
                   <ActiveUser users={activeUsers} />
@@ -122,7 +122,7 @@ const SettingRole = () => {
 
             <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col mb-5 gap-4">
-                <div className="flex p-2 items-center justify-between">
+                <div className="flex  items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
                   <div className="flex gap-4">
                     <div className="flex">
