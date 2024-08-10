@@ -64,17 +64,21 @@ const AllUser = ({ users }) => {
                 <TableCell className="">{user.department}</TableCell>
                 <TableCell className="">{user.status}</TableCell>
                 <TableCell className="">
-                  <details className="relative z-50">
-                    <summary className="list-none w-full p-3">
-                      <button className="focus:outline-none">
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
+                  <details className="relative">
+                    <summary className="list-none">
+                      <i className="fa-solid fa-ellipsis-vertical"></i>
                     </summary>
-                    <div className="absolute flex flex-col w-full bg-white border-2 border-neutral-500 rounded-lg shadow-md">
-                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Set active</span>
-                      {/* <hr className=""/> */}
-                      <span className="p-2 text-base font-medium hover:bg-gray-100 cursor-pointer">Remove</span>
-                    </div>
+                    <ul className="absolute list-none bg-white rounded border-2 border-neutral-800 gap-2">
+                        <li className="p-5 cursor-pointer hover:bg-slate-300 w-40 flex gap-2 items-center justify-center ">
+                          <i class="fa-solid fa-signal"></i>
+                          Set Active
+                        </li>
+                      
+                      <li className="p-5 cursor-pointer hover:bg-slate-300 w-40 flex gap-2 items-center justify-center ">
+                        <i class="fa-solid fa-trash"></i>
+                        Remove
+                      </li>
+                    </ul>
                   </details>
 
 
