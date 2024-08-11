@@ -215,7 +215,7 @@ const SettingRole = () => {
               </div>
             </div>
 
-            <div className="flex w-fit p-5 border-2 border-neutral-300 rounded-md mt-3">
+            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col mb-6 gap-5">
                 <div className="flex  items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
