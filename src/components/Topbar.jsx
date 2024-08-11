@@ -220,12 +220,12 @@ const Topbar = () => {
           </summary>
           <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-9 ">
             <div className="flex gap-3 items-center ">
-            <div
-              className="h-12 w-12 rounded-full flex justify-center items-center select-none font-semibold text-white"
-              style={{ backgroundColor: bgColor }}
-            >
-              {initials}
-            </div>
+              <div
+                className="h-12 w-12 rounded-full flex justify-center items-center select-none font-semibold text-white"
+                style={{ backgroundColor: bgColor }}
+              >
+                {initials}
+              </div>
               <div className="flex flex-col">
                 <h1 className="font-medium text-xl text-nowrap ">
                   Mahima Gurung

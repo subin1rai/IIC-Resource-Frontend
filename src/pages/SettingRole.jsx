@@ -7,6 +7,7 @@ import AllUser from "../components/AllUser";
 import user from "../assets/active.png";
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
+import socket from "../socket";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -22,7 +23,6 @@ const SettingRole = () => {
   //for all users
   const [userSearchTerm, setuserSearchTerm] = useState("");
   const [allFilteredUsers, setallFilteredUsers] = useState([]);
-
 
   const [user, setUser] = useState({
     user_name: "",
@@ -119,7 +119,6 @@ const SettingRole = () => {
     filterAllUsers();
   }, [userSearchTerm, users]);
 
-
   const handleChange = async (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -143,6 +142,31 @@ const SettingRole = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    socket.on("activated_user", (data) => {
+      const newActiveUser = data["message"];
+      const updatedUser = data["updated"];
+
+      setActiveUsers((prevUsers) => {
+        const existingUserIndex = prevUsers.findIndex(
+          (user) => user.userPoolId === updatedUser.userPoolId
+        );
+
+        if (existingUserIndex !== -1) {
+          return prevUsers.map((user) =>
+            user.user_id === updatedUser.user_id ? updatedUser : user
+          );
+        } else {
+          return [...prevUsers, newActiveUser];
+        }
+      });
+    });
+
+    return () => {
+      socket.off("activated_user");
+    };
+  }, []);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -213,7 +237,7 @@ const SettingRole = () => {
               </div>
             </div>
 
-            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3">
+            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3 z-0">
               <div className="flex flex-col mb-6 gap-5">
                 <div className="flex  items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
@@ -239,7 +263,7 @@ const SettingRole = () => {
                 </div>
 
                 <div className="relative overflow-x-auto flex justify-center items-center overflow-auto">
-                  <AllUser users={allFilteredUsers} />
+                  <AllUser users={allFilteredUsers} className="z-10" />
                 </div>
               </div>
             </div>
