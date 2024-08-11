@@ -53,7 +53,6 @@ const SettingRole = () => {
             Authorization: `Bearer ${Token}`,
           },
         });
-        console.log(response.data.users);
         if (response.data && response.data.users) {
           setUsers(response.data.users);
         } else {
@@ -176,7 +175,6 @@ const SettingRole = () => {
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 
           <div className="flex flex-row gap-6">
-
             <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col  mb-6 gap-5">
                 <div className="flex justify-between items-center">
