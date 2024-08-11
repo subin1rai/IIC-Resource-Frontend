@@ -32,6 +32,8 @@ const Records = () => {
     paid_amount: "",
   });
   const [date, setDate] = useState("");
+  const [filteredBills, setFilteredBills] = useState([]);
+  const [searchBill, setSearchBill] = useState("");
 
   const customStyles = {
     control: (provided) => ({
@@ -200,6 +202,21 @@ const Records = () => {
     }
   };
 
+  useEffect(() => {
+    const filterBills = () => {
+      const searchBillNumber = parseInt(searchBill, 10);
+      if (!isNaN(searchBillNumber)) {
+        const newFilteredBills = bills.filter((bill) =>
+          bill.bill_no.toString().includes(searchBillNumber.toString())
+        );
+        setFilteredBills(newFilteredBills);
+      } else {
+        setFilteredBills(bills);
+      }
+    };
+    filterBills();
+  }, [searchBill, bills]);
+
   return (
     <div className="records">
       <Sidebar />
@@ -229,6 +246,13 @@ const Records = () => {
               <p className="text-lg font-bold m-1">Bill Records</p>
             </div>
             <div className=" flex justify-between gap-3 mr-4 mt-3">
+              <input
+                type="text"
+                placeholder="Search bills"
+                value={searchBill}
+                onChange={(e) => setSearchBill(e.target.value)}
+                className="border-2 px-5 w-80 border-border rounded"
+              />
               <button
                 className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
                 aria-label="Menu"
@@ -245,7 +269,7 @@ const Records = () => {
               </button>
             </div>
           </div>
-          <RecordsTable bills={bills} />
+          <RecordsTable bills={filteredBills} />
         </div>
       </div>
       {addFormVisibility && (

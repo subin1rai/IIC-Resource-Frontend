@@ -62,25 +62,18 @@ const AllUser = ({ users }) => {
                 <TableCell className="">{user.user_name}</TableCell>
                 <TableCell className="">{user.user_email}</TableCell>
                 <TableCell className="">{user.department}</TableCell>
-                <TableCell className="">{user.status}</TableCell>
                 <TableCell className="">
-                  <details className="relative">
-                    <summary className="list-none">
-                      <i className="fa-solid fa-ellipsis-vertical"></i>
-                    </summary>
-                    <ul className="absolute list-none bg-white rounded border-2 border-neutral-800 gap-2">
-                        <li className="p-5 cursor-pointer hover:bg-slate-300 w-40 flex gap-2 items-center justify-center ">
-                          <i class="fa-solid fa-signal"></i>
-                          Set Active
-                        </li>
-                      
-                      <li className="p-5 cursor-pointer hover:bg-slate-300 w-40 flex gap-2 items-center justify-center ">
-                        <i class="fa-solid fa-trash"></i>
-                        Remove
-                      </li>
-                    </ul>
-                  </details>
 
+                  {user.status == 0 ? (
+                    <span className="text-red-500">Inactive</span>
+                  ) : (
+                    <span className="text-green-500">Active</span>
+                  )}
+                </TableCell>
+                <TableCell className=" ">
+                  <button className="flex justify-center items-center w-full">
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
 
                 </TableCell>
               </TableRow>
