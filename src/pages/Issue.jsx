@@ -7,10 +7,17 @@ import Select from "react-select";
 import IssueTable from "../components/IssueTable";
 import issuesno from "../assets/issuesno.png";
 import pendingreq from "../assets/pendingreq.png";
+import add from "../assets/addIcon.svg";
+import remove from "../assets/removeIcon.svg";
 
 const Issue = () => {
   const [issue, setIssue] = "";
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [remarks, setRemarks] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  const [addIssueVisibility, setAddIssueVisibility] = useState(false);
+  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -18,6 +25,70 @@ const Issue = () => {
 
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
+  };
+
+  const openAddIssueForm= () => {
+    setAddIssueVisibility(true);
+  };
+
+  const closeAddIssueForm = () => {
+    setAddIssueVisibility(false);
+  };
+
+  const handleItemChange = (index, field, value) => {
+    const newFields = [...itemFields];
+    newFields[index][field] = value;
+    setItemFields(newFields);
+  };
+
+  const addItemField = () => {
+    setItemFields([...itemFields, { item: "", quantity: "" }]);
+  };
+
+  const removeItemField = (index) => {
+    const newFields = itemFields.filter((_, i) => i !== index);
+    setItemFields(newFields);
+  };
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "#D0D5DD",
+      boxShadow: "none",
+      minHeight: "43px",
+      color: "black",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      width: "100px",
+      margin: "0px",
+      color: "black",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "250px",
+      color: "black",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+      color: "black",
+    }),
   };
 
   return (
@@ -56,7 +127,7 @@ const Issue = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="bg-blue-600 text-white py-2 px-3 rounded" >
+              <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={openAddIssueForm} >
                 Add Issue
               </button>
             </div>
@@ -103,6 +174,122 @@ const Issue = () => {
           {" "}
         </div>
       )}
+      {addIssueVisibility && (
+          <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+          <div className="flex justify-between">
+            <h2 className="font-semibold text-xl m-2"> Add Issue Details</h2>
+            <button
+              type="button"
+              className="discard-btn"
+              onClick={closeAddIssueForm}
+            >
+              <img src={close} alt="" />
+            </button>
+            </div>
+            <div className="flex flex-col gap-3 p-2">
+              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-3">
+              <div className="flex gap-40 ">
+              <label className="font-medium text-md">Requested by</label>
+              <label className="font-medium text-md">Issued by</label>
+              </div>
+              <div className="flex gap-5">
+              <input className="border-2 rounded border-border px-3 py-2 w-[13vw]"
+              placeholder="Request made by"/>
+              <input className="border-2 rounded border-border px-3 py-2 w-[13vw]"
+              placeholder ="Items issued by"/>
+              </div>
+              </div>
+              <div className="flex flex-col gap-3">
+              <div className="flex gap-60">
+                  <label htmlFor="item" className="font-medium text-md">
+                    Item
+                  </label>
+                  <label
+                    htmlFor="quantity"
+                    className="font-medium text-md"
+                  >
+                    Quantity
+                  </label>
+              </div>
+              <div className="flex items-end gap-2">
+                <div className="flex flex-col gap-6">
+                  {itemFields.map((field, index) => (
+                    <div key={index} className="flex  gap-5 items-center">
+                      {/* <div className="flex gap-12 bg-red-600  "> */}
+                      <Select
+                        options={items}
+                        onChange={(option) =>
+                          handleItemChange(index, "item", option)
+                        }
+                        value={items.find((option) => option === field.item)}
+                        placeholder="Select Item"
+                        styles={customStyles}
+                      />
+                      <input
+                        className="border-2 rounded border-border px-3 py-2 w-[13vw]"
+                        type="number"
+                        placeholder="Enter a quantity"
+                        name={`quantity-${index}`}
+                        id={`quantity-${index}`}
+                        value={field.quantity}
+                        onChange={(e) =>
+                          handleItemChange(index, "quantity", e.target.value)
+                        }
+                      />
+                      {/* </div> */}
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeItemField(index)}
+                          className="flex items-center"
+                        >
+                          <img src={remove} alt="Remove" className="h-7 w-7" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {itemFields.length >= 3 ? null : (
+                  <button
+                    type="button"
+                    onClick={addItemField}
+                    className="flex items-center mb-2"
+                  >
+                    <img src={add} alt="Add" className="h-7 w-7 ml-3" />
+                  </button>
+                )}
+              </div>
+            </div>
+            </div>
+            </div>
+            <div className="flex flex-col gap-3 p-2">
+              <label className="w-40 font-medium text-md" htmlFor="remarks">
+                Remarks
+              </label>
+              <textarea
+                name="remarks"
+                placeholder="Enter remarks"
+                className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+              />
+            </div>
+            <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8">
+              Done
+            </button>
+        </form>
+
+      )}
+       {addIssueVisibility && (
+        <div
+          className="absolute bg-overlay z-30 w-screen h-screen"
+          onCick={closeAddIssueForm}
+        >
+          {" "}
+        </div>
+      )}
+
     </div>
   );
 };
