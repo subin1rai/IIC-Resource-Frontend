@@ -14,6 +14,16 @@ const SettingRole = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addUserFormVisiblity, setAddUserFormVisiblity] = useState(false);
+
+  //for active users
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  //for all users
+  const [userSearchTerm, setuserSearchTerm] = useState("");
+  const [allFilteredUsers, setallFilteredUsers] = useState([]);
+
+
   const [user, setUser] = useState({
     user_name: "",
     user_email: "",
@@ -86,6 +96,31 @@ const SettingRole = () => {
     getActiveUser();
   }, [Token]);
 
+  // function for searching active users
+  useEffect(() => {
+    const filterActiveUsers = () => {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const newFilteredUsers = activeUsers.filter((user) =>
+        user.user_name.toLowerCase().includes(lowercasedTerm)
+      );
+      setFilteredUsers(newFilteredUsers);
+    };
+    filterActiveUsers();
+  }, [searchTerm, activeUsers]);
+
+  //function for searching all users
+  useEffect(() => {
+    const filterAllUsers = () => {
+      const lowercasedTerm = userSearchTerm.toLowerCase();
+      const newFilteredUsers = users.filter((user) =>
+        user.user_name.toLowerCase().includes(lowercasedTerm)
+      );
+      setallFilteredUsers(newFilteredUsers);
+    };
+    filterAllUsers();
+  }, [userSearchTerm, users]);
+
+
   const handleChange = async (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -152,7 +187,8 @@ const SettingRole = () => {
                       <input
                         type="text"
                         placeholder="Search Users"
-                        // onChange={}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="border-2 px-2 w-46 border-border rounded h-fit py-2"
                       />
                     </div>
@@ -174,7 +210,7 @@ const SettingRole = () => {
                 </div>
 
                 <div className="relative  overflow-x-auto  flex justify-center items-center ">
-                  <ActiveUser users={activeUsers} />
+                  <ActiveUser users={filteredUsers} />
                 </div>
               </div>
             </div>
@@ -187,8 +223,9 @@ const SettingRole = () => {
                     <div className="flex">
                       <input
                         type="text"
-                        placeholder="Search Users"
-                        // onChange={}
+                        placeholder="Search all Users"
+                        value={userSearchTerm}
+                        onChange={(e) => setuserSearchTerm(e.target.value)}
                         className="border-2 px-2 w-46 border-border rounded h-fit py-2"
                       />
                     </div>
@@ -203,8 +240,8 @@ const SettingRole = () => {
                   </div>
                 </div>
 
-                <div className="relative overflow-x-auto flex justify-center items-center">
-                  <AllUser users={users} />
+                <div className="relative overflow-x-auto flex justify-center items-center overflow-auto">
+                  <AllUser users={allFilteredUsers} />
                 </div>
               </div>
             </div>
