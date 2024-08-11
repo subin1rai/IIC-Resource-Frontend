@@ -15,7 +15,6 @@ const columns = [
   { id: "action", label: "Action", maxWidth: 70, align: "center" },
 ];
 
-
 const cellStyle = {
   fontSize: "14px",
   padding: "12px 16px",

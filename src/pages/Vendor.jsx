@@ -184,7 +184,6 @@ const Vendor = () => {
         });
 
         setVendors(response.data.vendor || []);
-        console.log(vendors);
         const count = response.data.vendor.filter(
           (req) => req.black_list
         ).length;
