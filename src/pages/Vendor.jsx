@@ -77,10 +77,8 @@ const Vendor = () => {
     vendor_contact: "",
     vendor_profile: "",
     payment_duration: "",
-    categories: [""], // Initialize with one empty category
+    categories: [""],
   });
-
-  console.log(vendor);
 
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -147,7 +145,7 @@ const Vendor = () => {
     try {
       const vendorData = {
         ...vendor,
-        categories: JSON.stringify(vendor.categories), // Convert array to JSON string
+        categories: JSON.stringify(vendor.categories),
       };
       const response = await axios.post(
         "http://localhost:8898/api/addVendor",
@@ -186,6 +184,7 @@ const Vendor = () => {
         });
 
         setVendors(response.data.vendor || []);
+        console.log(vendors);
         const count = response.data.vendor.filter(
           (req) => req.black_list
         ).length;
@@ -397,7 +396,9 @@ const Vendor = () => {
                 </select>
               </div>
               <div className="flex items-center gap-6">
-                <label className="w-40 font-medium">Categories</label>
+                <label className="w-40 font-medium self-start">
+                  Categories
+                </label>
                 <CategoryFields
                   categories={vendor.categories}
                   setCategories={(newCategories) =>
