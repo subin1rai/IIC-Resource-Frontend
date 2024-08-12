@@ -360,7 +360,7 @@ const SingleItem = () => {
               </div>
               <div className="flex justify-between items-center ">
                 <label  htmlFor="low_limit">
-                  Low Limit
+                  Limit
                 </label>
                 <input
                   type="number"
