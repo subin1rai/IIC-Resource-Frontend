@@ -29,6 +29,7 @@ const headerStyle = {
 };
 
 const ActiveUser = ({ users }) => {
+  console.log(users);
   return (
     <Paper
       sx={{
