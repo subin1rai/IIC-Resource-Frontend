@@ -80,7 +80,7 @@ const Sidebar = () => {
           <div className="item">
             <NavLink to="/inventory" className={setActiveClass}>
               <img src={inventory} className="item-img" alt="" />
-              <p>Invenotry</p>
+              <p>Inventory</p>
             </NavLink>
           </div>
           {/* record nav */}

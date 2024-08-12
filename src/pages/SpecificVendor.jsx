@@ -48,7 +48,6 @@ const SpecificVendor = () => {
     });
   };
 
-
   const handleShowModal = (vendor_id) => {
     Swal.fire({
       title: "Are you sure you want to blacklist?",
@@ -61,7 +60,11 @@ const SpecificVendor = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleBlackList(vendor_id);
-        Swal.fire("Blacklisted!", "This vendor has been blacklisted.", "success");
+        Swal.fire(
+          "Blacklisted!",
+          "This vendor has been blacklisted.",
+          "success"
+        );
       }
     });
   };
@@ -166,10 +169,7 @@ const SpecificVendor = () => {
               </button>
               <button
                 className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
-
                 onClick={() => handleShowModal(vendor_id)}
-
-
               >
                 Add to Blacklist
               </button>
@@ -281,10 +281,10 @@ const SpecificVendor = () => {
 
       {dialogboxVisibilty && (
         <>
-
-          <div className="h-screen w-screen bg-overlay absolute z-20"
-            onClick={() => setDialogboxVisibility(false)}>
-
+          <div
+            className="h-screen w-screen bg-overlay absolute z-20"
+            onClick={() => setDialogboxVisibility(false)}
+          >
             <div className="bg-white flex absolute top-1/2  left-1/2 items-center transform -translate-x-1/2 -translate-y-1/2 p-9 rounded">
               <p></p>
             </div>

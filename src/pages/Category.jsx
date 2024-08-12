@@ -337,7 +337,7 @@ const Category = () => {
       {visibleForm === "category" && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-7 gap-6 rounded "
         >
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold">Add Category</p>
@@ -347,15 +347,15 @@ const Category = () => {
               alt=""
               onClick={closeCategoryForm}
             />
-          </div>
-          <div className="flex gap-24 justify-between items-center">
-            <label className="w-44 p-4" htmlFor="category_name">
+          </div>  
+          <div className="flex gap-10 justify-between items-center">
+            <label className="w-44 p-4 font-medium" htmlFor="category_name">
               Category Name
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
               type="text"
-              placeholder="Enter product name"
+              placeholder="e.g assets, consumables"
               autoFocus="autofocus"
               name="category_name"
               id="category_name"
@@ -363,7 +363,7 @@ const Category = () => {
             />
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center">
             <button
               className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
               type="submit"
@@ -377,7 +377,7 @@ const Category = () => {
       {visibleForm === "itemCategory" && (
         <form
           onSubmit={handleSubmitItemCategory}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-6 p-7 rounded "
         >
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold">Item Category</p>
@@ -388,14 +388,14 @@ const Category = () => {
               onClick={closeCategoryForm}
             />
           </div>
-          <div className="flex gap-24 justify-between items-center">
-            <label className="w-44 p-4" htmlFor="item_category_name">
+          <div className="flex gap-10 justify-between items-center">
+            <label className="w-44 p-4 font-medium" htmlFor="item_category_name">
               Category Name
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
               type="text"
-              placeholder="Enter item category name"
+              placeholder="e.g electronics, stationary"
               autoFocus="autofocus"
               name="item_category_name"
               id="item_category_name"
@@ -403,7 +403,7 @@ const Category = () => {
             />
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center">
             <button
               className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
               type="submit"
@@ -417,7 +417,7 @@ const Category = () => {
       {visibleForm === "feature" && (
         <form
           onSubmit={handleSubmitFeature}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-7 gap-6 rounded "
         >
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold">Feature</p>
@@ -428,14 +428,14 @@ const Category = () => {
               onClick={closeCategoryForm}
             />
           </div>
-          <div className="flex gap-24 justify-between items-center">
-            <label className="w-44 p-4" htmlFor="feature_name">
+          <div className="flex gap-10 justify-between items-center">
+            <label className="w-44 p-4 font-medium" htmlFor="feature_name">
               Feature Name
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
               type="text"
-              placeholder="Enter feature name"
+              placeholder="e.g brand, size, colour"
               autoFocus="autofocus"
               name="feature_name"
               id="feature_name"
@@ -443,7 +443,7 @@ const Category = () => {
             />
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center">
             <button
               className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
               type="submit"

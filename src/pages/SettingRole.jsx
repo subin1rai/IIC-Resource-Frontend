@@ -7,6 +7,7 @@ import AllUser from "../components/AllUser";
 import user from "../assets/active.png";
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
+import socket from "../socket";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,15 @@ const SettingRole = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addUserFormVisiblity, setAddUserFormVisiblity] = useState(false);
+
+  //for active users
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  //for all users
+  const [userSearchTerm, setuserSearchTerm] = useState("");
+  const [allFilteredUsers, setallFilteredUsers] = useState([]);
+
   const [user, setUser] = useState({
     user_name: "",
     user_email: "",
@@ -43,7 +53,6 @@ const SettingRole = () => {
             Authorization: `Bearer ${Token}`,
           },
         });
-        console.log(response.data.users);
         if (response.data && response.data.users) {
           setUsers(response.data.users);
         } else {
@@ -86,6 +95,30 @@ const SettingRole = () => {
     getActiveUser();
   }, [Token]);
 
+  // function for searching active users
+  useEffect(() => {
+    const filterActiveUsers = () => {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const newFilteredUsers = activeUsers.filter((user) =>
+        user.user_name.toLowerCase().includes(lowercasedTerm)
+      );
+      setFilteredUsers(newFilteredUsers);
+    };
+    filterActiveUsers();
+  }, [searchTerm, activeUsers]);
+
+  //function for searching all users
+  useEffect(() => {
+    const filterAllUsers = () => {
+      const lowercasedTerm = userSearchTerm.toLowerCase();
+      const newFilteredUsers = users.filter((user) =>
+        user.user_name.toLowerCase().includes(lowercasedTerm)
+      );
+      setallFilteredUsers(newFilteredUsers);
+    };
+    filterAllUsers();
+  }, [userSearchTerm, users]);
+
   const handleChange = async (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -109,6 +142,31 @@ const SettingRole = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    socket.on("activated_user", (data) => {
+      const newActiveUser = data["message"];
+      const updatedUser = data["updated"];
+
+      setActiveUsers((prevUsers) => {
+        const existingUserIndex = prevUsers.findIndex(
+          (user) => user.userPoolId === updatedUser.userPoolId
+        );
+
+        if (existingUserIndex !== -1) {
+          return prevUsers.map((user) =>
+            user.user_id === updatedUser.user_id ? updatedUser : user
+          );
+        } else {
+          return [...prevUsers, newActiveUser];
+        }
+      });
+    });
+
+    return () => {
+      socket.off("activated_user");
+    };
+  }, []);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -141,7 +199,6 @@ const SettingRole = () => {
           <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
 
           <div className="flex flex-row gap-6">
-
             <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3">
               <div className="flex flex-col  mb-6 gap-5">
                 <div className="flex justify-between items-center">
@@ -152,7 +209,8 @@ const SettingRole = () => {
                       <input
                         type="text"
                         placeholder="Search Users"
-                        // onChange={}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="border-2 px-2 w-46 border-border rounded h-fit py-2"
                       />
                     </div>
@@ -174,12 +232,12 @@ const SettingRole = () => {
                 </div>
 
                 <div className="relative  overflow-x-auto  flex justify-center items-center ">
-                  <ActiveUser users={activeUsers} />
+                  <ActiveUser users={filteredUsers} />
                 </div>
               </div>
             </div>
 
-            <div className="flex w-fit p-5 border-2 border-neutral-300 rounded-md mt-3">
+            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3 z-0">
               <div className="flex flex-col mb-6 gap-5">
                 <div className="flex  items-center justify-between">
                   <h1 className="text-lg font-bold ">All Users</h1>
@@ -187,8 +245,9 @@ const SettingRole = () => {
                     <div className="flex">
                       <input
                         type="text"
-                        placeholder="Search Users"
-                        // onChange={}
+                        placeholder="Search all Users"
+                        value={userSearchTerm}
+                        onChange={(e) => setuserSearchTerm(e.target.value)}
                         className="border-2 px-2 w-46 border-border rounded h-fit py-2"
                       />
                     </div>
@@ -203,8 +262,8 @@ const SettingRole = () => {
                   </div>
                 </div>
 
-                <div className="relative overflow-x-auto flex justify-center items-center">
-                  <AllUser users={users} />
+                <div className="relative overflow-x-auto flex justify-center items-center overflow-auto">
+                  <AllUser users={allFilteredUsers} className="z-10" />
                 </div>
               </div>
             </div>

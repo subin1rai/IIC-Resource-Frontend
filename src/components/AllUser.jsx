@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import axios from "axios";
 
 const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "center" },
@@ -26,6 +27,65 @@ const cellStyle = {
 const headerStyle = {
   fontWeight: 600,
   backgroundColor: "#f5f5f5",
+};
+
+const DropdownMenu = ({ user }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSetActive = async (userPoolId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8898/api/setUserActive/${userPoolId}`
+      );
+      console.log(response.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex justify-center items-center w-full"
+      >
+        <i className="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      {isOpen && (
+        <div className="bg-white border-border border-2 rounded absolute z-50 -top-[60px] -left-28 flex flex-col text-black">
+          <span
+            className="hover:bg-background w-full p-3"
+            onClick={() => {
+              handleSetActive(user.userPoolId);
+              setIsOpen(false);
+            }}
+          >
+            Set Active
+          </span>
+          <span
+            className="hover:bg-background w-full p-3"
+            onClick={() => setIsOpen(false)}
+          >
+            Remove user
+          </span>
+        </div>
+      )}
+    </div>
+  );
 };
 
 const AllUser = ({ users }) => {
@@ -57,24 +117,20 @@ const AllUser = ({ users }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, index) => (
+            {users.map((user) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                <TableCell className="">{user.user_name}</TableCell>
-                <TableCell className="">{user.user_email}</TableCell>
-                <TableCell className="">{user.department}</TableCell>
-                <TableCell className="">
-
+                <TableCell>{user.user_name}</TableCell>
+                <TableCell>{user.user_email}</TableCell>
+                <TableCell>{user.department}</TableCell>
+                <TableCell>
                   {user.status == 0 ? (
                     <span className="text-red-500">Inactive</span>
                   ) : (
                     <span className="text-green-500">Active</span>
                   )}
                 </TableCell>
-                <TableCell className=" ">
-                  <button className="flex justify-center items-center w-full">
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                  </button>
-
+                <TableCell>
+                  <DropdownMenu user={user} />
                 </TableCell>
               </TableRow>
             ))}
