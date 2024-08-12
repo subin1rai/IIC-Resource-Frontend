@@ -285,7 +285,7 @@ const RequestTable = () => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="quantity"
-                    className="font-medium text-md pl-64 ml-2"
+                    className="font-medium text-md pl-52 ml-1 "
                   >
                     Quantity
                   </label>
