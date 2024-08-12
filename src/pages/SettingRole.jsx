@@ -15,6 +15,8 @@ const SettingRole = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addUserFormVisiblity, setAddUserFormVisiblity] = useState(false);
+  const [numberOfUsers, setNumberOfUsers] = useState(0);
+  const [numberOfActiveUsers, setNumberOfActiveUsers] = useState(0);
 
   //for active users
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,19 +34,6 @@ const SettingRole = () => {
 
   const Token = localStorage.getItem("token");
 
-  const cellStyle = {
-    fontSize: "14px",
-    padding: "12px 16px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
-
-  const headerStyle = {
-    fontWeight: 600,
-    backgroundColor: "#f5f5f5",
-  };
-
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -55,6 +44,7 @@ const SettingRole = () => {
         });
         if (response.data && response.data.users) {
           setUsers(response.data.users);
+          setNumberOfUsers(response.data.users.length);
         } else {
           setError("Unexpected response structure");
         }
@@ -82,6 +72,7 @@ const SettingRole = () => {
         console.log(response.data);
         if (response.data && response.data.user) {
           setActiveUsers(response.data.user);
+          setNumberOfActiveUsers(response.data.user.length);
         } else {
           setError("Unexpected response structure");
         }
@@ -98,11 +89,15 @@ const SettingRole = () => {
   // function for searching active users
   useEffect(() => {
     const filterActiveUsers = () => {
-      const lowercasedTerm = searchTerm.toLowerCase();
-      const newFilteredUsers = activeUsers.filter((user) =>
-        user.user_name.toLowerCase().includes(lowercasedTerm)
-      );
-      setFilteredUsers(newFilteredUsers);
+      if (Array.isArray(activeUsers)) {
+        const lowercasedTerm = searchTerm.toLowerCase();
+        const newFilteredUsers = activeUsers.filter((user) =>
+          user.user_name.toLowerCase().includes(lowercasedTerm)
+        );
+        setFilteredUsers(newFilteredUsers);
+      } else {
+        setFilteredUsers([]);
+      }
     };
     filterActiveUsers();
   }, [searchTerm, activeUsers]);
@@ -110,11 +105,15 @@ const SettingRole = () => {
   //function for searching all users
   useEffect(() => {
     const filterAllUsers = () => {
-      const lowercasedTerm = userSearchTerm.toLowerCase();
-      const newFilteredUsers = users.filter((user) =>
-        user.user_name.toLowerCase().includes(lowercasedTerm)
-      );
-      setallFilteredUsers(newFilteredUsers);
+      if (Array.isArray(users)) {
+        const lowercasedTerm = userSearchTerm.toLowerCase();
+        const newFilteredUsers = users.filter((user) =>
+          user.user_name.toLowerCase().includes(lowercasedTerm)
+        );
+        setallFilteredUsers(newFilteredUsers);
+      } else {
+        setallFilteredUsers([]);
+      }
     };
     filterAllUsers();
   }, [userSearchTerm, users]);
@@ -138,6 +137,7 @@ const SettingRole = () => {
         department: "",
       });
       setUsers((prev) => [...prev, response.data.addNewUser]);
+      setNumberOfUsers((prev) => prev + 1);
     } catch (error) {
       console.log(error);
     }
@@ -150,17 +150,26 @@ const SettingRole = () => {
 
       setActiveUsers((prevUsers) => {
         const existingUserIndex = prevUsers.findIndex(
-          (user) => user.userPoolId === updatedUser.userPoolId
+          (user) => user.user_id === newActiveUser.user_id
         );
-
-        if (existingUserIndex !== -1) {
-          return prevUsers.map((user) =>
-            user.user_id === updatedUser.user_id ? updatedUser : user
-          );
-        } else {
+        if (existingUserIndex === -1) {
           return [...prevUsers, newActiveUser];
+        } else {
+          return prevUsers.map((user) =>
+            user.user_id === newActiveUser.user_id ? newActiveUser : user
+          );
         }
       });
+
+      setUsers((prevUser) =>
+        prevUser.map((user) =>
+          user.userPoolId === updatedUser.userPoolId
+            ? { ...user, status: true }
+            : user
+        )
+      );
+
+      setNumberOfActiveUsers((prev) => prev + 1);
     });
 
     return () => {
@@ -179,12 +188,12 @@ const SettingRole = () => {
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={user} alt="" />
-                <h4>{activeUsers.length}</h4>
+                <h4>{numberOfActiveUsers}</h4>
                 <p className="font-medium">Number of Active Users</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={user} alt="" />
-                <h4>{users.length}</h4>
+                <h4>{numberOfUsers}</h4>
                 <p className="font-medium">Number of Users</p>
               </div>
             </div>
@@ -203,7 +212,6 @@ const SettingRole = () => {
               <div className="flex flex-col  mb-6 gap-5">
                 <div className="flex justify-between items-center">
                   <h1 className="text-lg font-bold m-2">Active Users</h1>
-                  {/* Search button */}
                   <div className="flex gap-4">
                     <div className="flex ">
                       <input
@@ -227,7 +235,6 @@ const SettingRole = () => {
                         Filter
                       </button>
                     </div>
-                    {/* filter */}
                   </div>
                 </div>
 
