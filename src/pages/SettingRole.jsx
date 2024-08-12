@@ -4,7 +4,7 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import ActiveUser from "../components/ActiveUser";
 import AllUser from "../components/AllUser";
-import user from "../assets/active.png";
+import activeIcon from "../assets/active.png";
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
 import socket from "../socket";
@@ -187,12 +187,12 @@ const SettingRole = () => {
             <h3 className="flex text-lg font-bold m-3">User Summary</h3>
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
-                <img className="w-8 h-8" src={user} alt="" />
+                <img className="w-8 h-8" src={activeIcon} alt="" />
                 <h4>{numberOfActiveUsers}</h4>
                 <p className="font-medium">Number of Active Users</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
-                <img className="w-8 h-8" src={user} alt="" />
+                <img className="w-8 h-8" src={activeIcon} alt="" />
                 <h4>{numberOfUsers}</h4>
                 <p className="font-medium">Number of Users</p>
               </div>
