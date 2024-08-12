@@ -13,6 +13,13 @@ import Swal from "sweetalert2";
 
 import "/src/App.css";
 
+
+const columns = [
+  { id: "sn", label: "SN", maxWidth: 70 },
+  { id: "feature_name", label: "Feature Name", maxWidth: 70 },
+
+  { id: "action", label: "Action", maxWidth: 70 },
+];
 const cellStyle = {
   fontSize: "14px",
   padding: "12px 16px",
@@ -25,11 +32,7 @@ const headerStyle = {
   fontWeight: 600,
   backgroundColor: "#f5f5f5",
 };
-const columns = [
-  { id: "sn", label: "SN", width: 120 },
-  { id: "feature_name", label: "Feature Name", width: 70 },
-  { id: "action", label: "Action", width: 225 },
-];
+
 
 export default function Ftable({ feature = [], setFeature }) {
   const token = localStorage.getItem("token");
@@ -84,15 +87,19 @@ export default function Ftable({ feature = [], setFeature }) {
       }}
     >
       <TableContainer sx={{ maxHeight: maxHeight }}>
-        <Table stickyHeader aria-label="sticky table">
+      <Table
+          stickyHeader
+          aria-label="sticky table"
+          sx={{ tableLayout: "fixed" }}
+        >
           <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
-                  style={{
-                    minWidth: column.minWidth,
+                  sx={{
+                    width: column.maxWidth,
+                    padding: "8px 14px",
                     ...headerStyle,
                     ...cellStyle,
                   }}
