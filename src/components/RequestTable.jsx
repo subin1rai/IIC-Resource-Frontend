@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
@@ -17,6 +18,7 @@ const RequestTable = () => {
   const [quantity, setQuantity] = useState("");
   const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
+  
 
   // getting token from local storage
   const token = localStorage.getItem("token");
@@ -65,8 +67,9 @@ const RequestTable = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(
-        "http://localhost:8898/api/accept-request",
+        "http://localhost:8898/api/approveRequest",
         {
           items: itemFields,
           remarks,
@@ -80,11 +83,13 @@ const RequestTable = () => {
       if (response.status === 200) {
         toast.success("Request accepted successfully");
         setAcceptFormVisibility(false);
+        setLoading(false);
         // Update the requests list or perform any necessary actions
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to accept the request");
+      setLoading(false);
+  
     }
   };
 
@@ -116,6 +121,7 @@ const RequestTable = () => {
   useEffect(() => {
     const getRequest = async () => {
       try {
+        
         const response = await axios.get("http://localhost:8898/api/request", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -275,7 +281,7 @@ const RequestTable = () => {
               ))}
             </div>
 
-            <div className="flex flex-col gap-5 p-2">
+            <div className="flex flex-col gap-5 p-3">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="item" className="font-medium text-md">
@@ -341,20 +347,28 @@ const RequestTable = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
-              <label className="w-40 font-medium text-md" htmlFor="remarks">
+              
+              <label className=" font-medium text-md" htmlFor="remarks">
                 Remarks
               </label>
               <textarea
                 name="remarks"
                 placeholder="Enter remarks"
-                className="border-stone-200 border-2 rounded py-2 px-4 w-[28.2vw] h-32 resize-none"
+                className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
               />
             </div>
-            <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8">
-              Done
-            </button>
+           
+            <div className="flex justify-end ">
+              <button
+                type="submit"
+                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+                disabled={loading}
+              >
+                {loading ? "Adding..." : "Confirm"}
+              </button>
+            </div>
           </div>
         </form>
       )}
