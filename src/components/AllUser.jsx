@@ -82,56 +82,59 @@ const DropdownMenu = ({ user }) => {
           buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
         }px`,
         left: `${
-          buttonRef.current?.getBoundingClientRect().left + window.scrollX
+          buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
         }px`,
       }}
     >
       {user.isActive ? (
-        <span
-          className="hover:bg-background w-full p-3 cursor-pointer"
-          onClick={() => {
-            handleSetInActive(user_id);
-            setIsOpen(false);
-          }}
-        >
-          Set Inactive
-        </span>
+        <>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Super Admin
+          </span>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Admin
+          </span>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Department Head
+          </span>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => {
+              handleSetInActive(user_id);
+              setIsOpen(false);
+            }}
+          >
+            Set Inactive
+          </span>
+        </>
       ) : (
-        <span
-          className="hover:bg-background w-full p-3 cursor-pointer"
-          onClick={() => {
-            handleSetActive(user_id);
-            setIsOpen(false);
-          }}
-        >
-          Set Active
-        </span>
+        <>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => {
+              handleSetActive(user_id);
+              setIsOpen(false);
+            }}
+          >
+            Set Active
+          </span>
+          <span
+            className="hover:bg-background w-full p-3 cursor-pointer"
+            onClick={() => setIsOpen(false)}
+          >
+            Remove user
+          </span>
+        </>
       )}
-
-      <span
-        className="hover:bg-background w-full p-3 cursor-pointer"
-        onClick={() => setIsOpen(false)}
-      >
-        Remove user
-      </span>
-      <span
-        className="hover:bg-background w-full p-3 cursor-pointer"
-        onClick={() => setIsOpen(false)}
-      >
-        Set Super Admin
-      </span>
-      <span
-        className="hover:bg-background w-full p-3 cursor-pointer"
-        onClick={() => setIsOpen(false)}
-      >
-        Set Admin
-      </span>
-      <span
-        className="hover:bg-background w-full p-3 cursor-pointer"
-        onClick={() => setIsOpen(false)}
-      >
-        Set Department Head
-      </span>
     </div>
   );
 
