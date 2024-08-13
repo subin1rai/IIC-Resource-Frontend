@@ -5,7 +5,7 @@ import axios from "axios";
 import ActiveUser from "../components/ActiveUser";
 import AllUser from "../components/AllUser";
 
-import actuser from "../assets/active.png";
+import activeIcon from "../assets/active.png";
 
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
@@ -189,7 +189,6 @@ const SettingRole = () => {
   };
 
   const [departments, setDepartments] = useState();
-  console.log(departments);
 
   useEffect(() => {
     try {
@@ -223,7 +222,6 @@ const SettingRole = () => {
               <img className="w-8 h-8" src={activeIcon} alt="" />
               <h4>{numberOfUsers}</h4>
               <p className="font-medium">Number of Users</p>
-
             </div>
           </div>
         </div>

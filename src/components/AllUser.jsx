@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -33,8 +34,8 @@ const headerStyle = {
 const DropdownMenu = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
-  console.log(user);
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -59,51 +60,65 @@ const DropdownMenu = ({ user }) => {
     }
   };
 
+  const dropdownContent = (
+    <div
+      ref={dropdownRef}
+      className="bg-white border-border border-2 rounded absolute z-50 flex flex-col text-black"
+      style={{
+        top: `${
+          buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
+        }px`,
+        left: `${
+          buttonRef.current?.getBoundingClientRect().left + window.scrollX
+        }px`,
+      }}
+    >
+      <span
+        className="hover:bg-background w-full p-3"
+        onClick={() => {
+          handleSetActive(user.userPoolId);
+          setIsOpen(false);
+        }}
+      >
+        Set Active
+      </span>
+      <span
+        className="hover:bg-background w-full p-3"
+        onClick={() => setIsOpen(false)}
+      >
+        Remove user
+      </span>
+      <span
+        className="hover:bg-background w-full p-3"
+        onClick={() => setIsOpen(false)}
+      >
+        Set Super Admin
+      </span>
+      <span
+        className="hover:bg-background w-full p-3"
+        onClick={() => setIsOpen(false)}
+      >
+        Set Admin
+      </span>
+      <span
+        className="hover:bg-background w-full p-3"
+        onClick={() => setIsOpen(false)}
+      >
+        Set Department Head
+      </span>
+    </div>
+  );
+
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative z-20">
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-center items-center w-full"
       >
         <i className="fa-solid fa-ellipsis-vertical"></i>
       </button>
-      {isOpen && (
-        <div className="bg-white border-border border-2 rounded absolute z-50 -top-[60px] -left-28 flex flex-col text-black">
-          <span
-            className="hover:bg-background w-full p-3"
-            onClick={() => {
-              handleSetActive(user.userPoolId);
-              setIsOpen(false);
-            }}
-          >
-            Set Active
-          </span>
-          <span
-            className="hover:bg-background w-full p-3"
-            onClick={() => setIsOpen(false)}
-          >
-            Remove user
-          </span>
-          <span
-            className="hover:bg-background w-full p-3"
-            onClick={() => setIsOpen(false)}
-          >
-            Set Super Admin
-          </span>
-          <span
-            className="hover:bg-background w-full p-3"
-            onClick={() => setIsOpen(false)}
-          >
-            Set Admin
-          </span>
-          <span
-            className="hover:bg-background w-full p-3"
-            onClick={() => setIsOpen(false)}
-          >
-            Set Department Head
-          </span>
-        </div>
-      )}
+      {isOpen && ReactDOM.createPortal(dropdownContent, document.body)}
     </div>
   );
 };
@@ -140,10 +155,10 @@ const AllUser = ({ users }) => {
           <TableBody>
             {users.map((user) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                <TableCell className="">{user.user_name}</TableCell>
+                <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
                 <TableCell>{user.role}</TableCell>
-                <TableCell>{user.department.department_name}</TableCell>
+                <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.status == 0 ? (
                     <span className="text-red-500">Inactive</span>
