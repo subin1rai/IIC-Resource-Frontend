@@ -4,7 +4,9 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import ActiveUser from "../components/ActiveUser";
 import AllUser from "../components/AllUser";
-import activeIcon from "../assets/active.png";
+
+import actuser from "../assets/active.png";
+
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
 import socket from "../socket";
@@ -221,6 +223,7 @@ const SettingRole = () => {
               <img className="w-8 h-8" src={activeIcon} alt="" />
               <h4>{numberOfUsers}</h4>
               <p className="font-medium">Number of Users</p>
+
             </div>
           </div>
         </div>

@@ -242,6 +242,18 @@ const SpecificBill = () => {
                     {formatDate(billDetails.bill_date) || "--"}
                   </span>
                 </p>
+                {/* <p className="font-semibold">
+                  Vendor Name:
+                  <span className="font-medium pl-4">
+                    {billDetails.vat_no || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Vat No:
+                  <span className="font-medium pl-4">
+                    {billDetails.vat_no || "--"}
+                  </span>
+                </p> */}
                 <p className="font-semibold">
                   Voucher No:
                   <span className="font-medium pl-4">
@@ -283,7 +295,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Paid Amount:
                   <span className="font-medium pl-4">
-                    {billDetails.paid_amount || "--"}
+                    {billDetails.paid_amt || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
@@ -450,7 +462,7 @@ const SpecificBill = () => {
                         placeholder="Enter Bill Amount"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         onChange={handleChange}
-                        value={editedBill.bill_amount}
+                        value={editedBill.bill_amt}
                       />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -462,7 +474,7 @@ const SpecificBill = () => {
                         id="TDS"
                         name="TDS"
                         onChange={handleChange}
-                        value={editedBill.TDS}
+                        value={editedBill.tds}
                       >
                         <option value="">Select TDS</option>
                         <option value="1.5">1.5</option>

@@ -79,6 +79,15 @@ const Records = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  const [bgColor, setBgColor] = useState('bg-blue-100');
+  const [textColor, setTextColor] = useState('text-blue-300');
+  const [borderColor, setBorderColor] = useState('border-blue-300');
+  const [bgColorPan, setPanBgColor] = useState('bg-blue-100');
+  const [textColorPan, setPanTextColor] = useState('text-blue-300');
+  const [borderColorPan, setPanBorderColor] = useState('border-blue-300');
+  const [bgColorNo, setNoBgColor] = useState('bg-blue-100');
+  const [textColorNo, setNoTextColor] = useState('text-blue-300');
+  const [borderColorNo, setNoBorderColor] = useState('border-blue-300');
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
@@ -175,6 +184,27 @@ const Records = () => {
     console.log("Selected date:", date);
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
+
+  const changePanColor = () => 
+  {
+    setPanBgColor('bg-blue-400'); 
+    setPanTextColor('text-blue-900'); 
+    setPanBorderColor('border-blue-400');
+  }
+
+  const changeColor = () => 
+    {
+      setBgColor('bg-blue-400'); 
+      setTextColor('text-blue-900'); 
+      setBorderColor('border-blue-400');
+    }
+
+    const changeNoBillColor = () => 
+      {
+        setNoBgColor('bg-blue-400'); 
+        setNoTextColor('text-blue-900'); 
+        setNoBorderColor('border-blue-400');
+      }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -274,12 +304,12 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-          <div className="overlay"></div>
-          <form onSubmit={handleSubmit} className="addform">
-            <div className="forms">
-              <div className="left">
-                <div className="flex justify-between items-center mb-3">
-                  <p className="title">Add Bill Details</p>
+        <div className="overlay"></div>
+          <form onSubmit={handleSubmit} 
+          className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded ">
+            <div className="flex flex-col gap-8">
+                <div className="flex justify-between items-center ">
+                  <p className="font-semibold text-xl">Add Bill Details</p>
                   <img
                     className="cursor-pointer  h-[2vh] w-[2vw]"
                     src={close}
@@ -287,14 +317,25 @@ const Records = () => {
                     onClick={closeAddBillForm}
                   />
                 </div>
-              </div>
-              <div className="flex">
-                <div className="left">
-                  <div className="double">
-                    <div className="for">
-                      <label htmlFor="bill_no">Bill No:</label>
+                <div className=" gap-16">
+                  <div className="flex  pb-8 gap-4">
+                  <button className={`h-fit w-fit p-2 px-24 ${bgColor} ${textColor} ${borderColor} border-2 rounded-tr-full`} onClick={changeColor}>
+                    Vat
+                  </button>
+                  <button className={`h-fit w-fit p-2 px-24 ${bgColorPan} ${textColorPan} ${borderColorPan} border-2 rounded-tr-full`} onClick={changePanColor}>
+                    Pan
+                  </button>
+                  <button className= {`whitespace-nowrap h-fit w-fit p-2 px-24 ${bgColorNo} ${textColorNo} ${borderColorNo} border-2 rounded-tr-full`} onClick={changeNoBillColor}>
+                    No Bill
+                  </button>
+                  </div>
+                  <div className="flex gap-16">
+                  <div className="flex">
+                  <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Bill No:</label>
                       <input
-                        type="number"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -302,191 +343,64 @@ const Records = () => {
                         onChange={handleChange}
                         value={bill.bill_no}
                       />
-                    </div>
-                    <div className="for">
-                      <label htmlFor="bill_date">Bill Date:</label>
-                      <NepaliDatePicker
+            </div>
+            </div>
+            <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
+              <NepaliDatePicker
                         inputClassName="form-control"
-                        className=""
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         value={date}
                         onChange={handleDateChange}
                         options={{ calenderLocale: "en", valueLocale: "en" }}
                       />
-                    </div>
-                  </div>
-                  <div className="double">
-                    <div className="for">
-                      <label htmlFor="invoice_no">Voucher No:</label>
+
+                      </div>
+
+                      <div className="flex flex-col">
+                    <label className="font-medium" htmlFor="bill_no">Voucher No:</label>
                       <input
-                        type="text"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter voucher number"
-                        name="invoice_no"
-                        id="invoice_no"
+                        autoFocus="autofocus"
+                        name="bill_no"
+                        id="bill_no"
                         onChange={handleChange}
-                        value={bill.invoice_no}
+                        value={bill.voucher_no}
                       />
-                    </div>
-                    <div className="for">
-                      <label htmlFor="vat_number">Vat No:</label>
+                      </div>  
+                  </div>
+                  </div>
+                  <div className="flex gap-16">
+                  <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Vendor Name:</label>
                       <input
-                        type="number"
-                        placeholder="Enter vendor vat"
-                        name="vat_number"
-                        id="vat_number"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        
+                        placeholder="Enter vendor name"
+                        autoFocus="autofocus"
+                        name="bill_no"
+                        id="bill_no"
+                        onChange={handleChange}
+                        value={bill.vendor_name}
+                      />
+            </div>
+            <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Vat No:</label>
+                      <input
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter vat number"
+                        autoFocus="autofocus"
+                        name="bill_no"
+                        id="bill_no"
                         onChange={handleChange}
                         value={bill.vat_number}
-                        min="0"
                       />
-                    </div>
+                      </div>  
                   </div>
-                  <div className="single">
-                    {/* <div className="for">
-                      <label htmlFor="vendor_name">Vendor Name:</label>
-                      <Select
-                        options={vendors.map((vendor) => ({
-                          value: vendor.vendor_name,
-                          label: vendor.vendor_name,
-                        }))}
-                        onChange={(option) =>
-                          handleSelectChange(option, { name: "vendor_name" })
-                        }
-                        value={
-                          bill.vendor_name
-                            ? {
-                                value: bill.vendor_name,
-                                label: bill.vendor_name,
-                              }
-                            : null
-                        }
-                        placeholder="Select Vendor"
-                        styles={customStyles}
-                      />
-                    </div> */}
-                    <div className="for">
-                      <label htmlFor="item_name">Item Name:</label>
-                      <Select
-                        options={items.map((item) => ({
-                          value: item.item_name,
-                          label: item.item_name,
-                        }))}
-                        onChange={(option) =>
-                          handleSelectChange(option, { name: "item_name" })
-                        }
-                        value={
-                          bill.item_name
-                            ? { value: bill.item_name, label: bill.item_name }
-                            : null
-                        }
-                        placeholder="Select Item"
-                        styles={customStyles}
-                      />
-                    </div>
-                  </div>
-                  <div className="double">
-                    <div className="for">
-                      <label htmlFor="unit_price">Unit Price:</label>
-                      <input
-                        type="number"
-                        placeholder="Enter unit price"
-                        name="unit_price"
-                        id="unit_price"
-                        onChange={handleChange}
-                        value={bill.unit_price}
-                      />
-                    </div>
-                    <div className="for">
-                      <label htmlFor="quantity">Quantity:</label>
-                      <input
-                        type="number"
-                        placeholder="Enter quantity"
-                        name="quantity"
-                        id="quantity"
-                        onChange={handleChange}
-                        value={bill.quantity}
-                      />
-                    </div>
-                  </div>
-                  <div className="double">
-                    <div className="for">
-                      <label htmlFor="bill_amount">Bill Amount:</label>
-                      <input
-                        type="number"
-                        placeholder="Enter bill amount"
-                        name="bill_amount"
-                        id="bill_amount"
-                        onChange={handleChange}
-                        value={bill.bill_amount}
-                      />
-                    </div>
-                    <div className="for">
-                      <label htmlFor="TDS">Tax Deducted Source (TDS):</label>
-                      <select
-                        className="tdsselect"
-                        id="TDS"
-                        name="TDS"
-                        onChange={handleChange}
-                        value={bill.TDS}
-                      >
-                        <option value="">Select TDS</option>
-                        <option value="1.5">1.5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="line">
-                    <div className="double">
-                      <div className="for">
-                        <label htmlFor="actual_amount">Actual Amount:</label>
-                        <input
-                          type="number"
-                          placeholder="Enter actual amount"
-                          name="actual_amount"
-                          id="actual_amount"
-                          onChange={handleChange}
-                          value={bill.actual_amount}
-                        />
-                      </div>
-                      <div className="for">
-                        <label htmlFor="paid_amount">Paid Amount:</label>
-                        <input
-                          type="number"
-                          placeholder="Enter paid amount"
-                          name="paid_amount"
-                          id="paid_amount"
-                          onChange={handleChange}
-                          value={bill.paid_amount}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="summary">
-                  <div className="right">
-                    <h2>Summary</h2>
-                    <p>Bill No: {bill.bill_no}</p>
-                    <p>Bill Date: {bill.bill_date}</p>
-                    <p>Vendor Vat: {bill.vat_number}</p>
-                    <p>Item Name: {bill.item_name}</p>
-                    <p>Unit Price: {bill.unit_price}</p>
-                    <p>Quantity: {bill.quantity}</p>
-                    <p>Bill Amount: {bill.bill_amount}</p>
-                    <p>TDS: {bill.TDS}</p>
-                    <p>Actual Amount: {bill.actual_amount}</p>
-                    <p>Paid Amount: {bill.paid_amount}</p>
-                  </div>
-
-                  {error && <span className="text-red-500">{error}</span>}
-
-                  <div className="buttons">
-                    <button type="submit" className="add-btn">
-                      Add Bill
-                    </button>
-                  </div>
-                </div>
               </div>
-            </div>
-          </form>
+    </form>
+
         </>
       )}
       {filterFormVisibility && (
