@@ -69,7 +69,7 @@ const RequestTable = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8898/api/accept-request",
+        "http://localhost:8898/api/approveRequest",
         {
           items: itemFields,
           remarks,
