@@ -32,34 +32,30 @@ const Category = () => {
   const [newFeature, setNewFeature] = useState({ feature_name: "" });
   const [visibleForm, setVisibleForm] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  
 
   // Get the token from local storage
   const token = localStorage.getItem("token");
 
   // Fetch categories from the API on component mount
   useEffect(() => {
-    const controller = new AbortController();
-    (async () => {
+    const controller =async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/category", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
+       
         setCategory(response.data.category || []);
       } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log("Request Canceled", error.message);
-          return;
+       
+          console.log("Request Canceled", error);
+          setCatgeory([]);
         }
-      }
-    })();
-    return () => {
-      controller.abort();
-    };
-  }, []);
+      };
+      controller();
+    }, [token]);
 
   // Fetch item categories from the API on component mount
 
