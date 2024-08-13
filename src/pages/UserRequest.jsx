@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
 import socket from "../socket.js";
+import Select from "react-select";
 
 const UserRequest = () => {
   const [request, setRequest] = useState({
@@ -29,6 +30,42 @@ const UserRequest = () => {
     };
     getDepartmentUsers();
   });
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      borderColor: "#ccc",
+      boxShadow: "none",
+      minHeight: "46px",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0px",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "320px",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+    }),
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -137,16 +174,12 @@ const UserRequest = () => {
                 <label htmlFor="quantity" className="font-medium">
                   Requested For
                 </label>
-                <select
-                  name=""
-                  id=""
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
-                  onChange={handleChange}
-                >
-                  <option value="" className="">
-                    Select the teachers name
-                  </option>
-                </select>
+                <Select
+                  placeholder="Choose Category"
+                  styles={customStyles}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
               </div>
               <div className="flex justify-between gap-11 items-center ">
                 <label
