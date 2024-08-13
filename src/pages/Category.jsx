@@ -5,6 +5,7 @@ import axios from "axios";
 import Ctable from "../components/Categorytable";
 import Itable from "../components/Itable";
 import Ftable from "../components/Featurestable";
+
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
 import itemcat from "../assets/itemcat.png";
@@ -23,7 +24,11 @@ const Category = () => {
   const [newItemCategory, setNewItemCategory] = useState({
     item_category_name: "",
   });
-  const [feature, setFeature] = useState([]);
+  const [newDepartment, setNewDepartment] = useState({
+    department_name: "",
+  });
+  const [feature, setDepartment] = useState([]);
+  const [department, setFeature] = useState([]);
   const [newFeature, setNewFeature] = useState({ feature_name: "" });
   const [visibleForm, setVisibleForm] = useState("");
   const [error, setError] = useState("");
@@ -351,7 +356,7 @@ const Category = () => {
               alt=""
               onClick={closeCategoryForm}
             />
-          </div>  
+          </div>
           <div className="flex gap-10 justify-between items-center">
             <label className="w-44 p-4 font-medium" htmlFor="category_name">
               Category Name
@@ -393,7 +398,10 @@ const Category = () => {
             />
           </div>
           <div className="flex gap-10 justify-between items-center">
-            <label className="w-44 p-4 font-medium" htmlFor="item_category_name">
+            <label
+              className="w-44 p-4 font-medium"
+              htmlFor="item_category_name"
+            >
               Category Name
             </label>
             <input

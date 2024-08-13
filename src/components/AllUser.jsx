@@ -9,10 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 
 const columns = [
-  { id: "user_name", label: "User Name", maxWidth: 70, align: "center" },
-  { id: "user_email", label: "Email Address", maxWidth: 70, align: "center" },
-  { id: "department", label: "Department", maxWidth: 70, align: "center" },
-  { id: "status", label: "Status", maxWidth: 70, align: "center" },
+  { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
+  { id: "user_email", label: "Email Address", maxWidth: 70, align: "left" },
+  { id: "role", label: "Role", maxWidth: 70, align: "left" },
+  { id: "department", label: "Department", maxWidth: 70, align: "left" },
+  { id: "status", label: "Status", maxWidth: 70, align: "left" },
   { id: "action", label: "Action", maxWidth: 70, align: "center" },
 ];
 
@@ -33,6 +34,7 @@ const DropdownMenu = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  console.log(user);
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -105,6 +107,7 @@ const AllUser = ({ users }) => {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
+                  align={column.align}
                   style={{
                     minWidth: column.minWidth,
                     ...headerStyle,
@@ -119,9 +122,10 @@ const AllUser = ({ users }) => {
           <TableBody>
             {users.map((user) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                <TableCell>{user.user_name}</TableCell>
+                <TableCell className="">{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
-                <TableCell>{user.department}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.department.department_name}</TableCell>
                 <TableCell>
                   {user.status == 0 ? (
                     <span className="text-red-500">Inactive</span>
@@ -129,7 +133,7 @@ const AllUser = ({ users }) => {
                     <span className="text-green-500">Active</span>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="flex ">
                   <DropdownMenu user={user} />
                 </TableCell>
               </TableRow>
