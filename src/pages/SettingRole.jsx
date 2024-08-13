@@ -173,9 +173,9 @@ const SettingRole = () => {
           },
         }
       );
-
       toast.success(`${newDepartment.department_name} Added successfully!`);
       setVisibleForm(false);
+      setDepartments((prev) => [...prev, response.data.department]);
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
@@ -187,6 +187,7 @@ const SettingRole = () => {
   };
 
   const [departments, setDepartments] = useState();
+  console.log(departments);
 
   useEffect(() => {
     try {
