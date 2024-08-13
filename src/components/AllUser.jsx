@@ -84,6 +84,24 @@ const DropdownMenu = ({ user }) => {
           >
             Remove user
           </span>
+          <span
+            className="hover:bg-background w-full p-3"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Super Admin
+          </span>
+          <span
+            className="hover:bg-background w-full p-3"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Admin
+          </span>
+          <span
+            className="hover:bg-background w-full p-3"
+            onClick={() => setIsOpen(false)}
+          >
+            Set Department Head
+          </span>
         </div>
       )}
     </div>
