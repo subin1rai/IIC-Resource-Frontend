@@ -36,6 +36,8 @@ const DropdownMenu = ({ user }) => {
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
+  const user_id = user.user_id;
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -49,10 +51,21 @@ const DropdownMenu = ({ user }) => {
     };
   }, []);
 
-  const handleSetActive = async (userPoolId) => {
+  const handleSetActive = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8898/api/setUserActive/${userPoolId}`
+      const response = await axios.put(
+        `http://localhost:8898/api/role/activateUser/${user_id}`
+      );
+      console.log(response.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSetInActive = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/role/deactivateUser/${user_id}`
       );
       console.log(response.data.user);
     } catch (error) {
@@ -63,7 +76,7 @@ const DropdownMenu = ({ user }) => {
   const dropdownContent = (
     <div
       ref={dropdownRef}
-      className="bg-white border-border border-2 rounded absolute z-50 flex flex-col text-black"
+      className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black"
       style={{
         top: `${
           buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
@@ -73,35 +86,48 @@ const DropdownMenu = ({ user }) => {
         }px`,
       }}
     >
+      {user.isActive ? (
+        <span
+          className="hover:bg-background w-full p-3 cursor-pointer"
+          onClick={() => {
+            handleSetInActive(user_id);
+            setIsOpen(false);
+          }}
+        >
+          Set Inactive
+        </span>
+      ) : (
+        <span
+          className="hover:bg-background w-full p-3 cursor-pointer"
+          onClick={() => {
+            handleSetActive(user_id);
+            setIsOpen(false);
+          }}
+        >
+          Set Active
+        </span>
+      )}
+
       <span
-        className="hover:bg-background w-full p-3"
-        onClick={() => {
-          handleSetActive(user.userPoolId);
-          setIsOpen(false);
-        }}
-      >
-        Set Active
-      </span>
-      <span
-        className="hover:bg-background w-full p-3"
+        className="hover:bg-background w-full p-3 cursor-pointer"
         onClick={() => setIsOpen(false)}
       >
         Remove user
       </span>
       <span
-        className="hover:bg-background w-full p-3"
+        className="hover:bg-background w-full p-3 cursor-pointer"
         onClick={() => setIsOpen(false)}
       >
         Set Super Admin
       </span>
       <span
-        className="hover:bg-background w-full p-3"
+        className="hover:bg-background w-full p-3 cursor-pointer"
         onClick={() => setIsOpen(false)}
       >
         Set Admin
       </span>
       <span
-        className="hover:bg-background w-full p-3"
+        className="hover:bg-background w-full p-3 cursor-pointer"
         onClick={() => setIsOpen(false)}
       >
         Set Department Head
@@ -124,6 +150,7 @@ const DropdownMenu = ({ user }) => {
 };
 
 const AllUser = ({ users }) => {
+  console.log(users);
   return (
     <Paper
       sx={{
@@ -154,13 +181,13 @@ const AllUser = ({ users }) => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
-                  {user.status == 0 ? (
+                  {user.isActive === false ? (
                     <span className="text-red-500">Inactive</span>
                   ) : (
                     <span className="text-green-500">Active</span>
