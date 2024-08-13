@@ -32,6 +32,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user_name", response.data.user_name);
+      localStorage.setItem("department", response.data.department);
       localStorage.setItem("role", response.data.role);
       console.log("Role from response:", response.data.role);
 

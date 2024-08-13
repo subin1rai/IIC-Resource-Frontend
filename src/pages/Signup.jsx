@@ -25,8 +25,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8898/api/signup`, user,
-      );
+      await axios.post(`http://localhost:8898/api/signup`, user);
       navigate("/");
     } catch (error) {
       console.log(error);

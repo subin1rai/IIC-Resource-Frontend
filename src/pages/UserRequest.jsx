@@ -14,10 +14,21 @@ const UserRequest = () => {
   });
   const [items, setItems] = useState([]);
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const handleChange = (e) => {
     setRequest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const [departmentMembers, setDepartmentMembers] = useState();
+
+  useEffect(() => {
+    const getDepartmentUsers = async () => {
+      const response = await axios.get("http://localhost:8898/api/allUsers");
+      console.log(response.data.users);
+    };
+    getDepartmentUsers();
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();

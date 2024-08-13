@@ -10,6 +10,8 @@ import actuser from "../assets/active.png";
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
 import socket from "../socket";
+import close from "../assets/close.svg";
+import { ToastContainer, toast } from "react-toastify";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -19,6 +21,10 @@ const SettingRole = () => {
   const [addUserFormVisiblity, setAddUserFormVisiblity] = useState(false);
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [numberOfActiveUsers, setNumberOfActiveUsers] = useState(0);
+  const [visibleForm, setVisibleForm] = useState("");
+  const [newDepartment, setNewDepartment] = useState({
+    department_name: "",
+  });
 
   //for active users
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,16 +40,29 @@ const SettingRole = () => {
     department: "",
   });
 
+  const displayAddPopup = (formName) => {
+    setVisibleForm(formName);
+  };
+
+  const closeCategoryForm = () => {
+    setError("");
+    setVisibleForm("");
+  };
+
   const Token = localStorage.getItem("token");
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/allUsers", {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8898/api/role/allUsers",
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
+          }
+        );
+
         if (response.data && response.data.users) {
           setUsers(response.data.users);
           setNumberOfUsers(response.data.users.length);
@@ -59,50 +78,6 @@ const SettingRole = () => {
     };
     getUsers();
   }, [Token]);
-
-  useEffect(() => {
-    const getActiveUser = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8898/api/activeUsers",
-          {
-            headers: {
-              Authorization: `Bearer ${Token}`,
-            },
-          }
-        );
-        console.log(response.data);
-        if (response.data && response.data.user) {
-          setActiveUsers(response.data.user);
-          setNumberOfActiveUsers(response.data.user.length);
-        } else {
-          setError("Unexpected response structure");
-        }
-      } catch (err) {
-        console.log(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getActiveUser();
-  }, [Token]);
-
-  // function for searching active users
-  useEffect(() => {
-    const filterActiveUsers = () => {
-      if (Array.isArray(activeUsers)) {
-        const lowercasedTerm = searchTerm.toLowerCase();
-        const newFilteredUsers = activeUsers.filter((user) =>
-          user.user_name.toLowerCase().includes(lowercasedTerm)
-        );
-        setFilteredUsers(newFilteredUsers);
-      } else {
-        setFilteredUsers([]);
-      }
-    };
-    filterActiveUsers();
-  }, [searchTerm, activeUsers]);
 
   //function for searching all users
   useEffect(() => {
@@ -124,12 +99,19 @@ const SettingRole = () => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleDepartmentChange = (e) => {
+    setNewDepartment((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addUser",
+        "http://localhost:8898/api/role/addUser",
         user
       );
       setAddUserFormVisiblity(false);
@@ -138,7 +120,9 @@ const SettingRole = () => {
         user_email: "",
         department: "",
       });
-      setUsers((prev) => [...prev, response.data.addNewUser]);
+
+      console.log(response);
+      setUsers((prev) => [...prev, response.data.newUser]);
       setNumberOfUsers((prev) => prev + 1);
     } catch (error) {
       console.log(error);
@@ -179,104 +163,100 @@ const SettingRole = () => {
     };
   }, []);
 
+  const handleSubmitDepartment = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8898/api/addDepartment",
+        newDepartment,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        }
+      );
+
+      toast.success(`${newDepartment.department_name} Added successfully!`);
+      setVisibleForm(false);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setError("Feature name already exists!");
+      } else {
+        console.log(error);
+        setError("Failed to add the new feature!");
+      }
+    }
+  };
+
+  const [departments, setDepartments] = useState();
+
+  useEffect(() => {
+    try {
+      const getDepartment = async () => {
+        const response = await axios.get(
+          "http://localhost:8898/api/getDepartment"
+        );
+        setDepartments(response.data.department);
+        console.log(departments);
+      };
+      getDepartment();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto items-center">
         <Topbar />
-        <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
-          <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
-            <h3 className="flex text-lg font-bold m-3">User Summary</h3>
-            <div className="flex justify-around">
-              <div className="flex flex-col items-center justify-center gap-2">
+        <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
+          <h3 className="flex text-lg font-bold m-3">User Summary</h3>
+          <div className="flex justify-around">
+            <div className="flex flex-col items-center justify-center gap-2">
+              <img className="w-8 h-8" src={activeIcon} alt="" />
+              <h4>{numberOfActiveUsers}</h4>
+              <p className="font-medium">Number of Active Users</p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <img className="w-8 h-8" src={activeIcon} alt="" />
+              <h4>{numberOfUsers}</h4>
+              <p className="font-medium">Number of Users</p>
 
-                <img className="w-8 h-8" src={actuser} alt="" />
-                <h4>{activeUsers.length}</h4>
-                <p className="font-medium">Number of Active Users</p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-2">
-                <img className="w-8 h-8" src={actuser} alt="" />
-                <h4>{users.length}</h4>
-<p className="font-medium">Number of Users</p>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col bg-white w-[85.5vw] px-7 py-5 rounded h-[67vh]">
-          <h3 className="font-bold text-lg">Roles</h3>
-          <div className="flex items-center justify-between ">
-            <p className="text-blue-700">You can manage user roles here.</p>
+        <div className="flex flex-col bg-white p-5  rounded w-[85.5vw] gap-5">
+          {/* <h3 className="font-bold text-2xl">Roles</h3> */}
+          {/* <p className="text-button">You can manage user roles here.</p> */}
+          {/* <div className="w-full mx-auto bg-button h-1"></div> */}
+          <div className="flex justify-between">
+            <h3 className="text-xl font-bold">Users List</h3>
+            <div className="flex gap-5">
+              <input
+                type="text"
+                placeholder="Search all Users"
+                value={userSearchTerm}
+                onChange={(e) => setuserSearchTerm(e.target.value)}
+                className="border-2 px-2 w-64 border-border rounded py-2"
+              />
+              <button
+                className="bg-button text-white rounded w-fit px-6 py-2"
+                onClick={() => setAddUserFormVisiblity(true)}
+              >
+                Add User
+              </button>
+              <button
+                className="  bg-button text-white rounded items-center px-6 py-2  "
+                onClick={() => displayAddPopup("department")}
+              >
+                Add Department
+              </button>
+            </div>
           </div>
-          <div className="w-full mx-auto mt-5 bg-blue-600 h-1"></div>
-
-          <div className="flex flex-row gap-6">
-            <div className="flex w-fit p-7 justify-between border-2 border-neutral-300 rounded-md mt-3">
-              <div className="flex flex-col  mb-6 gap-5">
-                <div className="flex justify-between items-center">
-                  <h1 className="text-lg font-bold m-2">Active Users</h1>
-                  <div className="flex gap-4">
-                    <div className="flex ">
-                      <input
-                        type="text"
-                        placeholder="Search Users"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border-2 px-2 w-46 border-border rounded h-fit py-2"
-                      />
-                    </div>
-                    <div className="flex ">
-                      <button
-                        className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
-                        aria-label="Menu"
-                      >
-                        <img
-                          className="mt-1 justify-center align-center"
-                          src={filterIcon}
-                          alt=""
-                        />
-                        Filter
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative  overflow-x-auto  flex justify-center items-center ">
-                  <ActiveUser users={filteredUsers} />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex w-fit p-7 border-2 border-neutral-300 rounded-md mt-3 z-0">
-              <div className="flex flex-col mb-6 gap-5">
-                <div className="flex  items-center justify-between">
-                  <h1 className="text-lg font-bold ">All Users</h1>
-                  <div className="flex gap-4">
-                    <div className="flex">
-                      <input
-                        type="text"
-                        placeholder="Search all Users"
-                        value={userSearchTerm}
-                        onChange={(e) => setuserSearchTerm(e.target.value)}
-                        className="border-2 px-2 w-46 border-border rounded h-fit py-2"
-                      />
-                    </div>
-                    <div className="flex ">
-                      <button
-                        className="bg-button text-white rounded border w-fit h-fit px-6 py-2"
-                        onClick={() => setAddUserFormVisiblity(true)}
-                      >
-                        Add User
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative overflow-x-auto flex justify-center items-center overflow-auto">
-                  <AllUser users={allFilteredUsers} className="z-10" />
-                </div>
-              </div>
-            </div>
+          <div className="flex justify-center items-center ">
+            <AllUser users={allFilteredUsers} className="z-10" />
           </div>
         </div>
       </div>
@@ -331,6 +311,7 @@ const SettingRole = () => {
                 <label htmlFor="department" className="w-[120px]">
                   Department
                 </label>
+
                 <select
                   id="department"
                   name="department"
@@ -340,17 +321,63 @@ const SettingRole = () => {
                   <option value="" disabled selected>
                     Select department
                   </option>
-                  <option value="SSD">SSD</option>
-                  <option value="BBA academics">BBA academics</option>
-                  <option value="BIT academics">BIT academics</option>
-                  <option value="BD">BD</option>
-                  <option value="Finance">Finance</option>
-                  <option value="RTE">RTE</option>
+                  {departments.map((department) => {
+                    return (
+                      <option
+                        key={department.department_id}
+                        value={department.department_name}
+                      >
+                        {department.department_name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 
               <button className="bg-button text-white  py-2 w-fit px-4 rounded self-end mt-2">
                 Add User{" "}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {visibleForm === "department" && (
+        <div className="flex absolute left-0 top-0 bg-overlay w-screen h-screen z-10 justify-center items-center">
+          <form
+            onSubmit={handleSubmitDepartment}
+            className="flex absolute z-50 bg-white flex-col p-5 gap-6 rounded "
+          >
+            <div className="flex justify-between items-center">
+              <p className=" ml-4 font-semibold">Feature</p>
+              <img
+                className="rounded-md cursor-pointer p-4"
+                src={close}
+                alt=""
+                onClick={closeCategoryForm}
+              />
+            </div>
+            <div className="flex gap-10 justify-between items-center">
+              <label className="w-48 p-4 font-medium" htmlFor="department_name">
+                Department Name
+              </label>
+              <input
+                className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+                type="text"
+                placeholder="e.g brand, size, colour"
+                autoFocus="autofocus"
+                name="department_name"
+                id="department_name"
+                onChange={handleDepartmentChange}
+              />
+            </div>
+            {error && <span className="text-red-500 ml-4">{error}</span>}
+            <div className="flex justify-between items-center">
+              <button
+                className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+                type="submit"
+              >
+                Add Department
               </button>
             </div>
           </form>
