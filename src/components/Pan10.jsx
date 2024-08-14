@@ -156,7 +156,7 @@ const Pan = () => {
               <td className="border border-neutral-500 px-4 py-2 text-center">
                 <input
            
-                  value={row.unitPrice}
+                  value={row.unitPrice.toFixed(2)}
                   onChange={(e) => updateRow(index, "unitPrice", e.target.value)}
                   className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                 />

@@ -363,7 +363,7 @@ const Records = () => {
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded ">
             <div className="flex flex-col gap-8">
                 <div className="flex justify-between items-center ">
-                  <p className="font-semibold text-xl">Add Bill Details</p>
+                  <p className="font-semibold text-xl">Add Bill</p>
                   <img
                     className="cursor-pointer  h-[2vh] w-[2vw]"
                     src={close}
@@ -373,22 +373,22 @@ const Records = () => {
                 </div>
                 <div className=" gap-16">
                   <div className="flex flex-col pb-8">
-                <h1 className="font-medium text-lg pb-4">Select the type of Bill</h1>
-                <div className="flex">
+                <h1 className="font-medium pb-4">Select the type of Bill</h1>
+                <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
                 <select value={selectedOption} onChange={handleBillChange}
-                className={`border-2 rounded w-[125px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-yellow-300' : 'border-neutral-300'}`}>
-                  <option value="">Select VAT</option>
+                className={`rounded w-[125px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
+                  <option value="" disabled >Select VAT</option>
                   <option value="vat0">VAT 0</option>
                   <option value="vat1.5">VAT 1.5</option>
                 </select>
                 <select value={selectedOption} onChange={handleBillChange}  
-                className={` rounded w-[125px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-blue-300' : 'border-neutral-300'}`} >
-                  <option value="">Select PAN</option>
+                className={` rounded w-[125px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
+                  <option value="" disabled >Select PAN</option>
                   <option value="pan0">Pan 0</option>
                   <option value="pan10">Pan 10</option>
                   <option value="pan15">Pan 15</option>
                 </select>
-                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[125px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'}`}>
+                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[125px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
                   No Bill
                 </button>
                   </div>
