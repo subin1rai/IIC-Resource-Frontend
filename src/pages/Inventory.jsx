@@ -430,7 +430,7 @@ const Inventory = () => {
               </div>
               <div className="flex justify-between flex-row gap-16 items-center w-fit">
                 <label className="w-44 " htmlFor="low_limit">
-                Limit
+                  Limit
                 </label>
                 <input
                   className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
