@@ -2,28 +2,29 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import resource from "../assets/person.png";
 import { Link } from "react-router-dom";
+import heroImage from "../assets/heroImage.svg"
 
 const UserHome = () => {
   return (
-    <>
+    <div className="">
       <Navbar />
-      <div>
-        {/* resource image */}
-        <div className="flex justify-center w-screen h-[70vh] flex-col items-center">
-          <img src={resource} alt="" className="max-w-xl" />
-          <p className="text-7xl font-semibold">Find Resources For You</p>
-          <p className="text-xl py-5 font-medium">
-            One stop for all your needs...
-          </p>
-          <Link to="/userRequest">
-            {/* request button */}
-            <button className="bg-blue-700 font-normal px-10 py-4 rounded-md text-xl text-white">
-              Request Now
-            </button>
-          </Link>
+      <div className="flex items-center justify-center h-[80vh] w-screen gap-44">
+        <div className="flex flex-col gap-5 justify-center items-center">
+          <h1 className="text-7xl font-extrabold">
+            FIND
+            <span className=" ml-3 text-blue-900">RESOURCES</span>
+          </h1>
+          <p className="text-2xl font-medium">Access The Tools You Need, With Just A Click!</p>
+          <button className="bg-button px-6 py-4 rounded-lg w-fit text-white mt-4">
+            Request Now
+          </button>
         </div>
+        <img src={heroImage} alt="" />
       </div>
-    </>
+    </div>
+
+
+
   );
 };
 
