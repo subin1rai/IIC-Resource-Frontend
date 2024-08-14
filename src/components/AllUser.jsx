@@ -31,8 +31,9 @@ const headerStyle = {
   backgroundColor: "#f5f5f5",
 };
 
-const DropdownMenu = ({ user }) => {
+const DropdownMenu = ({ user, updateUserStatus, setAllUsers }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -52,24 +53,58 @@ const DropdownMenu = ({ user }) => {
   }, []);
 
   const handleSetActive = async () => {
+    setLoading(true); // Set loading to true
     try {
       const response = await axios.put(
         `http://localhost:8898/api/role/activateUser/${user_id}`
       );
-      console.log(response.data.user);
+      if (response.status === 200) {
+        setAllUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.user_id === user_id ? { ...user, isActive: true } : user
+          )
+        );
+        setIsOpen(false);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSetInActive = async () => {
+    setLoading(true);
     try {
       const response = await axios.put(
         `http://localhost:8898/api/role/deactivateUser/${user_id}`
       );
-      console.log(response.data.user);
+      if (response.status === 200) {
+        updateUserStatus(user_id, false);
+        setIsOpen(false);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRoleUpdate = async (role) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/role/updateRole/${user_id}`,
+        { role } // Send role as part of the request body
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setIsOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,46 +124,52 @@ const DropdownMenu = ({ user }) => {
       {user.isActive ? (
         <>
           <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
-            onClick={() => setIsOpen(false)}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
+            onClick={handleSetInActive}
+          >
+            Set Inactive
+          </span>
+          <span
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
+            onClick={() => handleRoleUpdate("superadmin")}
           >
             Set Super Admin
           </span>
           <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
-            onClick={() => setIsOpen(false)}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
+            onClick={() => handleRoleUpdate("admin")}
           >
             Set Admin
           </span>
           <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
-            onClick={() => setIsOpen(false)}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
+            onClick={() => handleRoleUpdate("departmenthead")}
           >
             Set Department Head
-          </span>
-          <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
-            onClick={() => {
-              handleSetInActive(user_id);
-              setIsOpen(false);
-            }}
-          >
-            Set Inactive
           </span>
         </>
       ) : (
         <>
           <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
-            onClick={() => {
-              handleSetActive(user_id);
-              setIsOpen(false);
-            }}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
+            onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className="hover:bg-background w-full p-3 cursor-pointer"
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
@@ -144,6 +185,7 @@ const DropdownMenu = ({ user }) => {
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex justify-center items-center w-full"
+        disabled={loading}
       >
         <i className="fa-solid fa-ellipsis-vertical"></i>
       </button>
@@ -152,8 +194,21 @@ const DropdownMenu = ({ user }) => {
   );
 };
 
-const AllUser = ({ users }) => {
-  console.log(users);
+const AllUser = ({ users: initialUsers }) => {
+  const [allUsers, setAllUsers] = useState(initialUsers);
+
+  useEffect(() => {
+    setAllUsers(initialUsers);
+  }, [initialUsers]);
+
+  const updateUserStatus = (userId, isActive) => {
+    setAllUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.user_id === userId ? { ...user, isActive } : user
+      )
+    );
+  };
+
   return (
     <Paper
       sx={{
@@ -183,7 +238,7 @@ const AllUser = ({ users }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {allUsers.map((user) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
@@ -196,8 +251,12 @@ const AllUser = ({ users }) => {
                     <span className="text-green-500">Active</span>
                   )}
                 </TableCell>
-                <TableCell className="flex ">
-                  <DropdownMenu user={user} />
+                <TableCell className="flex">
+                  <DropdownMenu
+                    user={user}
+                    updateUserStatus={updateUserStatus}
+                    setAllUsers={setAllUsers}
+                  />
                 </TableCell>
               </TableRow>
             ))}
