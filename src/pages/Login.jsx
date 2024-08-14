@@ -32,7 +32,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user_name", response.data.user_name);
-      localStorage.setItem("department", response.data.department);
+      localStorage.setItem("department", response.data.department_name);
       localStorage.setItem("role", response.data.role);
       console.log("Role from response:", response.data.role);
 
@@ -41,7 +41,7 @@ const Login = () => {
         response.data.role === "superadmin"
       ) {
         navigate("/dashboard");
-      } else if (response.data.role === "user") {
+      } else if (response.data.role === "departmenthead") {
         navigate("/userHome");
       }
     } catch (error) {

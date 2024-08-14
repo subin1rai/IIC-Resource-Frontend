@@ -1,4 +1,3 @@
-// src/pages/UserRequest.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,24 +14,126 @@ const UserRequest = () => {
     item_name: "",
     quantity: "",
     purpose: "",
+    requested_for: "",
   });
   const [items, setItems] = useState([]);
+  const [departmentMembers, setDepartmentMembers] = useState([]);
+  const [members, setMembers] = useState([]);
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const userDepartment = localStorage.getItem("department");
+
+  useEffect(() => {
+    const getDepartmentUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/role/allUsers"
+        );
+        const filteredUsers = response.data.users.filter(
+          (user) => user.department_name === userDepartment
+        );
+        setDepartmentMembers(filteredUsers || []);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to fetch department users. Please try again."
+        );
+        console.error(error);
+      }
+    };
+
+    getDepartmentUsers();
+  }, [userDepartment]);
+
+  useEffect(() => {
+    setMembers(
+      departmentMembers.map((member) => ({
+        value: member.user_name,
+        label: member.user_name,
+      }))
+    );
+  }, [departmentMembers]);
+
+  useEffect(() => {
+    const getAllItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setItems(response.data || []);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to fetch items. Please try again."
+        );
+        console.error(error);
+        setItems([]);
+      }
+    };
+
+    getAllItems();
+  }, [token]);
+
+  useEffect(() => {
+    socket.on("new_request", (data) => {
+      toast.success(`${data.message} by ${data.user}`);
+    });
+
+    return () => {
+      socket.off("new_request");
+    };
+  }, []);
 
   const handleChange = (e) => {
     setRequest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const [departmentMembers, setDepartmentMembers] = useState();
+  const handleSelectChange = (selectedOption) => {
+    setRequest((prev) => ({
+      ...prev,
+      requested_for: selectedOption ? selectedOption.value : "",
+    }));
+  };
 
-  useEffect(() => {
-    const getDepartmentUsers = async () => {
-      const response = await axios.get("http://localhost:8898/api/allUsers");
-      console.log(response.data.users);
-    };
-    getDepartmentUsers();
-  });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (
+      !request.item_name ||
+      !request.quantity ||
+      !request.purpose ||
+      !request.requested_for
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8898/api/addRequest",
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRequest({
+        item_name: "",
+        quantity: "",
+        purpose: "",
+        requested_for: "",
+      });
+      toast.success("Request submitted successfully!");
+      console.log(response);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to submit request. Please try again."
+      );
+      console.error(error);
+    }
+  };
 
   const customStyles = {
     control: (provided) => ({
@@ -70,61 +171,11 @@ const UserRequest = () => {
     }),
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8898/api/addRequest",
-        request,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setRequest({
-        item_name: "",
-        quantity: "",
-        purpose: "",
-      });
-      toast.success("Request submitted successfully!");
-      console.log(response);
-    } catch (error) {
-      toast.error("Failed to submit request. Please try again.");
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    socket.on("new_request", (data) => {
-      toast.success(`${data.message} by ${data.user}`);
-    });
-  });
-
-  useEffect(() => {
-    const getAllItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setItems(response.data || []);
-      } catch (error) {
-        toast.error("Failed to fetch items. Please try again.");
-        console.log(error);
-        setItems([]);
-      }
-    };
-
-    getAllItems();
-  }, [token]);
-
   return (
+
     
       <div className="h-screen w-screen">
+
         <Navbar />
         <div className="flex justify-evenly ">
           <img src={requestImage} alt="" />
@@ -138,6 +189,7 @@ const UserRequest = () => {
               {/* main form */}
               <div className="flex flex-col gap-3">
                 <div className="">
+
 
                   {/* details */}
                   <div className="flex p-3 gap-5">
@@ -235,16 +287,19 @@ const UserRequest = () => {
                   >
 
                   </textarea>
+           
                 </div>
                 <button className="bg-button py-3 rounded-lg m-3 font-medium text-white text-lg">
                   Submit
                 </button>
               </div>
+
             </div>
           </form>
         </div>
       </div>
    
+
   );
 };
 
