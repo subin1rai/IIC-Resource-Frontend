@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,} from "react";
 import Sidebar from "../components/Sidebar";
+import {useNavigate} from "react-router-dom";
 import Topbar from "../components/Topbar";
 import "../styles/records.css";
 import close from "../assets/close.svg";
@@ -15,6 +16,10 @@ import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 import pending from "../assets/pending.png";
 import records from "../assets/records.png";
+import Vat from "../components/Vat";
+import Pan from "../components/Pan10";
+import NoBill from "../components/NoBill";
+
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -26,71 +31,57 @@ const Records = () => {
     item_name: "",
     unit_price: "",
     quantity: "",
-    bill_amount: "",
-    TDS: "",
-    actual_amount: "",
-    paid_amount: "",
+    tds: "",
+    amtAfterTds: "",
+    vat: "",
+    amountWithVat: "",
   });
+  
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: "100%",
-      borderRadius: "4px",
-      borderColor: "grey",
-      boxShadow: "none",
-      minHeight: "46px",
-      color: "black",
-      "&:hover": {
-        borderColor: "#aaa",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      width: "100%",
-      borderRadius: "4px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-    }),
-    input: (provided) => ({
-      ...provided,
-      width: "625px",
-      margin: "0px",
-      color: "black",
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "#757575",
-    }),
-    container: (provided) => ({
-      ...provided,
-      width: "100%",
-      color: "black",
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: "2px 8px",
-      color: "black",
-    }),
-  };
-
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
-  const [bgColor, setBgColor] = useState('bg-blue-100');
-  const [textColor, setTextColor] = useState('text-blue-300');
-  const [borderColor, setBorderColor] = useState('border-blue-300');
-  const [bgColorPan, setPanBgColor] = useState('bg-blue-100');
-  const [textColorPan, setPanTextColor] = useState('text-blue-300');
-  const [borderColorPan, setPanBorderColor] = useState('border-blue-300');
-  const [bgColorNo, setNoBgColor] = useState('bg-blue-100');
-  const [textColorNo, setNoTextColor] = useState('text-blue-300');
-  const [borderColorNo, setNoBorderColor] = useState('border-blue-300');
+  // const [bgColor, setBgColor] = useState('bg-blue-100');
+  // const [textColor, setTextColor] = useState('text-blue-300');
+  // const [borderColor, setBorderColor] = useState('border-blue-300');
+  // const [bgColorPan, setPanBgColor] = useState('bg-blue-100');
+  // const [textColorPan, setPanTextColor] = useState('text-blue-300');
+  // const [borderColorPan, setPanBorderColor] = useState('border-blue-300');
+  // const [bgColorNo, setNoBgColor] = useState('bg-blue-100');
+  // const [textColorNo, setNoTextColor] = useState('text-blue-300');
+  // const [borderColorNo, setNoBorderColor] = useState('border-blue-300');
   const [bills, setBills] = useState([]);
-  const [vendors, setVendors] = useState([]);
-  const [items, setItems] = useState([]);
+  const [vendors, setVendors] = useState("");
+  const [items, setItems] = useState("");
+
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleBillChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const renderSelectedComponent = () => {
+    switch (selectedOption) {
+      case 'vat0':
+      case 'vat1.5':
+        return <Vat />;
+      
+      case 'pan0':
+      case 'pan10':
+      case 'pan15':
+        return <Pan />;
+      
+      case 'noBill':
+        return <NoBill />;
+      
+      default:
+        return <div className="text-red-500">Please select the type of Bill</div>;
+    }
+  };
+  
 
   const token = localStorage.getItem("token");
 
@@ -134,7 +125,77 @@ const Records = () => {
     };
 
     fetchData();
+  }, [token]); 
+
+  const handleSelectChange = (option, { name }) => {
+    setBill((prevBill) => ({
+        ...prevBill,
+        [name]: option.value, // Update the appropriate field in the bill
+    }));
+};
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [itemsResponse, vendorsResponse] = await Promise.all([
+          axios.get("http://localhost:8898/api/items", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:8898/api/vendor", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        setItems(itemsResponse.data);
+        setVendors(vendorsResponse.data.vendor);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [token]);
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "254px",
+      borderRadius: "4px",
+      borderColor: "grey",
+      boxShadow: "none",
+      minHeight: "40px",
+      color: "black",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      width: "45px",
+      margin: "0px",
+      color: "black",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+      color: "black",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+      color: "black",
+    }),
+  };
 
   const openAddBillForm = () => {
     setAddFormVisibility(true);
@@ -160,22 +221,15 @@ const Records = () => {
       item_name: "",
       unit_price: "",
       quantity: "",
-      bill_amount: "",
-      TDS: "",
-      actual_amount: "",
-      paid_amount: "",
+      tds: "",
+      amtAfterTds: "",
+      vat: "",
+      amountWithVat: "",
     });
   };
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSelectChange = (selectedOption, { name }) => {
-    setBill((prev) => ({
-      ...prev,
-      [name]: selectedOption.value,
-    }));
   };
 
   const handleDateChange = (event) => {
@@ -185,26 +239,26 @@ const Records = () => {
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
 
-  const changePanColor = () => 
-  {
-    setPanBgColor('bg-blue-400'); 
-    setPanTextColor('text-blue-900'); 
-    setPanBorderColor('border-blue-400');
-  }
+  // const changePanColor = () => 
+  // {
+  //   setPanBgColor('bg-blue-400'); 
+  //   setPanTextColor('text-blue-900'); 
+  //   setPanBorderColor('border-blue-400');
+  // }
 
-  const changeColor = () => 
-    {
-      setBgColor('bg-blue-400'); 
-      setTextColor('text-blue-900'); 
-      setBorderColor('border-blue-400');
-    }
+  // const changeColor = () => 
+  //   {
+  //     setBgColor('bg-blue-400'); 
+  //     setTextColor('text-blue-900'); 
+  //     setBorderColor('border-blue-400');
+  //   }
 
-    const changeNoBillColor = () => 
-      {
-        setNoBgColor('bg-blue-400'); 
-        setNoTextColor('text-blue-900'); 
-        setNoBorderColor('border-blue-400');
-      }
+  //   const changeNoBillColor = () => 
+  //     {
+  //       setNoBgColor('bg-blue-400'); 
+  //       setNoTextColor('text-blue-900'); 
+  //       setNoBorderColor('border-blue-400');
+  //     }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -309,7 +363,7 @@ const Records = () => {
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded ">
             <div className="flex flex-col gap-8">
                 <div className="flex justify-between items-center ">
-                  <p className="font-semibold text-xl">Add Bill Details</p>
+                  <p className="font-semibold text-xl">Add Bill</p>
                   <img
                     className="cursor-pointer  h-[2vh] w-[2vw]"
                     src={close}
@@ -318,18 +372,29 @@ const Records = () => {
                   />
                 </div>
                 <div className=" gap-16">
-                  <div className="flex  pb-8 gap-4">
-                  <button className={`h-fit w-fit p-2 px-24 ${bgColor} ${textColor} ${borderColor} border-2 rounded-tr-full`} onClick={changeColor}>
-                    Vat
-                  </button>
-                  <button className={`h-fit w-fit p-2 px-24 ${bgColorPan} ${textColorPan} ${borderColorPan} border-2 rounded-tr-full`} onClick={changePanColor}>
-                    Pan
-                  </button>
-                  <button className= {`whitespace-nowrap h-fit w-fit p-2 px-24 ${bgColorNo} ${textColorNo} ${borderColorNo} border-2 rounded-tr-full`} onClick={changeNoBillColor}>
-                    No Bill
-                  </button>
+                  <div className="flex flex-col pb-8">
+                <h1 className="font-medium pb-4">Select the type of Bill</h1>
+                <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                <select value={selectedOption} onChange={handleBillChange}
+                className={`rounded w-[125px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
+                  <option value="" disabled >Select VAT</option>
+                  <option value="vat0">VAT 0</option>
+                  <option value="vat1.5">VAT 1.5</option>
+                </select>
+                <select value={selectedOption} onChange={handleBillChange}  
+                className={` rounded w-[125px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
+                  <option value="" disabled >Select PAN</option>
+                  <option value="pan0">Pan 0</option>
+                  <option value="pan10">Pan 10</option>
+                  <option value="pan15">Pan 15</option>
+                </select>
+                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[125px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
+                  No Bill
+                </button>
                   </div>
-                  <div className="flex gap-16">
+                  </div>
+                
+                  <div className="flex gap-16 pb-8">
                   <div className="flex">
                   <div className="flex flex-col">
               <label className="font-medium" htmlFor="bill_no">Bill No:</label>
@@ -374,16 +439,26 @@ const Records = () => {
                   <div className="flex gap-16">
                   <div className="flex flex-col">
               <label className="font-medium" htmlFor="bill_no">Vendor Name:</label>
-                      <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        
-                        placeholder="Enter vendor name"
-                        autoFocus="autofocus"
-                        name="bill_no"
-                        id="bill_no"
-                        onChange={handleChange}
-                        value={bill.vendor_name}
+              <Select
+                        options={vendors.map((vendor) => ({
+                          value: vendor.vendor_name,
+                          label: vendor.vendor_name,
+                        }))}
+                        onChange={(option) =>
+                          handleSelectChange(option, { name: "vendor_name" })
+                        }
+                        value={
+                          bill.vendor_name
+                            ? {
+                                value: bill.vendor_name,
+                                label: bill.vendor_name,
+                              }
+                            : null
+                        }
+                        placeholder="Select Vendor"
+                        styles={customStyles}
                       />
+
             </div>
             <div className="flex flex-col">
               <label className="font-medium" htmlFor="bill_no">Vat No:</label>
@@ -399,6 +474,9 @@ const Records = () => {
                       </div>  
                   </div>
               </div>
+              <div>
+                  {renderSelectedComponent()}
+                </div>
     </form>
 
         </>
