@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,6 +28,20 @@ const Topbar = () => {
   const [notReadCount, setNotReadCount] = useState(0);
   const [initials, setInitials] = useState("");
   const [bgColor, setBgColor] = useState(getRandomColor());
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setNotificationPopUp(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const token = localStorage.getItem("token");
   const morningStart = 5;
@@ -258,6 +272,7 @@ const Topbar = () => {
       {notificationPopUp && (
         <>
           <div
+            ref={dropdownRef}
             className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-white z-20 overflow-y-scroll custom-scrollbar"
             style={{ overflowY: "scroll" }}
           >
@@ -303,10 +318,6 @@ const Topbar = () => {
                 ))
             )}
           </div>
-          <div
-            className="absolute z-10 w-[98%] h-[100%] mt-16 mr-16 transform -translate-x-60 translate-y-96 "
-            onClick={() => setNotificationPopUp(false)}
-          ></div>
         </>
       )}
 

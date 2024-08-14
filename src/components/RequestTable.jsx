@@ -10,12 +10,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 const RequestTable = () => {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemOptions, setItemOptions] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
+  
 
   // getting token from local storage
   const token = localStorage.getItem("token");
@@ -64,13 +67,11 @@ const RequestTable = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Implement the form submission logic here
-      // Example: sending the data to the server
+      setLoading(true);
       const response = await axios.post(
-        "http://localhost:8898/api/accept-request",
+        "http://localhost:8898/api/approveRequest",
         {
-          item: selectedItem,
-          quantity,
+          items: itemFields,
           remarks,
         },
         {
@@ -82,11 +83,13 @@ const RequestTable = () => {
       if (response.status === 200) {
         toast.success("Request accepted successfully");
         setAcceptFormVisibility(false);
+        setLoading(false);
         // Update the requests list or perform any necessary actions
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to accept the request");
+      setLoading(false);
+  
     }
   };
 
@@ -105,7 +108,9 @@ const RequestTable = () => {
   };
 
   const addItemField = () => {
-    setItemFields([...itemFields, { item: "", quantity: "" }]);
+    if (itemFields.length < itemOptions.length) {
+      setItemFields([...itemFields, { item: "", quantity: "" }]);
+    }
   };
 
   const removeItemField = (index) => {
@@ -116,6 +121,7 @@ const RequestTable = () => {
   useEffect(() => {
     const getRequest = async () => {
       try {
+        
         const response = await axios.get("http://localhost:8898/api/request", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -133,7 +139,6 @@ const RequestTable = () => {
   }, [token]);
 
   useEffect(() => {
-    // Fetch item options for the select dropdown
     const getItems = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/items", {
@@ -141,39 +146,36 @@ const RequestTable = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const itemOptions = response.data.items.map((item) => ({
-          value: item.id,
-          label: item.item_name,
-        }));
-        setItems(itemOptions);
+
+        setItems(response.data);
+        
+        setItemOptions(
+          response.data.map((item) => ({
+            value: item.item_name,
+            label: item.item_name,
+          }))
+        );
+        
       } catch (error) {
         console.log(error);
       }
     };
-
-    if (token) {
-      getItems();
-    }
+    getItems();
   }, [token]);
 
   useEffect(() => {
-    // Listen for the newRequest event
     socket.on("newRequest", (data) => {
       toast.success(data.message);
-      // Add the new request to the requests state
       setRequests((prevRequests) => [...prevRequests, data.requestData]);
     });
 
     return () => {
-      // Clean up the socket listener on component unmount
       socket.off("newRequest");
     };
   }, []);
 
   const handleAccept = (requestId) => {
     openAcceptForm();
-    // console.log(`Accepted request with ID: ${requestId}`);
-    // Implement the accept logic here
   };
 
   const handleDecline = (requestId) => {
@@ -193,22 +195,18 @@ const RequestTable = () => {
           >
             <div className="flex flex-col gap-5">
               <p>
-                Item:{" "}
-                <span className="font-medium">{request.item?.item_name}</span>
+                Item: <span className="font-medium">{request.item?.item_name}</span>
               </p>
               <p>
-                Department:{" "}
-                <span className="font-medium">{request.users?.department}</span>
+                Department: <span className="font-medium">{request.users?.department}</span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
               <p>
-                Quantity:{" "}
-                <span className="font-medium">{request.request_quantity}</span>
+                Quantity: <span className="font-medium">{request.request_quantity}</span>
               </p>
               <p>
-                Requested By:{" "}
-                <span className="font-medium">{request.users?.user_name}</span>
+                Requested By: <span className="font-medium">{request.users?.user_name}</span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
@@ -241,7 +239,7 @@ const RequestTable = () => {
         <form
           onSubmit={handleSubmit}
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-[730px]"
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex flex-col gap-7">
             <div className="flex justify-between p-2">
@@ -253,38 +251,37 @@ const RequestTable = () => {
                 onClick={closeAcceptForm}
               />
             </div>
-            {/* Summary Section */}
+            
             <div className="flex gap-3 bg-slate-200 p-4 flex-col rounded-lg">
               <div className="flex text-lg font-semibold text-zinc-600">
                 Summary
               </div>
-              <div className="flex gap-16 font-medium">
-                <div className="flex flex-col gap-2">
-                  <p>
-                    Item: <span className="text-neutral-600">Copy</span>
-                  </p>
-                  <p>
-                    Department:{" "}
-                    <span className="text-neutral-600">IT Department</span>
-                  </p>
-                  <p>
-                    Quantity: <span className="text-neutral-600">24</span>
-                  </p>
+              {requests.map((request) => (
+                <div key={request.id} className="flex gap-16 font-medium">
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      Item: <span className="text-neutral-600">{request.item?.item_name}</span>
+                    </p>
+                    <p>
+                      Department: <span className="text-neutral-600">Department</span>
+                    </p>
+                    <p>
+                      Quantity: <span className="text-neutral-600">{request.request_quantity}</span>
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      Requested By: <span className="text-neutral-600">{request.users?.user_name}</span>
+                    </p>
+                    <p>
+                      Requested To: <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2 ">
-                  <p>
-                    Requested By:{" "}
-                    <span className="text-neutral-600">Mr.Projesh Basnet</span>
-                  </p>
-                  <p>
-                    Requested To:{" "}
-                    <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
 
-            <div className="flex flex-col gap-5 p-2">
+            <div className="flex flex-col gap-5 p-3">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="item" className="font-medium text-md">
@@ -294,7 +291,7 @@ const RequestTable = () => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="quantity"
-                    className="font-medium text-md pl-64 ml-2"
+                    className="font-medium text-md pl-52 ml-1 "
                   >
                     Quantity
                   </label>
@@ -302,17 +299,18 @@ const RequestTable = () => {
               </div>
               <div className="flex items-end gap-2">
                 <div className="flex flex-col gap-6">
-                  {itemFields.map((field, index) => (
-                    <div key={index} className="flex  gap-5 items-center">
-                      {/* <div className="flex gap-12 bg-red-600  "> */}
+                  {itemFields.map((item, index) => (
+                    <div key={index} className="flex gap-5 items-center">
                       <Select
-                        options={items}
-                        onChange={(option) =>
-                          handleItemChange(index, "item", option)
+                        options={itemOptions}
+                        onChange={(selectedOption) =>
+                          handleItemChange(index, "item", selectedOption.value)
                         }
-                        value={items.find((option) => option === field.item)}
+                        value={itemOptions.find((option) => option.value === item.item)}
                         placeholder="Select Item"
                         styles={customStyles}
+                        className="w-[190px]"
+                        classNamePrefix="react-select"
                       />
                       <input
                         className="border-2 rounded border-border px-3 py-2 w-[14vw]"
@@ -320,12 +318,11 @@ const RequestTable = () => {
                         placeholder="Enter a quantity"
                         name={`quantity-${index}`}
                         id={`quantity-${index}`}
-                        value={field.quantity}
+                        value={item.quantity}
                         onChange={(e) =>
                           handleItemChange(index, "quantity", e.target.value)
                         }
                       />
-                      {/* </div> */}
                       {index > 0 && (
                         <button
                           type="button"
@@ -338,7 +335,7 @@ const RequestTable = () => {
                     </div>
                   ))}
                 </div>
-                {itemFields.length >= 3 ? null : (
+                {itemFields.length < itemOptions.length && (
                   <button
                     type="button"
                     onClick={addItemField}
@@ -350,20 +347,28 @@ const RequestTable = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
-              <label className="w-40 font-medium text-md" htmlFor="remarks">
+              
+              <label className=" font-medium text-md" htmlFor="remarks">
                 Remarks
               </label>
               <textarea
                 name="remarks"
                 placeholder="Enter remarks"
-                className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
+                className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
               />
             </div>
-            <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8">
-              Done
-            </button>
+           
+            <div className="flex justify-end ">
+              <button
+                type="submit"
+                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
+                disabled={loading}
+              >
+                {loading ? "Adding..." : "Confirm"}
+              </button>
+            </div>
           </div>
         </form>
       )}
