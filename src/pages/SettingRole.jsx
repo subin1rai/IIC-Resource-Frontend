@@ -147,14 +147,6 @@ const SettingRole = () => {
         }
       });
 
-      setUsers((prevUser) =>
-        prevUser.map((user) =>
-          user.userPoolId === updatedUser.userPoolId
-            ? { ...user, status: true }
-            : user
-        )
-      );
-
       setNumberOfActiveUsers((prev) => prev + 1);
     });
 
@@ -197,7 +189,6 @@ const SettingRole = () => {
           "http://localhost:8898/api/getDepartment"
         );
         setDepartments(response.data.department);
-        console.log(departments);
       };
       getDepartment();
     } catch (error) {
