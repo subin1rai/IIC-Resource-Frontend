@@ -5,6 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
 import socket from "../socket.js";
 import Select from "react-select";
+import requestImage from "../assets/requestImg.svg"
+import addImage from "../assets/addItem.svg"
+import subtract from "../assets/subtract.svg"
 
 const UserRequest = () => {
   const [request, setRequest] = useState({
@@ -139,7 +142,7 @@ const UserRequest = () => {
       borderRadius: "4px",
       borderColor: "#ccc",
       boxShadow: "none",
-      minHeight: "46px",
+      minHeight: "43px",
       "&:hover": {
         borderColor: "#aaa",
       },
@@ -160,7 +163,7 @@ const UserRequest = () => {
     }),
     container: (provided) => ({
       ...provided,
-      width: "320px",
+      width: "260px",
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -169,153 +172,319 @@ const UserRequest = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-6 h-screen w-screen">
+
+    
+      <div className="h-screen w-screen">
+
         <Navbar />
-        <div className="flex justify-evenly mt-4 ml-14">
-          <div className="flex flex-col bg-white p-8 shadow-lg border gap-3 rounded h-fit">
-            <div className="flex flex-col">
-              <h2 className="font-bold text-2xl">Request Resource</h2>
-              <p className="font-light text-sm text-slate-500">
-                You can request resource of your choice
-              </p>
-            </div>
+        <div className="flex justify-evenly ">
+          <img src={requestImage} alt="" />
+          <form action="">
+            <div className="shadow-xl p-8 rounded-lg w-[100%]">
+              <div className="p-3">
+                <h1 className="font-medium text-2xl">Request Resource</h1>
+                <p>You can request the resource of your choice.</p>
+                <hr className="mt-4 border-2 border-blue-600 " />
+              </div>
+              {/* main form */}
+              <div className="flex flex-col gap-3">
+                <div className="">
 
-            <div className="h-2 bg-blue-600 width-full"></div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-3">
-              <div className="flex justify-between gap-24 items-center">
-                <label htmlFor="item_name" className="font-medium">
-                  Item Name
-                </label>
-                <select
-                  name="item_name"
-                  id="item_name"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
-                  onChange={handleChange}
-                  value={request.item_name}
-                  aria-label="Select an item"
-                >
-                  <option value="">Select an Item</option>
-                  {items.map((item) => (
-                    <option key={item.id} value={item.item_name}>
-                      {item.item_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex justify-between gap-11 items-center">
-                <label htmlFor="quantity" className="font-medium">
-                  Quantity
-                </label>
-                <input
-                  type="number"
-                  name="quantity"
-                  placeholder="Enter quantity"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-80"
-                  onChange={handleChange}
-                  value={request.quantity}
-                  aria-label="Enter quantity"
-                />
-              </div>
-              <div className="flex justify-between gap-11 items-center">
-                <label htmlFor="requested_for" className="font-medium">
-                  Requested For
-                </label>
-                <Select
-                  options={members}
-                  onChange={handleSelectChange}
-                  value={members.find(
-                    (option) => option.value === request.requested_for
-                  )}
-                  styles={customStyles}
-                  aria-label="Select requested for"
-                  placeholder="Choose User"
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                />
-              </div>
-              <div className="flex justify-between gap-11 items-center">
-                <label
-                  htmlFor="purpose"
-                  className="flex self-start mt-3 font-medium"
-                >
-                  Purpose
-                </label>
-                <textarea
-                  name="purpose"
-                  placeholder="Enter purpose"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
-                  onChange={handleChange}
-                  value={request.purpose}
-                  aria-label="Enter purpose"
-                />
-              </div>
-              <button
-                type="submit"
-                className="flex justify-between items-center text-white bg-blue-600 w-fit h-fit py-2 px-4 rounded self-end"
-              >
-                Request
-              </button>
-            </form>
-          </div>
-
-          <div className="flex flex-col gap-4 p-5">
-            <div className="flex justify-between">
-              <div className="flex flex-col">
-                <h2 className="font-bold text-2xl">Request History</h2>
-                <p className="font-light text-sm text-slate-500">
-                  You can view your request history.
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
-                  Date
-                </button>
-                <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
-                  Date
-                </button>
-              </div>
-            </div>
-
-            {/* Placeholder for request history. Replace with actual data */}
-            {[1, 2, 3].map((_, index) => (
-              <div
-                key={index}
-                className="flex flex-col gap-3 bg-background rounded p-7"
-              >
-                <h2>Charger</h2>
-                <div className="flex justify-between gap-36">
-                  <div className="flex flex-col gap-3">
-                    <p className="text-l text-slate-500 font-semibold flex gap-3">
-                      Issued Date:{" "}
-                      <span className="text-black">2024/12/12</span>
-                    </p>
-                    <p className="text-l text-slate-500 font-semibold flex gap-3">
-                      Quantity: <span className="text-black">12</span>
-                    </p>
+                  {/* details */}
+                  <div className="flex p-3 gap-5">
+                    {/* item name */}
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="item_name">
+                        Item Name:
+                      </label>
+                      <Select
+                        placeholder="Select item's name"
+                        styles={customStyles}
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                      />
+                    </div>
+                    {/* quantity */}
+                    <div className="flex flex-col gap-3">
+                      <label htmlFor="quantity">
+                        Quantity
+                      </label>
+                      <input
+                        type="number"
+                        name="quantity"
+                        placeholder="Enter quantity"
+                        className="border-stone-200 border-2 rounded py-2 px-4 w-64"
+                        onChange={handleChange}
+                        value={request.quantity}
+                      />
+                    </div>
+                    <img src={addImage} alt="add" className="mt-8" />
                   </div>
-                  <div className="flex flex-col gap-3">
-                    <p className="text-l text-slate-500 font-semibold flex gap-3">
-                      Issued Date:{" "}
-                      <span className="text-black">2024/12/12</span>
-                    </p>
-                    <p className="text-l text-slate-500 font-semibold flex gap-3">
-                      Quantity: <span className="text-black">12</span>
-                    </p>
+                  {/* second item div */}
+                  <div className="flex px-3 gap-5">
+                    <Select
+                      placeholder="Select item's name"
+                      styles={customStyles}
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                    />
+
+                    <input
+                      type="number"
+                      name="quantity"
+                      placeholder="Enter quantity"
+                      className="border-stone-200 border-2 rounded py-2 px-4 w-64"
+                      onChange={handleChange}
+                      value={request.quantity}
+                    />
+
+                    <img src={subtract} alt="delete" />
+                    <img src={addImage} alt="add" />
                   </div>
-                  <div className="flex justify-between items-start text-green-600">
-                    <p>{index === 1 ? "Rejected" : "Approved"}</p>
+                  {/* third item */}
+                  <div className="flex px-3 gap-5">
+
+                    <Select
+                      placeholder="Select item's name"
+                      styles={customStyles}
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                    />
+
+                    <input
+                      type="number"
+                      name="quantity"
+                      placeholder="Enter quantity"
+                      className="border-stone-200 border-2 rounded py-2 px-4 w-64"
+                      onChange={handleChange}
+                      value={request.quantity}
+                    />
+
+                    <img src={subtract} alt="delete" />
+                    <img src={addImage} alt="add" />
                   </div>
                 </div>
+                {/* requested for */}
+                <div className="flex flex-col p-3 gap-3">
+                  <label htmlFor="requested_for">
+                    Requested For:
+                  </label>
+                  <Select
+                    placeholder="Select teacher's name"
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                  />
+                </div>
+                {/* Purpose */}
+                <div className="flex flex-col p-3 gap-3">
+                  <label htmlFor="item_name">
+                    Purpose:
+                  </label>
+                  <textarea name="purpose_area" id="purpose_field " 
+                    className="border-stone-200 border-2 rounded py-2 px-4 h-40 resize-none"
+                    placeholder="Write the purpose of your request..."
+                  >
+
+                  </textarea>
+           
+                </div>
+                <button className="bg-button py-3 rounded-lg m-3 font-medium text-white text-lg">
+                  Submit
+                </button>
               </div>
-            ))}
-          </div>
+
+            </div>
+          </form>
         </div>
       </div>
-      <ToastContainer />
-    </>
+   
+
   );
 };
 
 export default UserRequest;
+
+
+
+// {/* main container */}
+// <div className="flex flex-col gap-6 h-screen w-screen">
+// <Navbar />
+// <div className="flex justify-evenly mt-4 ml-14">
+//   <div className="flex flex-col bg-white p-8 shadow-lg border gap-3 rounded h-fit">
+//     <div className="flex flex-col">
+//       <h2 className="font-bold text-2xl">Request Resource</h2>
+//       <p className="font-light text-sm text-slate-500">
+//         You can request resource of your choice
+//       </p>
+//     </div>
+
+//     {/* line */}
+//     <div className="h-2 bg-blue-600 width-full"></div>
+//     {/* line closed */}
+
+//     <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-3">
+//       <div className="flex justify-between gap-24 items-center ">
+//         <label htmlFor="item_name" className="font-medium">
+//           Item Name
+//         </label>
+//         <select
+//           name="item_name"
+//           id="item_name"
+//           className="border-stone-200 border-2 rounded py-2 px-4 w-80"
+//           onChange={handleChange}
+//           value={request.item_name}
+//         >
+//           <option value="">Select an Item</option>
+// {items.map((item) => (
+//   <option key={item.id} value={item.item_name}>
+//     {item.item_name}
+//   </option>
+// ))}
+//         </select>
+//       </div>
+//       <div className="flex justify-between gap-11 items-center ">
+//         <label htmlFor="quantity" className="font-medium">
+//           Quantity
+//         </label>
+// <input
+//   type="number"
+//   name="quantity"
+//   placeholder="Enter quantity"
+//   className="border-stone-200 border-2 rounded py-2 px-4  w-80"
+//   onChange={handleChange}
+//   value={request.quantity}
+// />
+//       </div>
+//       <div className="flex justify-between gap-11 items-center ">
+//         <label htmlFor="quantity" className="font-medium">
+//           Requested For
+//         </label>
+//         <Select
+//           placeholder="Choose Category"
+//           styles={customStyles}
+//           className="react-select-container"
+//           classNamePrefix="react-select"
+//         />
+//       </div>
+//       <div className="flex justify-between gap-11 items-center ">
+//         <label
+//           htmlFor="purpose"
+//           className="flex self-start mt-3 font-medium"
+//         >
+//           Purpose
+//         </label>
+//         <textarea
+//           name="purpose"
+//           placeholder="Enter purpose"
+//           className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
+//           onChange={handleChange}
+//           value={request.purpose}
+//         />
+//       </div>
+//       <button
+//         type="submit"
+//         className="flex justify-between items-center text-white bg-blue-600 w-fit h-fit py-2 px-4 rounded self-end"
+//       >
+//         Request
+//       </button>
+//     </form>
+//   </div>
+
+//   {/* history starts here */}
+//   <div className="flex flex-col gap-4 p-5">
+//     <div className="flex justify-between ">
+//       <div className="flex flex-col">
+//         <h2 className="font-bold text-2xl">Request History</h2>
+//         <p className="font-light text-sm text-slate-500">
+//           You can view your request history.
+//         </p>
+//       </div>
+//       <div className="flex gap-3">
+//         <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
+//           {" "}
+//           Date
+//         </button>
+//         <button className="flex justify-between items-between gap-1 h-fit border-2 px-5 py-1 rounded">
+//           {" "}
+//           Date
+//         </button>
+//       </div>
+//     </div>
+
+//     {/* list of history */}
+//     <div className="flex flex-col gap-3 bg-background rounded p-7">
+//       <h2>Charger</h2>
+//       <div className="flex justify-between gap-36 ">
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex justify-between items-start text-green-600">
+//           <p>Approved</p>
+//         </div>
+//       </div>
+//     </div>
+//     <div className="flex flex-col gap-3 bg-background rounded p-7">
+//       <h2>Charger</h2>
+//       <div className="flex justify-between gap-36 ">
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex justify-between items-start text-red-600">
+//           <p>Rejected</p>
+//         </div>
+//       </div>
+//     </div>
+//     <div className="flex flex-col gap-3 bg-background rounded p-7">
+//       <h2>Charger</h2>
+//       <div className="flex justify-between gap-36 ">
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex flex-col gap-3">
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Issued Date: <span className="text-black">2024/12/12</span>{" "}
+//           </p>
+//           <p className="text-l text-slate-500 font-semibold flex gap-3">
+//             Quantity: <span className="text-black">12</span>
+//           </p>
+//         </div>
+//         <div className="flex justify-between items-start text-green-600">
+//           <p>Approved</p>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+// </div>

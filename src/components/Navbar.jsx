@@ -1,8 +1,9 @@
 import React from "react";
 import logo from "../assets/Top.png";
 import userprofile from "../assets/userProfile.svg";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import notificationIcon from "../assets/notification.svg"
+import userProfile from "../assets/userProfile.svg"
 
 const Navbar = () => {
   return (
@@ -10,16 +11,15 @@ const Navbar = () => {
       <img src={logo} alt="" />
       {/* Nav items */}
       <div className="flex gap-14 text-lg px-10 font-medium">
-        <p>Home</p>
-        <p>Request</p>
-        <p>History</p>
-        <p>How to?</p>
-      </div>
-      <div className="flex gap-4">
-        <img src={notificationIcon} alt="" />
-        <div className="h-9 w-9 rounded-full bg-slate-500">
+        <NavLink to="/userHome">Home</NavLink>
+        <NavLink to="/userRequest">Request</NavLink>
+        <NavLink to="/userHistory">History</NavLink>
+        <NavLink to="/userHowto">How to?</NavLink>
 
-        </div>
+      </div>
+      <div className="flex gap-5">
+        <img src={notificationIcon} alt="" />
+        <img src={userProfile} alt="" />
       </div>
     </nav>
   );
