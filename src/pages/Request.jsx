@@ -4,10 +4,11 @@ import Topbar from "../components/Topbar";
 
 import RequestTable from "../components/RequestTable";
 import axios from "axios";
+import Chat from "../components/Chat";
 
 const Request = () => {
   return (
-    <div className="w-screen h-screen flex justify-between bg-background">
+    <div className="w-screen h-screen flex justify-between bg-background reltive">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto  items-center">
         <Topbar />
@@ -20,6 +21,9 @@ const Request = () => {
             <RequestTable />
           </div>
         </div>
+      </div>
+      <div className="absolute right-12 bottom-12">
+        <Chat />
       </div>
     </div>
   );
