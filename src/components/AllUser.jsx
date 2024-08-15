@@ -8,8 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
+import Swal from 'sweetalert2';
 import close from "../assets/close.svg";
-
 
 const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
@@ -59,6 +59,7 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
     try {
       const response = await axios.put(`http://localhost:8898/api/role/activateUser/${user_id}`);
       if (response.status === 200) {
+        Swal.fire('User Activated', '', 'success');
         setAllUsers((prevUsers) =>
           prevUsers.map((u) =>
             u.user_id === user_id ? { ...u, isActive: true } : u
@@ -67,36 +68,65 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
         setIsOpen(false);
       }
     } catch (error) {
-      console.log(error);
+      Swal.fire('Error', 'An error occurred while activating the user.', 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSetInActive = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.put(`http://localhost:8898/api/role/deactivateUser/${user_id}`);
-      if (response.status === 200) {
-        updateUserStatus(user_id, false);
-        setIsOpen(false);
+  const handleSetInActive = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, deactivate it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        axios.put(`http://localhost:8898/api/role/deactivateUser/${user_id}`)
+          .then((response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                title: "Deactivated!",
+                text: "The user has been deactivated.",
+                icon: "success"
+              });
+              setAllUsers((prevUsers) =>
+                prevUsers.map((u) =>
+                  u.user_id === user_id ? { ...u, isActive: false } : u
+                )
+              );
+              setIsOpen(false);
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error",
+              text: "An error occurred while deactivating the user.",
+              icon: "error"
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
+  
 
   const handleRoleUpdate = async (role) => {
     setLoading(true);
     try {
       const response = await axios.put(`http://localhost:8898/api/role/updateRole/${user_id}`, { role });
       if (response.status === 200) {
+        Swal.fire('Role Updated', '', 'success');
         setIsOpen(false);
       }
     } catch (error) {
-      console.log(error);
+      Swal.fire('Error', 'An error occurred while updating the role.', 'error');
     } finally {
       setLoading(false);
     }
@@ -120,7 +150,6 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
             Set Inactive
           </span>
 
-          
           <span
             className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
             onClick={() => handleRoleUpdate("superadmin")}
@@ -240,19 +269,13 @@ const AllUser = ({ users: initialUsers }) => {
         user_email: editedUser.user_email,
         department: editedUser.department,
       };
-      // const response = await axios.put(
-      //   `http://localhost:8898/api/updateUser/${}`,
-      //   updatedUser,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-      // await fetchUserData();
-      // console.log("Server response:", response.data);
+      const response = await axios.put(
+        `http://localhost:8898/api/updateUser/${editedUser.user_id}`,
+        updatedUser
+      );
 
       if (response.data.updatedUser) {
+        Swal.fire('User Updated', '', 'success');
         setAllUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.user_id === response.data.updatedUser.user_id
@@ -261,15 +284,13 @@ const AllUser = ({ users: initialUsers }) => {
           )
         );
       } else {
-        console.log("No updated user data received.");
+        Swal.fire('No User Data', 'No updated user data received.', 'warning');
       }
       setEditFormVisibility(false);
     } catch (error) {
-      console.error("Update error:", error);
+      Swal.fire('Update Error', 'An error occurred while updating the user.', 'error');
     }
   };
-
-  
 
   return (
     <Paper
