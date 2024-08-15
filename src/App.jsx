@@ -25,6 +25,7 @@ import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
 
+
 function App() {
   const userType = localStorage.getItem("role");
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -48,6 +49,7 @@ function App() {
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
             {userType === "admin" || userType === "superadmin" ? (
               <>
+            
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/issue" element={<Issue />} />
