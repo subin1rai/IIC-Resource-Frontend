@@ -27,35 +27,32 @@ const Category = () => {
   const [newDepartment, setNewDepartment] = useState({
     department_name: "",
   });
-  const [feature, setDepartment] = useState([]);
-  const [department, setFeature] = useState([]);
+  const [feature, setFeature] = useState([]);
   const [newFeature, setNewFeature] = useState({ feature_name: "" });
   const [visibleForm, setVisibleForm] = useState("");
   const [error, setError] = useState("");
-  
 
   // Get the token from local storage
   const token = localStorage.getItem("token");
 
   // Fetch categories from the API on component mount
   useEffect(() => {
-    const controller =async () => {
+    const controller = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/category", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-       
+
         setCategory(response.data.category || []);
       } catch (error) {
-       
-          console.log("Request Canceled", error);
-          setCatgeory([]);
-        }
-      };
-      controller();
-    }, [token]);
+        console.log("Request Canceled", error);
+        setCatgeory([]);
+      }
+    };
+    controller();
+  }, [token]);
 
   // Fetch item categories from the API on component mount
 

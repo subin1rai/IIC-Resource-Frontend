@@ -115,7 +115,6 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       }
     });
   };
-  
 
   const handleRoleUpdate = async (role) => {
     setLoading(true);
@@ -194,6 +193,14 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
           </span>
         </>
       )}
+      <span
+        className={`hover:bg-background w-full p-3 cursor-pointer ${
+          loading ? "pointer-events-none opacity-50" : ""
+        }`}
+        onClick={() => handleEditUser()}
+      >
+        Edit User
+      </span>
     </div>
   );
 
