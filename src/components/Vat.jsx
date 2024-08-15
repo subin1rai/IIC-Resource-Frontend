@@ -3,8 +3,10 @@ import {useState, useEffect} from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Vat = () => {
+const Vat = ({selectedOption}) => {
+  // const { selectedOption } = useBillContext();
     const [items, setItems] = useState([]);
+ 
     // const [vendors, setVendors] = useState([]);
 
     const token = localStorage.getItem("token");
@@ -51,7 +53,7 @@ const Vat = () => {
           unitPrice: 0,
           amount: 0,
           tds: 0,
-          tdsDeductedAmt:0,
+          amtAfterTds:0,
           vat: 0,
           amountWithVat: 0
         };
@@ -68,8 +70,14 @@ const Vat = () => {
           const unitPrice = parseFloat(newRows[index].unitPrice) || 0;
           const amount = quantity * unitPrice;
           
-          const tds = (amount / 1.13) * 0.015;
-          const amtAfterTds = amount - tds;
+          let tds = 0;
+          let amtAfterTds = amount;
+
+          if (selectedOption === 'vat1.5') {
+            tds= (amount / 1.13) * 0.015;
+          } else if (selectedOption === 'vat0') {
+            tds = 0;
+          } 
       
           const vat = amtAfterTds * 0.13; // Assuming VAT is 13%
           const amountWithVat = amtAfterTds + vat;
@@ -162,7 +170,7 @@ const Vat = () => {
               <td className="border border-neutral-500 px-4 py-2 text-center">
                 <input
            
-                  value={row.unitPrice.toFixed(2)}
+                  value={row.unitPrice}
                   onChange={(e) => updateRow(index, "unitPrice", e.target.value)}
                   className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                 />

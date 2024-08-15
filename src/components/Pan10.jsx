@@ -3,10 +3,10 @@ import {useState, useEffect} from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Pan = () => {
+const Pan = ({selectedOption}) => {
+    //  const { selectedOption } = useBillContext();
     const [items, setItems] = useState([]);
     // const [vendors, setVendors] = useState([]);
-
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -37,6 +37,8 @@ const Pan = () => {
         // Add more rows as needed
       ]);
     
+
+      console.log(selectedOption)
       const handleSelectChange = (option, index) => {
         const updatedRows = [...rows];
         updatedRows[index].item_name = option.value;
@@ -55,6 +57,7 @@ const Pan = () => {
         };
         setRows([...rows, newRow]);
       };
+
     
       // Function to update row data
       const updateRow = (index, field, value) => {
@@ -65,12 +68,19 @@ const Pan = () => {
           const quantity = parseFloat(newRows[index].quantity) || 0;
           const unitPrice = parseFloat(newRows[index].unitPrice) || 0;
           const amount = quantity * unitPrice;
+
+          let tds = 0;   
+          let amtAfterTds= amount;
+
+          if (selectedOption === 'pan10') {
+            tds= 0.1 * amount;
+          } else if (selectedOption === 'pan15') {
+            tds= 0.15 * amount;
+          } else if (selectedOption === 'pan0') {
+            tds = 0;
+          } 
           
-          const tds = (amount / 1.13) * 0.015;
-          const amtAfterTds = amount - tds;
-      
-          const vat = amtAfterTds * 0.13; // Assuming VAT is 13%
-          const amountWithVat = amtAfterTds + vat;
+         amtAfterTds = amount - tds;
       
           newRows[index].amount = amount || 0;
           newRows[index].tds = tds || 0;
@@ -156,7 +166,7 @@ const Pan = () => {
               <td className="border border-neutral-500 px-4 py-2 text-center">
                 <input
            
-                  value={row.unitPrice.toFixed(2)}
+                  value={row.unitPrice}
                   onChange={(e) => updateRow(index, "unitPrice", e.target.value)}
                   className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                 />
