@@ -526,7 +526,6 @@ const Inventory = () => {
               </button>
             </div>
           </div>
-
         </form>
       )}
       {filterFormVisibility && (
