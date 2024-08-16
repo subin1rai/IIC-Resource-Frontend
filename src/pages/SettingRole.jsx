@@ -4,14 +4,13 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import ActiveUser from "../components/ActiveUser";
 import AllUser from "../components/AllUser";
-
 import activeIcon from "../assets/active.png";
-
 import filterIcon from "../assets/filter.svg";
 import closeIcon from "../assets/close.svg";
 import socket from "../socket";
 import close from "../assets/close.svg";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -66,6 +65,9 @@ const SettingRole = () => {
         if (response.data && response.data.users) {
           setUsers(response.data.users);
           setNumberOfUsers(response.data.users.length);
+          setNumberOfActiveUsers(
+            response.data.users.filter((user) => user.isActive === true).length
+          );
         } else {
           setError("Unexpected response structure");
         }
@@ -114,6 +116,7 @@ const SettingRole = () => {
         "http://localhost:8898/api/role/addUser",
         user
       );
+      toast.success(`${user.user_name} added successfully!`);
       setAddUserFormVisiblity(false);
       setUser({
         user_name: "",
@@ -339,7 +342,7 @@ const SettingRole = () => {
             className="flex absolute z-50 bg-white flex-col p-5 gap-6 rounded "
           >
             <div className="flex justify-between items-center">
-              <p className=" ml-4 font-semibold">Feature</p>
+              <p className=" ml-4 font-semibold">Department</p>
               <img
                 className="rounded-md cursor-pointer p-4"
                 src={close}
@@ -354,7 +357,7 @@ const SettingRole = () => {
               <input
                 className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
                 type="text"
-                placeholder="e.g brand, size, colour"
+                placeholder="e.g IT Academics, SSD, RTE"
                 autoFocus="autofocus"
                 name="department_name"
                 id="department_name"

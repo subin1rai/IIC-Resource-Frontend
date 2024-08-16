@@ -128,17 +128,17 @@ const Topbar = () => {
     const fullName = localStorage.getItem("user_name");
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
-      if (nameParts.length >= 1) {
-        const initials = `${nameParts[0][0]}${
-          nameParts[nameParts.length - 1][0]
-        }`;
-        setInitials(initials);
-      } else if (nameParts.length === 1) {
-        const initials = nameParts[0][0];
-        setInitials(initials);
-      } else {
-        console.log("Please provide a name.");
+
+      let initials = "";
+      if (nameParts.length === 1) {
+        // If there's only one name (e.g., "John")
+        initials = nameParts[0][0];
+      } else if (nameParts.length >= 2) {
+        // If there are multiple names (e.g., "John Doe" or "John Michael Doe")
+        initials = `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`;
       }
+
+      setInitials(initials.toUpperCase());
     }
   }, []);
 
