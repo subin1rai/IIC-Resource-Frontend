@@ -23,11 +23,13 @@ import NoBill from "../components/NoBill";
 
 const Records = () => {
   const [bill, setBill] = useState({
+    bill_ID: "",
     bill_no: "",
     bill_date: "",
     invoice_no: "",
     vat_number: "",
     vendor_name: "",
+    paid_amt:"",
     item_name: "",
     unit_price: "",
     quantity: "",
@@ -160,29 +162,7 @@ const Records = () => {
       ...prevBill,
       [name]: option.value, // Update the appropriate field in the bill
     }));
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [itemsResponse, vendorsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get("http://localhost:8898/api/vendor", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
-
-        setItems(itemsResponse.data);
-        setVendors(vendorsResponse.data.vendor);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [token]);
+};
 
   const customStyles = {
     control: (provided) => ({
@@ -241,11 +221,13 @@ const Records = () => {
     setError("");
     setAddFormVisibility(false);
     setBill({
+      bill_ID : "",
       bill_no: "",
       bill_date: "",
       invoice_no: "",
       vendor_vat: "",
       vendor_name: "",
+      paid_amt: "",
       item_name: "",
       unit_price: "",
       quantity: "",
@@ -270,6 +252,7 @@ const Records = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log(bill)
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
         bill,
@@ -376,86 +359,56 @@ const Records = () => {
           <div className="overlay"></div>
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded w-fit"
           >
             <div className="flex flex-col gap-8">
-              <div className="flex justify-between items-center ">
-                <p className="font-semibold text-xl">Add Bill</p>
-                <img
-                  className="cursor-pointer  h-[2vh] w-[2vw]"
-                  src={close}
-                  alt="close icon"
-                  onClick={closeAddBillForm}
-                />
-              </div>
-              <div className=" gap-16">
-                <div className="flex flex-col pb-8">
-                  <h1 className="font-medium pb-4">Select the type of Bill</h1>
-                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
-                    <select
-                      value={selectedOption}
-                      onChange={handleBillChange}
-                      className={`rounded w-[200px] h-10 ${
-                        selectedOption === "vat0" || selectedOption === "vat1.5"
-                          ? "bg-green-300"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
-                    >
-                      <option value="" disabled>
-                        Select VAT
-                      </option>
-                      <option value="vat0">VAT 0</option>
-                      <option value="vat1.5">VAT 1.5</option>
-                    </select>
-                    <select
-                      value={selectedOption}
-                      onChange={handleBillChange}
-                      className={` rounded w-[200px] ${
-                        selectedOption === "pan0" ||
-                        selectedOption === "pan10" ||
-                        selectedOption === "pan15"
-                          ? "bg-yellow-300"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
-                    >
-                      <option value="" disabled>
-                        Select PAN
-                      </option>
-                      <option value="pan0">Pan 0</option>
-                      <option value="pan10">Pan 10</option>
-                      <option value="pan15">Pan 15</option>
-                    </select>
-                    <button
-                      onClick={() =>
-                        handleBillChange({ target: { value: "noBill" } })
-                      }
-                      className={` rounded w-[200px] ${
-                        selectedOption === "noBill"
-                          ? "bg-red-300 text-white"
-                          : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
-                    >
-                      No Bill
-                    </button>
-                  </div>
+                <div className="flex justify-between items-center ">
+                  <p className="font-semibold text-xl">Add Bill</p>
+                  <img
+                    className="cursor-pointer  h-[2vh] w-[2vw]"
+                    src={close}
+                    alt="close icon"
+                    onClick={closeAddBillForm}
+                  />
                 </div>
-
-                <div className="flex gap-16 pb-8">
-                  <div className="flex flex-col">
-                    <label className="font-medium" htmlFor="bill_no">
-                      Bill Date:
-                    </label>
-                    <NepaliDatePicker
-                      inputClassName="form-control"
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                      value={date}
-                      onChange={handleDateChange}
-                      options={{ calenderLocale: "en", valueLocale: "en" }}
-                    />
+                <div className=" gap-16">
+                  <div className="flex flex-col pb-8">
+                <h1 className="font-medium pb-4">Select the type of Bill</h1>
+                <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                <select value={selectedOption} onChange={handleBillChange}
+                className={`rounded w-[200px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
+                  <option value="" disabled >Select VAT</option>
+                  <option value="vat0">VAT 0</option>
+                  <option value="vat1.5">VAT 1.5</option>
+                </select>
+                <select value={selectedOption} onChange={handleBillChange}  
+                className={` rounded w-[200px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
+                  <option value="" disabled >Select PAN</option>
+                  <option value="pan0">Pan 0</option>
+                  <option value="pan10">Pan 10</option>
+                  <option value="pan15">Pan 15</option>
+                </select>
+                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[200px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
+                  No Bill
+                </button>
                   </div>
+                  </div>
+                
+                  <div className="flex gap-16 pb-8">
+                  <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
+              <NepaliDatePicker
+                        inputClassName="form-control"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        value={date}
+                        onChange={handleDateChange}
+                        options={{ calenderLocale: "en", valueLocale: "en" }}
+                      />
+
+                      </div>
 
                   <div className="flex">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-4">
                       <label className="font-medium" htmlFor="bill_no">
                         Bill No:
                       </label>
@@ -468,68 +421,82 @@ const Records = () => {
                         onChange={handleChange}
                         value={bill.bill_no}
                       />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="font-medium" htmlFor="bill_no">
-                      Voucher No:
-                    </label>
-                    <input
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                      placeholder="Enter voucher number"
-                      autoFocus="autofocus"
-                      name="bill_no"
-                      id="bill_no"
-                      onChange={handleChange}
-                      value={bill.voucher_no}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-16">
-                <div className="flex flex-col">
-                  <label className="font-medium" htmlFor="bill_no">
-                    Vendor Name:
-                  </label>
-                  <Select
-                    options={vendors.map((vendor) => ({
-                      value: vendor.vendor_name,
-                      label: vendor.vendor_name,
-                    }))}
-                    onChange={(option) =>
-                      handleSelectChange(option, { name: "vendor_name" })
-                    }
-                    value={
-                      bill.vendor_name
-                        ? {
-                            value: bill.vendor_name,
-                            label: bill.vendor_name,
-                          }
-                        : null
-                    }
-                    placeholder="Select Vendor"
-                    styles={customStyles}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label className="font-medium" htmlFor="bill_no">
-                    Vat No:
-                  </label>
-                  <input
-                    className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                    placeholder="Enter vat number"
-                    autoFocus="autofocus"
-                    name="bill_no"
-                    id="bill_no"
-                    onChange={handleChange}
-                    value={bill.vat_number}
-                  />
-                </div>
-              </div>
             </div>
-            <div>{renderSelectedComponent()}</div>
-          </form>
+            </div>
+            <div className="flex flex-col gap-4">
+                    <label className="font-medium" htmlFor="voucher_no">Voucher No:</label>
+                      <input
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter voucher number"
+                        autoFocus="autofocus"
+                        name="voucher_no"
+                        id="voucher_no"
+                        onChange={handleChange}
+                        value={bill.voucher_no}
+                      />
+                      </div>
+            </div>
+            <div className="flex gap-[250px] pb-8">  
+                  <div className="flex gap-[180px]">
+                  <div className="flex flex-col gap-4">
+              <label className="font-medium" htmlFor="vendor_name">Vendor Name:</label>
+              <Select
+                        options={vendors.map((vendor) => ({
+                          value: vendor.vendor_name,
+                          label: vendor.vendor_name,
+                        }))}
+                        onChange={(option) =>
+                          handleSelectChange(option, { name: "vendor_name" })
+                        }
+                        value={
+                          bill.vendor_name
+                            ? {
+                                value: bill.vendor_name,
+                                label: bill.vendor_name,
+                              }
+                            : null
+                        }
+                        placeholder="Select Vendor"
+                        styles={customStyles}
+                      />
+
+            </div>
+            <div className="flex flex-col gap-4">
+              <label className="font-medium" htmlFor="vat">Vat/Pan No:</label>
+                      <input
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter Vat/Pan number"
+                        autoFocus="autofocus"
+                        name="vat"
+                        id="vat"
+                        onChange={handleChange}
+                        value={bill.vat}
+                      />
+                      </div>  
+                 
+                 <div className="flex flex-col gap-4">
+                   <label className="font-medium" htmlFor="paid_amt">Paid amount:</label>
+                      <input
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter paid amount"
+                        autoFocus="autofocus"
+                        name="paid_amt"
+                        id="paid_amt"
+                        onChange={handleChange}
+                        value={bill.paid_amt}
+                      />
+                      </div>
+              </div>
+              </div>
+              </div>
+              <div className="flex flex-col self-center ">
+              {error && <span className="text-red-500 self-center">{error}</span>}
+                  {renderSelectedComponent()}
+                 
+                </div>
+                </div>
+    </form>
+
         </>
       )}
       {filterFormVisibility && (
