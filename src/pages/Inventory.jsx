@@ -10,7 +10,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
-import { WrapText } from "@mui/icons-material";
 import addIcon from "../assets/addIcon.svg";
 import low from "../assets/lowstock.png";
 import removeIcon from "../assets/removeIcon.svg";
@@ -169,7 +168,7 @@ const Inventory = () => {
         }
       );
 
-      toast.success(`${itemData.item_name} Added successfully!`);
+      toast.success(`${itemData.item_name} added successfully!`);
       setAddFormVisibility(false);
       setFilterFormVisibility(false);
       setLoading(false);
