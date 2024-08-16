@@ -65,9 +65,7 @@ const SettingRole = () => {
         if (response.data && response.data.users) {
           setUsers(response.data.users);
           setNumberOfUsers(response.data.users.length);
-          setNumberOfActiveUsers(
-            response.data.users.filter((user) => user.isActive === true).length
-          );
+          setNumberOfActiveUsers(response.data.activeUsers.length);
         } else {
           setError("Unexpected response structure");
         }
@@ -175,10 +173,10 @@ const SettingRole = () => {
       setDepartments((prev) => [...prev, response.data.department]);
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setError("Feature name already exists!");
+        setError("Department name already exists!");
       } else {
         console.log(error);
-        setError("Failed to add the new feature!");
+        setError("Failed to add the new department!");
       }
     }
   };
