@@ -13,6 +13,7 @@ const Chat = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const handleChatBoxVisibility = () => {
     setChatBoxVisibility(!chatBoxVisibility);
@@ -38,10 +39,19 @@ const Chat = () => {
           }
         );
 
-        console.log(response.data.allUser);
-        setUserConversations(
-          response.data.allUser.filter((user) => user.role === "departmenthead")
-        );
+        if (role === "departmenthead") {
+          setUserConversations(
+            response.data.allUser.filter(
+              (user) => user.role === "admin" || user.role === "superadmin"
+            )
+          );
+        } else if (role === "superadmin" || role === "admin") {
+          setUserConversations(
+            response.data.allUser.filter(
+              (user) => user.role === "departmenthead"
+            )
+          );
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
