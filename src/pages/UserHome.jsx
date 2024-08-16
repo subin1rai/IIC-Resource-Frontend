@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import resource from "../assets/person.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import heroImage from "../assets/heroImage.svg"
 
 const UserHome = () => {
@@ -16,7 +16,7 @@ const UserHome = () => {
           </h1>
           <p className="text-2xl font-medium">Access The Tools You Need, With Just A Click!</p>
           <button className="bg-button px-8 py-4 rounded-lg w-fit text-white mt-4 text-2xl ">
-            Request Now
+            <Link to="/userRequest">Request Now</Link>
           </button>
         </div>
         <img src={heroImage} alt="" />
