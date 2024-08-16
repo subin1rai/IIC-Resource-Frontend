@@ -21,6 +21,7 @@ import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
 
+
 const Records = () => {
   const [bill, setBill] = useState({
     bill_no: "",
@@ -31,6 +32,7 @@ const Records = () => {
     item_name: "",
     unit_price: "",
     quantity: "",
+    amount: "",
     tds: "",
     amtAfterTds: "",
     vat: "",
@@ -44,15 +46,6 @@ const Records = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
-  // const [bgColor, setBgColor] = useState('bg-blue-100');
-  // const [textColor, setTextColor] = useState('text-blue-300');
-  // const [borderColor, setBorderColor] = useState('border-blue-300');
-  // const [bgColorPan, setPanBgColor] = useState('bg-blue-100');
-  // const [textColorPan, setPanTextColor] = useState('text-blue-300');
-  // const [borderColorPan, setPanBorderColor] = useState('border-blue-300');
-  // const [bgColorNo, setNoBgColor] = useState('bg-blue-100');
-  // const [textColorNo, setNoTextColor] = useState('text-blue-300');
-  // const [borderColorNo, setNoBorderColor] = useState('border-blue-300');
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState("");
   const [items, setItems] = useState("");
@@ -60,22 +53,24 @@ const Records = () => {
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleBillChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+    const value = event.target.value;
+    console.log('Selected option:', value); // Debugging output
+    setSelectedOption(value);
+};
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'vat0':
       case 'vat1.5':
-        return <Vat />;
+        return <Vat selectedOption={selectedOption} />;
       
       case 'pan0':
       case 'pan10':
       case 'pan15':
-        return <Pan />;
+        return <Pan selectedOption={selectedOption} />;
       
       case 'noBill':
-        return <NoBill />;
+        return <NoBill selectedOption={selectedOption} />;
       
       default:
         return <div className="text-red-500">Please select the type of Bill</div>;
@@ -161,9 +156,9 @@ const Records = () => {
       ...provided,
       width: "254px",
       borderRadius: "4px",
-      borderColor: "grey",
+      borderColor: "lightgrey",
       boxShadow: "none",
-      minHeight: "40px",
+      minHeight: "41px",
       color: "black",
       "&:hover": {
         borderColor: "#aaa",
@@ -238,27 +233,6 @@ const Records = () => {
     console.log("Selected date:", date);
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
-
-  // const changePanColor = () => 
-  // {
-  //   setPanBgColor('bg-blue-400'); 
-  //   setPanTextColor('text-blue-900'); 
-  //   setPanBorderColor('border-blue-400');
-  // }
-
-  // const changeColor = () => 
-  //   {
-  //     setBgColor('bg-blue-400'); 
-  //     setTextColor('text-blue-900'); 
-  //     setBorderColor('border-blue-400');
-  //   }
-
-  //   const changeNoBillColor = () => 
-  //     {
-  //       setNoBgColor('bg-blue-400'); 
-  //       setNoTextColor('text-blue-900'); 
-  //       setNoBorderColor('border-blue-400');
-  //     }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -376,25 +350,37 @@ const Records = () => {
                 <h1 className="font-medium pb-4">Select the type of Bill</h1>
                 <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
                 <select value={selectedOption} onChange={handleBillChange}
-                className={`rounded w-[125px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
+                className={`rounded w-[200px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
                   <option value="" disabled >Select VAT</option>
                   <option value="vat0">VAT 0</option>
                   <option value="vat1.5">VAT 1.5</option>
                 </select>
                 <select value={selectedOption} onChange={handleBillChange}  
-                className={` rounded w-[125px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
+                className={` rounded w-[200px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
                   <option value="" disabled >Select PAN</option>
                   <option value="pan0">Pan 0</option>
                   <option value="pan10">Pan 10</option>
                   <option value="pan15">Pan 15</option>
                 </select>
-                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[125px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
+                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[200px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
                   No Bill
                 </button>
                   </div>
                   </div>
                 
                   <div className="flex gap-16 pb-8">
+                  <div className="flex flex-col">
+              <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
+              <NepaliDatePicker
+                        inputClassName="form-control"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        value={date}
+                        onChange={handleDateChange}
+                        options={{ calenderLocale: "en", valueLocale: "en" }}
+                      />
+
+                      </div>
+
                   <div className="flex">
                   <div className="flex flex-col">
               <label className="font-medium" htmlFor="bill_no">Bill No:</label>
@@ -410,18 +396,7 @@ const Records = () => {
                       />
             </div>
             </div>
-            <div className="flex flex-col">
-              <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
-              <NepaliDatePicker
-                        inputClassName="form-control"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        value={date}
-                        onChange={handleDateChange}
-                        options={{ calenderLocale: "en", valueLocale: "en" }}
-                      />
-
-                      </div>
-
+            
                       <div className="flex flex-col">
                     <label className="font-medium" htmlFor="bill_no">Voucher No:</label>
                       <input
@@ -495,45 +470,7 @@ const Records = () => {
           </div>
           <label>Select Category</label>
           <div className="flex gap-6">
-            <Select
-            // options={categoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "feature" })
-            // }
-            // value={categoryOptions.find(
-            //   (option) => option.value === itemData.category
-            // )}
-            // placeholder="Choose Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={itemCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "itemCategory" })
-            // }
-            // value={itemCategoryOptions.find(
-            //   (option) => option.value === itemData.itemCategory
-            // )}
-            // placeholder="Choose Item Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
-            <Select
-            // options={productCategoryOptions}
-            // onChange={(selectedOption) =>
-            //   handleSelectChange(selectedOption, { name: "productCategory" })
-            // }
-            // value={productCategoryOptions.find(
-            //   (option) => option.value === itemData.productCategory
-            // )}
-            // placeholder="Choose Product Category"
-            // styles={customStyles}
-            // className="react-select-container"
-            // classNamePrefix="react-select"
-            />
+           
           </div>
           <label>Select Date:</label>
           <div className="flex gap-6">
