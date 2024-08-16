@@ -394,8 +394,8 @@ const Records = () => {
                   </div>
                   </div>
                 
-                  <div className="flex gap-16 pb-8">
-                  <div className="flex flex-col">
+                  <div className="flex gap-[250px] pb-8">
+                  <div className="flex flex-col gap-4">
               <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
               <NepaliDatePicker
                         inputClassName="form-control"
@@ -436,8 +436,8 @@ const Records = () => {
                       />
                       </div>
             </div>
-            <div className="flex gap-[250px] pb-8">  
-                  <div className="flex gap-[180px]">
+            <div className="flex  pb-8">  
+                  <div className="flex gap-[250px]">
                   <div className="flex flex-col gap-4">
               <label className="font-medium" htmlFor="vendor_name">Vendor Name:</label>
               <Select
@@ -495,8 +495,7 @@ const Records = () => {
                  
                 </div>
                 </div>
-    </form>
-
+    </form> 
         </>
       )}
       {filterFormVisibility && (
