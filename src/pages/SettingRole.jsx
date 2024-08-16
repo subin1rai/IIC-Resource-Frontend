@@ -66,6 +66,9 @@ const SettingRole = () => {
         if (response.data && response.data.users) {
           setUsers(response.data.users);
           setNumberOfUsers(response.data.users.length);
+          setNumberOfActiveUsers(
+            response.data.users.filter((user) => user.isActive === true).length
+          );
         } else {
           setError("Unexpected response structure");
         }
