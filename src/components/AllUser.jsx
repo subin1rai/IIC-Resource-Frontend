@@ -123,6 +123,11 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       const response = await axios.put(`http://localhost:8898/api/role/updateRole/${user_id}`, { role });
       if (response.status === 200) {
         Swal.fire('Role Updated', '', 'success');
+        setAllUsers((prevUsers) =>
+          prevUsers.map((u) =>
+            u.user_id === user_id ? { ...u, role } : u
+          )
+        );
         setIsOpen(false);
       }
     } catch (error) {
