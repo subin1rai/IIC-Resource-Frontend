@@ -114,7 +114,7 @@ const NoBill = () => {
 
     return (
         <>
-        <div className="container mx-auto p-4 ">
+        <div className="container mx-auto overflow-auto max-h-[40vh]">
         <table className=" w-fit border-collapse border border-neutral-500">
   <thead>
     <tr className="bg-blue-200">

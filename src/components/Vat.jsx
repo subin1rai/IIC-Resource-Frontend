@@ -122,8 +122,8 @@ const Vat = ({selectedOption}) => {
 
     return (
         <>
-        <div className="container mx-auto p-4 ">
-        <table className=" w-fit border-collapse border border-neutral-500">
+        <div className="container mx-auto overflow-auto max-h-[40vh]">
+        <table className=" w-fit border-collapse border border-neutral-500  ">
   <thead>
     <tr className="bg-blue-200">
       <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">SN</th>
