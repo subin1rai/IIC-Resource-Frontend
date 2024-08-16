@@ -11,6 +11,7 @@ const Chat = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userConversations, setUserConversations] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [initials, setInitials] = useState("");
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");

@@ -66,7 +66,7 @@ function Messages({ conversation }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-grow overflow-y-auto px-2 py-2">
+      <div className="flex-grow overflow-y-auto px-2 py-2 justify-end">
         {messages.map((message) => (
           <div
             key={message.id}
