@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Message from "./Message";
 import sendIcon from "../assets/sendMessageIcon.svg";
@@ -10,6 +10,7 @@ function Messages({ conversation }) {
   });
   const [messages, setMessages] = useState([]);
   const token = localStorage.getItem("token");
+  const messagesEndRef = useRef(null);
 
   const handleChange = (e) => {
     setNewMessage((prev) => ({
@@ -32,10 +33,7 @@ function Messages({ conversation }) {
         }
       );
 
-      // Update the messages state with the newly sent message
       setMessages((prevMessages) => [...prevMessages, response.data]);
-
-      // Clear the message input after sending
       setNewMessage({ message: "" });
     } catch (error) {
       console.error("Error sending message:", error);
@@ -62,29 +60,52 @@ function Messages({ conversation }) {
     getMessages();
   }, [user_id, token]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="h-full flex flex-col gap-3 py-2">
-      <div className="gap-3 flex flex-col h-[90%] justify-end overflow-auto">
-        {/* Render messages dynamically here */}
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto px-2 py-2 justify-end">
         {messages.map((message) => (
-          <Message key={message.id} message={message} />
+          <div
+            key={message.id}
+            className={`flex ${
+              message.receiverId === user_id ? "justify-end" : "justify-start"
+            } p-2 rounded-md ${
+              message.receiverId !== user_id ? "bg-gray-800" : ""
+            }`}
+          >
+            <Message message={message} conversation={conversation} />
+          </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="relative flex justify-start h-10 items-center bg-white rounded-md">
+
+      <form
+        className="relative flex justify-start h-10 items-center bg-white rounded-md mt-2"
+        onSubmit={handleSubmit}
+      >
         <textarea
           name="message"
           cols="30"
           rows="10"
           className="h-full w-[90%] resize-none outline-none p-2 rounded-md"
           placeholder="Type your message"
-          value={newMessage.message} // Bind the state to the textarea value
+          value={newMessage.message}
           onChange={handleChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault(); // Prevent adding a new line in the textarea
+              handleSubmit(e); // Call the submit function
+            }
+          }}
         ></textarea>
 
-        <button className="right-1 z-20 top-2 absolute" onClick={handleSubmit}>
+        <button type="submit" className="right-1 z-20 top-2 absolute">
           <img src={sendIcon} alt="Send" className="h-6 w-6" />
         </button>
-      </div>
+      </form>
     </div>
   );
 }

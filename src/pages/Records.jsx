@@ -1,12 +1,13 @@
 import * as React from "react";
-import { useEffect, useState,} from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Topbar from "../components/Topbar";
 import "../styles/records.css";
 import close from "../assets/close.svg";
 import RecordsTable from "../components/RecordsTable";
 import filterIcon from "../assets/filter.svg";
+import exportIcon from "../assets/export.svg";
 import record from "../assets/billRecord.svg";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,8 +20,6 @@ import records from "../assets/records.png";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
-
-
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -38,7 +37,7 @@ const Records = () => {
     vat: "",
     amountWithVat: "",
   });
-  
+
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
@@ -49,34 +48,68 @@ const Records = () => {
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState("");
   const [items, setItems] = useState("");
+  const [exports, setExport] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log('Selected option:', value); // Debugging output
+    console.log("Selected option:", value); // Debugging output
     setSelectedOption(value);
-};
+  };
 
-  const renderSelectedComponent = () => {
-    switch (selectedOption) {
-      case 'vat0':
-      case 'vat1.5':
-        return <Vat selectedOption={selectedOption} />;
+  const handleExport = async () => {
+    try {
+      const response = await axios.get("http://localhost:8898/api/bill/export", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important: specify responseType as 'blob'
+      });
       
-      case 'pan0':
-      case 'pan10':
-      case 'pan15':
-        return <Pan selectedOption={selectedOption} />;
+      // Create a new Blob object using the response data
+      const file = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       
-      case 'noBill':
-        return <NoBill selectedOption={selectedOption} />;
+      // Create a link element
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(file);
+      link.download = 'bills.xlsx'; 
       
-      default:
-        return <div className="text-red-500">Please select the type of Bill</div>;
+     
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+      
+      console.log('File saved successfully!');
+    } catch (error) {
+      console.error('Error downloading the file:', error.message);
     }
   };
   
+  
+  const renderSelectedComponent = () => {
+    switch (selectedOption) {
+      case "vat0":
+      case "vat1.5":
+        return <Vat selectedOption={selectedOption} />;
+
+      case "pan0":
+      case "pan10":
+      case "pan15":
+        return <Pan selectedOption={selectedOption} />;
+
+      case "noBill":
+        return <NoBill selectedOption={selectedOption} />;
+
+      default:
+        return (
+          <div className="text-red-500">Please select the type of Bill</div>
+        );
+    }
+  };
 
   const token = localStorage.getItem("token");
 
@@ -120,14 +153,14 @@ const Records = () => {
     };
 
     fetchData();
-  }, [token]); 
+  }, [token]);
 
   const handleSelectChange = (option, { name }) => {
     setBill((prevBill) => ({
-        ...prevBill,
-        [name]: option.value, // Update the appropriate field in the bill
+      ...prevBill,
+      [name]: option.value, // Update the appropriate field in the bill
     }));
-};
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -320,6 +353,14 @@ const Records = () => {
                 Filter
               </button>
               <button
+                className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular  w-fit justify-center items-center rounded gap-2"
+                aria-label="Menu"
+                onClick={handleExport}
+              >
+                <img src={exportIcon} alt="export icon" className="h-6 w-6" />
+                Export
+              </button>
+              <button
                 onClick={openAddBillForm}
                 className="flex bg-blue-500 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
               >
@@ -332,61 +373,94 @@ const Records = () => {
       </div>
       {addFormVisibility && (
         <>
-        <div className="overlay"></div>
-          <form onSubmit={handleSubmit} 
-          className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded ">
+          <div className="overlay"></div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
+          >
             <div className="flex flex-col gap-8">
-                <div className="flex justify-between items-center ">
-                  <p className="font-semibold text-xl">Add Bill</p>
-                  <img
-                    className="cursor-pointer  h-[2vh] w-[2vw]"
-                    src={close}
-                    alt="close icon"
-                    onClick={closeAddBillForm}
-                  />
+              <div className="flex justify-between items-center ">
+                <p className="font-semibold text-xl">Add Bill</p>
+                <img
+                  className="cursor-pointer  h-[2vh] w-[2vw]"
+                  src={close}
+                  alt="close icon"
+                  onClick={closeAddBillForm}
+                />
+              </div>
+              <div className=" gap-16">
+                <div className="flex flex-col pb-8">
+                  <h1 className="font-medium pb-4">Select the type of Bill</h1>
+                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                    <select
+                      value={selectedOption}
+                      onChange={handleBillChange}
+                      className={`rounded w-[200px] h-10 ${
+                        selectedOption === "vat0" || selectedOption === "vat1.5"
+                          ? "bg-green-300"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4`}
+                    >
+                      <option value="" disabled>
+                        Select VAT
+                      </option>
+                      <option value="vat0">VAT 0</option>
+                      <option value="vat1.5">VAT 1.5</option>
+                    </select>
+                    <select
+                      value={selectedOption}
+                      onChange={handleBillChange}
+                      className={` rounded w-[200px] ${
+                        selectedOption === "pan0" ||
+                        selectedOption === "pan10" ||
+                        selectedOption === "pan15"
+                          ? "bg-yellow-300"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4`}
+                    >
+                      <option value="" disabled>
+                        Select PAN
+                      </option>
+                      <option value="pan0">Pan 0</option>
+                      <option value="pan10">Pan 10</option>
+                      <option value="pan15">Pan 15</option>
+                    </select>
+                    <button
+                      onClick={() =>
+                        handleBillChange({ target: { value: "noBill" } })
+                      }
+                      className={` rounded w-[200px] ${
+                        selectedOption === "noBill"
+                          ? "bg-red-300 text-white"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
+                    >
+                      No Bill
+                    </button>
+                  </div>
                 </div>
-                <div className=" gap-16">
-                  <div className="flex flex-col pb-8">
-                <h1 className="font-medium pb-4">Select the type of Bill</h1>
-                <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
-                <select value={selectedOption} onChange={handleBillChange}
-                className={`rounded w-[200px] h-10 ${(selectedOption === 'vat0' || selectedOption === 'vat1.5') ? 'bg-green-300' : 'border-neutral-300' } focus:outline-none focus:border-transparent px-4`}>
-                  <option value="" disabled >Select VAT</option>
-                  <option value="vat0">VAT 0</option>
-                  <option value="vat1.5">VAT 1.5</option>
-                </select>
-                <select value={selectedOption} onChange={handleBillChange}  
-                className={` rounded w-[200px] ${(selectedOption === 'pan0' || selectedOption === 'pan10' || selectedOption === 'pan15') ? 'bg-yellow-300' : 'border-neutral-300'} focus:outline-none focus:border-transparent px-4`} >
-                  <option value="" disabled >Select PAN</option>
-                  <option value="pan0">Pan 0</option>
-                  <option value="pan10">Pan 10</option>
-                  <option value="pan15">Pan 15</option>
-                </select>
-                <button onClick={() => handleBillChange({ target: { value: 'noBill' } })}  className={` rounded w-[200px] ${selectedOption === 'noBill' ? 'bg-red-300 text-white' : 'border-neutral-300'} px-4 whitespace-nowrap`}>
-                  No Bill
-                </button>
-                  </div>
-                  </div>
-                
-                  <div className="flex gap-16 pb-8">
-                  <div className="flex flex-col">
-              <label className="font-medium" htmlFor="bill_no">Bill Date:</label>
-              <NepaliDatePicker
-                        inputClassName="form-control"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        value={date}
-                        onChange={handleDateChange}
-                        options={{ calenderLocale: "en", valueLocale: "en" }}
-                      />
 
-                      </div>
+                <div className="flex gap-16 pb-8">
+                  <div className="flex flex-col">
+                    <label className="font-medium" htmlFor="bill_no">
+                      Bill Date:
+                    </label>
+                    <NepaliDatePicker
+                      inputClassName="form-control"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      value={date}
+                      onChange={handleDateChange}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
+                    />
+                  </div>
 
                   <div className="flex">
-                  <div className="flex flex-col">
-              <label className="font-medium" htmlFor="bill_no">Bill No:</label>
+                    <div className="flex flex-col">
+                      <label className="font-medium" htmlFor="bill_no">
+                        Bill No:
+                      </label>
                       <input
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -394,66 +468,68 @@ const Records = () => {
                         onChange={handleChange}
                         value={bill.bill_no}
                       />
-            </div>
-            </div>
-            
-                      <div className="flex flex-col">
-                    <label className="font-medium" htmlFor="bill_no">Voucher No:</label>
-                      <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        placeholder="Enter voucher number"
-                        autoFocus="autofocus"
-                        name="bill_no"
-                        id="bill_no"
-                        onChange={handleChange}
-                        value={bill.voucher_no}
-                      />
-                      </div>  
+                    </div>
                   </div>
-                  </div>
-                  <div className="flex gap-16">
+
                   <div className="flex flex-col">
-              <label className="font-medium" htmlFor="bill_no">Vendor Name:</label>
-              <Select
-                        options={vendors.map((vendor) => ({
-                          value: vendor.vendor_name,
-                          label: vendor.vendor_name,
-                        }))}
-                        onChange={(option) =>
-                          handleSelectChange(option, { name: "vendor_name" })
-                        }
-                        value={
-                          bill.vendor_name
-                            ? {
-                                value: bill.vendor_name,
-                                label: bill.vendor_name,
-                              }
-                            : null
-                        }
-                        placeholder="Select Vendor"
-                        styles={customStyles}
-                      />
-
-            </div>
-            <div className="flex flex-col">
-              <label className="font-medium" htmlFor="bill_no">Vat No:</label>
-                      <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        placeholder="Enter vat number"
-                        autoFocus="autofocus"
-                        name="bill_no"
-                        id="bill_no"
-                        onChange={handleChange}
-                        value={bill.vat_number}
-                      />
-                      </div>  
+                    <label className="font-medium" htmlFor="bill_no">
+                      Voucher No:
+                    </label>
+                    <input
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      placeholder="Enter voucher number"
+                      autoFocus="autofocus"
+                      name="bill_no"
+                      id="bill_no"
+                      onChange={handleChange}
+                      value={bill.voucher_no}
+                    />
                   </div>
-              </div>
-              <div>
-                  {renderSelectedComponent()}
                 </div>
-    </form>
-
+              </div>
+              <div className="flex gap-16">
+                <div className="flex flex-col">
+                  <label className="font-medium" htmlFor="bill_no">
+                    Vendor Name:
+                  </label>
+                  <Select
+                    options={vendors.map((vendor) => ({
+                      value: vendor.vendor_name,
+                      label: vendor.vendor_name,
+                    }))}
+                    onChange={(option) =>
+                      handleSelectChange(option, { name: "vendor_name" })
+                    }
+                    value={
+                      bill.vendor_name
+                        ? {
+                            value: bill.vendor_name,
+                            label: bill.vendor_name,
+                          }
+                        : null
+                    }
+                    placeholder="Select Vendor"
+                    styles={customStyles}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="font-medium" htmlFor="bill_no">
+                    Vat No:
+                  </label>
+                  <input
+                    className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                    placeholder="Enter vat number"
+                    autoFocus="autofocus"
+                    name="bill_no"
+                    id="bill_no"
+                    onChange={handleChange}
+                    value={bill.vat_number}
+                  />
+                </div>
+              </div>
+            </div>
+            <div>{renderSelectedComponent()}</div>
+          </form>
         </>
       )}
       {filterFormVisibility && (
@@ -469,9 +545,7 @@ const Records = () => {
             </button>
           </div>
           <label>Select Category</label>
-          <div className="flex gap-6">
-           
-          </div>
+          <div className="flex gap-6"></div>
           <label>Select Date:</label>
           <div className="flex gap-6">
             <input

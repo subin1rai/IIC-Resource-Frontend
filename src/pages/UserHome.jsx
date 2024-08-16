@@ -7,8 +7,6 @@ import Chat from "../components/Chat";
 
 import { NavLink, Link } from "react-router-dom";
 
-
-
 const UserHome = () => {
   return (
     <div className="absolute">
@@ -28,7 +26,7 @@ const UserHome = () => {
         </div>
         <img src={heroImage} alt="" />
       </div>
-      <div className="absolute right-12 bottom-12">
+      <div className="absolute right-12 -bottom-12">
         <Chat />
       </div>
     </div>
