@@ -118,23 +118,35 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
   
 
   const handleRoleUpdate = async (role) => {
-    setLoading(true);
-    try {
-      const response = await axios.put(`http://localhost:8898/api/role/updateRole/${user_id}`, { role });
-      if (response.status === 200) {
-        Swal.fire('Role Updated', '', 'success');
-        setAllUsers((prevUsers) =>
-          prevUsers.map((u) =>
-            u.user_id === user_id ? { ...u, role } : u
-          )
-        );
-        setIsOpen(false);
+    Swal.fire({
+      // title: "Are you sure?",
+      text: `Do you want to set the role to ${role}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, set ${role}`
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await axios.put(`http://localhost:8898/api/role/updateRole/${user_id}`, { role });
+          if (response.status === 200) {
+            Swal.fire(`Role Updated`, `User role set to ${role}`, 'success');
+            setAllUsers((prevUsers) =>
+              prevUsers.map((u) =>
+                u.user_id === user_id ? { ...u, role } : u
+              )
+            );
+            setIsOpen(false);
+          }
+        } catch (error) {
+          Swal.fire('Error', 'An error occurred while updating the role.', 'error');
+        } finally {
+          setLoading(false);
+        }
       }
-    } catch (error) {
-      Swal.fire('Error', 'An error occurred while updating the role.', 'error');
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const dropdownContent = (
@@ -289,11 +301,11 @@ const AllUser = ({ users: initialUsers }) => {
           )
         );
       } else {
-        Swal.fire('No User Data', 'No updated user data received.', 'warning');
+       
       }
       setEditFormVisibility(false);
     } catch (error) {
-      Swal.fire('Update Error', 'An error occurred while updating the user.', 'error');
+    
     }
   };
 
