@@ -22,7 +22,7 @@ import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
 const Records = () => {
-  const [bill, setBill] = useState({
+   const [bill, setBill] = useState({
     bill_ID: "",
     bill_no: "",
     bill_date: "",
@@ -43,7 +43,6 @@ const Records = () => {
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
-
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -51,7 +50,6 @@ const Records = () => {
   const [vendors, setVendors] = useState("");
   const [items, setItems] = useState("");
   const [exports, setExport] = useState("");
-
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleBillChange = (event) => {
