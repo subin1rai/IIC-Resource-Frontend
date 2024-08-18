@@ -22,15 +22,13 @@ import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
 const Records = () => {
-
   const [bill, setBill] = useState({
-
     bill_no: "",
     bill_date: "",
     invoice_no: "",
     vat_number: "",
-    vendor_name: "",
-    paid_amt: "",
+    selectedOptions: "",
+    paid_amount: 0,
     items: [],
   });
 
@@ -62,8 +60,13 @@ const Records = () => {
     const value = event.target.value;
     console.log("Selected option:", value);
     setSelectedOption(value);
+    setBill((prevBill) => ({
+      ...prevBill,
+      selectedOptions: value,
+    }));
   };
 
+  console.log(selectedOption);
   const handleExport = async () => {
     try {
       const response = await axios.get(
@@ -98,8 +101,8 @@ const Records = () => {
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
-      case "vat0":
-      case "vat1.5":
+      case "vat 0":
+      case "vat 1.5":
         return (
           <Vat
             selectedOption={selectedOption}
@@ -107,9 +110,9 @@ const Records = () => {
             onDataUpdate={handleVatDataUpdate}
           />
         );
-      case "pan0":
-      case "pan10":
-      case "pan15":
+      case "pan 0":
+      case "pan 10":
+      case "pan 15":
         return <Pan selectedOption={selectedOption} setBill={setBill} />;
       case "noBill":
         return (
@@ -245,9 +248,7 @@ const Records = () => {
   };
 
   const handleDateChange = (event) => {
-    console.log("Event:", event);
     const date = event;
-    console.log("Selected date:", date);
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
 
@@ -256,6 +257,7 @@ const Records = () => {
     try {
       const billData = {
         ...bill,
+        selectedOptions: selectedOption, // Include the selectedOption
         items: vatData,
       };
       const response = await axios.post(
@@ -382,7 +384,8 @@ const Records = () => {
                       value={selectedOption}
                       onChange={handleBillChange}
                       className={`rounded w-[200px] h-10 ${
-                        selectedOption === "vat0" || selectedOption === "vat1.5"
+                        selectedOption === "vat 0" ||
+                        selectedOption === "vat 1.5"
                           ? "bg-green-300"
                           : "border-neutral-300"
                       } focus:outline-none focus:border-transparent px-4`}
@@ -390,16 +393,16 @@ const Records = () => {
                       <option value="" disabled>
                         Select VAT
                       </option>
-                      <option value="vat0">VAT 0</option>
-                      <option value="vat1.5">VAT 1.5</option>
+                      <option value="vat 0">VAT 0</option>
+                      <option value="vat 1.5">VAT 1.5</option>
                     </select>
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
                       className={` rounded w-[200px] ${
-                        selectedOption === "pan0" ||
-                        selectedOption === "pan10" ||
-                        selectedOption === "pan15"
+                        selectedOption === "pan 0" ||
+                        selectedOption === "pan 10" ||
+                        selectedOption === "pan 15"
                           ? "bg-yellow-300"
                           : "border-neutral-300"
                       } focus:outline-none focus:border-transparent px-4`}
@@ -407,9 +410,9 @@ const Records = () => {
                       <option value="" disabled>
                         Select PAN
                       </option>
-                      <option value="pan0">Pan 0</option>
-                      <option value="pan10">Pan 10</option>
-                      <option value="pan15">Pan 15</option>
+                      <option value="pan 0">Pan 0</option>
+                      <option value="pan 10">Pan 10</option>
+                      <option value="pan 15">Pan 15</option>
                     </select>
                     <button
                       onClick={() =>
@@ -505,7 +508,7 @@ const Records = () => {
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter Vat/Pan number"
                         autoFocus="autofocus"
-                        name="vat"
+                        name="vat_number"
                         id="vat"
                         onChange={handleChange}
                         value={bill.vat}
@@ -520,10 +523,10 @@ const Records = () => {
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter paid amount"
                         autoFocus="autofocus"
-                        name="paid_amt"
-                        id="paid_amt"
+                        name="paid_amount"
+                        id="paid_amount"
                         onChange={handleChange}
-                        value={bill.paid_amt}
+                        value={bill.paid_amount}
                       />
                     </div>
                   </div>
