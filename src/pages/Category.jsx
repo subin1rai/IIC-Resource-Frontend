@@ -172,7 +172,7 @@ const Category = () => {
       );
       console.log(response);
       setCategory((prev) => [...prev, response.data.addData]);
-      toast.success(`${newCategory.category_name} Added successfully!`);
+      toast.success(`${newCategory.category_name} added successfully!`);
       setVisibleForm(false);
     } catch (error) {
       console.log(error);
@@ -223,7 +223,7 @@ const Category = () => {
       setItemCategory((prev) => [...prev, response.data.addData]);
 
       toast.success(
-        `${newItemCategory.item_category_name} Added successfully!`
+        `${newItemCategory.item_category_name} added successfully!`
       );
       setVisibleForm(false);
     } catch (error) {
@@ -247,7 +247,7 @@ const Category = () => {
 
       setFeature((prev) => [...prev, response.data.featuresData]);
 
-      toast.success(`${newFeature.feature_name} Added successfully!`);
+      toast.success(`${newFeature.feature_name} added successfully!`);
       setVisibleForm(false);
     } catch (error) {
       if (error.response && error.response.status === 409) {
