@@ -7,8 +7,11 @@ const NoBill = () => {
     const [items, setItems] = useState([]);
     // const [vendors, setVendors] = useState([]);
 
+
+      // Retrieve token from localStorage
     const token = localStorage.getItem("token");
 
+  // Fetch data (items) on component mount
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -20,7 +23,7 @@ const NoBill = () => {
               //   headers: { Authorization: `Bearer ${token}` },
               // }),
             ]);
-    
+             // Update items state with the fetched data
             setItems(itemsResponse.data);
             // setVendors(vendorsResponse.data.vendor);
           } catch (error) {
@@ -36,7 +39,7 @@ const NoBill = () => {
         { id: 1, item_name: '', quantity: 0, unitPrice: 0, amount: 0, tds: 0, amtAfterTds: 0,  vat: 0, amountWithVat: 0 },
         // Add more rows as needed
       ]);
-    
+     // Handle change in the select dropdown for item names
       const handleSelectChange = (option, index) => {
         const updatedRows = [...rows];
         updatedRows[index].item_name = option.value;

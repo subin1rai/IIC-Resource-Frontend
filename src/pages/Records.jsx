@@ -22,7 +22,9 @@ import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
 const Records = () => {
+
   const [bill, setBill] = useState({
+
     bill_no: "",
     bill_date: "",
     invoice_no: "",

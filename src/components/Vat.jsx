@@ -258,9 +258,11 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                   .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
                   .toFixed(2)}
               </td>
+
             </tr>
           </tbody>
         </table>
+
 
         <div className="mt-2">
           <button onClick={addRow} className="text-blue-600 hover:underline">
@@ -272,6 +274,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
             className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
             onClick={() => console.log(itemsData)}
           >
+
             Add Bill
           </button>
         </div>
