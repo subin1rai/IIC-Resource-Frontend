@@ -44,7 +44,7 @@ const Records = () => {
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState("");
   const [items, setItems] = useState("");
-  const [exports, setExport] = useState("");
+  // const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [vatData, setVatData] = useState([]);
 
@@ -67,7 +67,7 @@ const Records = () => {
   const handleExport = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8898/api/bill/export",
+        "http://localhost:8898/api/bill/exportBill",
         {
           headers: {
             Authorization: `Bearer ${token}`,
