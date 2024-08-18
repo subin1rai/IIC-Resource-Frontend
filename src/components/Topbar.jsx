@@ -124,8 +124,8 @@ const Topbar = () => {
     fetchNotification();
   }, [token]);
 
+  const fullName = localStorage.getItem("user_name");
   useEffect(() => {
-    const fullName = localStorage.getItem("user_name");
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
 
@@ -241,17 +241,15 @@ const Topbar = () => {
                 {initials}
               </div>
               <div className="flex flex-col">
-                <h1 className="font-medium text-xl text-nowrap ">
-                  Mahima Gurung
-                </h1>
-                <h3 className="font-normal text-l ">Mahima</h3>
+                <h1 className="font-medium text-xl text-nowrap ">{fullName}</h1>
+                {/* <h3 className="font-normal text-l ">Mahima</h3> */}
               </div>
             </div>
             <hr className="border-[1px] border-neutral-300 m-2"></hr>
             <div className="flex flex-col px-4">
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={email} alt="" />
-                <li className="py-2 text-blue-600">grgmahima@gmail.com</li>
+                <li className="py-2 text-blue-600">sample@iic.edu.np</li>
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
