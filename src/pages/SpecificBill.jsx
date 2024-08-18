@@ -47,6 +47,7 @@ const SpecificBill = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [vendors, setVendors] = useState(false);
 
   const { bill_id } = useParams();
   const token = localStorage.getItem("token");
@@ -92,8 +93,6 @@ const SpecificBill = () => {
     }),
   };
 
- 
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -117,8 +116,6 @@ const SpecificBill = () => {
               },
             }),
           ]);
-
-        console.log(itemsResponse);
 
         setBillDetails(singleBillResponse.data.bill);
         console.log(billDetails);
@@ -162,42 +159,45 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:8898/api/updateBill/${bill_id}`, editedBill, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setBill({...bill, ...editedBill});
+      await axios.put(
+        `http://localhost:8898/api/updateBill/${bill_id}`,
+        editedBill,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBill({ ...bill, ...editedBill });
       closeEditBillDetailsForm();
     } catch (error) {
       console.log(error);
     }
   };
 
-      // Refresh bill details
-      useEffect(() => {
-        const fetchSingleBill = async () => {
-          try {
-            setLoading(true);
-            const response = await axios.get(
-              `http://localhost:8898/api/singleBill/${bill_id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            console.log(response);
-            setBill(response.data);
-            setLoading(false);
-          } catch (error) {
-            console.error("Error fetching Bill data:", error);
+  // Refresh bill details
+  useEffect(() => {
+    const fetchSingleBill = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:8898/api/singleBill/${bill_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        };
-    
-        fetchSingleBill();
-      }, [bill_id]);
+        );
+        console.log(response);
+        setBill(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching Bill data:", error);
+      }
+    };
 
+    fetchSingleBill();
+  }, [bill_id]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -283,7 +283,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   TDS:
                   <span className="font-medium pl-4">
-                    {billDetails.TDS || "--"}
+                    {billDetails?.BillItems?.TDS || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
@@ -361,7 +361,6 @@ const SpecificBill = () => {
                         value={date}
                         onChange={handleChange}
                         options={{ calenderLocale: "en", valueLocale: "en" }}
-                       
                       />
                     </div>
                   </div>
@@ -369,7 +368,6 @@ const SpecificBill = () => {
                   <div className="flex gap-14">
                     <div className="flex flex-col gap-3">
                       <label htmlFor="voucher_no" className="font-medium">
-                        
                         Voucher No.:
                       </label>
                       <input
@@ -527,7 +525,9 @@ const SpecificBill = () => {
                   <p className="font-medium">Quantity: {bill.actual_amount}</p>
                   <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
                   <p className="font-medium">TDS: {bill.tds}</p>
-                  <p className="font-medium"> Actual Amount: {bill.actual_amount}
+                  <p className="font-medium">
+                    {" "}
+                    Actual Amount: {bill.actual_amount}
                   </p>
                   <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
                   <button className="bg-button py-2 rounded-md text-white mt-4">

@@ -19,10 +19,9 @@ const columns = [
   { id: "bill_number", label: "Bill Number", minWidth: 130, align: "center" },
   { id: "vendor_name", label: "Vendor Name", minWidth: 200, align: "center" },
   { id: "quantity", label: "Quantity", minWidth: 110, align: "center" },
-  { id: "paid_amount", label: "Paid Amount", minWidth: 110, align: "center" },
   {
-    id: "actual_amount",
-    label: "Actual Amount",
+    id: "total_Amount",
+    label: "Total Amount",
     minWidth: 110,
     align: "center",
   },
@@ -81,7 +80,9 @@ function PurchaseHistory() {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
-        setPurchaseHistory(response.data.bills || []);
+
+        console.log(response);
+        setPurchaseHistory(response.data.BillItems || []);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching purchase history:", err);
@@ -239,15 +240,13 @@ function PurchaseHistory() {
                   if (column.id === "sNo") {
                     value = page * rowsPerPage + index + 1;
                   } else if (column.id === "vendor_name") {
-                    value = row.vendors?.vendor_name || "";
+                    value = row?.vendor_name || "";
                   } else if (column.id === "bill_number") {
                     value = row.bill_no;
                   } else if (column.id === "quantity") {
                     value = row.quantity;
-                  } else if (column.id === "actual_amount") {
-                    value = row.actual_amount;
-                  } else if (column.id === "paid_amount") {
-                    value = row.paid_amount;
+                  } else if (column.id === "total_Amount") {
+                    value = "Rs. " + row.total_Amount;
                   } else if (column.id === "bill_date") {
                     value = formatDate(row.bill_date);
                   }
