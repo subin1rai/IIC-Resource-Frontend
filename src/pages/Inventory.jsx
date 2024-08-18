@@ -201,6 +201,8 @@ const Inventory = () => {
           },
         });
 
+        console.log(response);
+
         setItems(response.data);
         setFilteredItems(response.data); // Initialize filtered items
 
@@ -212,6 +214,8 @@ const Inventory = () => {
             },
           }
         );
+
+        console.log(categoryResponse);
 
         const itemCategoryResponse = await axios.get(
           "http://localhost:8898/api/itemCategory",
