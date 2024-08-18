@@ -10,6 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import vendorno from "../assets/vendorcount.png";
 import blacklist from "../assets/blacklist.png";
+import exportIcon from "../assets/export.svg";
+
 import Select from "react-select";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
@@ -174,6 +176,44 @@ const Vendor = () => {
     }
   };
 
+  const handleBillChange = (event) => {
+    const value = event.target.value;
+    console.log("Selected option:", value);
+    setSelectedOption(value);
+  };
+
+  const handleExport = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8898/api/bill/exportVendor",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },  
+          responseType: "blob",
+        }
+      );
+
+      const file = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(file);
+      link.download = "Vendor.xlsx";
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+
+      console.log("File saved successfully!");
+    } catch (error) {
+      console.error("Error downloading the file:", error.message);
+    }
+  };
+
   useEffect(() => {
     const getAllVendors = async () => {
       try {
@@ -280,6 +320,14 @@ const Vendor = () => {
                   alt=""
                 />
                 Filter
+              </button>
+              <button
+                className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular  w-fit justify-center items-center rounded gap-2"
+                aria-label="Menu"
+                onClick={handleExport}
+              >
+                <img src={exportIcon} alt="export icon" className="h-6 w-6" />
+                Export
               </button>
               <button
                 className="flex justify-center bg-button text-white rounded border items-center w-fit h-fit px-6 py-2"
