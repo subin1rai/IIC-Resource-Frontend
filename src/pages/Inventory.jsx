@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import addIcon from "../assets/addIcon.svg";
 import low from "../assets/lowstock.png";
+import exportIcon from "../assets/export.svg";
 import removeIcon from "../assets/removeIcon.svg";
 import item from "../assets/item.png";
 import categoryIcon from "../assets/categoryno.png";
@@ -329,8 +330,18 @@ const Inventory = () => {
                 />
                 Filter
               </button>
+              {/* Export button */}
               <button
-                className="flex justify-center bg-blue-500 text-white rounded items-center w-fit px-6"
+                className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
+                aria-label="Menu"
+              // onClick={handleExport}
+              >
+                <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
+                Export
+              </button>
+              {/* Adding item button */}
+              <button
+                className="flex bg-blue-500 px-6  w-fit h-fit py-2.5 justify-center items-center rounded text-white"
                 onClick={displayAddPopup}
               >
                 Add Item
