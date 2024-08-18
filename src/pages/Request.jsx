@@ -17,7 +17,7 @@ const Request = () => {
           <p>You can view your request here</p>
 
           <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div>
-          <div className="h-[82vh] overflow-y-scroll mt-3 ">
+          <div className="h-[82vh]  mt-3 ">
             <RequestTable />
           </div>
         </div>
