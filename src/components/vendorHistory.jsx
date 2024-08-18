@@ -16,8 +16,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const columns = [
   { id: "sNo", label: "S.No.", minWidth: 70, align: "center" },
   { id: "bill_number", label: "Bill Number", minWidth: 130, align: "center" },
-  { id: "item_name", label: "Item Name", minWidth: 200, align: "center" },
-  { id: "quantity", label: "Quantity", minWidth: 110, align: "center" },
+  { id: "bill_date", label: "Purchase Date", minWidth: 130, align: "center" },
   { id: "paid_amount", label: "Paid Amount", minWidth: 110, align: "center" },
   {
     id: "actual_amount",
@@ -25,7 +24,18 @@ const columns = [
     minWidth: 110,
     align: "center",
   },
-  { id: "bill_date", label: "Purchase Date", minWidth: 130, align: "center" },
+  {
+    id: "left_amount",
+    label: "Pending Amount",
+    minWidth: 110,
+    align: "center",
+  },
+  {
+    id: "payment_status",
+    label: "Payment Status",
+    minWidth: 110,
+    align: "center",
+  },
 ];
 
 const VendorHistory = () => {
@@ -212,23 +222,29 @@ const VendorHistory = () => {
                       case "sNo":
                         value = page * rowsPerPage + index + 1;
                         break;
-                      case "item_name":
-                        value = row.items.item_name;
+                      case "payment_status":
+                        value =
+                          row.left_amount > 0 ? (
+                            <span className="text-yellow-500">Pending</span>
+                          ) : (
+                            <span className="text-green-500">Complete</span>
+                          );
                         break;
                       case "bill_number":
                         value = row.bill_no;
                         break;
-                      case "quantity":
-                        value = row.quantity;
-                        break;
+
                       case "actual_amount":
-                        value = row.actual_amount;
+                        value = row.actual_Amount;
                         break;
                       case "paid_amount":
                         value = row.paid_amount;
                         break;
                       case "bill_date":
                         value = formatDate(row.bill_date);
+                        break;
+                      case "left_amount":
+                        value = row.left_amount;
                         break;
                       default:
                         value = "";

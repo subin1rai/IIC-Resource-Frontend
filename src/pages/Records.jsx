@@ -32,7 +32,6 @@ const Records = () => {
     items: [],
   });
 
-  console.log(bill);
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
@@ -66,7 +65,6 @@ const Records = () => {
     }));
   };
 
-  console.log(selectedOption);
   const handleExport = async () => {
     try {
       const response = await axios.get(
@@ -113,7 +111,7 @@ const Records = () => {
       case "pan 0":
       case "pan 10":
       case "pan 15":
-        return <Pan selectedOption={selectedOption} setBill={setBill} />;
+        return <Pan selectedOption={selectedOption} />;
       case "noBill":
         return (
           <NoBill selectedOption={selectedOption} handleChange={handleChange} />
@@ -133,8 +131,7 @@ const Records = () => {
         },
       });
 
-      console.log(response);
-      setBills(response.data.bills || []);
+      setBills(response.data.bill || []);
     } catch (error) {
       console.error("Error fetching bills:", error);
       setBills([]);
@@ -156,8 +153,6 @@ const Records = () => {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-
-        console.log(vendorsResponse);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
