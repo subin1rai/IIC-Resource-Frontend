@@ -21,7 +21,7 @@ import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
-const Records = () => {
+const Records = () =>{
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
@@ -39,21 +39,45 @@ const Records = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [bills, setBills] = useState([]);
-  const [vendors, setVendors] = useState("");
-  const [items, setItems] = useState("");
+  const [vendors, setVendors] = useState([]);
+  // const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [vatData, setVatData] = useState([]);
+  const [panData, setPanData] = useState([]);
+  const [noBillData, setNoBillData] = useState([]);
 
   const token = localStorage.getItem("token");
 
-  const handleVatDataUpdate = (data) => {
-    setVatData(data);
-    setBill((prevBill) => ({
-      ...prevBill,
-      items: data,
-    }));
+  const handleDataUpdate = (data, type) => {
+    switch (type) {
+      case 'vat':
+        setVatData(data);
+        setBill((prevBill) => ({
+          ...prevBill,
+          items: data,
+        }));
+        break;
+      case 'pan':
+        setPanData(data); 
+        setBill((prevBill) => ({
+          ...prevBill,
+          panItems: data, 
+        }));
+        break;
+      case 'noBill':
+        setNoBillData(data);
+        setBill((prevBill) => ({
+          ...prevBill,
+          noBillItems: data, 
+        }));
+        break;
+      default:
+        console.error('Unknown data type:', type);
+    }
   };
+
+
 
   const handleBillChange = (event) => {
     const value = event.target.value;
@@ -105,16 +129,16 @@ const Records = () => {
           <Vat
             selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={handleVatDataUpdate}
+            onDataUpdate={(data) => handleDataUpdate(data, 'vat')}
           />
         );
       case "pan 0":
       case "pan 10":
       case "pan 15":
-        return <Pan selectedOption={selectedOption} />;
+        return ( <Pan selectedOption={selectedOption} handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'pan')}  />);
       case "noBill":
         return (
-          <NoBill selectedOption={selectedOption} handleChange={handleChange} />
+          <NoBill handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}/>
         );
       default:
         return (
@@ -254,6 +278,8 @@ const Records = () => {
         ...bill,
         selectedOptions: selectedOption, // Include the selectedOption
         items: vatData,
+        panItems:panData,
+        noBillItems: noBillData,
       };
       const response = await axios.post(
         "http://localhost:8898/api/addBill",

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Pan = ({ selectedOption }) => {
+const Pan = ({ selectedOption, onDataUpdate }) => {
   //  const { selectedOption } = useBillContext();
   const [items, setItems] = useState([]);
   const [vendors, setVendors] = useState([]);
@@ -93,6 +93,19 @@ const Pan = ({ selectedOption }) => {
     }
 
     setRows(newRows);
+    updateParentData(newRows);
+  };
+
+  const updateParentData = (updatedRows) => {
+    const newItemsData = updatedRows.map((row) => ({
+      item_name: row.item_name,
+      quantity: row.quantity,
+      unit_price: row.unit_price,
+      amount: row.amount,
+      tds: row.tds,
+      amtAfterTds: row.amtAfterTds,
+    }));
+    onDataUpdate(newItemsData);
   };
 
   const customStyles = {
