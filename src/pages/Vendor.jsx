@@ -189,7 +189,7 @@ const Vendor = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },  
+          },
           responseType: "blob",
         }
       );

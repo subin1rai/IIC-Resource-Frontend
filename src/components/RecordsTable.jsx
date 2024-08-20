@@ -190,13 +190,13 @@ export default function RecordsTable({ bills }) {
             {visibleRows
               .slice()
               .reverse()
-              .map((bill) =>
+              .map((bill, index) =>
                 bill ? (
                   <TableRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={bill.bill_ID || "unknown"}
+                    key={bill.bill_ID || `unknown-${index}`}
                     onClick={() => handleRowClick(bill.bill_ID)}
                   >
                     {columns.map((column) => {

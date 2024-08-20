@@ -74,9 +74,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       let tds = 0;
       let amtAfterTds = amount;
 
-      if (selectedOption === "vat1.5") {
+      if (selectedOption === "vat 1.5") {
         tds = (amount / 1.13) * 0.015;
-      } else if (selectedOption === "vat0") {
+      } else if (selectedOption === "vat 0") {
         tds = 0;
       }
 
