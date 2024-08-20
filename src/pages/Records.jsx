@@ -21,7 +21,7 @@ import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 
-const Records = () =>{
+const Records = () => {
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
@@ -40,7 +40,7 @@ const Records = () =>{
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState([]);
-  // const [items, setItems] = useState("");
+  const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [vatData, setVatData] = useState([]);
@@ -51,37 +51,34 @@ const Records = () =>{
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
-      case 'vat':
+      case "vat":
         setVatData(data);
         setBill((prevBill) => ({
           ...prevBill,
           items: data,
         }));
         break;
-      case 'pan':
-        setPanData(data); 
+      case "pan":
+        setPanData(data);
         setBill((prevBill) => ({
           ...prevBill,
-          panItems: data, 
+          panItems: data,
         }));
         break;
-      case 'noBill':
+      case "noBill":
         setNoBillData(data);
         setBill((prevBill) => ({
           ...prevBill,
-          noBillItems: data, 
+          noBillItems: data,
         }));
         break;
       default:
-        console.error('Unknown data type:', type);
+        console.error("Unknown data type:", type);
     }
   };
 
-
-
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log("Selected option:", value);
     setSelectedOption(value);
     setBill((prevBill) => ({
       ...prevBill,
@@ -129,16 +126,25 @@ const Records = () =>{
           <Vat
             selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={(data) => handleDataUpdate(data, 'vat')}
+            onDataUpdate={(data) => handleDataUpdate(data, "vat")}
           />
         );
       case "pan 0":
       case "pan 10":
       case "pan 15":
-        return ( <Pan selectedOption={selectedOption} handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'pan')}  />);
+        return (
+          <Pan
+            selectedOption={selectedOption}
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, "pan")}
+          />
+        );
       case "noBill":
         return (
-          <NoBill handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}/>
+          <NoBill
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
+          />
         );
       default:
         return (
@@ -179,6 +185,8 @@ const Records = () =>{
         ]);
 
         setItems(itemsResponse.data);
+
+        console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -278,9 +286,10 @@ const Records = () =>{
         ...bill,
         selectedOptions: selectedOption, // Include the selectedOption
         items: vatData,
-        panItems:panData,
+        panItems: panData,
         noBillItems: noBillData,
       };
+
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
         billData,
@@ -291,9 +300,7 @@ const Records = () =>{
         }
       );
 
-      console.log(response.data.result.newBill);
-
-      setBills((prevBills) => [...prevBills, response.data.result.newBill]);
+      setBills((prevBills) => [...prevBills, response.data.result.bill]);
       toast.success(`${bill.bill_no} Added Successfully!`);
       closeAddBillForm();
     } catch (error) {

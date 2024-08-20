@@ -6,23 +6,18 @@ import axios from "axios";
 const Pan = ({ selectedOption, onDataUpdate }) => {
   //  const { selectedOption } = useBillContext();
   const [items, setItems] = useState([]);
-  const [vendors, setVendors] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse, vendorsResponse] = await Promise.all([
+        const [itemsResponse] = await Promise.all([
           axios.get("http://localhost:8898/api/items", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
 
         setItems(itemsResponse.data);
-        setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -44,7 +39,6 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
     // Add more rows as needed
   ]);
 
-  // console.log(selectedOption);
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
     updatedRows[index].item_name = option.value;
@@ -77,11 +71,11 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       let tds = 0;
       let amtAfterTds = amount;
 
-      if (selectedOption === "pan10") {
+      if (selectedOption === "pan 10") {
         tds = 0.1 * amount;
-      } else if (selectedOption === "pan15") {
+      } else if (selectedOption === "pan 15") {
         tds = 0.15 * amount;
-      } else if (selectedOption === "pan0") {
+      } else if (selectedOption === "pan 0") {
         tds = 0;
       }
 
@@ -111,27 +105,27 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      border: "none", // Remove the border
-      boxShadow: "none", // Remove the shadow
-      backgroundColor: "transparent", // Match the table row background
-      cursor: "pointer", // Optional: change cursor to pointer
-      minHeight: "auto", // Adjust height to fit the row
+      border: "none",
+      boxShadow: "none",
+      backgroundColor: "transparent",
+      cursor: "pointer",
+      minHeight: "auto",
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: "0", // Remove padding for a seamless look
+      padding: "0",
     }),
     input: (provided) => ({
       ...provided,
       width: "full",
-      margin: "0", // Adjust margin to fit neatly
+      margin: "0",
     }),
     indicatorSeparator: () => ({
-      display: "none", // Remove the separator line
+      display: "none",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      padding: "0", // Adjust dropdown indicator padding
+      padding: "0",
     }),
   };
 
