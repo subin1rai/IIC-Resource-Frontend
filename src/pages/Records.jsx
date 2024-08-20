@@ -407,16 +407,16 @@ const Records = () => {
               <div className=" gap-16">
                 <div className="flex flex-col pb-8">
                   <h1 className="font-medium pb-4">Select the type of Bill</h1>
-                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px] items-center">
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={`rounded w-[200px] h-10 ${
+                      className={`rounded w-[200px]  ${
                         selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
                           ? "bg-green-300"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
+                      } focus:outline-none focus:border-transparent px-4 py-3`}
                     >
                       <option value="" disabled>
                         Select VAT
@@ -433,7 +433,7 @@ const Records = () => {
                         selectedOption === "pan 15"
                           ? "bg-yellow-300"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
+                      } focus:outline-none focus:border-transparent py-3 px-4`}
                     >
                       <option value="" disabled>
                         Select PAN
@@ -442,18 +442,18 @@ const Records = () => {
                       <option value="pan 10">Pan 10</option>
                       <option value="pan 15">Pan 15</option>
                     </select>
-                    <button
+                    <span
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` rounded w-[200px] ${
+                      className={` rounded w-[200px] py-3 ${
                         selectedOption === "noBill"
                           ? "bg-red-300 text-white"
                           : "border-neutral-300"
                       } px-4 whitespace-nowrap`}
                     >
                       No Bill
-                    </button>
+                    </span>
                   </div>
                 </div>
 
@@ -561,10 +561,11 @@ const Records = () => {
                 </div>
               </div>
               <div className="flex flex-col self-center ">
+                {renderSelectedComponent()}
+
                 {error && (
                   <span className="text-red-500 self-center">{error}</span>
                 )}
-                {renderSelectedComponent()}
               </div>
             </div>
           </form>

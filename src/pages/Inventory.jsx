@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../features/items/itemSlice";
 import exportIcon from "../assets/export.svg";
 
-
 const Inventory = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -239,8 +238,6 @@ const Inventory = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(response);
 
         setItems(response.data);
         setFilteredItems(response.data); // Initialize filtered items
