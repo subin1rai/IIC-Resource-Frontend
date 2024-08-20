@@ -263,7 +263,10 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
         </table>
 
         <div className="mt-2">
-          <span onClick={addRow} className="text-blue-600 hover:underline cursor-pointer">
+          <span
+            onClick={addRow}
+            className="text-blue-600 hover:underline cursor-pointer"
+          >
             Add more fields
           </span>
         </div>

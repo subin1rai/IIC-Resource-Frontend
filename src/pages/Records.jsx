@@ -43,39 +43,42 @@ const Records = () => {
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  const [vatData, setVatData] = useState([]);
-  const [panData, setPanData] = useState([]);
-  const [noBillData, setNoBillData] = useState([]);
+  // const [vatData, setVatData] = useState([]);
+  // const [panData, setPanData] = useState([]);
+  // const [noBillData, setNoBillData] = useState([]);
 
   const token = localStorage.getItem("token");
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
       case "vat":
-        setVatData(data);
+        // setVatData(data);
         setBill((prevBill) => ({
           ...prevBill,
           items: data,
         }));
         break;
       case "pan":
-        setPanData(data);
+        console.log(data);
+        // setPanData(data);
         setBill((prevBill) => ({
           ...prevBill,
-          panItems: data,
+          items: data,
         }));
         break;
       case "noBill":
-        setNoBillData(data);
+        // setNoBillData(data);
         setBill((prevBill) => ({
           ...prevBill,
-          noBillItems: data,
+          items: data,
         }));
         break;
       default:
         console.error("Unknown data type:", type);
     }
   };
+
+  console.log(bill);
 
   const handleBillChange = (event) => {
     const value = event.target.value;
@@ -285,10 +288,12 @@ const Records = () => {
       const billData = {
         ...bill,
         selectedOptions: selectedOption, // Include the selectedOption
-        items: vatData,
-        panItems: panData,
-        noBillItems: noBillData,
+        // items: vatData,
+        // panItems: panData,
+        // noBillItems: noBillData,
       };
+
+      console.log(billData);
 
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
@@ -396,24 +401,21 @@ const Records = () => {
           >
             <div className="flex flex-col">
               <div className="flex justify-between ">
-                
-                  <p className="font-semibold text-2xl">Add Bill</p>
+                <p className="font-semibold text-2xl">Add Bill</p>
 
-                
                 <div className="flex flex-col pb-8">
                   <div className="flex border-2 rounded-md overflow-hidden border-neutral-300 w-[370px] items-center h-fit">
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
-                      <option value="">
-                        Select VAT
-                      </option>
+                      <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
                       <option value="vat 1.5">VAT 1.5</option>
                     </select>
@@ -421,16 +423,15 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
-                      <option value="">
-                        Select PAN
-                      </option>
+                      <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
                       <option value="pan 10">Pan 10</option>
                       <option value="pan 15">Pan 15</option>
@@ -440,16 +441,16 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
-                        ? "bg-blue-200 text-black"
-                        : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "noBill"
+                          ? "bg-blue-200 text-black"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
                   </div>
                 </div>
-
               </div>
               <img
                 className="cursor-pointer  h-[2vh] w-[2vw] absolute -right-10 invert mb-3 "
@@ -521,9 +522,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                              value: bill.vendor_name,
-                              label: bill.vendor_name,
-                            }
+                                value: bill.vendor_name,
+                                label: bill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"
