@@ -10,56 +10,84 @@ import { format } from "date-fns";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 import Select from "react-select";
+import Vat from "../components/Vat";
+import Pan from "../components/Pan10";
+import NoBill from "../components/NoBill";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
-    voucher_no: "",
+    invoice_no: "",
     vat_number: "",
-    item_name: "",
-    quantity: "",
-    unit_price: "",
-    tds: "",
-    total_amt: "",
-    paid_amt: "",
-    pending_amt: "",
+    selectedOptions: "",
+    paid_amount: 0,
+    items: [],
   });
 
   const [editedBill, setEditedBill] = useState({
     bill_no: "",
     bill_date: "",
-    voucher_no: "",
+    invoice_no: "",
     vat_number: "",
-    item_name: "",
-    quantity: "",
-    unit_price: "",
-    tds: "",
-    total_amt: "",
-    paid_amt: "",
-    pending_amt: "",
+    selectedOptions: "",
+    paid_amount: 0,
+    items: [],
   });
 
   const [date, setDate] = useState("");
-
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [vendors, setVendors] = useState(false);
+  const [vendors, setVendors] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
 
   const { bill_id } = useParams();
   const token = localStorage.getItem("token");
 
+  const renderSelectedComponent = () => {
+    switch (selectedOption) {
+      case "vat 0":
+      case "vat 1.5":
+        return (
+          <Vat
+            selectedOption={selectedOption}
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, 'vat')}
+          />
+        );
+      case "pan 0":
+      case "pan 10":
+      case "pan 15":
+        return ( <Pan selectedOption={selectedOption} handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'pan')}  />);
+      case "noBill":
+        return (
+          <NoBill handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}/>
+        );
+      default:
+        return (
+          <div className="text-red-500">Please select the type of Bill</div>
+        );
+    }
+  };
+
+  const handleSelectChange = (option, { name }) => {
+    setBill((prevBill) => ({
+      ...prevBill,
+      [name]: option.value,
+    }));
+  };
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      width: "100%",
+      width: "254px",
       borderRadius: "4px",
-      borderColor: "grey",
+      borderColor: "lightgrey",
       boxShadow: "none",
-      minHeight: "38px",
+      minHeight: "41px",
       color: "black",
       "&:hover": {
         borderColor: "#aaa",
@@ -67,7 +95,6 @@ const SpecificBill = () => {
     }),
     menu: (provided) => ({
       ...provided,
-
       borderRadius: "4px",
       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     }),
@@ -97,7 +124,6 @@ const SpecificBill = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(`http://localhost:8898/api/singleBill/${bill_id}`, {
@@ -141,7 +167,7 @@ const SpecificBill = () => {
       quantity: billDetails.quantity || "",
       unit_price: billDetails.unit_price || "",
       tds: billDetails.TDS || "",
-      total_amt: billDetails.actual_amount || "",
+      amount: billDetails.amount || "",
       paid_amt: billDetails.paid_amount || "",
       pending_amt: billDetails.vendors?.pending_payment || "",
     });
@@ -154,6 +180,21 @@ const SpecificBill = () => {
 
   const handleChange = (e) => {
     setEditedBill({ ...editedBill, [e.target.name]: e.target.value });
+  };
+
+  const handleDateChange = (event) => {
+    const date = event;
+    setBill((prev) => ({ ...prev, bill_date: date }));
+  };
+
+  const handleBillChange = (event) => {
+    const value = event.target.value;
+    console.log("Selected option:", value);
+    setSelectedOption(value);
+    setBill((prevBill) => ({
+      ...prevBill,
+      selectedOptions: value,
+    }));
   };
 
   const handleSubmit = async (event) => {
@@ -254,6 +295,18 @@ const SpecificBill = () => {
                     {billDetails.vat_no || "--"}
                   </span>
                 </p> */}
+                 <p className="font-semibold">
+                  Vendor Name:
+                  <span className="font-medium pl-4">
+                    {billDetails?.vendors?.vendor_name || "--"}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Vat/Pan No:
+                  <span className="font-medium pl-4">
+                    {billDetails.vat_number || "--"}
+                  </span>
+                </p>
                 <p className="font-semibold">
                   Voucher No:
                   <span className="font-medium pl-4">
@@ -261,21 +314,9 @@ const SpecificBill = () => {
                   </span>
                 </p>
                 <p className="font-semibold">
-                  Item Name:
+                  Approved Status:
                   <span className="font-medium pl-4">
-                    {billDetails?.items?.item_name || "--"}
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  Quantity:
-                  <span className="font-medium pl-4">
-                    {billDetails.quantity || "--"}
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  Unit Price:
-                  <span className="font-medium pl-4">
-                    {billDetails.unit_price || "--"}
+                    {billDetails.approved_status || "--"}
                   </span>
                 </p>
               </div>
@@ -304,11 +345,47 @@ const SpecificBill = () => {
                     {billDetails.left_amount || "--"}
                   </span>
                 </p>
+                <p className="font-semibold">
+                  Payment Status:
+                  <span className="font-medium pl-4">
+                    {billDetails.payment_status || "--"}
+                  </span>
+                </p>
               </div>
             </div>
           ) : (
             <div>Loading...</div>
           )}
+          <div className="h-[2px] w-[99%] bg-blue-700 mx-auto mt-5"></div>
+          <p className="font-bold text-xl py-6 px-2">Items</p>
+          <table className="min-w-full table-fixed border-collapse">
+      <thead>
+        <tr >
+          <th className="p-2 text-left border-b border-neutral-200">S.No.</th>
+          <th className="p-2 text-left border-b  border-neutral-200">Item Name</th>
+          <th className="p-2 text-left border-b  border-neutral-200">Quantity</th>
+          <th className="p-2 text-left border-b  border-neutral-200">Unit Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items && items.length > 0 ? (
+          items.map((item, index) => (
+            <tr key={index}>
+              <td className="p-2 border-b  border-neutral-200">{index + 1}</td>
+              <td className="p-2 border-b  border-neutral-200">{item.name}</td>
+              <td className="p-2 border-b  border-neutral-200">{item.quantity}</td>
+              <td className="p-2 border-b  border-neutral-200">{item.unitPrice}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="4" className="p-2 text-center border-b border-gray-300">
+              No items available
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
         </div>
       </div>
 
@@ -333,207 +410,166 @@ const SpecificBill = () => {
                 />
               </div>
               {/* form div */}
-              <div className="flex gap-20">
-                <div className="flex flex-col gap-5">
-                  {/* 1st row */}
-                  <div className="flex gap-14">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="bill_no" className="font-medium">
-                        Bill No.:
+              <div className=" gap-16">
+                <div className="flex flex-col pb-8">
+                  <h1 className="font-medium pb-4">Select the type of Bill</h1>
+                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                    <select
+                      value={selectedOption}
+                      onChange={handleBillChange}
+                      className={`rounded w-[200px] h-10 ${
+                        selectedOption === "vat 0" ||
+                        selectedOption === "vat 1.5"
+                          ? "bg-green-300"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4`}
+                    >
+                      <option value="" disabled>
+                        Select VAT
+                      </option>
+                      <option value="vat 0">VAT 0</option>
+                      <option value="vat 1.5">VAT 1.5</option>
+                    </select>
+                    <select
+                      value={selectedOption}
+                      onChange={handleBillChange}
+                      className={` rounded w-[200px] ${
+                        selectedOption === "pan 0" ||
+                        selectedOption === "pan 10" ||
+                        selectedOption === "pan 15"
+                          ? "bg-yellow-300"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4`}
+                    >
+                      <option value="" disabled>
+                        Select PAN
+                      </option>
+                      <option value="pan 0">Pan 0</option>
+                      <option value="pan 10">Pan 10</option>
+                      <option value="pan 15">Pan 15</option>
+                    </select>
+                    <button
+                      onClick={() =>
+                        handleBillChange({ target: { value: "noBill" } })
+                      }
+                      className={` rounded w-[200px] ${
+                        selectedOption === "noBill"
+                          ? "bg-red-300 text-white"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
+                    >
+                      No Bill
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex gap-[250px] pb-8">
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium" htmlFor="bill_no">
+                      Bill Date:
+                    </label>
+                    <NepaliDatePicker
+                      inputClassName="form-control"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      value={editedBill.date}
+                      onChange={handleDateChange}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
+                    />
+                  </div>
+
+                  <div className="flex">
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium" htmlFor="bill_no">
+                        Bill No:
                       </label>
                       <input
-                        type="text"
-                        id="bill_no"
-                        name="bill_no"
-                        placeholder="Enter Bill Number"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter bill number"
+                        autoFocus="autofocus"
+                        name="bill_no"
+                        id="bill_no"
                         onChange={handleChange}
                         value={editedBill.bill_no}
                       />
                     </div>
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="bill_date" className="font-medium">
-                        Bill Date:
-                      </label>
-                      <NepaliDatePicker
-                        inputClassName="form-control"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
-                        value={date}
-                        onChange={handleChange}
-                        options={{ calenderLocale: "en", valueLocale: "en" }}
-                      />
-                    </div>
                   </div>
-                  {/* 2nd row */}
-                  <div className="flex gap-14">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="voucher_no" className="font-medium">
-                        Voucher No.:
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium" htmlFor="voucher_no">
+                      Voucher No:
+                    </label>
+                    <input
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      placeholder="Enter voucher number"
+                      autoFocus="autofocus"
+                      name="invoice_no"
+                      id="invoice_no"
+                      onChange={handleChange}
+                      value={editedBill.invoice_no}
+                    />
+                  </div>
+                </div>
+                <div className="flex  pb-8">
+                  <div className="flex gap-[250px]">
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium" htmlFor="vendor_name">
+                        Vendor Name:
                       </label>
-                      <input
-                        type="text"
-                        id="voucher_no"
-                        name="voucher_no"
-                        placeholder="Enter Voucher Number"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        onChange={handleChange}
-                        value={editedBill.voucher_no}
-                      />
+                      <Select
+                          // options={vendors.map((vendor) => ({
+                          //   value: vendor.vendor_name,
+                          //   label: vendor.vendor_name,
+                          // }))}
+                          // onChange={(option) => handleSelectChange(option, { name: "vendor_name" })}
+                          // value={
+                          //   editedBill.vendor_name
+                          //     ? {
+                          //         value: editedBill.vendor_name,
+                          //         label: editedBill.vendor_name,
+                          //       }
+                          //     : null
+                          // }
+                          placeholder="Select Vendor"
+                          styles={customStyles}
+                        />
+
                     </div>
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="vat_number" className="font-medium">
-                        VAT:
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium" htmlFor="vat">
+                        Vat/Pan No:
                       </label>
                       <input
-                        type="text"
-                        id="vat_number"
-                        name="vat_number"
-                        placeholder="Enter VAT "
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        placeholder="Enter Vat/Pan number"
+                        autoFocus="autofocus"
+                        name="vat_number"
+                        id="vat"
                         onChange={handleChange}
                         value={editedBill.vat_number}
                       />
                     </div>
-                  </div>
-                  {/* third row */}
-                  <div className="flex flex-col gap-3">
-                    <label htmlFor="item_name" className="font-medium">
-                      Item Name:
-                    </label>
-                    <Select
-                      options={items.map((item) => ({
-                        value: item.item_name,
-                        label: item.item_name,
-                      }))}
-                      onChange={(option) =>
-                        handleSelectChange(option, { name: "item_name" })
-                      }
-                      value={
-                        bill.item_name
-                          ? { value: bill.item_name, label: bill.item_name }
-                          : null
-                      }
-                      placeholder="Select Item"
-                    />
-                  </div>
-                  {/* 4th row */}
-                  <div className="flex gap-14">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="unit_price" className="font-medium">
-                        Unit Price:
-                      </label>
-                      <input
-                        type="text"
-                        id="unit_price"
-                        name="unit_price"
-                        placeholder="Enter Unit Price"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        onChange={handleChange}
-                        value={editedBill.unit_price}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="quantity" className="font-medium">
-                        Quantity:
-                      </label>
-                      <input
-                        type="text"
-                        id="quantity"
-                        name="quantity"
-                        placeholder="Enter quantity "
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        onChange={handleChange}
-                        value={editedBill.quantity}
-                      />
-                    </div>
-                  </div>
-                  {/* 5th row */}
-                  <div className="flex gap-14">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="bill_amount" className="font-medium">
-                        Bill Amount:
-                      </label>
-                      <input
-                        type="text"
-                        id="bill_amount"
-                        name="bill_amount"
-                        placeholder="Enter Bill Amount"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        onChange={handleChange}
-                        value={editedBill.bill_amt}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="tds" className="font-medium">
-                        TDS:
-                      </label>
-                      <select
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        id="TDS"
-                        name="TDS"
-                        onChange={handleChange}
-                        value={editedBill.tds}
-                      >
-                        <option value="">Select TDS</option>
-                        <option value="1.5">1.5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                      </select>
-                    </div>
-                  </div>
 
-                  {/* 6th row */}
-                  <div className="flex gap-14">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="" className="font-medium">
-                        Actual Amount:
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium" htmlFor="paid_amt">
+                        Paid amount:
                       </label>
                       <input
-                        type="text"
-                        id="actual_amount"
-                        name="actual_amount"
-                        placeholder="Enter Actual Amount"
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                        onChange={handleChange}
-                        value={editedBill.actual_amount}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="quantity" className="font-medium">
-                        Paid Amount:
-                      </label>
-                      <input
-                        type="text"
-                        id="paid_amount"
+                        placeholder="Enter paid amount"
+                        autoFocus="autofocus"
                         name="paid_amount"
-                        placeholder="Enter Paid Amount   "
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        id="paid_amount"
                         onChange={handleChange}
-                        value={editedBill.paid}
+                        value={editedBill.paid_amt}
                       />
                     </div>
                   </div>
                 </div>
-
-                <div className="bg-background h-fit p-6 flex gap-3 flex-col w-[350px]">
-                  <h2 className="font-semibold text-xl">Summary</h2>
-                  <p className="font-medium">Bill No: {bill.bill_no}</p>
-                  <p className="font-medium">Bill Date: {bill.bill_date}</p>
-                  <p className="font-medium">Vendor Vat: {bill.vat_number}</p>
-                  <p className="font-medium">Item Name: {bill.item_name}</p>
-                  <p className="font-medium">Unit Price: {bill.unit_price}</p>
-                  <p className="font-medium">Quantity: {bill.actual_amount}</p>
-                  <p className="font-medium">Bill Amount: {bill.bill_amount}</p>
-                  <p className="font-medium">TDS: {bill.tds}</p>
-                  <p className="font-medium">
-                    {" "}
-                    Actual Amount: {bill.actual_amount}
-                  </p>
-                  <p className="font-medium">Paid Amount: {bill.paid_amount}</p>
-                  <button className="bg-button py-2 rounded-md text-white mt-4">
-                    Save Changes
-                  </button>
-                </div>
+              </div>
+              <div className="flex flex-col self-center ">
+                {error && (
+                  <span className="text-red-500 self-center">{error}</span>
+                )}
+                {renderSelectedComponent()}
               </div>
             </div>
           </form>

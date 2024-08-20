@@ -40,8 +40,7 @@ const Records = () =>{
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState([]);
-  // const [items, setItems] = useState("");
-  // const [exports, setExport] = useState("");
+  const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [vatData, setVatData] = useState([]);
   const [panData, setPanData] = useState([]);
@@ -76,8 +75,6 @@ const Records = () =>{
         console.error('Unknown data type:', type);
     }
   };
-
-
 
   const handleBillChange = (event) => {
     const value = event.target.value;
@@ -169,16 +166,13 @@ const Records = () =>{
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse, vendorsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+        const [ vendorsResponse] = await Promise.all([
+       
           axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
 
-        setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);

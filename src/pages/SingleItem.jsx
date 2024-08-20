@@ -46,9 +46,12 @@ const SingleItem = () => {
     const getSingleItem = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8898/api/items/${id}`
+          `http://localhost:8898/api/items/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+          }
+        }
         );
-
         console.log(response);
         setItem(response.data);
       } catch (error) {
