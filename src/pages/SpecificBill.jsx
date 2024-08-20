@@ -50,7 +50,25 @@ const SpecificBill = () => {
   const [vendors, setVendors] = useState(false);
 
   const { bill_id } = useParams();
+
   const token = localStorage.getItem("token");
+
+  // please dont remove this
+
+  const role = localStorage.getItem("role");
+
+  const handleApprove = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/approveBill/${bill_id}`
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ya samma hai ta
 
   const customStyles = {
     control: (provided) => ({
@@ -97,7 +115,6 @@ const SpecificBill = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(`http://localhost:8898/api/singleBill/${bill_id}`, {
@@ -118,7 +135,6 @@ const SpecificBill = () => {
           ]);
 
         setBillDetails(singleBillResponse.data.bill);
-        console.log(billDetails);
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendors);
         setLoading(false);
@@ -175,6 +191,8 @@ const SpecificBill = () => {
     }
   };
 
+  console.log(token);
+
   // Refresh bill details
   useEffect(() => {
     const fetchSingleBill = async () => {
@@ -188,14 +206,14 @@ const SpecificBill = () => {
             },
           }
         );
-        console.log(response);
-        setBill(response.data);
+
+        setBill(response.data.bill);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching Bill data:", error);
       }
     };
-
     fetchSingleBill();
   }, [bill_id]);
 
@@ -225,12 +243,28 @@ const SpecificBill = () => {
               </div>
               <h2 className="font-semibold text-2xl">{billDetails.bill_no}</h2>
             </div>
-            <button
-              onClick={openEditBillDetailsForm}
-              className="flex justify-end bg-blue-600 px-7 py-2 h-fit w-fit rounded text-white mr-5"
-            >
-              Edit Bill
-            </button>
+
+            {/* please dont remove this during merge conflict */}
+            <div className="flex gap-3">
+              <button
+                onClick={openEditBillDetailsForm}
+                className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
+              >
+                Edit Bill
+              </button>
+
+              {role === "superadmin" ? (
+                <button
+                  className="bg-green-500 px-6 rounded text-white font-medium py-3"
+                  onClick={handleApprove}
+                >
+                  Approve Bill
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
+            {/* na hatako ma thank you hai  */}
           </div>
           <div className="h-1 w-[99%] bg-blue-700 mx-auto mt-5"></div>
           {!loading ? (
