@@ -6,23 +6,18 @@ import axios from "axios";
 const Pan = ({ selectedOption, onDataUpdate }) => {
   //  const { selectedOption } = useBillContext();
   const [items, setItems] = useState([]);
-  const [vendors, setVendors] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse, vendorsResponse] = await Promise.all([
+        const [itemsResponse] = await Promise.all([
           axios.get("http://localhost:8898/api/items", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
 
         setItems(itemsResponse.data);
-        setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,7 +31,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       id: 1,
       item_name: "",
       quantity: 0,
-      unitPrice: 0,
+      unit_price: 0,
       amount: 0,
       tds: 0,
       amtAfterTds: 0,
@@ -44,7 +39,6 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
     // Add more rows as needed
   ]);
 
-  // console.log(selectedOption);
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
     updatedRows[index].item_name = option.value;
@@ -54,14 +48,18 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
   const addRow = () => {
     const newRow = {
       id: rows.length + 1,
-      itemName: "",
+      item_name: "",
       quantity: 0,
-      unitPrice: 0,
+      unit_price: 0,
       amount: 0,
       tds: 0,
-      tdsDeductedAmt: 0,
+      amtAfterTds: 0,
+      vat: 0,
+      amountWithVat: 0,
     };
-    setRows([...rows, newRow]);
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+    updateParentData(updatedRows);
   };
 
   // Function to update row data
@@ -69,19 +67,19 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
     const newRows = [...rows];
     newRows[index][field] = parseFloat(value) || 0;
 
-    if (field === "quantity" || field === "unitPrice") {
+    if (field === "quantity" || field === "unit_price") {
       const quantity = parseFloat(newRows[index].quantity) || 0;
-      const unitPrice = parseFloat(newRows[index].unitPrice) || 0;
-      const amount = quantity * unitPrice;
+      const unit_price = parseFloat(newRows[index].unit_price) || 0;
+      const amount = quantity * unit_price;
 
       let tds = 0;
       let amtAfterTds = amount;
 
-      if (selectedOption === "pan10") {
+      if (selectedOption === "pan 10") {
         tds = 0.1 * amount;
-      } else if (selectedOption === "pan15") {
+      } else if (selectedOption === "pan 15") {
         tds = 0.15 * amount;
-      } else if (selectedOption === "pan0") {
+      } else if (selectedOption === "pan 0") {
         tds = 0;
       }
 
@@ -106,32 +104,33 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       amtAfterTds: row.amtAfterTds,
     }));
     onDataUpdate(newItemsData);
+    console.log(newItemsData);
   };
 
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      border: "none", // Remove the border
-      boxShadow: "none", // Remove the shadow
-      backgroundColor: "transparent", // Match the table row background
-      cursor: "pointer", // Optional: change cursor to pointer
-      minHeight: "auto", // Adjust height to fit the row
+      border: "none",
+      boxShadow: "none",
+      backgroundColor: "transparent",
+      cursor: "pointer",
+      minHeight: "auto",
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: "0", // Remove padding for a seamless look
+      padding: "0",
     }),
     input: (provided) => ({
       ...provided,
       width: "full",
-      margin: "0", // Adjust margin to fit neatly
+      margin: "0",
     }),
     indicatorSeparator: () => ({
-      display: "none", // Remove the separator line
+      display: "none",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      padding: "0", // Adjust dropdown indicator padding
+      padding: "0",
     }),
   };
 
@@ -170,7 +169,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.id}
                 </td>
-                <td className="border border-neutral-500 px-4 py-2">
+                <td className="border border-neutral-500 px-4 py-2 w-64">
                   <Select
                     options={items.map((item) => ({
                       value: item.item_name,
@@ -184,7 +183,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                     }
                     placeholder="Select Item"
                     styles={customStyles}
-                    className="w-[150px] whitespace-nowrap"
+                    className="w-[250px] whitespace-nowrap"
                   />
                 </td>
                 <td className="border border-neutral-500  px-4 py-2 text-center">
@@ -198,9 +197,9 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   <input
-                    value={row.unitPrice}
+                    value={row.unit_price}
                     onChange={(e) =>
-                      updateRow(index, "unitPrice", e.target.value)
+                      updateRow(index, "unit_price", e.target.value)
                     }
                     className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                   />
@@ -242,9 +241,12 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
         </table>
 
         <div className="mt-2">
-          <button onClick={addRow} className="text-blue-600 hover:underline">
+          <span
+            onClick={addRow}
+            className="text-blue-600 hover:underline cursor-pointer"
+          >
             Add more fields
-          </button>
+          </span>
         </div>
         <div className="flex justify-end mt-4">
           <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">

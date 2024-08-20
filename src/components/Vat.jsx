@@ -7,6 +7,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = useState([
     {
+      id: 1,
       item_name: "",
       quantity: 0,
       unit_price: 0,
@@ -74,9 +75,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       let tds = 0;
       let amtAfterTds = amount;
 
-      if (selectedOption === "vat1.5") {
+      if (selectedOption === "vat 1.5") {
         tds = (amount / 1.13) * 0.015;
-      } else if (selectedOption === "vat0") {
+      } else if (selectedOption === "vat 0") {
         tds = 0;
       }
 
@@ -159,13 +160,13 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 TDS
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
                 Amount after TDS
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
                 VAT amount
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
                 Amount with VAT
               </th>
             </tr>
@@ -190,25 +191,25 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                     }
                     placeholder="Select Item"
                     styles={customStyles}
-                    className="w-[150px] whitespace-nowrap"
+                    className="w-[170px] whitespace-nowrap"
                   />
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className=" px-4 py-2">
                   <input
                     value={row.quantity}
                     onChange={(e) =>
                       updateRow(index, "quantity", e.target.value)
                     }
-                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
+                    className="w-full h-full p-1 border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-center"
                   />
                 </td>
-                <td className="border border-neutral-500 px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 ">
                   <input
                     value={row.unit_price}
                     onChange={(e) =>
                       updateRow(index, "unit_price", e.target.value)
                     }
-                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
+                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0 text-center"
                   />
                 </td>
                 <td className="border border-neutral-500  px-4 py-2 text-center">
@@ -262,7 +263,10 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
         </table>
 
         <div className="mt-2">
-          <span onClick={addRow} className="text-blue-600 hover:underline">
+          <span
+            onClick={addRow}
+            className="text-blue-600 hover:underline cursor-pointer"
+          >
             Add more fields
           </span>
         </div>

@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 
 import "/src/App.css";
 
-
 const columns = [
   { id: "sn", label: "SN", maxWidth: 70 },
   { id: "feature_name", label: "Feature Name", maxWidth: 70 },
@@ -32,7 +31,6 @@ const headerStyle = {
   fontWeight: 600,
   backgroundColor: "#f5f5f5",
 };
-
 
 export default function Ftable({ feature = [], setFeature }) {
   const token = localStorage.getItem("token");
@@ -87,7 +85,7 @@ export default function Ftable({ feature = [], setFeature }) {
       }}
     >
       <TableContainer sx={{ maxHeight: maxHeight }}>
-      <Table
+        <Table
           stickyHeader
           aria-label="sticky table"
           sx={{ tableLayout: "fixed" }}

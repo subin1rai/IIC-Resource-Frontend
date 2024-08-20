@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import validVendor from "../assets/user.svg";
 import filterIcon from "../assets/filter.svg";
 import close from "../assets/close.svg";
-import Group from "../assets/Group.svg";
 import InventoryTable from "../components/InventoryTable";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import addIcon from "../assets/addIcon.svg";
@@ -15,10 +13,7 @@ import low from "../assets/lowstock.png";
 import removeIcon from "../assets/removeIcon.svg";
 import item from "../assets/item.png";
 import categoryIcon from "../assets/categoryno.png";
-import { useDispatch } from "react-redux";
-import { addItem } from "../features/items/itemSlice";
 import exportIcon from "../assets/export.svg";
-
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -30,7 +25,6 @@ const Inventory = () => {
     category: "",
     itemCategory: "",
     measuring_unit: "",
-
     low_limit: 0,
     features: {},
   });
@@ -38,12 +32,10 @@ const Inventory = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
-
   const [itemCategory, setItemCategory] = useState([]);
   const [feature, setFeature] = useState([]);
 
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [productCategoryOptions, setProductCategoryOptions] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
   const [featureOptions, setFeatureOptions] = useState([]);
 
@@ -69,41 +61,16 @@ const Inventory = () => {
     control: (provided) => ({
       ...provided,
       width: "100%",
-      borderRadius: "4px",
-      borderColor: "#ccc",
-      boxShadow: "none",
-      minHeight: "46px",
-      "&:hover": {
-        borderColor: "#aaa",
-      },
+      minHeight: "42px",
     }),
     menu: (provided) => ({
       ...provided,
       width: "100%",
-      borderRadius: "4px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0px",
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "#757575",
     }),
     container: (provided) => ({
       ...provided,
-      width: "100%",
+      width: "250px",
     }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: "2px 8px",
-    }),
-  };
-
-  const headerStyle = {
-    fontWeight: 600,
-    backgroundColor: "#f5f5f5",
   };
 
   const displayAddPopup = () => {
@@ -132,7 +99,6 @@ const Inventory = () => {
     newFeatures[index][field] = value;
     setSelectedFeatures(newFeatures);
 
-    // Update itemData with the new features
     const updatedFeatures = newFeatures.reduce((acc, feature) => {
       if (feature.feature && feature.value) {
         acc[feature.feature] = feature.value;
@@ -183,20 +149,14 @@ const Inventory = () => {
         category: "",
         itemCategory: "",
         measuring_unit: "",
-        productCategory: "",
         low_limit: 0,
+        features: {},
       });
     } catch (error) {
       console.log(error);
       setError(error.response.data.error);
       setLoading(false);
     }
-  };
-
-  const handleBillChange = (event) => {
-    const value = event.target.value;
-    console.log("Selected option:", value);
-    setSelectedOption(value);
   };
 
   const handleExport = async () => {
@@ -240,10 +200,8 @@ const Inventory = () => {
           },
         });
 
-        console.log(response);
-
         setItems(response.data);
-        setFilteredItems(response.data); // Initialize filtered items
+        setFilteredItems(response.data);
 
         const categoryResponse = await axios.get(
           "http://localhost:8898/api/category",
@@ -253,8 +211,6 @@ const Inventory = () => {
             },
           }
         );
-
-        console.log(categoryResponse);
 
         const itemCategoryResponse = await axios.get(
           "http://localhost:8898/api/itemCategory",
@@ -317,9 +273,9 @@ const Inventory = () => {
   }, [searchTerm, items]);
 
   return (
-    <div className=" bg-background flex justify-between h-screen w-screen relative">
+    <div className="bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
-      <div className=" m-0 flex flex-col gap-4 items-center relative">
+      <div className="m-0 flex flex-col gap-4 items-center relative">
         <Topbar />
         <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
           <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
@@ -374,7 +330,7 @@ const Inventory = () => {
                 Filter
               </button>
               <button
-                className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular  w-fit justify-center items-center rounded gap-2"
+                className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular w-fit justify-center items-center rounded gap-2"
                 aria-label="Menu"
                 onClick={handleExport}
               >
@@ -396,10 +352,10 @@ const Inventory = () => {
       {addFormVisibility && (
         <form
           onSubmit={handleSubmit}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  rounded-md w-fit h-[78vh] "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md w-fit"
         >
           <div className="flex justify-between items-center relative overflow-hidden px-9 pt-9">
-            <p className=" text-xl font-semibold ">Add Item</p>
+            <p className="text-xl font-semibold">Add Item</p>
             <img
               className="rounded-md cursor-pointer h-5 w-5"
               src={close}
@@ -407,14 +363,14 @@ const Inventory = () => {
               onClick={closeAddItemForm}
             />
           </div>
-          <div className="flex flex-col gap-10 p-9 max-h-[75vh] overflow-auto">
-            <div className="flex flex-col gap-6  justify-between  ">
-              <div className="flex justify-between gap-16 items-center h-fit w-fit">
-                <label className="w-44 " htmlFor="item_name">
+          <div className="flex flex-col gap-10 p-9  ">
+            <div className="flex flex-col gap-6 justify-between">
+              <div className="flex justify-between  items-center h-fit ">
+                <label className="" htmlFor="item_name">
                   Item Name
                 </label>
                 <input
-                  className=" border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
                   type="text"
                   placeholder="Enter product name"
                   autoFocus="autofocus"
@@ -424,11 +380,11 @@ const Inventory = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex justify-between flex-row gap-16 items-center w-fit">
-                <label className="w-44 " htmlFor="category">
+              <div className="flex justify-between flex-row  items-center ">
+                <label className="" htmlFor="category">
                   Category
                 </label>
-                <div className="w-[269px]">
+                <div className="w-[250px]">
                   <Select
                     options={categoryOptions}
                     onChange={(selectedOption) =>
@@ -444,11 +400,11 @@ const Inventory = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-between flex-row gap-16 items-center w-fit">
-                <label className="w-44 " htmlFor="item_category">
+              <div className="flex justify-between flex-row  items-center ">
+                <label className="" htmlFor="item_category">
                   Item Category
                 </label>
-                <div className="w-[269px]">
+                <div className="w-[250px]">
                   <Select
                     options={itemCategoryOptions}
                     onChange={(selectedOption) =>
@@ -465,12 +421,12 @@ const Inventory = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-between flex-row gap-16 items-center w-fit">
-                <label className="w-44 " htmlFor="measuring_unit">
+              <div className="flex justify-between flex-row  items-center ">
+                <label className="" htmlFor="measuring_unit">
                   Measuring Unit
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
                   type="text"
                   placeholder="Enter measuring unit"
                   name="measuring_unit"
@@ -479,12 +435,12 @@ const Inventory = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex justify-between flex-row gap-16 items-center w-fit">
-                <label className="w-44 " htmlFor="low_limit">
+              <div className="flex justify-between flex-row  items-center ">
+                <label className="" htmlFor="low_limit">
                   Limit
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
                   type="number"
                   placeholder="Enter low limit"
                   name="low_limit"
@@ -495,18 +451,17 @@ const Inventory = () => {
               </div>
               <hr className="text-neutral-200 border-2 w-full"></hr>
               <label
-                className=" text-xl font-semibold flex self-start"
+                className="text-xl font-semibold flex self-start"
                 htmlFor=""
               >
                 Features
               </label>
               {/* features form  */}
-              <div className="flex gap-2 items-end  w-[100%] justify-start ">
-                {" "}
+              <div className="flex gap-2 items-end w-[100%] justify-start ">
                 <div className="flex flex-col gap-4 ">
                   {selectedFeatures.map((feature, index) => (
-                    <div key={index} className="flex gap-4 ">
-                      <div className="flex justify-between gap-4 flex-row  items-center w-fit">
+                    <div key={index} className="flex gap-4 w-full">
+                      <div className="flex justify-between gap-4 flex-row items-center w-full">
                         <Select
                           options={featureOptions}
                           onChange={(selectedOption) =>
@@ -520,22 +475,12 @@ const Inventory = () => {
                             (option) => option.value === feature.feature
                           )}
                           placeholder="Choose Feature"
-                          styles={{
-                            menu: (provided) => ({
-                              ...provided,
-                              maxHeight: "80px",
-                              overflowY: "auto",
-                            }),
-                            menuList: (provided) => ({
-                              ...provided,
-                              padding: 0,
-                            }),
-                          }}
-                          className="w-[190px] menu:height: 80px"
+                          styles={customStyles}
+                          className="w-[250px]"
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
+                          className="border-2 rounded border-neutral-200 w-[250px] px-2 py-2"
                           type="text"
                           placeholder="Enter the value"
                           value={feature.value}
@@ -595,7 +540,7 @@ const Inventory = () => {
             <Select
               options={categoryOptions}
               onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "feature" })
+                handleSelectChange(selectedOption, { name: "category" })
               }
               value={categoryOptions.find(
                 (option) => option.value === itemData.category
@@ -616,28 +561,16 @@ const Inventory = () => {
               styles={customStyles}
               classNamePrefix="react-select"
             />
-            <Select
-              options={productCategoryOptions}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "productCategory" })
-              }
-              value={productCategoryOptions.find(
-                (option) => option.value === itemData.productCategory
-              )}
-              placeholder="Choose Feature"
-              styles={customStyles}
-              classNamePrefix="react-select"
-            />
           </div>
           <label>Select Date:</label>
           <div className="flex gap-4 ">
             <input
-              className="border-2 rounded border-neutral-300 p-2 "
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
               type="date"
               placeholder=" from"
             />
             <input
-              className="border-2 rounded border-neutral-300 p-2 "
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
               type="date"
               placeholder="to"
             />
@@ -647,11 +580,8 @@ const Inventory = () => {
           </button>
         </form>
       )}
-      {addFormVisibility && (
+      {(addFormVisibility || filterFormVisibility) && (
         <div className="bg-overlay absolute w-screen h-screen z-40"></div>
-      )}
-      {filterFormVisibility && (
-        <div className="bg-overlay absolute w-screen h-screen z-40"> </div>
       )}
     </div>
   );

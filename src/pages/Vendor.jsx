@@ -189,7 +189,7 @@ const Vendor = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },  
+          },
           responseType: "blob",
         }
       );
@@ -309,6 +309,7 @@ const Vendor = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="border-2 px-5 w-80 border-border rounded h-fit py-2"
               />
+              {/* Filter */}
               <button
                 className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
@@ -320,6 +321,15 @@ const Vendor = () => {
                   alt=""
                 />
                 Filter
+              </button>
+              {/* Export button */}
+              <button
+                className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
+                aria-label="Menu"
+              //onClick={handleExport}
+              >
+                <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
+                Export
               </button>
               <button
                 className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular  w-fit justify-center items-center rounded gap-2"
