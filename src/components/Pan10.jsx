@@ -164,7 +164,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.id}
                 </td>
-                <td className="border border-neutral-500 px-4 py-2">
+                <td className="border border-neutral-500 px-4 py-2 w-64">
                   <Select
                     options={items.map((item) => ({
                       value: item.item_name,
@@ -178,7 +178,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                     }
                     placeholder="Select Item"
                     styles={customStyles}
-                    className="w-[150px] whitespace-nowrap"
+                    className="w-[250px] whitespace-nowrap"
                   />
                 </td>
                 <td className="border border-neutral-500  px-4 py-2 text-center">
@@ -236,9 +236,9 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
         </table>
 
         <div className="mt-2">
-          <button onClick={addRow} className="text-blue-600 hover:underline">
+          <span onClick={addRow} className="text-blue-600 hover:underline cursor-pointer">
             Add more fields
-          </button>
+          </span>
         </div>
         <div className="flex justify-end mt-4">
           <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">

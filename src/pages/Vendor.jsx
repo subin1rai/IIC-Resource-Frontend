@@ -7,7 +7,6 @@ import close from "../assets/close.svg";
 import axios from "axios";
 import VendorTable from "../components/VendorTable";
 import { ToastContainer, toast } from "react-toastify";
-import exportIcon from "../assets/export.svg";
 import "react-toastify/dist/ReactToastify.css";
 import vendorno from "../assets/vendorcount.png";
 import blacklist from "../assets/blacklist.png";
