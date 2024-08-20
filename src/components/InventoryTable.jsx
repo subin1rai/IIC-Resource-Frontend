@@ -16,7 +16,7 @@ const columns = [
   { id: "unit_price", label: "Unit Price", maxWidth: 80, numeric: true },
   { id: "measuring_unit", label: "Measuring Unit", maxWidth: 80 },
   {
-    id: "total_purchased",
+    id: "total_Amount",
     label: "Total Purchased",
     maxWidth: 120,
     format: (value) => value?.toLocaleString("en-US") || "N/A",
@@ -52,6 +52,7 @@ export default function InventoryTable({ items }) {
     setPage(newPage);
   };
 
+  console.log(items);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -183,8 +184,8 @@ export default function InventoryTable({ items }) {
                       value = item?.quantity;
                     }
 
-                    if (column.id === "total_purchased") {
-                      value = "Rs " + Number(item.total_amount).toFixed(2);
+                    if (column.id === "total_Amount") {
+                      value = "Rs " + Number(item.total_Amount).toFixed(2);
                     }
 
                     if (column.id === "recent_purchase") {

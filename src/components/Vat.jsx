@@ -7,10 +7,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = useState([
     {
-      id: 1,
       item_name: "",
       quantity: 0,
-      unitPrice: 0,
+      unit_price: 0,
       amount: 0,
       tds: 0,
       amtAfterTds: 0,
@@ -51,7 +50,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       id: rows.length + 1,
       item_name: "",
       quantity: 0,
-      unitPrice: 0,
+      unit_price: 0,
       amount: 0,
       tds: 0,
       amtAfterTds: 0,
@@ -67,17 +66,17 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
     const newRows = [...rows];
     newRows[index][field] = parseFloat(value) || 0;
 
-    if (field === "quantity" || field === "unitPrice") {
+    if (field === "quantity" || field === "unit_price") {
       const quantity = parseFloat(newRows[index].quantity) || 0;
-      const unitPrice = parseFloat(newRows[index].unitPrice) || 0;
-      const amount = quantity * unitPrice;
+      const unit_price = parseFloat(newRows[index].unit_price) || 0;
+      const amount = quantity * unit_price;
 
       let tds = 0;
       let amtAfterTds = amount;
 
-      if (selectedOption === "vat1.5") {
+      if (selectedOption === "vat 1.5") {
         tds = (amount / 1.13) * 0.015;
-      } else if (selectedOption === "vat0") {
+      } else if (selectedOption === "vat 0") {
         tds = 0;
       }
 
@@ -99,7 +98,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
     const newItemsData = updatedRows.map((row) => ({
       item_name: row.item_name,
       quantity: row.quantity,
-      unitPrice: row.unitPrice,
+      unit_price: row.unit_price,
       amount: row.amount,
       tds: row.tds,
       amtAfterTds: row.amtAfterTds,
@@ -205,9 +204,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   <input
-                    value={row.unitPrice}
+                    value={row.unit_price}
                     onChange={(e) =>
-                      updateRow(index, "unitPrice", e.target.value)
+                      updateRow(index, "unit_price", e.target.value)
                     }
                     className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                   />
@@ -258,23 +257,20 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                   .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
                   .toFixed(2)}
               </td>
-
             </tr>
           </tbody>
         </table>
 
-
         <div className="mt-2">
-          <button onClick={addRow} className="text-blue-600 hover:underline">
+          <span onClick={addRow} className="text-blue-600 hover:underline">
             Add more fields
-          </button>
+          </span>
         </div>
         <div className="flex justify-end mt-4">
           <button
             className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
             onClick={() => console.log(itemsData)}
           >
-
             Add Bill
           </button>
         </div>

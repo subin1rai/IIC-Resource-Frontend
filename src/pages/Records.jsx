@@ -27,13 +27,11 @@ const Records = () => {
     bill_date: "",
     invoice_no: "",
     vat_number: "",
-    bill_type: "VAT",
+    selectedOptions: "",
     paid_amount: 0,
-    TDS: 1.5,
     items: [],
   });
 
-  console.log(bill);
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
@@ -41,32 +39,57 @@ const Records = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [bills, setBills] = useState([]);
-  const [vendors, setVendors] = useState("");
+  const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState("");
-  const [exports, setExport] = useState("");
+  // const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [vatData, setVatData] = useState([]);
+  const [panData, setPanData] = useState([]);
+  const [noBillData, setNoBillData] = useState([]);
 
   const token = localStorage.getItem("token");
 
-  const handleVatDataUpdate = (data) => {
-    setVatData(data);
-    setBill((prevBill) => ({
-      ...prevBill,
-      items: data,
-    }));
+  const handleDataUpdate = (data, type) => {
+    switch (type) {
+      case "vat":
+        setVatData(data);
+        setBill((prevBill) => ({
+          ...prevBill,
+          items: data,
+        }));
+        break;
+      case "pan":
+        setPanData(data);
+        setBill((prevBill) => ({
+          ...prevBill,
+          panItems: data,
+        }));
+        break;
+      case "noBill":
+        setNoBillData(data);
+        setBill((prevBill) => ({
+          ...prevBill,
+          noBillItems: data,
+        }));
+        break;
+      default:
+        console.error("Unknown data type:", type);
+    }
   };
 
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log("Selected option:", value);
     setSelectedOption(value);
+    setBill((prevBill) => ({
+      ...prevBill,
+      selectedOptions: value,
+    }));
   };
 
   const handleExport = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8898/api/bill/export",
+        "http://localhost:8898/api/bill/exportBill",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -97,22 +120,31 @@ const Records = () => {
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
-      case "vat0":
-      case "vat1.5":
+      case "vat 0":
+      case "vat 1.5":
         return (
           <Vat
             selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={handleVatDataUpdate}
+            onDataUpdate={(data) => handleDataUpdate(data, "vat")}
           />
         );
-      case "pan0":
-      case "pan10":
-      case "pan15":
-        return <Pan selectedOption={selectedOption} setBill={setBill} />;
+      case "pan 0":
+      case "pan 10":
+      case "pan 15":
+        return (
+          <Pan
+            selectedOption={selectedOption}
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, "pan")}
+          />
+        );
       case "noBill":
         return (
-          <NoBill selectedOption={selectedOption} handleChange={handleChange} />
+          <NoBill
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
+          />
         );
       default:
         return (
@@ -129,8 +161,7 @@ const Records = () => {
         },
       });
 
-      console.log(response);
-      setBills(response.data.bills || []);
+      setBills(response.data.bill || []);
     } catch (error) {
       console.error("Error fetching bills:", error);
       setBills([]);
@@ -153,9 +184,9 @@ const Records = () => {
           }),
         ]);
 
-        console.log(vendorsResponse);
-
         setItems(itemsResponse.data);
+
+        console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -244,9 +275,7 @@ const Records = () => {
   };
 
   const handleDateChange = (event) => {
-    console.log("Event:", event);
     const date = event;
-    console.log("Selected date:", date);
     setBill((prev) => ({ ...prev, bill_date: date }));
   };
 
@@ -255,8 +284,12 @@ const Records = () => {
     try {
       const billData = {
         ...bill,
+        selectedOptions: selectedOption, // Include the selectedOption
         items: vatData,
+        panItems: panData,
+        noBillItems: noBillData,
       };
+
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
         billData,
@@ -267,9 +300,7 @@ const Records = () => {
         }
       );
 
-      console.log(response.data.result.newBill);
-
-      setBills((prevBills) => [...prevBills, response.data.result.newBill]);
+      setBills((prevBills) => [...prevBills, response.data.result.bill]);
       toast.success(`${bill.bill_no} Added Successfully!`);
       closeAddBillForm();
     } catch (error) {
@@ -381,7 +412,8 @@ const Records = () => {
                       value={selectedOption}
                       onChange={handleBillChange}
                       className={`rounded w-[200px] h-10 ${
-                        selectedOption === "vat0" || selectedOption === "vat1.5"
+                        selectedOption === "vat 0" ||
+                        selectedOption === "vat 1.5"
                           ? "bg-green-300"
                           : "border-neutral-300"
                       } focus:outline-none focus:border-transparent px-4`}
@@ -389,16 +421,16 @@ const Records = () => {
                       <option value="" disabled>
                         Select VAT
                       </option>
-                      <option value="vat0">VAT 0</option>
-                      <option value="vat1.5">VAT 1.5</option>
+                      <option value="vat 0">VAT 0</option>
+                      <option value="vat 1.5">VAT 1.5</option>
                     </select>
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
                       className={` rounded w-[200px] ${
-                        selectedOption === "pan0" ||
-                        selectedOption === "pan10" ||
-                        selectedOption === "pan15"
+                        selectedOption === "pan 0" ||
+                        selectedOption === "pan 10" ||
+                        selectedOption === "pan 15"
                           ? "bg-yellow-300"
                           : "border-neutral-300"
                       } focus:outline-none focus:border-transparent px-4`}
@@ -406,9 +438,9 @@ const Records = () => {
                       <option value="" disabled>
                         Select PAN
                       </option>
-                      <option value="pan0">Pan 0</option>
-                      <option value="pan10">Pan 10</option>
-                      <option value="pan15">Pan 15</option>
+                      <option value="pan 0">Pan 0</option>
+                      <option value="pan 10">Pan 10</option>
+                      <option value="pan 15">Pan 15</option>
                     </select>
                     <button
                       onClick={() =>

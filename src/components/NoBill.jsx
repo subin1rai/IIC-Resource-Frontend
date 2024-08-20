@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const NoBill = () => {
+const NoBill = ({ onDataUpdate}) => {
     const [items, setItems] = useState([]);
     // const [vendors, setVendors] = useState([]);
 
@@ -85,6 +85,17 @@ const NoBill = () => {
         }
       
         setRows(newRows);
+        updateParentData(newRows);
+      };
+
+      const updateParentData = (updatedRows) => {
+        const newItemsData = updatedRows.map((row) => ({
+          item_name: row.item_name,
+          quantity: row.quantity,
+          unit_price: row.unit_price,
+          amount: row.amount,
+        }));
+        onDataUpdate(newItemsData);
       };
       
       const customStyles = {
@@ -153,7 +164,7 @@ const NoBill = () => {
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 <input
                  
-                  value={row.quantity}
+                  value={row.quantity}gi
                   onChange={(e) => updateRow(index, "quantity", e.target.value)}
                   className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
                 />

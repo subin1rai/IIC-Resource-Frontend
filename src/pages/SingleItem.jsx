@@ -48,7 +48,8 @@ const SingleItem = () => {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
-        console.log(response.data.itemsOnFeatures.color);
+
+        console.log(response);
         setItem(response.data);
       } catch (error) {
         console.error("Error fetching item data:", error);
@@ -174,7 +175,7 @@ const SingleItem = () => {
     }),
     container: (provided) => ({
       ...provided,
-    width:"250px",
+      width: "250px",
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -290,89 +291,84 @@ const SingleItem = () => {
             onSubmit={handleSubmit}
           >
             <div className="flex flex-row-reverse  relative justify-between items-center overflow-hidden">
-              <img src={close} alt="close" className="w-3.5 h-3.5" onClick={() => setEditFormVisibility(false)}/>
-            <h4 className="font-semibold text-xl">Edit Items</h4>
+              <img
+                src={close}
+                alt="close"
+                className="w-3.5 h-3.5"
+                onClick={() => setEditFormVisibility(false)}
+              />
+              <h4 className="font-semibold text-xl">Edit Items</h4>
             </div>
             <div className=" flex flex-col gap-6 pr-8 max-h-[65vh] overflow-auto">
-            <div className="flex flex-col gap-6  justify-between  ">
-              <div className="flex justify-between items-center">
-                <label  htmlFor="item_name">
-                  Item Name
-                </label>
-                <input
-                  type="text"
-                  id="item_name"
-                  name="item_name"
-                  placeholder="Enter item name"
-                  className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
-                  value={editedItem.item_name}
-                  onChange={handleChange}
-                  autoFocus
-                />
-              </div>
-              <div className="flex justify-between items-center">
-                <label  htmlFor="category">
-                  Category
-                </label>
-                < Select
-                  type="text"
-                  id="category"
-                  name="category"
-                  placeholder="Enter category"
-                  styles={customStyles}
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                  onChange={handleChange}
-                  value={editedItem.category}
-                />
-              </div>
-            <div className="flex flex-col gap-8">
-              <div className="flex justify-between items-center">
-                <label  htmlFor="item_category">
-                  Item Category
-                </label>
-                <Select
-                  type="text"
-                  id="item_category"
-                  name="item_category"
-                  placeholder="Enter item category"
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                  styles={customStyles}
-                  onChange={handleChange}
-                  value={editedItem.item_category}
-                />
-              </div>
-            </div>
-              <div className="flex justify-between items-center ">
-                <label htmlFor="measuring_unit">
-                  Measuring Unit
-                </label>
-                <input
-                  type="text"
-                  id="measuring_unit"
-                  name="measuring_unit"
-                  placeholder="Enter measuring unit"
-                  className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
-                  value={editedItem.measuring_unit}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex justify-between items-center ">
-                <label  htmlFor="low_limit">
-                  Limit
-                </label>
-                <input
-                  type="number"
-                  id="low_limit"
-                  name="low_limit"
-                  placeholder="Enter low limit"
-                  className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
-                  value={editedItem.low_limit}
-                  onChange={handleChange}
-                />
-              </div>
-            {/* <div className="flex flex-col justify-center items-center gap-4">
+              <div className="flex flex-col gap-6  justify-between  ">
+                <div className="flex justify-between items-center">
+                  <label htmlFor="item_name">Item Name</label>
+                  <input
+                    type="text"
+                    id="item_name"
+                    name="item_name"
+                    placeholder="Enter item name"
+                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
+                    value={editedItem.item_name}
+                    onChange={handleChange}
+                    autoFocus
+                  />
+                </div>
+                <div className="flex justify-between items-center">
+                  <label htmlFor="category">Category</label>
+                  <Select
+                    type="text"
+                    id="category"
+                    name="category"
+                    placeholder="Enter category"
+                    styles={customStyles}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    onChange={handleChange}
+                    value={editedItem.category}
+                  />
+                </div>
+                <div className="flex flex-col gap-8">
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="item_category">Item Category</label>
+                    <Select
+                      type="text"
+                      id="item_category"
+                      name="item_category"
+                      placeholder="Enter item category"
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                      styles={customStyles}
+                      onChange={handleChange}
+                      value={editedItem.item_category}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center ">
+                  <label htmlFor="measuring_unit">Measuring Unit</label>
+                  <input
+                    type="text"
+                    id="measuring_unit"
+                    name="measuring_unit"
+                    placeholder="Enter measuring unit"
+                    className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
+                    value={editedItem.measuring_unit}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex justify-between items-center ">
+                  <label htmlFor="low_limit">Limit</label>
+                  <input
+                    type="number"
+                    id="low_limit"
+                    name="low_limit"
+                    placeholder="Enter low limit"
+                    className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
+                    value={editedItem.low_limit}
+                    onChange={handleChange}
+                  />
+                </div>
+                {/* <div className="flex flex-col justify-center items-center gap-4">
               <label className="font-medium text-lg" htmlFor="feature">
                 Feature
               </label>
@@ -434,84 +430,88 @@ const SingleItem = () => {
                 </div>
               </div>
             </div> */}
-            <hr className="text-neutral-200 border-2 w-full"></hr>
-              <label
-                className=" text-xl font-semibold flex self-start"
-                htmlFor=""
-              >
-                Features
-              </label>
-              {/* features form  */}
-              <div className="flex gap-2 items-end  w-[100%] justify-start ">
-                {" "}
-                <div className="flex flex-col gap-4 ">
-                  {selectedFeatures.map((feature, index) => (
-                    <div key={index} className="flex gap-4 ">
-                      <div className="flex justify-between gap-4 flex-row  items-center w-fit">
-                        <Select
-                          options={featureOptions}
-                          onChange={(selectedOption) =>
-                            handleFeatureChange(
-                              index,
-                              "feature",
-                              selectedOption.value
-                            )
-                          }
-                          value={featureOptions.find(
-                            (option) => option.value === feature.feature
-                          )}
-                          placeholder="Choose Feature"
-                          styles={{
-                            menu: (provided) => ({
-                              ...provided,
-                              maxHeight: "80px",
-                              overflowY: "auto",
-                            }),
-                            menuList: (provided) => ({
-                              ...provided,
-                              padding: 0,
-                            }),
-                          }}
-                          className="w-[190px] menu:height: 80px"
-                          classNamePrefix="react-select"
-                        />
-                        <input
-                          className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
-                          type="text"
-                          placeholder="Enter the value"
-                          value={feature.value}
-                          onChange={(e) =>
-                            handleFeatureChange(index, "value", e.target.value)
-                          }
-                        />
+                <hr className="text-neutral-200 border-2 w-full"></hr>
+                <label
+                  className=" text-xl font-semibold flex self-start"
+                  htmlFor=""
+                >
+                  Features
+                </label>
+                {/* features form  */}
+                <div className="flex gap-2 items-end  w-[100%] justify-start ">
+                  {" "}
+                  <div className="flex flex-col gap-4 ">
+                    {selectedFeatures.map((feature, index) => (
+                      <div key={index} className="flex gap-4 ">
+                        <div className="flex justify-between gap-4 flex-row  items-center w-fit">
+                          <Select
+                            options={featureOptions}
+                            onChange={(selectedOption) =>
+                              handleFeatureChange(
+                                index,
+                                "feature",
+                                selectedOption.value
+                              )
+                            }
+                            value={featureOptions.find(
+                              (option) => option.value === feature.feature
+                            )}
+                            placeholder="Choose Feature"
+                            styles={{
+                              menu: (provided) => ({
+                                ...provided,
+                                maxHeight: "80px",
+                                overflowY: "auto",
+                              }),
+                              menuList: (provided) => ({
+                                ...provided,
+                                padding: 0,
+                              }),
+                            }}
+                            className="w-[190px] menu:height: 80px"
+                            classNamePrefix="react-select"
+                          />
+                          <input
+                            className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
+                            type="text"
+                            placeholder="Enter the value"
+                            value={feature.value}
+                            onChange={(e) =>
+                              handleFeatureChange(
+                                index,
+                                "value",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => removeFeatureField(index)}
+                          >
+                            <img src={removeIcon} className="w-8 h-8" alt="" />
+                          </button>
+                        )}
                       </div>
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => removeFeatureField(index)}
-                        >
-                          <img src={removeIcon} className="w-8 h-8" alt="" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  {selectedFeatures.length < featureOptions.length && (
+                    <button type="button" onClick={addFeatureField}>
+                      <img
+                        src={addIcon}
+                        className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
+                        alt=""
+                      />
+                    </button>
+                  )}
                 </div>
-                {selectedFeatures.length < featureOptions.length && (
-                  <button type="button" onClick={addFeatureField}>
-                    <img
-                      src={addIcon}
-                      className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
-                      alt=""
-                    />
-                  </button>
-                )}
               </div>
-              </div>
-            <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
-              Save Edit
-            </button>
+              <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
+                Save Edit
+              </button>
             </div>
-            </form>
+          </form>
 
           <div
             className="w-screen h-screen z-20 bg-overlay cursor-pointer absolute"
