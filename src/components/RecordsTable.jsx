@@ -147,8 +147,8 @@ export default function RecordsTable({ bills }) {
     [bills, order, orderBy, page, rowsPerPage]
   );
 
-  const handleRowClick = (bill_ID) => {
-    navigate(`/specificbill/${bill_ID}`);
+  const handleRowClick = (bill_id) => {
+    navigate(`/specificbill/${bill_id}`);
   };
 
   return (
@@ -197,7 +197,7 @@ export default function RecordsTable({ bills }) {
                     role="checkbox"
                     tabIndex={-1}
                     key={bill.bill_ID || `unknown-${index}`}
-                    onClick={() => handleRowClick(bill.bill_ID)}
+                    onClick={() => handleRowClick(bill.bill_id)}
                   >
                     {columns.map((column) => {
                       let value = bill[column.id];
