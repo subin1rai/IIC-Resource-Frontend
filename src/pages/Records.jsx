@@ -78,8 +78,6 @@ const Records = () => {
     }
   };
 
-  console.log(bill);
-
   const handleBillChange = (event) => {
     const value = event.target.value;
     setSelectedOption(value);
@@ -189,7 +187,6 @@ const Records = () => {
 
         setItems(itemsResponse.data);
 
-        console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -287,10 +284,7 @@ const Records = () => {
     try {
       const billData = {
         ...bill,
-        selectedOptions: selectedOption, // Include the selectedOption
-        // items: vatData,
-        // panItems: panData,
-        // noBillItems: noBillData,
+        selectedOptions: selectedOption,
       };
 
       console.log(billData);

@@ -457,56 +457,59 @@ const Inventory = () => {
                 Features
               </label>
               {/* features form  */}
-              <div className="flex gap-2 items-end w-[100%] justify-start ">
-                <div className="flex flex-col gap-4 ">
-                  {selectedFeatures.map((feature, index) => (
-                    <div key={index} className="flex gap-4 w-full">
-                      <div className="flex justify-between gap-4 flex-row items-center w-full">
-                        <Select
-                          options={featureOptions}
-                          onChange={(selectedOption) =>
-                            handleFeatureChange(
-                              index,
-                              "feature",
-                              selectedOption.value
-                            )
-                          }
-                          value={featureOptions.find(
-                            (option) => option.value === feature.feature
-                          )}
-                          placeholder="Choose Feature"
-                          styles={customStyles}
-                          className="w-[250px]"
-                          classNamePrefix="react-select"
-                        />
-                        <input
-                          className="border-2 rounded border-neutral-200 w-[250px] px-2 py-2"
-                          type="text"
-                          placeholder="Enter the value"
-                          value={feature.value}
-                          onChange={(e) =>
-                            handleFeatureChange(index, "value", e.target.value)
-                          }
-                        />
-                      </div>
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => removeFeatureField(index)}
-                        >
-                          <img src={removeIcon} className="w-8 h-8" alt="" />
-                        </button>
-                      )}
+              {/* features form  */}
+              <div className="flex flex-col gap-4 w-full">
+                {selectedFeatures.map((feature, index) => (
+                  <div key={index} className="flex gap-4 w-full items-center">
+                    <div className="flex justify-between gap-4 flex-row items-center w-full">
+                      <Select
+                        options={featureOptions}
+                        onChange={(selectedOption) =>
+                          handleFeatureChange(
+                            index,
+                            "feature",
+                            selectedOption.value
+                          )
+                        }
+                        value={featureOptions.find(
+                          (option) => option.value === feature.feature
+                        )}
+                        placeholder="Choose Feature"
+                        className="w-[200px]"
+                        classNamePrefix="react-select"
+                      />
+                      <input
+                        className="border-2 rounded border-neutral-200 w-[200px] px-2 py-2"
+                        type="text"
+                        placeholder="Enter the value"
+                        value={feature.value}
+                        onChange={(e) =>
+                          handleFeatureChange(index, "value", e.target.value)
+                        }
+                      />
                     </div>
-                  ))}
-                </div>
+                    {selectedFeatures.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeFeatureField(index)}
+                        className="p-2 bg-red-100 rounded-full hover:bg-red-200 transition-colors"
+                      >
+                        <img
+                          src={removeIcon}
+                          className="w-5 h-5"
+                          alt="Remove"
+                        />
+                      </button>
+                    )}
+                  </div>
+                ))}
                 {selectedFeatures.length < featureOptions.length && (
-                  <button type="button" onClick={addFeatureField}>
-                    <img
-                      src={addIcon}
-                      className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
-                      alt=""
-                    />
+                  <button
+                    type="button"
+                    onClick={addFeatureField}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    Add Feature
                   </button>
                 )}
               </div>
