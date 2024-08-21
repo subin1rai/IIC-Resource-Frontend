@@ -186,6 +186,8 @@ const SingleItem = () => {
     }),
   };
 
+  console.log(item);
+
   return (
     <div className="flex bg-background h-screen w-screen">
       <Sidebar />
@@ -237,9 +239,9 @@ const SingleItem = () => {
                   <span className="font-medium">{item.category}</span>
                 </div>
                 <div className="flex gap-4">
-                  <p className="font-semibold">Brand:</p>
+                  <p className="font-semibold">Actual Quantity:</p>
                   <div className="font-medium">
-                    <span>{item?.itemsOnFeatures?.brand || "--"}</span>
+                    <span>fix this</span>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -248,22 +250,16 @@ const SingleItem = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-5">
-                <div className="flex gap-4">
-                  <p className="font-semibold">Size:</p>
-                  <span className="font-medium">
-                    {item?.itemsOnFeatures?.size || "--"}
-                  </span>
+                <div>
+                  {Object.entries(item.itemsOnFeatures || {}).map(
+                    ([key, value]) => (
+                      <div key={key} className="flex gap-4">
+                        <p className="font-semibold">{key}:</p>
+                        <span className="font-medium">{value}</span>
+                      </div>
+                    )
+                  )}
                 </div>
-                <div className="flex gap-4">
-                  <p className="font-semibold">Color:</p>
-                  <div className="font-medium">
-                    <span>{item?.itemsOnFeatures?.color || "--"}</span>
-                  </div>
-                </div>
-                {/* <div className="flex gap-4">
-                <p className="font-semibold">Item Category:</p>
-                <span className="font-medium">{item.itemCategory}</span>
-              </div> */}
               </div>
             </div>
           ) : (
