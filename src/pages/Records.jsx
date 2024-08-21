@@ -42,6 +42,7 @@ const Records = () => {
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
+  const [exports, setExport] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   // const [vatData, setVatData] = useState([]);
   // const [panData, setPanData] = useState([]);
@@ -176,10 +177,8 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse, vendorsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+        const [ vendorsResponse] = await Promise.all([
+       
           axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
           }),

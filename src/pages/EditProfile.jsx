@@ -25,9 +25,12 @@ const EditProfile = () => {
 
   return (
     <div className="flex bg-background h-screen w-screen">
+      {/* Sidebar component */}
       <Sidebar />
       <div className="flex flex-col mx-auto gap-4">
+        {/* Topbar component */}
         <Topbar />
+        
         <div className="bg-white w-[99%] mx-auto h-[100%] flex flex-col p-8 rounded-md relative">
           <h1 className="text-xl font-semibold"> My Profile</h1>
           <h3 className="font-light text-light mb-8">Make changes on your profile details.</h3>
@@ -37,6 +40,8 @@ const EditProfile = () => {
               <label className="text-lg font-normal">Full Name:</label>
               <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
               </div>
+
+                 {/* Input field for nickname */}
               <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Nickname:</label>
               <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
