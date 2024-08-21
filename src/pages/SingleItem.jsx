@@ -242,6 +242,7 @@ const SingleItem = () => {
       ...provided,
       borderRadius: "4px",
       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      zIndex: 9999,
     }),
     input: (provided) => ({
       ...provided,
@@ -323,7 +324,7 @@ const SingleItem = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-5">
-                <div>
+                <div className="flex flex-col gap-5">
                   {Object.entries(item.itemsOnFeatures || {}).map(
                     ([key, value]) => (
                       <div key={key} className="flex gap-4">
@@ -359,7 +360,7 @@ const SingleItem = () => {
       {editFormVisibility && (
         <>
           <form
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded max-h-[70vh]"
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
             onSubmit={handleSubmit}
           >
             <div className="flex flex-row-reverse  relative justify-between items-center overflow-hidden">
@@ -371,7 +372,7 @@ const SingleItem = () => {
               />
               <h4 className="font-semibold text-xl">Edit Items</h4>
             </div>
-            <div className="flex flex-col gap-6 pr-8  ">
+            <div className="flex flex-col gap-6 z-10 ">
               <div className="flex flex-col gap-6 justify-between">
                 <div className="flex justify-between items-center gap-40">
                   <label htmlFor="item_name">Item Name</label>
@@ -462,7 +463,7 @@ const SingleItem = () => {
                   Features
                 </label>
                 {/* features form */}
-                <div className="flex flex-col gap-4 w-full">
+                <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto">
                   {selectedFeatures.map((feature, index) => (
                     <div key={index} className="flex gap-4 w-full items-center">
                       <div className="flex justify-between gap-4 flex-row items-center w-full">
@@ -516,11 +517,6 @@ const SingleItem = () => {
                     }`}
                     disabled={selectedFeatures.length >= feature.length}
                   >
-                    <img
-                      src={addIcon}
-                      className="w-5 h-5 text-current"
-                      alt="Add"
-                    />
                     Add Feature
                   </button>
                 </div>
