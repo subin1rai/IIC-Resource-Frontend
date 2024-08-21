@@ -71,6 +71,7 @@ function PurchaseHistory() {
   const navigate = useNavigate();
 
   const handleRowClick = (id) => {
+    console.log(id);
     navigate(`/specificbill/${id}`);
   };
 
@@ -232,7 +233,7 @@ function PurchaseHistory() {
                 role="row"
                 tabIndex={-1}
                 key={index}
-                onClick={() => handleRowClick(row.bill_ID)}
+                onClick={() => handleRowClick(row.bill_id)}
                 className="cursor-pointer"
               >
                 {columns.map((column) => {
