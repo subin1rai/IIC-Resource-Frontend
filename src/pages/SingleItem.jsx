@@ -26,13 +26,15 @@ const SingleItem = () => {
     item_name: "",
     category: "",
     item_category: "",
-    product_category: "",
     measuring_unit: "",
     low_limit: "",
-    faatures: "",
+    features: {},
   });
 
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [itemCategory, setItemCategory] = useState([]);
+  const [feature, setFeature] = useState([]);
 
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
@@ -48,26 +50,67 @@ const SingleItem = () => {
         const response = await axios.get(
           `http://localhost:8898/api/items/${id}`
         );
+        const categoryResponse = await axios.get(
+          "http://localhost:8898/api/category",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
+        const itemCategoryResponse = await axios.get(
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const featureResponse = await axios.get(
+          "http://localhost:8898/api/feature",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response);
         setItem(response.data);
+        setItemCategory(itemCategoryResponse.data.allData);
+        setCategory(categoryResponse.data.category);
+        setFeature(featureResponse.data.feature);
       } catch (error) {
         console.error("Error fetching item data:", error);
       }
     };
     getSingleItem();
-  }, [id]);
+  }, [id, token]);
 
   const handlePopupForm = () => {
     setEditedItem({
       item_name: item.item_name || "",
-      category: item.category?.category_name || "",
-      item_category: item.itemCategory?.item_category_name || "",
-      product_category: item.productCategory?.product_category_name || "",
+      category: item.category || "",
+      item_category: item.itemCategory || "",
       measuring_unit: item.measuring_unit || "",
       low_limit: item.low_limit?.toString() || "",
-      features: item.features || [{ feature: "", value: "" }],
+      features: item.itemsOnFeatures || {},
     });
+
+    // Populate selectedFeatures with existing features
+    const existingFeatures = Object.entries(item.itemsOnFeatures || {}).map(
+      ([key, value]) => ({
+        feature: key,
+        value: value,
+      })
+    );
+    setSelectedFeatures(
+      existingFeatures.length > 0
+        ? existingFeatures
+        : [{ feature: "", value: "" }]
+    );
+
     setEditFormVisibility(true);
   };
 
@@ -75,6 +118,18 @@ const SingleItem = () => {
     const updatedFeatures = [...selectedFeatures];
     updatedFeatures[index][field] = value;
     setSelectedFeatures(updatedFeatures);
+
+    // Update editedItem.features
+    const updatedFeatureObject = updatedFeatures.reduce((acc, feature) => {
+      if (feature.feature && feature.value) {
+        acc[feature.feature] = feature.value;
+      }
+      return acc;
+    }, {});
+    setEditedItem((prevState) => ({
+      ...prevState,
+      features: updatedFeatureObject,
+    }));
   };
 
   const addFeatureField = () => {
@@ -84,23 +139,41 @@ const SingleItem = () => {
   const removeFeatureField = (index) => {
     const updatedFeatures = selectedFeatures.filter((_, i) => i !== index);
     setSelectedFeatures(updatedFeatures);
+
+    // Update editedItem.features
+    const updatedFeatureObject = updatedFeatures.reduce((acc, feature) => {
+      if (feature.feature && feature.value) {
+        acc[feature.feature] = feature.value;
+      }
+      return acc;
+    }, {});
+    setEditedItem((prevState) => ({
+      ...prevState,
+      features: updatedFeatureObject,
+    }));
   };
 
-  const featureOptions = [
-    { value: "feature1", label: "Feature 1" },
-    { value: "feature2", label: "Feature 2" },
-    // Add more options as needed
-  ];
+  const featureOptions = feature.map((f) => ({
+    value: f.feature_name,
+    label: f.feature_name,
+  }));
 
   const handleChange = (e) => {
     setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
+  };
+
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    setEditedItem((prevState) => ({
+      ...prevState,
+      [actionMeta.name]: selectedOption.value,
+    }));
   };
 
   const fetchItemData = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`http://localhost:8898/api/items/${id}`);
-      setItem(response.data.itemData);
+      setItem(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching item data:", error);
@@ -113,12 +186,11 @@ const SingleItem = () => {
     try {
       const updatedItem = {
         item_name: editedItem.item_name,
-        category_name: editedItem.category,
+        category: editedItem.category,
         item_category_name: editedItem.item_category,
-        product_category_name: editedItem.product_category,
         measuring_unit: editedItem.measuring_unit,
         low_limit: parseInt(editedItem.low_limit, 10),
-        features: editedItem.selectedFeatures,
+        features: editedItem.features,
       };
       const response = await axios.put(
         `http://localhost:8898/api/updateItem/${id}`,
@@ -142,12 +214,12 @@ const SingleItem = () => {
           ...updatedItem,
         }));
       }
-      console.log(item);
       setEditFormVisibility(false);
     } catch (error) {
       console.error("Update error:", error);
     }
   };
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -182,8 +254,6 @@ const SingleItem = () => {
       padding: "2px 8px",
     }),
   };
-
-  console.log(item);
 
   return (
     <div className="flex bg-background h-screen w-screen">
@@ -290,21 +360,21 @@ const SingleItem = () => {
               <img
                 src={close}
                 alt="close"
-                className="w-3.5 h-3.5"
+                className="w-3.5 h-3.5 cursor-pointer"
                 onClick={() => setEditFormVisibility(false)}
               />
               <h4 className="font-semibold text-xl">Edit Items</h4>
             </div>
-            <div className=" flex flex-col gap-6 pr-8 max-h-[65vh] overflow-auto">
-              <div className="flex flex-col gap-6  justify-between  ">
-                <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-6 pr-8  ">
+              <div className="flex flex-col gap-6 justify-between">
+                <div className="flex justify-between items-center gap-40">
                   <label htmlFor="item_name">Item Name</label>
                   <input
                     type="text"
                     id="item_name"
                     name="item_name"
                     placeholder="Enter item name"
-                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
+                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
                     value={editedItem.item_name}
                     onChange={handleChange}
                     autoFocus
@@ -313,32 +383,46 @@ const SingleItem = () => {
                 <div className="flex justify-between items-center">
                   <label htmlFor="category">Category</label>
                   <Select
-                    type="text"
-                    id="category"
+                    options={category.map((cat) => ({
+                      value: cat.category_name,
+                      label: cat.category_name,
+                    }))}
                     name="category"
                     placeholder="Enter category"
                     styles={customStyles}
                     className="react-select-container"
                     classNamePrefix="react-select"
-                    onChange={handleChange}
-                    value={editedItem.category}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, { name: "category" })
+                    }
+                    value={{
+                      value: editedItem.category,
+                      label: editedItem.category,
+                    }}
                   />
                 </div>
-                <div className="flex flex-col gap-8">
-                  <div className="flex justify-between items-center">
-                    <label htmlFor="item_category">Item Category</label>
-                    <Select
-                      type="text"
-                      id="item_category"
-                      name="item_category"
-                      placeholder="Enter item category"
-                      className="react-select-container"
-                      classNamePrefix="react-select"
-                      styles={customStyles}
-                      onChange={handleChange}
-                      value={editedItem.item_category}
-                    />
-                  </div>
+                <div className="flex justify-between items-center">
+                  <label htmlFor="item_category">Item Category</label>
+                  <Select
+                    options={itemCategory.map((cat) => ({
+                      value: cat.item_category_name,
+                      label: cat.item_category_name,
+                    }))}
+                    name="item_category"
+                    placeholder="Enter item category"
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    styles={customStyles}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, {
+                        name: "item_category",
+                      })
+                    }
+                    value={{
+                      value: editedItem.item_category,
+                      label: editedItem.item_category,
+                    }}
+                  />
                 </div>
                 <div className="flex justify-between items-center ">
                   <label htmlFor="measuring_unit">Measuring Unit</label>
@@ -347,7 +431,7 @@ const SingleItem = () => {
                     id="measuring_unit"
                     name="measuring_unit"
                     placeholder="Enter measuring unit"
-                    className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md "
+                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
                     value={editedItem.measuring_unit}
                     onChange={handleChange}
                   />
@@ -359,148 +443,80 @@ const SingleItem = () => {
                     id="low_limit"
                     name="low_limit"
                     placeholder="Enter low limit"
-                    className="border-[1px]  border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
+                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
                     value={editedItem.low_limit}
                     onChange={handleChange}
                   />
                 </div>
-                {/* <div className="flex flex-col justify-center items-center gap-4">
-              <label className="font-medium text-lg" htmlFor="feature">
-                Feature
-              </label>
-              <div className="gap-6">
-                {selectedFeatures.map((feature, index) => (
-                  <div key={index} className="flex gap-16">
-                    <div className="field">
-                      <div className="border-2  border-neutral-300 p-2 pl-3  rounded-md">
-                        <select
-                          value={feature.feature}
-                          onChange={(e) =>
-                            handleFeatureChange(
-                              index,
-                              "feature",
-                              e.target.value
-                            )
-                          }
-                        >
-                          <option value="">Choose Feature</option>
-                          {featureOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="values">
-                      <input
-                        className="border-2  border-neutral-300 p-1 pl-3 rounded-md"
-                        type="text"
-                        placeholder="Enter the value"
-                        value={feature.value}
-                        onChange={(e) =>
-                          handleFeatureChange(index, "value", e.target.value)
-                        }
-                      />
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => removeFeatureField(index)}
-                        >
-                          -
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                <div className="flex justify-center ">
-                  {selectedFeatures.length < featureOptions.length && (
-                    <button
-                      className="mt-6"
-                      type="button"
-                      onClick={addFeatureField}
-                    >
-                      Add more field
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div> */}
                 <hr className="text-neutral-200 border-2 w-full"></hr>
                 <label
-                  className=" text-xl font-semibold flex self-start"
+                  className="text-xl font-semibold flex self-start"
                   htmlFor=""
                 >
                   Features
                 </label>
-                {/* features form  */}
-                <div className="flex gap-2 items-end  w-[100%] justify-start ">
-                  {" "}
-                  <div className="flex flex-col gap-4 ">
-                    {selectedFeatures.map((feature, index) => (
-                      <div key={index} className="flex gap-4 ">
-                        <div className="flex justify-between gap-4 flex-row  items-center w-fit">
-                          <Select
-                            options={featureOptions}
-                            onChange={(selectedOption) =>
-                              handleFeatureChange(
-                                index,
-                                "feature",
-                                selectedOption.value
-                              )
-                            }
-                            value={featureOptions.find(
-                              (option) => option.value === feature.feature
-                            )}
-                            placeholder="Choose Feature"
-                            styles={{
-                              menu: (provided) => ({
-                                ...provided,
-                                maxHeight: "80px",
-                                overflowY: "auto",
-                              }),
-                              menuList: (provided) => ({
-                                ...provided,
-                                padding: 0,
-                              }),
-                            }}
-                            className="w-[190px] menu:height: 80px"
-                            classNamePrefix="react-select"
-                          />
-                          <input
-                            className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
-                            type="text"
-                            placeholder="Enter the value"
-                            value={feature.value}
-                            onChange={(e) =>
-                              handleFeatureChange(
-                                index,
-                                "value",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => removeFeatureField(index)}
-                          >
-                            <img src={removeIcon} className="w-8 h-8" alt="" />
-                          </button>
-                        )}
+                {/* features form */}
+                <div className="flex flex-col gap-4 w-full">
+                  {selectedFeatures.map((feature, index) => (
+                    <div key={index} className="flex gap-4 w-full items-center">
+                      <div className="flex justify-between gap-4 flex-row items-center w-full">
+                        <Select
+                          options={featureOptions}
+                          onChange={(selectedOption) =>
+                            handleFeatureChange(
+                              index,
+                              "feature",
+                              selectedOption.value
+                            )
+                          }
+                          value={featureOptions.find(
+                            (option) => option.value === feature.feature
+                          )}
+                          placeholder="Choose Feature"
+                          styles={customStyles}
+                          className="w-[190px]"
+                          classNamePrefix="react-select"
+                        />
+                        <input
+                          className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
+                          type="text"
+                          placeholder="Enter the value"
+                          value={feature.value}
+                          onChange={(e) =>
+                            handleFeatureChange(index, "value", e.target.value)
+                          }
+                        />
                       </div>
-                    ))}
-                  </div>
-                  {selectedFeatures.length < featureOptions.length && (
-                    <button type="button" onClick={addFeatureField}>
-                      <img
-                        src={addIcon}
-                        className="w-8 h-8 self-end mb-1.5 text-green-500 fill-current"
-                        alt=""
-                      />
-                    </button>
-                  )}
+                      <button
+                        type="button"
+                        onClick={() => removeFeatureField(index)}
+                        className="p-2 bg-red-100 rounded-full hover:bg-red-200 transition-colors"
+                      >
+                        <img
+                          src={removeIcon}
+                          className="w-5 h-5"
+                          alt="Remove"
+                        />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addFeatureField}
+                    className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors ${
+                      selectedFeatures.length >= feature.length
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={selectedFeatures.length >= feature.length}
+                  >
+                    <img
+                      src={addIcon}
+                      className="w-5 h-5 text-current"
+                      alt="Add"
+                    />
+                    Add Feature
+                  </button>
                 </div>
               </div>
               <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
