@@ -42,7 +42,7 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState();
 
   const { bill_id } = useParams();
 
@@ -66,23 +66,35 @@ const SpecificBill = () => {
   // ya samma hai ta
 
   const renderSelectedComponent = () => {
-    switch (selectedOption) {
+    switch (editedBill.selectedOptions) {
       case "vat 0":
       case "vat 1.5":
         return (
           <Vat
-            selectedOption={selectedOption}
+            selectedOption={editedBill.selectedOptions}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, 'vat')}
+            initialData={editedBill.items}
           />
         );
       case "pan 0":
       case "pan 10":
       case "pan 15":
-        return ( <Pan selectedOption={selectedOption} handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'pan')}  />);
+        return (
+          <Pan
+            selectedOption={editedBill.selectedOptions}
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, 'pan')}
+            initialData={editedBill.items}
+          />
+        );
       case "noBill":
         return (
-          <NoBill handleChange={handleChange} onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}/>
+          <NoBill
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}
+            initialData={editedBill.items}
+          />
         );
       default:
         return (
@@ -175,19 +187,19 @@ const SpecificBill = () => {
   }, [bill_id, token]);
 
   const openEditBillDetailsForm = () => {
-    setEditedBill({
-      bill_no: billDetails.bill_no || "",
-      bill_date: billDetails.bill_date ? formatDate(billDetails.bill_date) : "",
-      voucher_no: billDetails.invoice_no || "",
-      vendor_name: billDetails.vendors?.vendor_name || "",
-      item_name: billDetails.items?.item_name || "",
-      quantity: billDetails.quantity || "",
-      unit_price: billDetails.unit_price || "",
-      tds: billDetails.TDS || "",
-      amount: billDetails.amount || "",
-      paid_amt: billDetails.paid_amount || "",
-      pending_amt: billDetails.vendors?.pending_payment || "",
-    });
+    // setEditedBill({
+    //   bill_no: billDetails.bill_no || "",
+    //   bill_date: billDetails.bill_date ? formatDate(billDetails.bill_date) : "",
+    //   voucher_no: billDetails.invoice_no || "",
+    //   vendor_name: billDetails.vendors?.vendor_name || "",
+    //   item_name: billDetails.items?.item_name || "",
+    //   quantity: billDetails.quantity || "",
+    //   unit_price: billDetails.unit_price || "",
+    //   tds: billDetails.TDS || "",
+    //   amount: billDetails.amount || "",
+    //   paid_amt: billDetails.paid_amount || "",
+    //   pending_amt: billDetails.vendors?.pending_payment || "",
+    // });
     setEditBillDetailsFormVisibility(true);
   };
 
@@ -250,7 +262,17 @@ const SpecificBill = () => {
         );
 
         setBill(response.data.bill);
-
+        setEditedBill({
+          bill_no: response.data.bill.bill_no || "",
+          bill_date: response.data.bill.bill_date
+            ? formatDate(response.data.bill.bill_date)
+            : "",
+          invoice_no: response.data.bill.invoice_no || "",
+          vat_number: response.data.bill.vat_number || "",
+          selectedOptions: response.data.bill.selectedOptions || "",
+          paid_amount: response.data.bill.paid_amt || 0,
+          items: response.data.bill.items || [],
+        });
         setLoading(false);
       } catch (error) {
         console.error("Error fetching Bill data:", error);
@@ -437,76 +459,72 @@ const SpecificBill = () => {
               {/* heading div */}
               <div className="flex justify-between ">
                 <p className="font-semibold text-2xl">Edit Bill Details</p>
-                <img
-                  src={close}
-                  alt="close"
-                  className="h-5 w-5 cursor-pointer"
-                  onClick={closeEditBillDetailsForm}
-                />
-              </div>
-              {/* form div */}
-              <div className=" gap-16">
                 <div className="flex flex-col pb-8">
-                  <h1 className="font-medium pb-4">Select the type of Bill</h1>
-                  <div className="flex border-2 rounded-md border-neutral-300 w-[378px]">
+                  <div className="flex border-2 rounded-md overflow-hidden border-neutral-300 w-[370px] items-center h-fit">
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={`rounded w-[200px] h-10 ${
+                      className={` w-36 ${
                         selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                          ? "bg-green-300"
+                          ? "bg-blue-200"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
-                      <option value="" disabled>
-                        Select VAT
-                      </option>
+                      <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
                       <option value="vat 1.5">VAT 1.5</option>
                     </select>
+                    <div className="h-[100%] bg-neutral-300 w-1"></div>
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` rounded w-[200px] ${
+                      className={` w-36 ${
                         selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                          ? "bg-yellow-300"
+                          ? "bg-blue-200"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4`}
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
-                      <option value="" disabled>
-                        Select PAN
-                      </option>
+                      <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
                       <option value="pan 10">Pan 10</option>
                       <option value="pan 15">Pan 15</option>
                     </select>
-                    <button
+                    <div className="h-[100%] bg-neutral-300 w-1"></div>
+                    <span
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` rounded w-[200px] ${
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
                         selectedOption === "noBill"
-                          ? "bg-red-300 text-white"
+                          ? "bg-blue-200 text-black"
                           : "border-neutral-300"
                       } px-4 whitespace-nowrap`}
                     >
                       No Bill
-                    </button>
+                    </span>
                   </div>
                 </div>
-
-                <div className="flex gap-[250px] pb-8">
-                  <div className="flex flex-col gap-4">
+                <img
+                className="cursor-pointer  h-[2vh] w-[2vw] absolute -right-10 invert mb-3 "
+                src={close}
+                alt="close icon"
+                onClick={closeEditBillDetailsForm}
+              />
+              </div>
+              {/* form div */}
+              <div className=" flex flex-col gap-6">
+                <div className="flex gap-28">
+                  <div className="flex flex-col gap-3">
                     <label className="font-medium" htmlFor="bill_no">
                       Bill Date:
                     </label>
                     <NepaliDatePicker
                       inputClassName="form-control"
                       className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
-                      value={editedBill.date}
+                      value={editedBill.bill_date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
@@ -543,8 +561,8 @@ const SpecificBill = () => {
                     />
                   </div>
                 </div>
-                <div className="flex  pb-8">
-                  <div className="flex gap-[250px]">
+                <div className="flex">
+                  <div className="flex gap-28">
                     <div className="flex flex-col gap-4">
                       <label className="font-medium" htmlFor="vendor_name">
                         Vendor Name:
@@ -594,7 +612,7 @@ const SpecificBill = () => {
                         name="paid_amount"
                         id="paid_amount"
                         onChange={handleChange}
-                        value={editedBill.paid_amt}
+                        value={editedBill.paid_amount}
                       />
                     </div>
                   </div>

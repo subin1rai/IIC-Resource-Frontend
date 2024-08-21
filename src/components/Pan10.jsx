@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Pan = ({ selectedOption, onDataUpdate }) => {
+const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
   //  const { selectedOption } = useBillContext();
   const [items, setItems] = useState([]);
+  const [panItems, setPanItems] = useState(initialData || []);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       unit_price: 0,
       amount: 0,
       tds: 0,
-      amtAfterTds: 0,
+      actualAmt: 0,
     },
     // Add more rows as needed
   ]);
@@ -53,9 +54,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       unit_price: 0,
       amount: 0,
       tds: 0,
-      amtAfterTds: 0,
-      vat: 0,
-      amountWithVat: 0,
+      actualAmt: 0 ,
     };
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
@@ -73,21 +72,20 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       const amount = quantity * unit_price;
 
       let tds = 0;
-      let amtAfterTds = amount;
 
       if (selectedOption === "pan 10") {
-        tds = 0.1 * amount;
+        tds = (0.1 * amount);
       } else if (selectedOption === "pan 15") {
-        tds = 0.15 * amount;
+        tds = (0.15 * amount);
       } else if (selectedOption === "pan 0") {
         tds = 0;
       }
 
-      amtAfterTds = amount - tds;
+      const actualAmt = amount - tds;
 
       newRows[index].amount = amount || 0;
       newRows[index].tds = tds || 0;
-      newRows[index].amtAfterTds = amtAfterTds || 0;
+      newRows[index].actualAmt = actualAmt || 0;
     }
 
     setRows(newRows);
@@ -101,7 +99,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
       unit_price: row.unit_price,
       amount: row.amount,
       tds: row.tds,
-      amtAfterTds: row.amtAfterTds,
+      actualAmt: row.actualAmt,
     }));
     onDataUpdate(newItemsData);
     console.log(newItemsData);
@@ -159,7 +157,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                 TDS
               </th>
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
-                Amount after TDS
+                Actual Amount
               </th>
             </tr>
           </thead>
@@ -233,7 +231,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
               </td>
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows
-                  .reduce((sum, row) => sum + (row.amtAfterTds || 0), 0)
+                  .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
                   .toFixed(2)}
               </td>
             </tr>
