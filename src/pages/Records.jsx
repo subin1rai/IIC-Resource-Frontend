@@ -43,7 +43,7 @@ const Records = () => {
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [exports, setExport] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState("vat 0");
   // const [vatData, setVatData] = useState([]);
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
@@ -150,8 +150,12 @@ const Records = () => {
         );
       default:
         return (
-          <div className="text-red-500">Please select the type of Bill</div>
-        );
+          <Vat
+          selectedOption="vat 0"
+          handleChange={handleChange}
+          onDataUpdate={(data) => handleDataUpdate(data, "vat")}
+        />
+      );
     }
   };
 
@@ -184,8 +188,8 @@ const Records = () => {
           }),
         ]);
 
-        setItems(itemsResponse.data);
 
+        console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -451,7 +455,6 @@ const Records = () => {
                 alt="close icon"
                 onClick={closeAddBillForm}
               />
-
               <div className="flex flex-col gap-6">
                 <div className="flex gap-28">
                   <div className="flex flex-col gap-3">

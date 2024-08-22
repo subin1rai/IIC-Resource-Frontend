@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Pan = ({ selectedOption, onDataUpdate }) => {
+const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
   //  const { selectedOption } = useBillContext();
   const [items, setItems] = useState([]);
+  const [panItems, setPanItems] = useState(initialData || []);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -159,7 +160,7 @@ const Pan = ({ selectedOption, onDataUpdate }) => {
                 TDS
               </th>
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
-                Amount after TDS
+                Actual Amount
               </th>
             </tr>
           </thead>
