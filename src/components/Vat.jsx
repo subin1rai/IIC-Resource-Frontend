@@ -3,9 +3,22 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Vat = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
+const Vat = ({ selectedOption, onDataUpdate }) => {
   const [items, setItems] = useState([]);
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([
+    {
+      id: 1,
+          item_name: "",
+          quantity: 0,
+          unit_price: 0,
+          amount: 0,
+          tds: 0,
+          vat: 0,
+          amountWithVat: 0,
+          actualAmt: 0,
+    },
+    // Add more rows as needed
+  ]);
 
   const token = localStorage.getItem("token");
 
@@ -26,26 +39,6 @@ const Vat = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
 
     fetchData();
   }, [token]);
-
-  useEffect(() => {
-    if (initialData) {
-      setRows(initialData);
-    } else {
-      setRows([
-        {
-          id: 1,
-          item_name: "",
-          quantity: 0,
-          unit_price: 0,
-          amount: 0,
-          tds: 0,
-          vat: 0,
-          amountWithVat: 0,
-          actualAmt: 0,
-        },
-      ]);
-    }
-  }, [initialData]);
 
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
@@ -175,7 +168,7 @@ const Vat = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
                 Amount with VAT
               </th>
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
-                Actual Amt
+                Actual Amount
               </th>
             </tr>
           </thead>

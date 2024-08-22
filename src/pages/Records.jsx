@@ -190,8 +190,6 @@ const Records = () => {
           }),
         ]);
 
-        setItems(itemsResponse.data);
-
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
