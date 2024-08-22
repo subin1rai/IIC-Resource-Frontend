@@ -66,7 +66,7 @@ const EditProfile = () => {
                 alt="Profile"
               />
               <img
-                className="ml-28 w-8 h-8 absolute z-50"
+                className="ml-32 w-8 h-8 absolute z-50"
                 src={camera}
                 alt="Camera"
                 onClick={handleImageClick}
