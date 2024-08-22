@@ -177,15 +177,13 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [ vendorsResponse] = await Promise.all([
-       
+        const [vendorsResponse] = await Promise.all(
           axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+          })
+        );
 
-        setItems(itemsResponse.data);
-
+        console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -268,6 +266,8 @@ const Records = () => {
       items: [],
     });
   };
+
+  console.log(bill);
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));

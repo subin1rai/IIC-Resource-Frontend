@@ -14,8 +14,7 @@ import featureicon from "../assets/feature.png";
 import Chat from "../components/Chat";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import add from "../assets/addCategory.svg"
-
+import add from "../assets/addCategory.svg";
 
 // Main Category component
 const Category = () => {
@@ -182,8 +181,6 @@ const Category = () => {
     }
   };
 
-
-
   const handleSubmitItemCategory = async (event) => {
     event.preventDefault();
     try {
@@ -238,9 +235,36 @@ const Category = () => {
     }
   };
 
-  return (
-    //category
+  const [editFormVisiblity, setEditFormVIsiblity] = useState(false);
 
+  const [editedValue, setEditedValue] = useState({
+    name: "",
+    type: "",
+  });
+
+  console.log(editedValue);
+
+  const handleEditFormChange = (e) => {
+    e.preventDefault();
+    setEditedValue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const [editId, setEditId] = useState();
+
+  const handleEditSubmit = async (e) => {
+    console.log(editId);
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/editCategory/${editId}`,
+        editedValue
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
     <div className=" bg-background flex justify-between h-screen w-screen relative">
       <Sidebar />
       <div className=" m-0 flex flex-col gap-4 items-center relative">
@@ -274,18 +298,28 @@ const Category = () => {
           <div className="flex flex-col w-[32%] rounded-lg p-3 ">
             <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
               <h1 className="text-xl font-medium text-white">Category</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("category")}
                 className="w-8 h-8"
               />
             </div>
-            <Ctable category={category} setCategory={setCategory} />
+            <Ctable
+              category={category}
+              setCategory={setCategory}
+              setEditFormVIsiblity={setEditFormVIsiblity}
+              setEditId={setEditId}
+              setEditedValue={setEditedValue}
+            />{" "}
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg p-3 ">
             <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
               <h1 className="text-xl font-medium text-white"> Item Category</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
                 className="w-8 h-8"
               />
@@ -293,22 +327,32 @@ const Category = () => {
             <Itable
               itemCategory={itemCategory}
               setItemCategory={setItemCategory}
+              setCategory={setCategory}
+              setEditFormVIsiblity={setEditFormVIsiblity}
+              setEditId={setEditId}
+              setEditedValue={setEditedValue}
             />
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg p-3 ">
             <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
               <h1 className="text-xl font-medium text-white"> Features</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("feature")}
                 className="w-8 h-8"
               />
             </div>
-            <Ftable feature={feature} setFeature={setFeature} />
+            <Ftable
+              feature={feature}
+              setFeature={setFeature}
+              setCategory={setCategory}
+              setEditFormVIsiblity={setEditFormVIsiblity}
+              setEditId={setEditId}
+              setEditedValue={setEditedValue}
+            />
           </div>
-
-
-          
         </div>
       </div>
 
@@ -433,6 +477,42 @@ const Category = () => {
             </button>
           </div>
         </form>
+      )}
+
+      {editFormVisiblity && (
+        <div className="w-screen h-screen bg-overlay absolute left-0 top-0 flex justify-center items-center">
+          <form
+            action=""
+            onSubmit={handleEditSubmit}
+            className="bg-white p-4 flex flex-col gap-8 rounded"
+          >
+            <div className="flex w-full justify-between">
+              <h2>Edit Category</h2>
+              <img
+                src={close}
+                alt=""
+                onClick={() => setEditFormVIsiblity(false)}
+              />
+            </div>
+            <div className="flex gap-10 justify-between items-center">
+              <label className="w-44 p-4 font-medium" htmlFor="name">
+                Category Name
+              </label>
+              <input
+                className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+                type="text"
+                placeholder="e.g brand, size, colour"
+                autoFocus="autofocus"
+                name="name"
+                id="name"
+                onChange={handleEditFormChange}
+              />
+            </div>
+            <button className="flex self-end bg-button px-4 py-2 rounded text-white">
+              Save Change
+            </button>
+          </form>
+        </div>
       )}
 
       {visibleForm && (
