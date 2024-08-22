@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import axios from "axios";
 import Ctable from "../components/Categorytable";
-import Itable from "../components/Itable";
+import Itable from "../components/ItemCategoryTable";
 import Ftable from "../components/Featurestable";
 
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import featureicon from "../assets/feature.png";
 import Chat from "../components/Chat";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import add from "../assets/addCategory.svg"
+
 
 // Main Category component
 const Category = () => {
@@ -180,30 +182,7 @@ const Category = () => {
     }
   };
 
-  const handleDeleteItemCategory = async (categoryId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item category?"
-    );
-    if (!confirmDelete) {
-      return;
-    }
-    try {
-      const response = await axios.delete(
-        `http://localhost:8898/api/deleteItemCategory/${categoryId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response.data);
-      setItemCategory((prevCategory) =>
-        prevCategory.filter((cat) => cat.item_category_id !== categoryId)
-      );
-    } catch (error) {
-      console.error("Error deleting category:", error);
-    }
-  };
+
 
   const handleSubmitItemCategory = async (event) => {
     event.preventDefault();
@@ -291,29 +270,25 @@ const Category = () => {
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
 
-        <div className="w-[87vw] flex flex-wrap justify-between gap-5 ">
-          <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-lg font-bold m-2">Category</h1>
-              <button
-                className=" bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[21%]"
+        <div className="w-[86.5vw] flex  justify-between">
+          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
+            <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
+              <h1 className="text-xl font-medium text-white">Category</h1>
+              <img src={add} alt="add"
                 onClick={() => displayAddPopup("category")}
-              >
-                Add Category
-              </button>
+                className="w-8 h-8"
+              />
             </div>
             <Ctable category={category} setCategory={setCategory} />
           </div>
 
-          <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 mr-3">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-lg font-bold m-2">Item Category</h1>
-              <button
-                className=" bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[22%] "
+          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
+            <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
+              <h1 className="text-xl font-medium text-white"> Item Category</h1>
+              <img src={add} alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
-              >
-                Item Category
-              </button>
+                className="w-8 h-8"
+              />
             </div>
             <Itable
               itemCategory={itemCategory}
@@ -321,18 +296,19 @@ const Category = () => {
             />
           </div>
 
-          <div className="flex flex-col bg-white w-[48%] rounded-lg p-3 ml-3">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-lg font-bold m-2">Feature</h1>
-              <button
-                className="  bg-button text-white rounded border items-center px-6 py-2 ml-auto w-[21%] "
+          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
+            <div className="flex bg-button rounded-t-md px-7 py-4 justify-between">
+              <h1 className="text-xl font-medium text-white"> Features</h1>
+              <img src={add} alt="add"
                 onClick={() => displayAddPopup("feature")}
-              >
-                Add Feature
-              </button>
+                className="w-8 h-8"
+              />
             </div>
             <Ftable feature={feature} setFeature={setFeature} />
           </div>
+
+
+          
         </div>
       </div>
 

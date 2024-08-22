@@ -213,7 +213,7 @@ const VendorHistory = () => {
                   role="checkbox"
                   tabIndex={-1}
                   key={index}
-                  onClick={() => handleRowClick(row.bill_ID)}
+                  onClick={() => handleRowClick(row.bill_id)}
                   style={{ cursor: "pointer" }}
                 >
                   {columns.map((column) => {

@@ -25,11 +25,12 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+          {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+          }
+        );
 
         setItems(itemsResponse.data);
       } catch (error) {
@@ -137,6 +138,8 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
     }),
   };
 
+  console.log(items);
+
   return (
     <>
       <div className="container mx-auto overflow-auto max-h-[40vh]">
@@ -180,10 +183,21 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                 </td>
                 <td className="border border-neutral-500 px-4 py-2">
                   <Select
-                    options={items.map((item) => ({
-                      value: item.item_name,
-                      label: item.item_name,
-                    }))}
+                    options={items.map((item) => {
+                      const features = Object.entries(
+                        item.itemsOnFeatures || {}
+                      )
+                        .filter(([key, value]) => value)
+                        .map(([key, value]) => ` - ${value}`)
+                        .join("");
+
+                      const label = `${item.item_name}${features}`;
+
+                      return {
+                        value: label,
+                        label: label,
+                      };
+                    })}
                     onChange={(option) => handleSelectChange(option, index)}
                     value={
                       row.item_name

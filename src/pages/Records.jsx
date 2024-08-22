@@ -79,8 +79,6 @@ const Records = () => {
     }
   };
 
-  console.log(bill);
-
   const handleBillChange = (event) => {
     const value = event.target.value;
     setSelectedOption(value);
@@ -190,6 +188,7 @@ const Records = () => {
           }),
         ]);
 
+
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
@@ -288,10 +287,7 @@ const Records = () => {
     try {
       const billData = {
         ...bill,
-        selectedOptions: selectedOption, // Include the selectedOption
-        // items: vatData,
-        // panItems: panData,
-        // noBillItems: noBillData,
+        selectedOptions: selectedOption,
       };
 
       console.log(billData);
