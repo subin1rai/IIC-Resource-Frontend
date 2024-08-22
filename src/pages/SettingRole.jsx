@@ -222,7 +222,7 @@ const SettingRole = () => {
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="user_name" className="w-[120px]">
+                <label htmlFor="user_name" className="w-[120px] ">
                   Full Name
                 </label>
                 <input
@@ -233,6 +233,7 @@ const SettingRole = () => {
                   onChange={handleInputChange}
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  autoFocus
                 />
               </div>
               <div className="flex justify-between items-center gap-10">
@@ -308,7 +309,7 @@ const SettingRole = () => {
             <div className="flex flex-col gap-6">
               <div className="flex justify-between items-center gap-10">
                 <label htmlFor="department_name" className="w-[120px]">
-                  Department Name
+                  Name
                 </label>
                 <input
                   placeholder="Enter Department name"
@@ -318,6 +319,7 @@ const SettingRole = () => {
                   onChange={handleDepartmentChange}
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  autoFocus
                 />
               </div>
               {error && <div className="text-red-500  self-start">{error}</div>}

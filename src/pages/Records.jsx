@@ -181,12 +181,16 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [ vendorsResponse] = await Promise.all([
-       
+        const vendorsResponse = await
           axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+
+
+          })
+        ;
+
+
+
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
@@ -270,6 +274,8 @@ const Records = () => {
       items: [],
     });
   };
+
+  console.log(bill);
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -361,7 +367,7 @@ const Records = () => {
                 className="border-2 px-5 w-80 border-border rounded"
               />
               <button
-                className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
+                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
