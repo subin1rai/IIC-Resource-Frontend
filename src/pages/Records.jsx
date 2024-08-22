@@ -187,8 +187,6 @@ const Records = () => {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-
-
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
@@ -503,7 +501,7 @@ const Records = () => {
                 </div>
                 <div className="flex ">
                   <div className="flex gap-28">
-                    <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3">
                       <label className="font-medium" htmlFor="vendor_name">
                         Vendor Name:
                       </label>
@@ -512,13 +510,28 @@ const Records = () => {
                           value: vendor.vendor_name,
                           label: vendor.vendor_name,
                         }))}
-                        onChange={(option) =>
-                          handleSelectChange(option, { name: "vendor_name" })
-                        }
+                        onChange={(option) => {
+                          handleSelectChange(option, { name: "vendor_name" });
+                          const selectedVendor = vendors.find(
+                            (v) => v.vendor_name === option.value
+                          );
+                          if (selectedVendor) {
+                            setBill((prev) => ({
+                              ...prev,
+                              vendor_name: option.value,
+                              vat_number: selectedVendor.vat_number || "",
+                            }));
+                          } else {
+                            console.error(
+                              "Selected vendor not found:",
+                              option.value
+                            );
+                          }
+                        }}
                         value={
                           bill.vendor_name
                             ? {
-                                value: bill.vendor_name,
+                                value: bill?.vendors?.vendor_name,
                                 label: bill.vendor_name,
                               }
                             : null
@@ -528,17 +541,18 @@ const Records = () => {
                       />
                     </div>
                     <div className="flex flex-col gap-3">
-                      <label className="font-medium" htmlFor="vat">
+                      <label className="font-medium" htmlFor="vat_number">
                         VAT/PAN No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 focus:outline-none p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter Vat/Pan number"
                         autoFocus="autofocus"
                         name="vat_number"
-                        id="vat"
+                        id="vat_number"
                         onChange={handleChange}
-                        value={bill.vat}
+                        value={bill?.vendors?.vat_number}
+                        readOnly
                       />
                     </div>
 

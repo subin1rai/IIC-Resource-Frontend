@@ -289,7 +289,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
         <div className="flex justify-end mt-4">
           <button
             className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
-            onClick={() => console.log(itemsData)}
+            // onClick={() => console.log(items)}
           >
             Add Bill
           </button>
