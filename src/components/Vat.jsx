@@ -8,15 +8,16 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const [rows, setRows] = useState([
     {
       id: 1,
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      amtAfterTds: 0,
-      vat: 0,
-      amountWithVat: 0,
+          item_name: "",
+          quantity: 0,
+          unit_price: 0,
+          amount: 0,
+          tds: 0,
+          vat: 0,
+          amountWithVat: 0,
+          actualAmt: 0,
     },
+    // Add more rows as needed
   ]);
 
   const token = localStorage.getItem("token");
@@ -55,9 +56,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       unit_price: 0,
       amount: 0,
       tds: 0,
-      amtAfterTds: 0,
       vat: 0,
       amountWithVat: 0,
+      actualAmt: 0,
     };
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
@@ -74,22 +75,22 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       const amount = quantity * unit_price;
 
       let tds = 0;
-      let amtAfterTds = amount;
 
       if (selectedOption === "vat 1.5") {
-        tds = (amount / 1.13) * 0.015;
+        tds = (amount * 0.015);
       } else if (selectedOption === "vat 0") {
         tds = 0;
       }
 
-      const vat = amtAfterTds * 0.13; // Assuming VAT is 13%
-      const amountWithVat = amtAfterTds + vat;
+      const vat = amount* 0.13; // Assuming VAT is 13%
+      const amountWithVat = amount + vat;
+      const actualAmt = amountWithVat - tds;
 
       newRows[index].amount = amount || 0;
       newRows[index].tds = tds || 0;
-      newRows[index].amtAfterTds = amtAfterTds || 0;
       newRows[index].vat = vat || 0;
       newRows[index].amountWithVat = amountWithVat || 0;
+      newRows[index].actualAmt = actualAmt || 0;
     }
 
     setRows(newRows);
@@ -103,9 +104,9 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       unit_price: row.unit_price,
       amount: row.amount,
       tds: row.tds,
-      amtAfterTds: row.amtAfterTds,
       vat: row.vat,
       amountWithVat: row.amountWithVat,
+      actualAmt: row.actualAmt,
     }));
     onDataUpdate(newItemsData);
   };
@@ -164,13 +165,13 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                 TDS
               </th>
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
-                Amount after TDS
-              </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
                 VAT amount
               </th>
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
                 Amount with VAT
+              </th>
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
+                Actual Amount
               </th>
             </tr>
           </thead>
@@ -233,13 +234,13 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                   {row.tds.toFixed(2)}
                 </td>
                 <td className="border border-neutral-500  px-4 py-2 text-center">
-                  {row.amtAfterTds ? row.amtAfterTds.toFixed(2) : "0.00"}
-                </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
                   {row.vat ? row.vat.toFixed(2) : "0.00"}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.amountWithVat ? row.amountWithVat.toFixed(2) : "0.00"}
+                </td>
+                <td className="border border-neutral-500  px-4 py-2 text-center">
+                  {row.actualAmt ? row.actualAmt.toFixed(2) : "0.00"}
                 </td>
               </tr>
             ))}
@@ -259,17 +260,18 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.tds || 0), 0).toFixed(2)}
               </td>
-              <td className="border border-neutral-500  px-4 py-2 text-center">
-                {rows
-                  .reduce((sum, row) => sum + (row.amtAfterTds || 0), 0)
-                  .toFixed(2)}
-              </td>
+              
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.vat || 0), 0).toFixed(2)}
               </td>
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows
                   .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
+                  .toFixed(2)}
+              </td>
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows
+                  .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
                   .toFixed(2)}
               </td>
             </tr>

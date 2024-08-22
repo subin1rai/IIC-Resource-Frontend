@@ -43,7 +43,7 @@ const Records = () => {
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [exports, setExport] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState("vat 0");
   // const [vatData, setVatData] = useState([]);
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
@@ -150,8 +150,12 @@ const Records = () => {
         );
       default:
         return (
-          <div className="text-red-500">Please select the type of Bill</div>
-        );
+          <Vat
+          selectedOption="vat 0"
+          handleChange={handleChange}
+          onDataUpdate={(data) => handleDataUpdate(data, "vat")}
+        />
+      );
     }
   };
 
@@ -180,8 +184,10 @@ const Records = () => {
         const [vendorsResponse] = await Promise.all(
           axios.get("http://localhost:8898/api/vendor", {
             headers: { Authorization: `Bearer ${token}` },
+
           })
         );
+
 
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
@@ -359,7 +365,7 @@ const Records = () => {
                 className="border-2 px-5 w-80 border-border rounded"
               />
               <button
-                className="flex bg-transparent border h-fit py-2 border-border px-6  w-fit justify-center items-center rounded gap-4"
+                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
@@ -451,7 +457,6 @@ const Records = () => {
                 alt="close icon"
                 onClick={closeAddBillForm}
               />
-
               <div className="flex flex-col gap-6">
                 <div className="flex gap-28">
                   <div className="flex flex-col gap-3">

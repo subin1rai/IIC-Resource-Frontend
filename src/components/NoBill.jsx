@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const NoBill = ({ onDataUpdate }) => {
+const NoBill = ({ onDataUpdate, handleChange, initialData }) => {
   const [items, setItems] = useState([]);
+  const [noBillItems, setNoBillItems] = useState(initialData || []);
   // const [vendors, setVendors] = useState([]);
 
   // Retrieve token from localStorage

@@ -26,6 +26,7 @@ const Featurestable = ({
                 className="h-5 w-5"
                 onClick={() => handleformVisiblity(feat.feature_id)}
               />
+
             </div>
           </div>
           <hr className="h-1 w-[85%] border-button" />
