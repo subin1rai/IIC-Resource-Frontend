@@ -322,15 +322,17 @@ const Vendor = () => {
                 />
                 Filter
               </button>
-             
+
+              {/* Export button */}
               <button
-                className="flex bg-transparent border-2 h-fit py-1.5 border-green-500 px-6 text-green-600 font-regular  w-fit justify-center items-center rounded gap-2"
+                className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
                 aria-label="Menu"
-                onClick={handleExport}
+              onClick={handleExport}
               >
-                <img src={exportIcon} alt="export icon" className="h-6 w-6" />
+                <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
                 Export
               </button>
+
               <button
                 className="flex justify-center bg-button text-white rounded border items-center w-fit h-fit px-6 py-2"
                 onClick={openAddVendorForm}
