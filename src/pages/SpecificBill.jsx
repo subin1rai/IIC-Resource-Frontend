@@ -173,13 +173,19 @@ const SpecificBill = () => {
           ]);
         console.log(singleBillResponse.data);
         setBillDetails(singleBillResponse.data);
+
+        const type = billDetails.bill.bill_type.toLowerCase();
+        const percent = billDetails.TDS;
+        const value = type + " " + percent;
+        setSelectedOption(value);
+        console.log(value);
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
         // setBill(response.data.bill);
         setLoading(false);
       } catch (error) {
         console.error(error);
-        setError(error.response?.data?.error || "An error occurred");
+        setError(error.response?.data?.error);
         setLoading(false);
       }
     };
@@ -245,9 +251,6 @@ const SpecificBill = () => {
     }
   };
 
-  console.log(token);
-
-  // Refresh bill details
   useEffect(() => {
     const fetchSingleBill = async () => {
       try {
@@ -457,7 +460,7 @@ const SpecificBill = () => {
                       {index + 1}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
-                      {billItem.item_id}
+                      {billItem.item_name}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
                       {billItem.quantity}
@@ -491,7 +494,7 @@ const SpecificBill = () => {
         </div>
       </div>
 
-      {addFormVisibility && (
+      {!loading && addFormVisibility && (
         <>
           <div className="h-screen w-screen bg-overlay absolute "></div>
 
