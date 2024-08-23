@@ -75,7 +75,7 @@ const SpecificBill = () => {
           <Vat
             selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={(data) => handleDataUpdate(data, 'vat')}
+            onDataUpdate={(data) => handleDataUpdate(data, "vat")}
           />
         );
       case "pan 0":
@@ -85,14 +85,14 @@ const SpecificBill = () => {
           <Pan
             selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={(data) => handleDataUpdate(data, 'pan')} 
+            onDataUpdate={(data) => handleDataUpdate(data, "pan")}
           />
         );
       case "noBill":
         return (
           <NoBill
             handleChange={handleChange}
-            onDataUpdate={(data) => handleDataUpdate(data, 'noBill')}
+            onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
           />
         );
       default:
@@ -153,7 +153,7 @@ const SpecificBill = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [singleBillResponse,itemsResponse, vendorsResponse] =
+        const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
             axios.get(`http://localhost:8898/api/singleBill/${bill_id}`, {
               headers: {
@@ -171,7 +171,7 @@ const SpecificBill = () => {
               },
             }),
           ]);
-        console.log(singleBillResponse.data)
+        console.log(singleBillResponse.data);
         setBillDetails(singleBillResponse.data);
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
@@ -294,7 +294,7 @@ const SpecificBill = () => {
       <div className="flex flex-col gap-4 mx-auto">
         <Topbar />
 
-        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
           <div className="flex justify-between items-center ml-2">
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
@@ -306,7 +306,9 @@ const SpecificBill = () => {
                   {billDetails?.bill?.bill_no}
                 </h4>
               </div>
-              <h2 className="font-semibold text-2xl">{billDetails?.bill?.bill_no}</h2>
+              <h2 className="font-semibold text-2xl">
+                {billDetails?.bill?.bill_no}
+              </h2>
             </div>
 
             {/* please dont remove this during merge conflict */}
@@ -353,7 +355,7 @@ const SpecificBill = () => {
                     {billDetails.vat_no || "--"}
                   </span>
                 </p> */}
-                 <p className="font-semibold">
+                <p className="font-semibold">
                   Vendor Name:
                   <span className=" font-normal pl-4">
                     {billDetails?.vendor_name || "--"}
@@ -374,7 +376,11 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Approved Status:
                   <span className="font-normal  pl-4">
-                    {billDetails?.bill?.isApproved? <span className="text-green-500">Approved</span>: <span className="text-yellow-500">Pending</span> || "--"}
+                    {billDetails?.bill?.isApproved ? (
+                      <span className="text-green-500">Approved</span>
+                    ) : (
+                      <span className="text-yellow-500">Pending</span> || "--"
+                    )}
                   </span>
                 </p>
               </div>
@@ -382,7 +388,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   TDS:
                   <span className="font-normal  pl-4">
-                  {billDetails?.TDS || 0}
+                    {billDetails?.TDS || 0}
                   </span>
                 </p>
                 <p className="font-semibold">
@@ -394,7 +400,7 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Paid Amount:
                   <span className="font-normal  pl-4">
-                    {billDetails?.bill?.paid_amount || 0 }
+                    {billDetails?.bill?.paid_amount || 0}
                   </span>
                 </p>
                 <p className="font-semibold">
@@ -406,51 +412,82 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Payment Status:
                   <span className="font-normal  pl-4">
-                    {billDetails?.bill?.left_amount<0? <span className="text-yellow">Pending</span> :<span className="text-green-500">Complete </span> || "--"}
+                    {billDetails?.bill?.left_amount < 0 ? (
+                      <span className="text-yellow">Pending</span>
+                    ) : (
+                      <span className="text-green-500">Complete </span> || "--"
+                    )}
                   </span>
                 </p>
               </div>
             </div>
-          ) : (    
+          ) : (
             <div>Loading...</div>
           )}
           <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
           <p className="font-bold text-xl py-6 px-2">Items</p>
           <table className="min-w-full table-fixed border-collapse">
-      <thead>
-        <tr className="bg-neutral-200">
-          <th className="p-2 text-center border-b border-neutral-200 font-medium">S.No.</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Item Name</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Quantity</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Unit Price</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Vat Amount</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Total Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-  {bill.BillItems && bill.BillItems.length > 0 ? (
-    bill.BillItems.map((billItem, index) => (
-      <tr key={index}>
-        <td className="p-2 text-center border-b border-neutral-200">{index + 1}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.item_id}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.quantity}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.unit_price}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.withVATAmount}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.total_Amount}</td>
+            <thead>
+              <tr className="bg-neutral-200">
+                <th className="p-2 text-center border-b border-neutral-200 font-medium">
+                  S.No.
+                </th>
+                <th className="p-2 text-center border-b  border-neutral-200 font-medium">
+                  Item Name
+                </th>
+                <th className="p-2 text-center border-b  border-neutral-200 font-medium">
+                  Quantity
+                </th>
+                <th className="p-2 text-center border-b  border-neutral-200 font-medium">
+                  Unit Price
+                </th>
+                <th className="p-2 text-center border-b  border-neutral-200 font-medium">
+                  Vat Amount
+                </th>
+                <th className="p-2 text-center border-b  border-neutral-200 font-medium">
+                  Total Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {bill.BillItems && bill.BillItems.length > 0 ? (
+                bill.BillItems.map((billItem, index) => (
+                  <tr key={index}>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {index + 1}
+                    </td>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {billItem.item_id}
+                    </td>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {billItem.quantity}
+                    </td>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {billItem.unit_price}
+                    </td>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {billItem.withVATAmount}
+                    </td>
+                    <td className="p-2 text-center border-b border-neutral-200">
+                      {billItem.total_Amount}
+                    </td>
 
-        {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
+                    {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
         <td className="p-2 border-b border-neutral-200">{billItem.withVATAmount}</td> */}
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="6" className="p-2 text-center border-b border-gray-300">
-        No bill items available
-      </td>
-    </tr>
-  )}
-</tbody>
-    </table>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="p-2 text-center border-b border-gray-300"
+                  >
+                    No bill items available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -516,11 +553,11 @@ const SpecificBill = () => {
                   </div>
                 </div>
                 <img
-                className="cursor-pointer  h-[2vh] w-[2vw] absolute -right-10 invert mb-3 "
-                src={close}
-                alt="close icon"
-                onClick={closeEditBillDetailsForm}
-              />
+                  className="cursor-pointer  h-[2vh] w-[2vw] absolute -right-10 invert mb-3 "
+                  src={close}
+                  alt="close icon"
+                  onClick={closeEditBillDetailsForm}
+                />
               </div>
               {/* form div */}
               <div className=" flex flex-col gap-6">
@@ -571,44 +608,44 @@ const SpecificBill = () => {
                 </div>
                 <div className="flex">
                   <div className="flex gap-28">
-                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3">
                       <label className="font-medium" htmlFor="vendor_name">
                         Vendor Name:
                       </label>
                       <Select
-                      options={vendors.map((vendor) => ({
-                        value: vendor.vendor_name,
-                        label: vendor.vendor_name,
-                      }))}
-                      onChange={(option) => {
-                        handleSelectChange(option, { name: "vendor_name" });
-                        const selectedVendor = vendors.find(
-                          (v) => v.vendor_name === option.value
-                        );
-                        if (selectedVendor) {
-                          setEditedBill((prev) => ({
-                            ...prev,
-                            vendor_name: option.value,
-                            vat_number: selectedVendor.vat_number || "",
-                          }));
-                        } else {
-                          console.error(
-                            "Selected vendor not found:",
-                            option.value
+                        options={vendors.map((vendor) => ({
+                          value: vendor.vendor_name,
+                          label: vendor.vendor_name,
+                        }))}
+                        onChange={(option) => {
+                          handleSelectChange(option, { name: "vendor_name" });
+                          const selectedVendor = vendors.find(
+                            (v) => v.vendor_name === option.value
                           );
+                          if (selectedVendor) {
+                            setEditedBill((prev) => ({
+                              ...prev,
+                              vendor_name: option.value,
+                              vat_number: selectedVendor.vat_number || "",
+                            }));
+                          } else {
+                            console.error(
+                              "Selected vendor not found:",
+                              option.value
+                            );
+                          }
+                        }}
+                        value={
+                          editedBill.vendor_name
+                            ? {
+                                value: editedBill.vendor_name,
+                                label: editedBill.vendor_name,
+                              }
+                            : null
                         }
-                      }}
-                      value={
-                        editedBill.vendor_name
-                          ? {
-                              value: editedBill.vendor_name,
-                              label: editedBill.vendor_name,
-                            }
-                          : null
-                      }
-                      placeholder="Select Vendor"
-                      styles={customStyles}
-                    />
+                        placeholder="Select Vendor"
+                        styles={customStyles}
+                      />
                     </div>
                     <div className="flex flex-col gap-3">
                       <label className="font-medium" htmlFor="vat_number">

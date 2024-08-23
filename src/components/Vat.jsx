@@ -8,6 +8,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const [rows, setRows] = useState([
     {
       id: 1,
+      item_id: null,
       item_name: "",
       quantity: 0,
       unit_price: 0,
@@ -17,7 +18,6 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       amountWithVat: 0,
       actualAmt: 0,
     },
-    // Add more rows as needed
   ]);
 
   const token = localStorage.getItem("token");
@@ -33,6 +33,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
         );
 
         setItems(itemsResponse.data);
+        console.log("Fetched items:", itemsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,7 +44,8 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
 
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
-    updatedRows[index].item_name = option.value;
+    updatedRows[index].item_id = option.value;
+    updatedRows[index].item_name = option.label;
     setRows(updatedRows);
     updateParentData(updatedRows);
   };
@@ -52,6 +54,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
     const newRow = {
       id: rows.length + 1,
       item_id: "",
+      item_name: "",
       quantity: 0,
       unit_price: 0,
       amount: 0,
@@ -82,7 +85,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
         tds = 0;
       }
 
-      const vat = amount * 0.13; // Assuming VAT is 13%
+      const vat = amount * 0.13;
       const amountWithVat = amount + vat;
       const actualAmt = amountWithVat - tds;
 
@@ -99,7 +102,8 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
 
   const updateParentData = (updatedRows) => {
     const newItemsData = updatedRows.map((row) => ({
-      item_id: row.item_name,
+      item_id: row.item_id,
+      item_name: row.item_name,
       quantity: row.quantity,
       unit_price: row.unit_price,
       amount: row.amount,
@@ -138,12 +142,10 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
     }),
   };
 
-  console.log(items);
-
   return (
     <>
       <div className="container mx-auto overflow-auto max-h-[40vh]">
-        <table className=" w-fit border-collapse border border-neutral-500  ">
+        <table className="w-fit border-collapse border border-neutral-500">
           <thead>
             <tr className="bg-blue-200">
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
@@ -164,13 +166,13 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 TDS
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 VAT amount
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 Amount with VAT
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium ">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 Actual Amount
               </th>
             </tr>
@@ -194,8 +196,8 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                       const label = `${item.item_name}${features}`;
 
                       return {
-                        value: item.item_id, // Use item_id as the value
-                        label: label, // Display name and features as the label
+                        value: item.item_id,
+                        label: label,
                       };
                     })}
                     onChange={(option) => handleSelectChange(option, index)}
@@ -203,7 +205,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                       row.item_id
                         ? {
                             value: row.item_id,
-                            label: `${row.item_name}${features}`,
+                            label: row.item_name,
                           }
                         : null
                     }
@@ -212,7 +214,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                     className="w-[170px] whitespace-nowrap"
                   />
                 </td>
-                <td className=" px-4 py-2">
+                <td className="px-4 py-2">
                   <input
                     value={row.quantity}
                     onChange={(e) =>
@@ -221,7 +223,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                     className="w-full h-full p-1 border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-center"
                   />
                 </td>
-                <td className="border border-neutral-500 px-4 py-2 ">
+                <td className="border border-neutral-500 px-4 py-2">
                   <input
                     value={row.unit_price}
                     onChange={(e) =>
@@ -230,19 +232,19 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                     className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0 text-center"
                   />
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.amount.toFixed(2)}
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.tds.toFixed(2)}
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.vat ? row.vat.toFixed(2) : "0.00"}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.amountWithVat ? row.amountWithVat.toFixed(2) : "0.00"}
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.actualAmt ? row.actualAmt.toFixed(2) : "0.00"}
                 </td>
               </tr>
@@ -255,24 +257,23 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
               >
                 Total
               </td>
-              <td className="border border-neutral-500  px-4 py-2 text-center">
+              <td className="border border-neutral-500 px-4 py-2 text-center">
                 {rows
                   .reduce((sum, row) => sum + (row.amount || 0), 0)
                   .toFixed(2)}
               </td>
-              <td className="border border-neutral-500  px-4 py-2 text-center">
+              <td className="border border-neutral-500 px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.tds || 0), 0).toFixed(2)}
               </td>
-
-              <td className="border border-neutral-500  px-4 py-2 text-center">
+              <td className="border border-neutral-500 px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.vat || 0), 0).toFixed(2)}
               </td>
-              <td className="border border-neutral-500  px-4 py-2 text-center">
+              <td className="border border-neutral-500 px-4 py-2 text-center">
                 {rows
                   .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
                   .toFixed(2)}
               </td>
-              <td className="border border-neutral-500  px-4 py-2 text-center">
+              <td className="border border-neutral-500 px-4 py-2 text-center">
                 {rows
                   .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
                   .toFixed(2)}
@@ -290,10 +291,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
           </span>
         </div>
         <div className="flex justify-end mt-4">
-          <button
-            className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md"
-            // onClick={() => console.log(items)}
-          >
+          <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
             Add Bill
           </button>
         </div>
