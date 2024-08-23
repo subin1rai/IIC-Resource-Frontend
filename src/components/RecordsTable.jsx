@@ -198,6 +198,7 @@ export default function RecordsTable({ bills }) {
                     tabIndex={-1}
                     key={bill.bill_ID || `unknown-${index}`}
                     onClick={() => handleRowClick(bill.bill_id)}
+                    style={{ cursor: "pointer" }}
                   >
                     {columns.map((column) => {
                       let value = bill[column.id];
