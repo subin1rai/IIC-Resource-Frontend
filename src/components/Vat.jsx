@@ -8,14 +8,14 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const [rows, setRows] = useState([
     {
       id: 1,
-          item_name: "",
-          quantity: 0,
-          unit_price: 0,
-          amount: 0,
-          tds: 0,
-          vat: 0,
-          amountWithVat: 0,
-          actualAmt: 0,
+      item_name: "",
+      quantity: 0,
+      unit_price: 0,
+      amount: 0,
+      tds: 0,
+      vat: 0,
+      amountWithVat: 0,
+      actualAmt: 0,
     },
     // Add more rows as needed
   ]);
@@ -51,7 +51,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
   const addRow = () => {
     const newRow = {
       id: rows.length + 1,
-      item_name: "",
+      item_id: "",
       quantity: 0,
       unit_price: 0,
       amount: 0,
@@ -77,12 +77,12 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
       let tds = 0;
 
       if (selectedOption === "vat 1.5") {
-        tds = (amount * 0.015);
+        tds = amount * 0.015;
       } else if (selectedOption === "vat 0") {
         tds = 0;
       }
 
-      const vat = amount* 0.13; // Assuming VAT is 13%
+      const vat = amount * 0.13; // Assuming VAT is 13%
       const amountWithVat = amount + vat;
       const actualAmt = amountWithVat - tds;
 
@@ -99,7 +99,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
 
   const updateParentData = (updatedRows) => {
     const newItemsData = updatedRows.map((row) => ({
-      item_name: row.item_name,
+      item_id: row.item_name,
       quantity: row.quantity,
       unit_price: row.unit_price,
       amount: row.amount,
@@ -194,14 +194,17 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
                       const label = `${item.item_name}${features}`;
 
                       return {
-                        value: label,
-                        label: label,
+                        value: item.item_id, // Use item_id as the value
+                        label: label, // Display name and features as the label
                       };
                     })}
                     onChange={(option) => handleSelectChange(option, index)}
                     value={
-                      row.item_name
-                        ? { value: row.item_name, label: row.item_name }
+                      row.item_id
+                        ? {
+                            value: row.item_id,
+                            label: `${row.item_name}${features}`,
+                          }
                         : null
                     }
                     placeholder="Select Item"
@@ -260,7 +263,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.tds || 0), 0).toFixed(2)}
               </td>
-              
+
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows.reduce((sum, row) => sum + (row.vat || 0), 0).toFixed(2)}
               </td>
