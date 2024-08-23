@@ -167,7 +167,7 @@ const SettingRole = () => {
 
         <div className="flex flex-col bg-white p-5 rounded w-[85.5vw] gap-5">
           <div className="flex justify-between">
-            <h3 className="text-xl font-bold">Users List</h3>
+            <h3 className="text-lg font-bold m-1">Users List</h3>
             <div className="flex gap-5">
               <input
                 type="text"

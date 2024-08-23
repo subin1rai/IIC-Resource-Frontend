@@ -186,7 +186,7 @@ const SpecificVendor = () => {
                   </span>
                 </p>
                 <p className="font-medium text-[#6D6E70]">
-                  payment Duration:{" "}
+                  Payment Duration:{" "}
                   <span className="font-medium pl-3 text-black">
                     {vendor.payment_duration || "--"}
                   </span>

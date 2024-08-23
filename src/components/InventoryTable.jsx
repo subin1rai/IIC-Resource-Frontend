@@ -109,11 +109,16 @@ export default function InventoryTable({ items }) {
   };
 
   const cellStyle = {
-    fontSize: "16px",
+    fontSize: "14px",
+    padding: "12px 16px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 
   const headerStyle = {
     fontWeight: 600,
+    backgroundColor: "#f5f5f5",
   };
 
   const handleRowClick = (id) => {
@@ -132,6 +137,7 @@ export default function InventoryTable({ items }) {
         width: "100%",
         overflow: "hidden",
         cursor: "pointer",
+        fontSize: "18px",
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
