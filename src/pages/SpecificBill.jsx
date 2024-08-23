@@ -44,7 +44,7 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState(billDetails.bills.bill_type + " " + billDetails.TDS);
 
   const { bill_id } = useParams();
 
@@ -173,6 +173,19 @@ const SpecificBill = () => {
           ]);
         console.log(singleBillResponse.data)
         setBillDetails(singleBillResponse.data);
+
+        const type = billDetails.bill.bill_type;
+        const tds = billDetails.TDS;
+
+        console.log(value)
+
+        const value = type + " " + tds 
+        setValue(value)
+
+        console.log(value)
+
+        setSelectedOption(value);
+        console.log(selectedOption)
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
         // setBill(response.data.bill);
@@ -218,7 +231,6 @@ const SpecificBill = () => {
 
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log("Selected option:", value);
     setSelectedOption(value);
     setBill((prevBill) => ({
       ...prevBill,
@@ -245,7 +257,6 @@ const SpecificBill = () => {
     }
   };
 
-  console.log(token);
 
   // Refresh bill details
   useEffect(() => {
@@ -289,6 +300,7 @@ const SpecificBill = () => {
   };
 
   return (
+
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto">
@@ -647,7 +659,7 @@ const SpecificBill = () => {
                 {error && (
                   <span className="text-red-500 self-center">{error}</span>
                 )}
-                {renderSelectedComponent(bill.selectedOptions)}
+                {renderSelectedComponent()}
               </div>
             </div>
           </form>
