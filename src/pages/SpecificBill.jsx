@@ -44,7 +44,7 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState(billDetails.bills.bill_type + " " + billDetails.TDS);
 
   const { bill_id } = useParams();
 
@@ -174,11 +174,13 @@ const SpecificBill = () => {
         console.log(singleBillResponse.data);
         setBillDetails(singleBillResponse.data);
 
+
         const type = billDetails.bill.bill_type.toLowerCase();
         const percent = billDetails.TDS;
         const value = type + " " + percent;
         setSelectedOption(value);
         console.log(value);
+
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
         // setBill(response.data.bill);
@@ -224,7 +226,6 @@ const SpecificBill = () => {
 
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log("Selected option:", value);
     setSelectedOption(value);
     setBill((prevBill) => ({
       ...prevBill,
@@ -250,6 +251,7 @@ const SpecificBill = () => {
       console.log(error);
     }
   };
+
 
   useEffect(() => {
     const fetchSingleBill = async () => {
@@ -292,6 +294,7 @@ const SpecificBill = () => {
   };
 
   return (
+
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto">
@@ -687,7 +690,7 @@ const SpecificBill = () => {
                 {error && (
                   <span className="text-red-500 self-center">{error}</span>
                 )}
-                {renderSelectedComponent(bill.selectedOptions)}
+                {renderSelectedComponent()}
               </div>
             </div>
           </form>
