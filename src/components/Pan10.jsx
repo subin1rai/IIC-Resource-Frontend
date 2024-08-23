@@ -30,6 +30,7 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
   const [rows, setRows] = useState([
     {
       id: 1,
+      item_id: "",
       item_name: "",
       quantity: 0,
       unit_price: 0,
@@ -41,14 +42,18 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
   ]);
 
   const handleSelectChange = (option, index) => {
+    console.log(option);
     const updatedRows = [...rows];
-    updatedRows[index].item_name = option.value;
+    updatedRows[index].item_id = option.value;
+    updatedRows[index].item_name = option.label;
     setRows(updatedRows);
+    updateParentData(updatedRows);
   };
 
   const addRow = () => {
     const newRow = {
       id: rows.length + 1,
+      item_id: "",
       item_name: "",
       quantity: 0,
       unit_price: 0,
@@ -62,6 +67,8 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
     setRows(updatedRows);
     updateParentData(updatedRows);
   };
+
+  console.log(rows);
 
   // Function to update row data
   const updateRow = (index, field, value) => {
@@ -97,6 +104,7 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
 
   const updateParentData = (updatedRows) => {
     const newItemsData = updatedRows.map((row) => ({
+      item_id: row.item_id,
       item_name: row.item_name,
       quantity: row.quantity,
       unit_price: row.unit_price,
@@ -172,19 +180,33 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 w-64">
                   <Select
-                    options={items.map((item) => ({
-                      value: item.item_name,
-                      label: item.item_name,
-                    }))}
+                    options={items.map((item) => {
+                      const features = Object.entries(
+                        item.itemsOnFeatures || {}
+                      )
+                        .filter(([key, value]) => value)
+                        .map(([key, value]) => ` - ${value}`)
+                        .join("");
+
+                      const label = `${item.item_name}${features}`;
+
+                      return {
+                        value: item.item_id,
+                        label: label,
+                      };
+                    })}
                     onChange={(option) => handleSelectChange(option, index)}
                     value={
-                      row.item_name
-                        ? { value: row.item_name, label: row.item_name }
+                      row.item_id
+                        ? {
+                            value: row.item_id,
+                            label: row.item_name,
+                          }
                         : null
                     }
                     placeholder="Select Item"
                     styles={customStyles}
-                    className="w-[250px] whitespace-nowrap"
+                    className="w-[170px] whitespace-nowrap"
                   />
                 </td>
                 <td className="border border-neutral-500  px-4 py-2 text-center">
