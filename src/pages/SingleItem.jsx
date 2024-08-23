@@ -25,11 +25,13 @@ const SingleItem = () => {
   const [editedItem, setEditedItem] = useState({
     item_name: "",
     category: "",
-    item_category: "",
+    itemCategory: "",
     measuring_unit: "",
     low_limit: "",
     features: {},
   });
+
+  console.log(editedItem);
 
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
@@ -48,11 +50,12 @@ const SingleItem = () => {
     const getSingleItem = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8898/api/items/${id}`, {
+          `http://localhost:8898/api/items/${id}`,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
+            },
           }
-        }
         );
 
         const categoryResponse = await axios.get(
@@ -98,7 +101,7 @@ const SingleItem = () => {
     setEditedItem({
       item_name: item.item_name || "",
       category: item.category || "",
-      item_category: item.itemCategory || "",
+      itemCategory: item.itemCategory || "",
       measuring_unit: item.measuring_unit || "",
       low_limit: item.low_limit?.toString() || "",
       features: item.itemsOnFeatures || {},
@@ -193,7 +196,7 @@ const SingleItem = () => {
       const updatedItem = {
         item_name: editedItem.item_name,
         category: editedItem.category,
-        item_category_name: editedItem.item_category,
+        item_category_name: editedItem.itemCategory,
         measuring_unit: editedItem.measuring_unit,
         low_limit: parseInt(editedItem.low_limit, 10),
         features: editedItem.features,
@@ -415,14 +418,14 @@ const SingleItem = () => {
                       value: cat.item_category_name,
                       label: cat.item_category_name,
                     }))}
-                    name="item_category"
+                    name="itemCategory"
                     placeholder="Enter item category"
                     className="react-select-container"
                     classNamePrefix="react-select"
                     styles={customStyles}
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, {
-                        name: "item_category",
+                        name: "itemCategory",
                       })
                     }
                     value={{

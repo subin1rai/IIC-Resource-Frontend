@@ -151,11 +151,11 @@ const Records = () => {
       default:
         return (
           <Vat
-          selectedOption="vat 0"
-          handleChange={handleChange}
-          onDataUpdate={(data) => handleDataUpdate(data, "vat")}
-        />
-      );
+            selectedOption="vat 0"
+            handleChange={handleChange}
+            onDataUpdate={(data) => handleDataUpdate(data, "vat")}
+          />
+        );
     }
   };
 
@@ -181,16 +181,12 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const vendorsResponse = await
-          axios.get("http://localhost:8898/api/vendor", {
+        const vendorsResponse = await axios.get(
+          "http://localhost:8898/api/vendor",
+          {
             headers: { Authorization: `Bearer ${token}` },
-
-
-          })
-        ;
-
-
-
+          }
+        );
         console.log(vendorsResponse);
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
@@ -507,7 +503,7 @@ const Records = () => {
                 </div>
                 <div className="flex ">
                   <div className="flex gap-28">
-                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3">
                       <label className="font-medium" htmlFor="vendor_name">
                         Vendor Name:
                       </label>
