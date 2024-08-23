@@ -303,7 +303,7 @@ const Records = () => {
       );
 
       setBills((prevBills) => [...prevBills, response.data.result.bill]);
-      toast.success(`${bill.bill_no} Added Successfully!`);
+      toast.success(`${bill.bill_no} added successfully!`);
       closeAddBillForm();
     } catch (error) {
       console.error("Error adding bill:", error);
@@ -579,7 +579,7 @@ const Records = () => {
                 {renderSelectedComponent()}
 
                 {error && (
-                  <span className="text-red-500 self-center">{error}</span>
+                  <span className="text-red-500 justify-start">{error}</span>
                 )}
               </div>
             </div>
