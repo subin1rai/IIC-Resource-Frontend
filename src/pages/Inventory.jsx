@@ -318,7 +318,7 @@ const Inventory = () => {
                 className="border-2 px-5 w-80 border-border rounded"
               />
               <button
-                className="flex justify-center items-center w-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
@@ -338,7 +338,7 @@ const Inventory = () => {
                 Export
               </button>
               <button
-                className="flex justify-center bg-blue-500 text-white rounded items-center w-fit px-6"
+                className="flex bg-blue-500 px-6  w-fit h-fit py-2 justify-center items-center rounded text-white"
                 onClick={displayAddPopup}
               >
                 Add Item
@@ -357,7 +357,7 @@ const Inventory = () => {
           <div className="flex justify-between items-center relative overflow-hidden px-9 pt-9">
             <p className="text-xl font-semibold">Add Item</p>
             <img
-              className="rounded-md cursor-pointer h-5 w-5"
+              className="cursor-pointer h-4 w-4 "
               src={close}
               alt=""
               onClick={closeAddItemForm}
@@ -528,18 +528,20 @@ const Inventory = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-4">
-          <div className="flex justify-between">
-            <h2 className="font-semibold text-xl"> Filtering Option</h2>
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-5">
+          
+          <div className="flex justify-between ">
+            <h2 className="font-semibold text-lg"> Filtering Option</h2>
             <img
               src={close}
               alt=""
-              className="rounded-md cursor-pointer"
+              className="cursor-pointer w-4 h-4 mt-2"
               onClick={closeFilterForm}
             />
           </div>
-          <label>Select Category: </label>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-3">
+          <label>Filter by Category: </label>
+          <div className="flex gap-8">
             <Select
               options={categoryOptions}
               onChange={(selectedOption) =>
@@ -565,8 +567,10 @@ const Inventory = () => {
               classNamePrefix="react-select"
             />
           </div>
-          <label>Select Date:</label>
-          <div className="flex gap-4 ">
+          </div>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="">Filter by Date:</label>
+          <div className="flex gap-8 ">
             <input
               className="border-2 rounded border-neutral-300 p-2 w-[250px]"
               type="date"
@@ -578,9 +582,11 @@ const Inventory = () => {
               placeholder="to"
             />
           </div>
+          </div>
           <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
             Filter
           </button>
+          
         </form>
       )}
       {(addFormVisibility || filterFormVisibility) && (
