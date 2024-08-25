@@ -24,7 +24,7 @@ const SpecificBill = () => {
     selectedOptions: "",
     paid_amount: 0,
     items: [],
-  }); 
+  });
 
   const [editedBill, setEditedBill] = useState({
     bill_no: "",
