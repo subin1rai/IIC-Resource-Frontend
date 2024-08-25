@@ -299,7 +299,7 @@ const Category = () => {
               <h1 className="text-lg font-medium ">Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("category")}
-                className="w-8 h-8"
+                className="w-8 h-8 mr-2"
               />
             </div>
             <Ctable
@@ -316,7 +316,7 @@ const Category = () => {
               <h1 className="text-lg font-medium"> Item Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
-                className="w-8 h-8"
+                className="w-8 h-8 mr-2"
               />
             </div>
             <Itable
@@ -334,7 +334,7 @@ const Category = () => {
               <h1 className="text-lg font-medium "> Features</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("feature")}
-                className="w-8 h-8"
+                className="w-8 h-8 mr-2"
               />
             </div>
             <Ftable
@@ -480,7 +480,7 @@ const Category = () => {
             className="bg-white p-4 flex flex-col gap-8 rounded"
           >
             <div className="flex w-full justify-between">
-              <h2>Edit Category</h2>
+            <p className=" ml-4 font-semibold">Edit Category</p>
               <img
                 src={close}
                 alt=""
@@ -494,7 +494,7 @@ const Category = () => {
               <input
                 className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
                 type="text"
-                placeholder="e.g brand, size, colour"
+                placeholder=""
                 autoFocus="autofocus"
                 name="name"
                 id="name"

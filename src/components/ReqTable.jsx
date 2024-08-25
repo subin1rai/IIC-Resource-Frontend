@@ -16,32 +16,33 @@ const columns = [
     id: "requested_by",
     label: "Requested By",
     maxWidth: 70,
-    align: "center",
+    align: "left"
     
   },
   { id: "for_userId", 
     label: "Requested For", 
-    maxWidth: 70 
+    maxWidth: 70 ,
+    align: "left"
 },
   
   {
     id: "requested_date",
     label: "Requested date",
     maxWidth: 70,
-    align: "center",
+    align: "left",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
   {
     id: "department",
     label: "Department",
     maxWidth: 70,
-    align: "center",
+    align: "left",
   },
   {
     id: "status",
     label: "Status",
     maxWidth: 70,
-    align: "center",
+    align: "left",
 
   },
 ];
