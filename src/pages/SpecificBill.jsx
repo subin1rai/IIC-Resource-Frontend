@@ -44,7 +44,9 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(billDetails.bill_type + " " + billDetails.TDS);
+  const [selectedOption, setSelectedOption] = useState(
+    billDetails.bill_type + " " + billDetails.TDS
+  );
 
   const { bill_id } = useParams();
 
@@ -73,6 +75,7 @@ const SpecificBill = () => {
       case "vat 1.5":
         return (
           <Vat
+            billDetails={billDetails}
             selectedOption={selectedOption}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "vat")}
@@ -83,6 +86,7 @@ const SpecificBill = () => {
       case "pan 15":
         return (
           <Pan
+            billDetails={billDetails}
             selectedOption={selectedOption}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "pan")}
@@ -91,6 +95,7 @@ const SpecificBill = () => {
       case "noBill":
         return (
           <NoBill
+            billDetails={billDetails}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
           />
@@ -174,7 +179,6 @@ const SpecificBill = () => {
         console.log(singleBillResponse.data);
         setBillDetails(singleBillResponse.data);
 
-
         const type = billDetails.bill.bill_type.toLowerCase();
         const percent = billDetails.TDS;
         const value = type + " " + percent;
@@ -252,7 +256,6 @@ const SpecificBill = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchSingleBill = async () => {
       try {
@@ -294,7 +297,6 @@ const SpecificBill = () => {
   };
 
   return (
-
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto">
@@ -463,7 +465,7 @@ const SpecificBill = () => {
                       {index + 1}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
-                      {billItem.item_name}
+                      {billItem.item.item_name}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
                       {billItem.quantity}
@@ -500,7 +502,6 @@ const SpecificBill = () => {
       {!loading && addFormVisibility && (
         <>
           <div className="h-screen w-screen bg-overlay absolute "></div>
-
           <form
             onSubmit={handleSubmit}
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
@@ -691,6 +692,11 @@ const SpecificBill = () => {
                   <span className="text-red-500 self-center">{error}</span>
                 )}
                 {renderSelectedComponent()}
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                  Edit Bill
+                </button>
               </div>
             </div>
           </form>

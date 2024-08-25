@@ -5,21 +5,24 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
 import socket from "../socket.js";
 import Select from "react-select";
-import requestImage from "../assets/requestImg.svg"
-import addImage from "../assets/addItem.svg"
-import subtract from "../assets/subtract.svg"
+import requestImage from "../assets/requestImg.svg";
+import addImage from "../assets/addItem.svg";
+import subtract from "../assets/subtract.svg";
 
 const UserRequest = () => {
   const [request, setRequest] = useState({
+    items: [],
     purpose: "",
-    requested_for: "",
+    for_UserId: "",
   });
-  const [items, setItems] = useState([{ item_name: "", quantity: "" }]);
+  const [items, setItems] = useState([{ item_id: "", quantity: "" }]);
   const [allItems, setAllItems] = useState([]);
   const [departmentMembers, setDepartmentMembers] = useState([]);
   const [members, setMembers] = useState([]);
   const token = localStorage.getItem("token");
   const userDepartment = localStorage.getItem("department");
+
+  console.log(request);
 
   useEffect(() => {
     const getDepartmentUsers = async () => {
@@ -34,7 +37,7 @@ const UserRequest = () => {
       } catch (error) {
         toast.error(
           error.response?.data?.message ||
-          "Failed to fetch department users. Please try again."
+            "Failed to fetch department users. Please try again."
         );
         console.error(error);
       }
@@ -46,7 +49,7 @@ const UserRequest = () => {
   useEffect(() => {
     setMembers(
       departmentMembers.map((member) => ({
-        value: member.user_name,
+        value: member.user_id, // Set user_id as value
         label: member.user_name,
       }))
     );
@@ -64,7 +67,7 @@ const UserRequest = () => {
       } catch (error) {
         toast.error(
           error.response?.data?.message ||
-          "Failed to fetch items. Please try again."
+            "Failed to fetch items. Please try again."
         );
         console.error(error);
         setAllItems([]);
@@ -91,13 +94,21 @@ const UserRequest = () => {
   const handleSelectChange = (selectedOption) => {
     setRequest((prev) => ({
       ...prev,
-      requested_for: selectedOption ? selectedOption.value : "",
+      for_UserId: selectedOption ? selectedOption.value : "",
     }));
   };
 
-  const addItem = () => {
-    setItems([...items, { item_name: "", quantity: "" }]);
+  const handleItemSelectChange = (selectedOption, index) => {
+    const newItems = [...items];
+    newItems[index].item_id = selectedOption ? selectedOption.value : "";
+    setItems(newItems);
   };
+
+  const addItem = () => {
+    setItems([...items, { item_id: "", quantity: "" }]);
+  };
+
+  console.log(items);
 
   const removeItem = (index) => {
     if (items.length > 1) {
@@ -115,35 +126,43 @@ const UserRequest = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
-      items.some(item => !item.item_name || !item.quantity) ||
+      items.some((item) => !item.item_id || !item.quantity) ||
       !request.purpose ||
-      !request.requested_for
+      !request.for_UserId
     ) {
       toast.error("Please fill in all fields");
       return;
     }
 
+    const requestData = {
+      items: items.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+      })),
+      purpose: request.purpose,
+      for_UserId: request.for_UserId,
+    };
+
     try {
       const response = await axios.post(
         "http://localhost:8898/api/addRequest",
-        { ...request, items },
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setItems([{ item_name: "", quantity: "" }]);
+      setItems([{ item_id: "", quantity: "" }]);
       setRequest({
         purpose: "",
-        requested_for: "",
+        for_UserId: "",
       });
       toast.success("Request submitted successfully!");
-      console.log(response);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-        "Failed to submit request. Please try again."
+          "Failed to submit request. Please try again."
       );
       console.error(error);
     }
@@ -209,57 +228,93 @@ const UserRequest = () => {
               {items.map((item, index) => (
                 <div key={index} className="flex p-3 gap-3">
                   <Select
-                    placeholder="Select item's name"
+                    options={allItems.map((item) => {
+                      const features = Object.entries(
+                        item.itemsOnFeatures || {}
+                      )
+                        .filter(([key, value]) => value)
+                        .map(([key, value]) => ` - ${value}`)
+                        .join("");
+
+                      const label = `${item.item_name}${features}`;
+
+                      return {
+                        value: item.item_id,
+                        label: label,
+                      };
+                    })}
+                    onChange={(option) => handleItemSelectChange(option, index)}
+                    value={
+                      item.item_id
+                        ? {
+                            value: item.item_id,
+                            label: allItems.find(
+                              (i) => i.item_id === item.item_id
+                            )?.item_name,
+                          }
+                        : null
+                    }
+                    placeholder="Select Item"
                     styles={customStyles}
-                    className="react-select-container"
-                    classNamePrefix="react-select"
-                    options={allItems.map(item => ({ value: item.item_name, label: item.item_name }))}
-                    value={item.item_name}
-                    onChange={(selectedOption) => handleItemChange(index, 'item_name', selectedOption)}
+                    className="w-[170px] whitespace-nowrap"
                   />
+
                   <input
                     type="number"
                     name={`quantity_${index}`}
                     placeholder="Enter quantity"
                     className="border-stone-200 border-2 rounded py-2 px-4 w-64"
                     value={item.quantity}
-                    onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                    onChange={(e) =>
+                      handleItemChange(index, "quantity", e.target.value)
+                    }
                   />
                   {items.length > 1 && (
-                    <img src={subtract} alt="delete" onClick={() => removeItem(index)} className="mt-2 cursor-pointer" />
+                    <img
+                      src={subtract}
+                      alt="delete"
+                      onClick={() => removeItem(index)}
+                      className="mt-2 cursor-pointer"
+                    />
                   )}
                   {index === items.length - 1 && (
-                    <img src={addImage} alt="add" onClick={addItem} className="mt-2 cursor-pointer" />
+                    <img
+                      src={addImage}
+                      alt="add"
+                      onClick={addItem}
+                      className="mt-2 cursor-pointer"
+                    />
                   )}
                 </div>
               ))}
               <div className="flex flex-col p-3 gap-3">
-                <label htmlFor="requested_for">
-                  Requested For:
-                </label>
+                <label className="font-semibold text-md">Requesting for:</label>
                 <Select
-                  placeholder="Select teacher's name"
-                  className="react-select-container"
-                  classNamePrefix="react-select"
                   options={members}
+                  value={members.find(
+                    (member) => member.value === request.for_UserId
+                  )}
                   onChange={handleSelectChange}
-                  value={members.find(member => member.value === request.requested_for)}
+                  placeholder="Select Member"
+                  className="w-full"
+                  // styles={customStyles}
                 />
               </div>
               <div className="flex flex-col p-3 gap-3">
-                <label htmlFor="purpose">
-                  Purpose:
-                </label>
+                <label className="font-semibold text-md">Purpose:</label>
                 <textarea
+                  rows={5}
                   name="purpose"
-                  id="purpose_field"
-                  className="border-stone-200 border-2 rounded py-2 px-4 h-24 resize-none"
-                  placeholder="Write the purpose of your request..."
-                  onChange={handleChange}
+                  placeholder="Enter your purpose"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:border-[#057dcd]"
                   value={request.purpose}
+                  onChange={handleChange}
                 />
               </div>
-              <button type="submit" className="bg-button py-3 rounded-lg m-3 font-medium text-white text-lg">
+              <button
+                type="submit"
+                className="bg-button py-3 rounded-lg m-3 font-medium text-white text-lg"
+              >
                 Submit
               </button>
             </div>

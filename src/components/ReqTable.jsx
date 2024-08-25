@@ -24,6 +24,7 @@ const columns = [
   },
   { id: "department", label: "Department", maxWidth: 70, align: "center" },
   { id: "status", label: "Status", maxWidth: 70, align: "center" },
+
 ];
 
 export default function ReqTable({ requests }) {
