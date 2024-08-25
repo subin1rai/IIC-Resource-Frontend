@@ -44,7 +44,9 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(billDetails.bills.bill_type + " " + billDetails.TDS);
+  const [selectedOption, setSelectedOption] = useState(
+    billDetails.bill_type + " " + billDetails.TDS
+  );
 
   const { bill_id } = useParams();
 
@@ -174,7 +176,6 @@ const SpecificBill = () => {
         console.log(singleBillResponse.data);
         setBillDetails(singleBillResponse.data);
 
-
         const type = billDetails.bill.bill_type.toLowerCase();
         const percent = billDetails.TDS;
         const value = type + " " + percent;
@@ -252,7 +253,6 @@ const SpecificBill = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchSingleBill = async () => {
       try {
@@ -294,7 +294,6 @@ const SpecificBill = () => {
   };
 
   return (
-
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
       <div className="flex flex-col gap-4 mx-auto">
@@ -463,7 +462,7 @@ const SpecificBill = () => {
                       {index + 1}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
-                      {billItem.item_name}
+                      {billItem.item.item_name}
                     </td>
                     <td className="p-2 text-center border-b border-neutral-200">
                       {billItem.quantity}
