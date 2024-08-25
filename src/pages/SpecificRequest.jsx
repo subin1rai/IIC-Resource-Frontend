@@ -8,8 +8,9 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department: "",
-    status: "",
+    department:"",
+    status:"",
+    purpose:"",
     items: [],
   });
 
@@ -17,8 +18,9 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department: "",
-    status: "",
+    department:"",
+    status:"",
+    remarks:"",
     items: [],
   });
 
@@ -132,58 +134,37 @@ const SpecificRequest = () => {
   };
 
   useEffect(() => {
-    const getRequest = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get("http://localhost:8898/api/request", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setRequests(response.data.request);
+        const [singleRequestResponse, itemsResponse] =
+          await Promise.all([
+            axios.get(`http://localhost:8898/api/singleRequest/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            axios.get("http://localhost:8898/api/items", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+          ]);
+        console.log(singleRequestResponse.data);
+        setRequests(singleRequestResponse.data);
+        setSelectedOption(value);
+        console.log(value);
+        setItems(itemsResponse.data);
+        // setBill(response.data.bill);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        setError(error.response?.data?.error);
+        setLoading(false);
       }
     };
-
-    if (token) {
-      getRequest();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    const getItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setItems(response.data);
-
-        setItemOptions(
-          response.data.map((item) => ({
-            value: item.item_name,
-            label: item.item_name,
-          }))
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getItems();
-  }, [token]);
-
-  useEffect(() => {
-    socket.on("newRequest", (data) => {
-      toast.success(data.message);
-      setRequests((prevRequests) => [...prevRequests, data.requestData]);
-    });
-
-    return () => {
-      socket.off("newRequest");
-    };
-  }, []);
+    fetchData();
+  }, [id, token]);
 
   return (
     <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
@@ -241,69 +222,57 @@ const SpecificRequest = () => {
               {billDetails.vat_no || "--"}
             </span>
           </p> */}
-            <p className="font-semibold">
-              Requested For:
-              <span className=" font-normal pl-4">
-                {requests.for_userId || "--"}
-              </span>
-            </p>
-            <p className="font-semibold">
-              Department:
-              <span className="font-normal  pl-4">
-                {requests.users?.department || "--"}
-              </span>
-            </p>
-          </div>
-          <div className="flex flex-col gap-5 mt-7 pl-9">
-            <p className="font-semibold">
-              Requested Date:
-              <span className="font-normal  pl-4">
-                {new Date(requests.request_date).toLocaleDateString()}
-              </span>
-            </p>
-            <p className="font-semibold">
-              Status:
-              <span className="font-normal  pl-4">
-                {requests.isAccepted ? (
-                  <span className="text-green-500">Accepted</span>
-                ) : (
-                  <span className="text-yellow-500">Pending</span> || "--"
-                )}
-              </span>
-            </p>
-          </div>
+          <p className="font-semibold">
+            Requested For:
+            <span className=" font-normal pl-4">
+              {requests.for_userId || "--"}
+            </span>
+          </p>
+          <p className="font-semibold">
+            Department:
+            <span className="font-normal  pl-4">
+              {requests.users?.department || "--"}
+            </span>
+          </p>
         </div>
-      ) : (
-        <div>Loading...</div>
-      )}
-      <table className="min-w-full table-fixed border-collapse">
-        <thead>
-          <tr className="bg-neutral-200">
-            <th className="p-2 text-center border-b  border-neutral-200 font-medium">
-              S.No.
-            </th>
-            <th className="p-2 text-center border-b  border-neutral-200 font-medium">
-              Item Name
-            </th>
-            <th className="p-2 text-center border-b  border-neutral-200 font-medium">
-              Quantity
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {requests.requestItems && requests.requestItems.length > 0 ? (
-            requests.requestItems.map((requestItems, index) => (
-              <tr key={index}>
-                <td className="p-2 text-center border-b border-neutral-200">
-                  {index + 1}
-                </td>
-                <td className="p-2 text-center border-b border-neutral-200">
-                  {requestItems.item_id}
-                </td>
-                <td className="p-2 text-center border-b border-neutral-200">
-                  {requestItems.quantity}
-                </td>
-                {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
+        <div className="flex flex-col gap-5 mt-7 pl-9">
+        <p className="font-semibold">
+            Requested Date:
+            <span className="font-normal  pl-4">
+            {new Date(requests.request_date).toLocaleDateString()}
+            </span>
+          </p>
+          <p className="font-semibold">
+            Status:
+            <span className="font-normal  pl-4">
+              {requests.isAccepted? (
+                <span className="text-green-500">Accepted</span>
+              ) : (
+                <span className="text-yellow-500">Pending</span> || "--"
+              )}
+            </span>
+          </p>
+        </div>
+      </div>
+    ) : (
+      <div>Loading...</div>
+    )}
+        <table className="min-w-full table-fixed border-collapse">
+      <thead>
+        <tr className="bg-neutral-200">
+          <th className="p-2 text-center border-b  border-neutral-200 font-medium">S.No.</th>
+          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Item Name</th>
+          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+  {requests.requestItems && requests.requestItems.length > 0 ? (
+    requests.requestItems.map((requestItems, index) => (
+      <tr key={index}>
+        <td className="p-2 text-center border-b border-neutral-200">{index + 1}</td>
+        <td className="p-2 text-center border-b border-neutral-200">{requestItems.item_id}</td>
+        <td className="p-2 text-center border-b border-neutral-200">{requestItems.quantity}</td>
+        {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
         <td className="p-2 border-b border-neutral-200">{billItem.withVATAmount}</td> */}
               </tr>
             ))
