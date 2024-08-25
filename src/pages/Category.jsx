@@ -293,13 +293,13 @@ const Category = () => {
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
 
-        <div className="w-[86.5vw] flex  justify-between">
-          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
-            <div className="flex  bg-neutral-300 rounded-t-md px-10  py-3 justify-between">
-              <h1 className="text-lg font-medium  ">Category</h1>
+        <div className="w-[86.5vw] flex  justify-between p-3">
+          <div className="flex flex-col w-[32%] rounded-lg ">
+            <div className="flex  bg-blue-400 rounded-t-md justify-between px-10 py-3">
+              <h1 className="text-lg font-medium text-white ">Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("category")}
-                className="w-8 h-8 mr-2"
+                className="w-8 h-8 mr-2 cursor-pointer"
               />
             </div>
             <Ctable
@@ -311,12 +311,12 @@ const Category = () => {
             />{" "}
           </div>
 
-          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
-            <div className="flex bg-neutral-300 rounded-t-md px-10 py-3 justify-between">
-              <h1 className="text-lg font-medium"> Item Category</h1>
+          <div className="flex flex-col w-[32%] rounded-lg ">
+            <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
+              <h1 className="text-lg font-medium text-white"> Item Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
-                className="w-8 h-8 mr-2"
+                className="w-8 h-8 mr-2 cursor-pointer"
               />
             </div>
             <Itable
@@ -329,12 +329,12 @@ const Category = () => {
             />
           </div>
 
-          <div className="flex flex-col w-[32%] rounded-lg p-3 ">
-            <div className="flex bg-neutral-300 rounded-t-md px-10 py-3 justify-between">
-              <h1 className="text-lg font-medium "> Features</h1>
+          <div className="flex flex-col w-[32%] rounded-lg">
+            <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
+              <h1 className="text-lg font-medium text-white"> Features</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("feature")}
-                className="w-8 h-8 mr-2"
+                className="w-8 h-8 mr-2 cursor-pointer"
               />
             </div>
             <Ftable
@@ -355,9 +355,9 @@ const Category = () => {
           className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-7 gap-6 rounded "
         >
           <div className="flex justify-between items-center">
-            <p className=" ml-4 font-semibold">Add Category</p>
+            <p className=" ml-4 font-semibold text-lg">Add Category</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-4 w-4"
               src={close}
               alt=""
               onClick={closeCategoryForm}
@@ -365,7 +365,7 @@ const Category = () => {
           </div>
           <div className="flex gap-10 justify-between items-center">
             <label className="w-44 p-4 font-medium" htmlFor="category_name">
-              Category Name
+              Name
             </label>
             <input
               className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
@@ -395,9 +395,9 @@ const Category = () => {
           className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-6 p-7 rounded "
         >
           <div className="flex justify-between items-center">
-            <p className=" ml-4 font-semibold">Item Category</p>
+            <p className=" ml-4 font-semibold text-lg">Item Category</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-4 w-4"
               src={close}
               alt=""
               onClick={closeCategoryForm}
@@ -408,7 +408,7 @@ const Category = () => {
               className="w-44 p-4 font-medium"
               htmlFor="item_category_name"
             >
-              Category Name
+              Name
             </label>
             <input
               className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
@@ -435,20 +435,21 @@ const Category = () => {
       {visibleForm === "feature" && (
         <form
           onSubmit={handleSubmitFeature}
-          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-7 gap-6 rounded "
+          className="flex absolute z-50 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 gap-5 rounded "
         >
-          <div className="flex justify-between items-center">
-            <p className=" ml-4 font-semibold">Feature</p>
+          <div className="flex justify-between items-center px-4 py-3">
+            <p className=" font-semibold text-lg">Feature</p>
             <img
-              className="rounded-md cursor-pointer p-4"
+              className="rounded-md cursor-pointer h-4 w-4"
               src={close}
               alt=""
               onClick={closeCategoryForm}
+              
             />
           </div>
-          <div className="flex gap-10 justify-between items-center">
-            <label className="w-44 p-4 font-medium" htmlFor="feature_name">
-              Feature Name
+          <div className="flex gap-16 justify-between items-center px-5">
+            <label className="font-medium" htmlFor="feature_name">
+              Name:
             </label>
             <input
               className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
@@ -461,9 +462,9 @@ const Category = () => {
             />
           </div>
           {error && <span className="text-red-500 ml-4">{error}</span>}
-          <div className="flex justify-between items-center">
+          <div className="flex self-end mr-4 mt-4">
             <button
-              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              className="bg-blue-600 text-white py-2 px-3 rounded"
               type="submit"
             >
               Add Feature
@@ -479,20 +480,21 @@ const Category = () => {
             onSubmit={handleEditSubmit}
             className="bg-white p-4 flex flex-col gap-8 rounded"
           >
-            <div className="flex w-full justify-between">
-            <p className=" ml-4 font-semibold">Edit Category</p>
+            <div className="flex justify-between items-center px-4 py-2">
+            <p className="font-semibold text-lg">Edit Category</p>
               <img
                 src={close}
                 alt=""
                 onClick={() => setEditFormVIsiblity(false)}
+                className="w-4 h-4"
               />
             </div>
-            <div className="flex gap-10 justify-between items-center">
-              <label className="w-44 p-4 font-medium" htmlFor="name">
+            <div className="flex justify-between items-center gap-12">
+              <label className=" p-4 font-medium" htmlFor="name">
                 Category Name
               </label>
               <input
-                className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+                className=" border-2 rounded border-neutral-200 p-2"
                 type="text"
                 placeholder=""
                 autoFocus="autofocus"
