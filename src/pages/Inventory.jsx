@@ -528,61 +528,110 @@ const Inventory = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-5">
-          <div className="flex justify-between ">
-            <h2 className="font-semibold text-lg"> Filtering Option</h2>
+
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 px-12 py-8 w-fit h-fit gap-8">
+          
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-xl "> Filtering Option</h2>
+
             <img
               src={close}
               alt=""
-              className="cursor-pointer w-4 h-4 mt-2"
+              className="cursor-pointer w-4 h-4"
               onClick={closeFilterForm}
             />
           </div>
           <div className="flex flex-col gap-3">
-            <label>Filter by Category: </label>
-            <div className="flex gap-8">
-              <Select
-                options={categoryOptions}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, { name: "category" })
-                }
-                value={categoryOptions.find(
-                  (option) => option.value === itemData.category
-                )}
-                placeholder="Choose Category"
-                styles={customStyles}
-                classNamePrefix="react-select"
-              />
-              <Select
-                options={itemCategoryOptions}
-                onChange={(selectedOption) =>
-                  handleSelectChange(selectedOption, { name: "itemCategory" })
-                }
-                value={itemCategoryOptions.find(
-                  (option) => option.value === itemData.itemCategory
-                )}
-                placeholder="Choose Item Category"
-                styles={customStyles}
-                classNamePrefix="react-select"
-              />
-            </div>
+
+          <label>By Category: </label>
+          <div className="flex gap-8">
+            <Select
+              options={categoryOptions}
+              onChange={(selectedOption) =>
+                handleSelectChange(selectedOption, { name: "category" })
+              }
+              value={categoryOptions.find(
+                (option) => option.value === itemData.category
+              )}
+              placeholder="Choose Category"
+              styles={customStyles}
+              classNamePrefix="react-select"
+            />
+            <Select
+              options={itemCategoryOptions}
+              onChange={(selectedOption) =>
+                handleSelectChange(selectedOption, { name: "itemCategory" })
+              }
+              value={itemCategoryOptions.find(
+                (option) => option.value === itemData.itemCategory
+              )}
+              placeholder="Choose Item Category"
+              styles={customStyles}
+              classNamePrefix="react-select"
+            />
+          </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="">Filter by Date:</label>
-            <div className="flex gap-8 ">
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
-                type="date"
-                placeholder=" from"
-              />
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
-                type="date"
-                placeholder="to"
-              />
+            <label htmlFor="">By Date:</label>
+          <div className="flex gap-8 ">
+            <input
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+              type="date"
+              placeholder=" from"
+            />
+            <input
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+              type="date"
+              placeholder="to"
+            />
+          </div>
+
+          </div>
+          {/* filter by price */}
+          <div className="flex gap-8">
+          <div className="flex flex-col gap-3">
+            <label htmlFor=""> By Price: </label>
+            <div>
+              <select 
+              name="" 
+              id=""
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]" 
+              >
+                <option value="">Select an option</option>
+                <option value="high-to-low">High to Low</option>
+                <option value="low-to-high">Low to High</option>
+              </select>
             </div>
           </div>
-          <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
+          {/* filter by Measuring unit */}
+          <div className="flex flex-col gap-3">
+            <label htmlFor="">By Unit:</label>
+            <div>
+            <select 
+              name="" 
+              id=""
+              className="border-2 rounded border-neutral-300 p-2 w-[250px]" 
+              >
+                <option value="">Select an option</option>
+                <option value="">Piece</option>
+                <option value="">Kilogram</option>
+              </select>
+            </div>
+          </div>
+          </div>
+          {/* filter by status */}
+          <div className="flex flex-col gap-3">
+            <label htmlFor="">By Status:</label>
+            <select name="" id=""
+            
+            className="border-2 rounded border-neutral-300 p-2 w-full">
+              <option value="">Stock Status</option>
+              <option value="">In Stock</option>
+              <option value="">Out of Stock</option>
+            </select>
+          </div>
+          
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg">
             Filter
           </button>
         </form>

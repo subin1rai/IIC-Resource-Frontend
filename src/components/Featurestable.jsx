@@ -18,12 +18,12 @@ const Featurestable = ({
       {feature.map((feat) => (
         <div className="w-full flex flex-col items-center">
           <div className="w-[80%] py-4">
-            <div className="flex w-full justify-between ">
+            <div className="flex w-full justify-between items-center">
               <p className="text-lg">{feat.feature_name}</p>
               <img
                 src={edit}
                 alt=""
-                className="h-6 w-6 ml-4"
+                className="h-5 w-5 cursor-pointer"
                 onClick={() => handleformVisiblity(feat.feature_id)}
               />
 
