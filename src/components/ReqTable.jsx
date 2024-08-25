@@ -12,19 +12,22 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
 const columns = [
-  { id: "req_id", label: "Request ID", maxWidth: 70, align: "center" },
-  { id: "requested_by", label: "Requested By", maxWidth: 70, align: "center" },
-  { id: "for_userId", label: "Requested For", maxWidth: 70, align: "center" },
-  { 
-    id: "requested_date", 
-    label: "Requested date", 
-    maxWidth: 70, 
-    align: "center", 
-    format: (value) => new Date(value).toLocaleDateString("en-US") 
+  { id: "user_name", label: "Requested By", maxWidth: 70, align: "left" },
+  {
+    id: "requested_for",
+    label: "Requested For",
+    maxWidth: 70,
+    align: "left",
   },
-  { id: "department", label: "Department", maxWidth: 70, align: "center" },
-  { id: "status", label: "Status", maxWidth: 70, align: "center" },
-
+  {
+    id: "request_date",
+    label: "Requested Date",
+    maxWidth: 70,
+    align: "left",
+    format: (value) => new Date(value).toLocaleDateString("en-US"),
+  },
+  { id: "department", label: "Department", maxWidth: 70, align: "left" },
+  { id: "status", label: "Status", maxWidth: 70, align: "left" },
 ];
 
 export default function ReqTable({ requests }) {
@@ -57,7 +60,7 @@ export default function ReqTable({ requests }) {
   };
 
   const descendingComparator = (a, b, orderBy) => {
-    if (orderBy === "requested_date") {
+    if (orderBy === "request_date") {
       return new Date(b[orderBy]) - new Date(a[orderBy]);
     }
     if (b[orderBy] < a[orderBy]) {
@@ -157,7 +160,7 @@ export default function ReqTable({ requests }) {
                     role="checkbox"
                     tabIndex={-1}
                     key={request.req_id || `unknown-${index}`}
-                    onClick={() => handleRowClick(request.req_id)}
+                    onClick={() => handleRowClick(request.request_id)}
                     style={{ cursor: "pointer" }}
                   >
                     {columns.map((column) => {
@@ -193,7 +196,7 @@ export default function ReqTable({ requests }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[]}
         component="div"
         count={requests && Array.isArray(requests) ? requests.length : 0}
         rowsPerPage={rowsPerPage}

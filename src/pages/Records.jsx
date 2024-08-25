@@ -462,8 +462,8 @@ const Records = () => {
                       Bill Date:
                     </label>
                     <NepaliDatePicker
-                      inputClassName="form-control"
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      inputClassName="form-control "
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 outline-none rounded-md"
                       value={date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}

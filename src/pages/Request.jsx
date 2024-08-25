@@ -13,19 +13,19 @@ const Request = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department:"",
-    status:"",
+    department: "",
+    status: "",
     items: [],
   });
 
-  const [items, setItems] =useState([]);
+  const [items, setItems] = useState([]);
+  const [itemOptions, setItemOptions] = useState([]);
 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const getRequest = async () => {
       try {
-        
         const response = await axios.get("http://localhost:8898/api/request", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,10 +37,10 @@ const Request = () => {
       }
     };
 
-    if (token) {
-      getRequest();
-    }
+    getRequest();
   }, [token]);
+
+  console.log(requests);
 
   useEffect(() => {
     const getItems = async () => {
@@ -52,14 +52,13 @@ const Request = () => {
         });
 
         setItems(response.data);
-        
+
         setItemOptions(
           response.data.map((item) => ({
             value: item.item_name,
             label: item.item_name,
           }))
         );
-        
       } catch (error) {
         console.log(error);
       }
@@ -101,16 +100,16 @@ const Request = () => {
           </div>
         </div>
         <div className="flex flex-col w-[85.5vw] bg-white p-6 rounded">
-        <div className="flex flex-col bg-white rounded gap-2">
-          <h3 className=" font-semibold text-2xl">Requests</h3>
-          <p>You can view your request here</p>
+          <div className="flex flex-col bg-white rounded gap-2">
+            <h3 className=" font-semibold text-2xl">Requests</h3>
+            <p>You can view your request here</p>
 
-          <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div>
-          <div className="  mt-3 ">
-            {/* <RequestTable /> */}
-            <ReqTable />
+            <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div>
+            <div className="  mt-3 ">
+              {/* <RequestTable /> */}
+              <ReqTable requests={requests} />
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <div className="absolute right-12 bottom-12 z-50">
