@@ -5,23 +5,10 @@ import axios from "axios";
 
 const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [items, setItems] = useState([]);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      item_id: null,
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      vat: 0,
-      amountWithVat: 0,
-      actualAmt: 0,
-    },
-  ]);
-
+  const [rows, setRows] = useState([]);
   const token = localStorage.getItem("token");
 
+  // Fetch items from API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +18,6 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         setItems(itemsResponse.data);
         console.log("Fetched items:", itemsResponse.data);
       } catch (error) {
@@ -42,29 +28,109 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
     fetchData();
   }, [token]);
 
+  const calculateRowValues = (row, selectedOption) => {
+    const quantity = parseFloat(row.quantity) || 0;
+    const unit_price = parseFloat(row.unit_price) || 0;
+    const amount = quantity * unit_price;
+
+    let tds = 0;
+    if (selectedOption === "vat 1.5") {
+      tds = amount * 0.015;
+    } else if (selectedOption === "vat 0") {
+      tds = 0;
+    }
+
+    const vat = amount * 0.13;
+    const amountWithVat = amount + vat;
+    const actualAmt = amountWithVat - tds;
+
+    return {
+      ...row,
+      amount,
+      tds,
+      vat,
+      amountWithVat,
+      actualAmt,
+    };
+  };
+
+  // Initialize rows with existing bill items if available
+  useEffect(() => {
+    console.log("billDetails:", billDetails);
+    if (billDetails && billDetails.bill && billDetails.bill.BillItems) {
+      const existingItems = billDetails.bill.BillItems.map((item, index) => {
+        const initialRow = {
+          id: index + 1,
+          item_id: item.item_id || null,
+          item_name: item.item?.item_name || "",
+          quantity: item.quantity || 0,
+          unit_price: item.unit_price || 0,
+          amount: item.amount || 0,
+          tds: item.tds || 0,
+          vat: item.vat || 0,
+          amountWithVat: item.amountWithVat || 0,
+          actualAmt: item.actualAmt || 0,
+        };
+        return calculateRowValues(initialRow, selectedOption);
+      });
+
+      // Only update if there are actual changes to the data
+      if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
+        setRows(existingItems);
+        console.log("Initialized rows with existing items:", existingItems);
+        updateParentData(existingItems);
+      }
+    } else if (rows.length === 0) {
+      // Only initialize the first row if rows are empty
+      const initialRow = calculateRowValues(
+        {
+          id: 1,
+          item_id: null,
+          item_name: "",
+          quantity: 0,
+          unit_price: 0,
+          amount: 0,
+          tds: 0,
+          vat: 0,
+          amountWithVat: 0,
+          actualAmt: 0,
+        },
+        selectedOption
+      );
+      setRows([initialRow]);
+      console.log("Initialized rows with default item:", [initialRow]);
+      updateParentData([initialRow]);
+    }
+  }, [billDetails, selectedOption, rows]);
+
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
     updatedRows[index].item_id = option.value;
     updatedRows[index].item_name = option.label;
     setRows(updatedRows);
+    console.log("Updated rows after item selection:", updatedRows);
     updateParentData(updatedRows);
   };
 
   const addRow = () => {
-    const newRow = {
-      id: rows.length + 1,
-      item_id: "",
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      vat: 0,
-      amountWithVat: 0,
-      actualAmt: 0,
-    };
+    const newRow = calculateRowValues(
+      {
+        id: rows.length + 1,
+        item_id: null,
+        item_name: "",
+        quantity: 0,
+        unit_price: 0,
+        amount: 0,
+        tds: 0,
+        vat: 0,
+        amountWithVat: 0,
+        actualAmt: 0,
+      },
+      selectedOption
+    );
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
+    console.log("Added new row:", updatedRows);
     updateParentData(updatedRows);
   };
 
@@ -73,45 +139,30 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
     newRows[index][field] = parseFloat(value) || 0;
 
     if (field === "quantity" || field === "unit_price") {
-      const quantity = parseFloat(newRows[index].quantity) || 0;
-      const unit_price = parseFloat(newRows[index].unit_price) || 0;
-      const amount = quantity * unit_price;
-
-      let tds = 0;
-
-      if (selectedOption === "vat 1.5") {
-        tds = amount * 0.015;
-      } else if (selectedOption === "vat 0") {
-        tds = 0;
-      }
-
-      const vat = amount * 0.13;
-      const amountWithVat = amount + vat;
-      const actualAmt = amountWithVat - tds;
-
-      newRows[index].amount = amount || 0;
-      newRows[index].tds = tds || 0;
-      newRows[index].vat = vat || 0;
-      newRows[index].amountWithVat = amountWithVat || 0;
-      newRows[index].actualAmt = actualAmt || 0;
+      newRows[index] = calculateRowValues(newRows[index], selectedOption);
     }
 
     setRows(newRows);
+    console.log("Updated row:", newRows);
     updateParentData(newRows);
   };
 
   const updateParentData = (updatedRows) => {
-    const newItemsData = updatedRows.map((row) => ({
-      item_id: row.item_id,
-      item_name: row.item_name,
-      quantity: row.quantity,
-      unit_price: row.unit_price,
-      amount: row.amount,
-      tds: row.tds,
-      vat: row.vat,
-      amountWithVat: row.amountWithVat,
-      actualAmt: row.actualAmt,
-    }));
+    const newItemsData = updatedRows
+      .filter((row) => row.item_id && row.quantity > 0)
+      .map((row) => ({
+        item_id: row.item_id,
+        item_name: row.item_name,
+        quantity: row.quantity,
+        unit_price: row.unit_price,
+        amount: row.amount,
+        tds: row.tds,
+        vat: row.vat,
+        amountWithVat: row.amountWithVat,
+        actualAmt: row.actualAmt,
+      }));
+
+    console.log("Sending to parent:", newItemsData);
     onDataUpdate(newItemsData);
   };
 
@@ -181,7 +232,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
             {rows.map((row, index) => (
               <tr key={row.id}>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.id}
+                  {index + 1}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2">
                   <Select
@@ -229,66 +280,35 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                     onChange={(e) =>
                       updateRow(index, "unit_price", e.target.value)
                     }
-                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0 text-center"
+                    className="w-full p-1 border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-center"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.amount.toFixed(2)}
+                  {row.amount}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.tds.toFixed(2)}
+                  {row.tds}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.vat ? row.vat.toFixed(2) : "0.00"}
+                  {row.vat}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.amountWithVat ? row.amountWithVat.toFixed(2) : "0.00"}
+                  {row.amountWithVat}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.actualAmt ? row.actualAmt.toFixed(2) : "0.00"}
+                  {row.actualAmt}
                 </td>
               </tr>
             ))}
-
-            <tr className="bg-white">
-              <td
-                colSpan="4"
-                className="border border-neutral-500 px-4 py-2 text-right"
-              >
-                Total
-              </td>
-              <td className="border border-neutral-500 px-4 py-2 text-center">
-                {rows
-                  .reduce((sum, row) => sum + (row.amount || 0), 0)
-                  .toFixed(2)}
-              </td>
-              <td className="border border-neutral-500 px-4 py-2 text-center">
-                {rows.reduce((sum, row) => sum + (row.tds || 0), 0).toFixed(2)}
-              </td>
-              <td className="border border-neutral-500 px-4 py-2 text-center">
-                {rows.reduce((sum, row) => sum + (row.vat || 0), 0).toFixed(2)}
-              </td>
-              <td className="border border-neutral-500 px-4 py-2 text-center">
-                {rows
-                  .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
-                  .toFixed(2)}
-              </td>
-              <td className="border border-neutral-500 px-4 py-2 text-center">
-                {rows
-                  .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
-                  .toFixed(2)}
-              </td>
-            </tr>
           </tbody>
         </table>
-
-        <div className="mt-2">
-          <span
+        <div className="mt-2 flex justify-center">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
             onClick={addRow}
-            className="text-blue-600 hover:underline cursor-pointer"
           >
-            Add more fields
-          </span>
+            Add Row
+          </button>
         </div>
       </div>
     </>

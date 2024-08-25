@@ -38,6 +38,7 @@ const SpecificBill = () => {
   });
 
   const [date, setDate] = useState("");
+
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
   const [items, setItems] = useState([]);
@@ -47,6 +48,37 @@ const SpecificBill = () => {
   const [selectedOption, setSelectedOption] = useState(
     billDetails.bill_type + " " + billDetails.TDS
   );
+
+  const handleDataUpdate = (data, type) => {
+    switch (type) {
+      case "vat":
+        // setVatData(data);
+        setEditedBill((prevBill) => ({
+          ...prevBill,
+          items: data,
+        }));
+        break;
+      case "pan":
+        console.log(data);
+        // setPanData(data);
+        setEditedBill((prevBill) => ({
+          ...prevBill,
+          items: data,
+        }));
+        break;
+      case "noBill":
+        // setNoBillData(data);
+        setEditedBill((prevBill) => ({
+          ...prevBill,
+          items: data,
+        }));
+        break;
+      default:
+        console.error("Unknown data type:", type);
+    }
+  };
+
+  console.log(editedBill);
 
   const { bill_id } = useParams();
 
@@ -67,7 +99,7 @@ const SpecificBill = () => {
     }
   };
 
-  // ya samma hai ta
+  console.log(billDetails);
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -237,12 +269,17 @@ const SpecificBill = () => {
     }));
   };
 
+  console.log(selectedOption);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
-        editedBill,
+        {
+          ...editedBill,
+          selectedOption: selectedOption,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,

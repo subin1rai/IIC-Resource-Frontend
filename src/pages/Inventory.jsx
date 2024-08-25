@@ -529,7 +529,6 @@ const Inventory = () => {
       )}
       {filterFormVisibility && (
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-5">
-          
           <div className="flex justify-between ">
             <h2 className="font-semibold text-lg"> Filtering Option</h2>
             <img
@@ -540,53 +539,52 @@ const Inventory = () => {
             />
           </div>
           <div className="flex flex-col gap-3">
-          <label>Filter by Category: </label>
-          <div className="flex gap-8">
-            <Select
-              options={categoryOptions}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "category" })
-              }
-              value={categoryOptions.find(
-                (option) => option.value === itemData.category
-              )}
-              placeholder="Choose Category"
-              styles={customStyles}
-              classNamePrefix="react-select"
-            />
-            <Select
-              options={itemCategoryOptions}
-              onChange={(selectedOption) =>
-                handleSelectChange(selectedOption, { name: "itemCategory" })
-              }
-              value={itemCategoryOptions.find(
-                (option) => option.value === itemData.itemCategory
-              )}
-              placeholder="Choose Item Category"
-              styles={customStyles}
-              classNamePrefix="react-select"
-            />
-          </div>
+            <label>Filter by Category: </label>
+            <div className="flex gap-8">
+              <Select
+                options={categoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "category" })
+                }
+                value={categoryOptions.find(
+                  (option) => option.value === itemData.category
+                )}
+                placeholder="Choose Category"
+                styles={customStyles}
+                classNamePrefix="react-select"
+              />
+              <Select
+                options={itemCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleSelectChange(selectedOption, { name: "itemCategory" })
+                }
+                value={itemCategoryOptions.find(
+                  (option) => option.value === itemData.itemCategory
+                )}
+                placeholder="Choose Item Category"
+                styles={customStyles}
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-3">
             <label htmlFor="">Filter by Date:</label>
-          <div className="flex gap-8 ">
-            <input
-              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
-              type="date"
-              placeholder=" from"
-            />
-            <input
-              className="border-2 rounded border-neutral-300 p-2 w-[250px]"
-              type="date"
-              placeholder="to"
-            />
-          </div>
+            <div className="flex gap-8 ">
+              <input
+                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                type="date"
+                placeholder=" from"
+              />
+              <input
+                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                type="date"
+                placeholder="to"
+              />
+            </div>
           </div>
           <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
             Filter
           </button>
-          
         </form>
       )}
       {(addFormVisibility || filterFormVisibility) && (
