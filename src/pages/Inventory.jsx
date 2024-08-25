@@ -528,10 +528,12 @@ const Inventory = () => {
         </form>
       )}
       {filterFormVisibility && (
+
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 px-12 py-8 w-fit h-fit gap-8">
           
           <div className="flex justify-between items-center">
             <h2 className="font-semibold text-xl "> Filtering Option</h2>
+
             <img
               src={close}
               alt=""
@@ -540,6 +542,7 @@ const Inventory = () => {
             />
           </div>
           <div className="flex flex-col gap-3">
+
           <label>By Category: </label>
           <div className="flex gap-8">
             <Select
@@ -582,6 +585,7 @@ const Inventory = () => {
               placeholder="to"
             />
           </div>
+
           </div>
           {/* filter by price */}
           <div className="flex gap-8">
@@ -630,7 +634,6 @@ const Inventory = () => {
           <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg">
             Filter
           </button>
-          
         </form>
       )}
       {(addFormVisibility || filterFormVisibility) && (
