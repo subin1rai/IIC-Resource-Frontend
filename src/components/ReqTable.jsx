@@ -11,7 +11,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
 const columns = [
-  { id: "req_id", label: "Request ID", maxWidth: 70 },
+  { id: "req_id", label: "Request ID", maxWidth: 70, align:"center", },
   {
     id: "requested_by",
     label: "Requested By",
@@ -21,7 +21,8 @@ const columns = [
   },
   { id: "for_userId", 
     label: "Requested For", 
-    maxWidth: 70 
+    maxWidth: 70,
+    align:"center",
 },
   
   {
@@ -42,7 +43,6 @@ const columns = [
     label: "Status",
     maxWidth: 70,
     align: "center",
-
   },
 ];
 

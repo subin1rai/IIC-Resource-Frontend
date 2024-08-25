@@ -24,6 +24,7 @@ import EditProfile from "./pages/EditProfile";
 import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
+import SpecificRequest from "./pages/SpecificRequest";
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
                 <Route path="/editProfile" element={<EditProfile/>} />
+                <Route path="/specificRequest" element={<SpecificRequest/>} />
                 <Route
                   path="/specificVendor/:vendor_id"
                   element={<SpecificVendor />}

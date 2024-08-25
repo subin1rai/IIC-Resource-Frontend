@@ -24,7 +24,7 @@ const SpecificBill = () => {
     selectedOptions: "",
     paid_amount: 0,
     items: [],
-  });
+  }); 
 
   const [editedBill, setEditedBill] = useState({
     bill_no: "",
@@ -44,7 +44,7 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(billDetails.bills.bill_type + " " + billDetails.TDS);
+  const [selectedOption, setSelectedOption] = useState(billDetails.bill_type + " " + billDetails.TDS);
 
   const { bill_id } = useParams();
 
