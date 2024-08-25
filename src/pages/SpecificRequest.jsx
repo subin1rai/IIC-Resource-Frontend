@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const SpecificRequest =() =>{
+const SpecificRequest = () => {
   const [requests, setRequests] = useState({
     userId: "",
     for_userId: "",
@@ -14,7 +14,7 @@ const SpecificRequest =() =>{
     items: [],
   });
 
-  const[acceptRequest, setAcceptRequest] = useState({
+  const [acceptRequest, setAcceptRequest] = useState({
     userId: "",
     for_userId: "",
     request_date: "",
@@ -22,8 +22,7 @@ const SpecificRequest =() =>{
     status:"",
     remarks:"",
     items: [],
-  })
-     
+  });
 
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -101,7 +100,6 @@ const SpecificRequest =() =>{
     } catch (error) {
       console.log(error);
       setLoading(false);
-  
     }
   };
 
@@ -168,56 +166,51 @@ const SpecificRequest =() =>{
     fetchData();
   }, [id, token]);
 
-    return (
-      <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
+  return (
+    <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
       <div className="flex justify-between items-center ml-2">
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-2">
-          <Link to="/records" className="text-base">
-            Request Details
-          </Link>
-          <img src={front} alt="arrow" />
-          <h4 className="text-base text-blue-400">
-            34
-          </h4>
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-2">
+            <Link to="/records" className="text-base">
+              Request Details
+            </Link>
+            <img src={front} alt="arrow" />
+            <h4 className="text-base text-blue-400">34</h4>
+          </div>
+          <h2 className="font-semibold text-2xl">Request No.</h2>
         </div>
-        <h2 className="font-semibold text-2xl">
-          Request No.
-        </h2>
-      </div>
 
-      <div className="flex gap-3">
-        <button
-          onClick={openAcceptForm}
-          className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
-        >
-          Accept
-        </button>
-
-        {role === "superadmin" ? (
+        <div className="flex gap-3">
           <button
-            className="bg-red-500 px-6 rounded text-white font-medium py-3"
-            onClick={() =>handleDecline(requests.id)}
+            onClick={openAcceptForm}
+            className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
           >
-            Decline
+            Accept
           </button>
-        ) : (
-          <></>
-        )}
+
+          {role === "superadmin" ? (
+            <button
+              className="bg-red-500 px-6 rounded text-white font-medium py-3"
+              onClick={() => handleDecline(requests.id)}
+            >
+              Decline
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-     
-    </div>
-    <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
-    {!loading ? (
-      <div className="flex justify-between w-[75%] pb-3">
-        <div className="flex flex-col gap-5 mt-7 pl-9">
-          <p className="font-semibold">
-            Requested by:
-            <span className="font-normal  pl-4">
-              {requests.userId || "--"}
-            </span>
-          </p>
-          {/* <p className="font-semibold">
+      <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
+      {!loading ? (
+        <div className="flex justify-between w-[75%] pb-3">
+          <div className="flex flex-col gap-5 mt-7 pl-9">
+            <p className="font-semibold">
+              Requested by:
+              <span className="font-normal  pl-4">
+                {requests.userId || "--"}
+              </span>
+            </p>
+            {/* <p className="font-semibold">
             Vendor Name:
             <span className=" pl-4">
               {billDetails.vat_no || "--"}
@@ -247,12 +240,6 @@ const SpecificRequest =() =>{
             Requested Date:
             <span className="font-normal  pl-4">
             {new Date(requests.request_date).toLocaleDateString()}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Purpose:
-            <span className="font-normal  pl-4">
-            {requests.purpose || "--"}
             </span>
           </p>
           <p className="font-semibold">
@@ -287,18 +274,21 @@ const SpecificRequest =() =>{
         <td className="p-2 text-center border-b border-neutral-200">{requestItems.quantity}</td>
         {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
         <td className="p-2 border-b border-neutral-200">{billItem.withVATAmount}</td> */}
-      </tr>
-    ))
-  ) : (    
-    <tr>
-      <td colSpan="6" className="p-2 text-center border-b border-gray-300">
-        No Request items available
-      </td>
-    </tr>
-)}
-</tbody>
-    </table>
-    {acceptFormVisibility && (
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="6"
+                className="p-2 text-center border-b border-gray-300"
+              >
+                No Request items available
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {acceptFormVisibility && (
         <form
           onSubmit={handleSubmit}
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-[730px]"
@@ -314,7 +304,7 @@ const SpecificRequest =() =>{
                 onClick={closeAcceptForm}
               />
             </div>
-            
+
             <div className="flex gap-3 bg-slate-200 p-4 flex-col rounded-lg">
               <div className="flex text-lg font-semibold text-zinc-600">
                 Summary
@@ -323,21 +313,34 @@ const SpecificRequest =() =>{
                 <div key={request.id} className="flex gap-16 font-medium">
                   <div className="flex flex-col gap-2">
                     <p>
-                      Item: <span className="text-neutral-600">{request.item?.item_name}</span>
+                      Item:{" "}
+                      <span className="text-neutral-600">
+                        {request.item?.item_name}
+                      </span>
                     </p>
                     <p>
-                      Department: <span className="text-neutral-600">Department</span>
+                      Department:{" "}
+                      <span className="text-neutral-600">Department</span>
                     </p>
                     <p>
-                      Quantity: <span className="text-neutral-600">{request.request_quantity}</span>
+                      Quantity:{" "}
+                      <span className="text-neutral-600">
+                        {request.request_quantity}
+                      </span>
                     </p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <p>
-                      Requested By: <span className="text-neutral-600">{request.users?.user_name}</span>
+                      Requested By:{" "}
+                      <span className="text-neutral-600">
+                        {request.users?.user_name}
+                      </span>
                     </p>
                     <p>
-                      Requested To: <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
+                      Requested To:{" "}
+                      <span className="text-neutral-600">
+                        Mr.Nishesh Bishwas
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -369,7 +372,9 @@ const SpecificRequest =() =>{
                         onChange={(selectedOption) =>
                           handleItemChange(index, "item", selectedOption.value)
                         }
-                        value={itemOptions.find((option) => option.value === item.item)}
+                        value={itemOptions.find(
+                          (option) => option.value === item.item
+                        )}
                         placeholder="Select Item"
                         styles={customStyles}
                         className="w-[190px]"
@@ -410,7 +415,6 @@ const SpecificRequest =() =>{
               </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
-              
               <label className=" font-medium text-md" htmlFor="remarks">
                 Remarks
               </label>
@@ -422,7 +426,7 @@ const SpecificRequest =() =>{
                 onChange={(e) => setRemarks(e.target.value)}
               />
             </div>
-           
+
             <div className="flex justify-end ">
               <button
                 type="submit"
@@ -443,6 +447,6 @@ const SpecificRequest =() =>{
       )}
       <ToastContainer />
     </div>
-    );
-}
+  );
+};
 export default SpecificRequest;

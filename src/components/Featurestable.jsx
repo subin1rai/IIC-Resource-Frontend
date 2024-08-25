@@ -1,5 +1,5 @@
 import React from "react";
-import edit from "../assets/editIcon.svg";
+import edit from "../assets/editIcon.png";
 
 const Featurestable = ({
   feature,
@@ -23,7 +23,7 @@ const Featurestable = ({
               <img
                 src={edit}
                 alt=""
-                className="h-5 w-5"
+                className="h-6 w-6 ml-4"
                 onClick={() => handleformVisiblity(feat.feature_id)}
               />
 

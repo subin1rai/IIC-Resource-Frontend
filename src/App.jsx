@@ -26,7 +26,6 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
 import SpecificRequest from "./pages/SpecificRequest";
 
-
 function App() {
   const userType = localStorage.getItem("role");
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -50,7 +49,6 @@ function App() {
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
             {userType === "admin" || userType === "superadmin" ? (
               <>
-            
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/issue" element={<Issue />} />
@@ -59,8 +57,11 @@ function App() {
                 <Route path="/records" element={<Records />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
-                <Route path="/editProfile" element={<EditProfile/>} />
-                <Route path="/specificRequest" element={<SpecificRequest/>} />
+                <Route path="/editProfile" element={<EditProfile />} />
+                <Route
+                  path="/specificRequest/:id"
+                  element={<SpecificRequest />}
+                />
                 <Route
                   path="/specificVendor/:vendor_id"
                   element={<SpecificVendor />}
