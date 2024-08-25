@@ -301,8 +301,8 @@ const Records = () => {
           },
         }
       );
-
-      setBills((prevBills) => [...prevBills, response.data.result.bill]);
+      console.log(response.data.result);
+      setBills((prevBills) => [...prevBills, response.data.result.resultData]);
       toast.success(`${bill.bill_no} added successfully!`);
       closeAddBillForm();
     } catch (error) {
@@ -462,8 +462,10 @@ const Records = () => {
                       Bill Date:
                     </label>
                     <NepaliDatePicker
+
                       inputClassName="form-control focus:outline-none"
                       className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+
                       value={date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
@@ -553,7 +555,7 @@ const Records = () => {
                         name="vat_number"
                         id="vat_number"
                         onChange={handleChange}
-                        value={bill?.vendors?.vat_number}
+                        value={bill.vat_number}
                         readOnly
                       />
                     </div>
@@ -575,12 +577,17 @@ const Records = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col self-start w-full mt-8">
+              <div className="flex flex-col  w-full mt-8">
                 {renderSelectedComponent()}
 
                 {error && (
                   <span className="text-red-500 justify-start">{error}</span>
                 )}
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                  Add Bill
+                </button>
               </div>
             </div>
           </form>
