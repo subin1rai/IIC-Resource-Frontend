@@ -296,7 +296,7 @@ const Category = () => {
         <div className="w-[86.5vw] flex  justify-between">
           <div className="flex flex-col w-[32%] rounded-lg p-3 ">
             <div className="flex  bg-neutral-300 rounded-t-md px-10  py-3 justify-between">
-              <h1 className="text-lg font-medium ">Category</h1>
+              <h1 className="text-lg font-medium  ">Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("category")}
                 className="w-8 h-8 mr-2"
