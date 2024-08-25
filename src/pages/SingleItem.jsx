@@ -196,7 +196,7 @@ const SingleItem = () => {
       const updatedItem = {
         item_name: editedItem.item_name,
         category: editedItem.category,
-        item_category_name: editedItem.itemCategory,
+        itemCategory: editedItem.itemCategory,
         measuring_unit: editedItem.measuring_unit,
         low_limit: parseInt(editedItem.low_limit, 10),
         features: editedItem.features,
@@ -211,7 +211,8 @@ const SingleItem = () => {
         }
       );
       await fetchItemData();
-      console.log("Server response:", response.data);
+
+      console.log(response);
 
       if (response.data.updatedItem) {
         setItem(response.data.updatedItem);
@@ -429,8 +430,8 @@ const SingleItem = () => {
                       })
                     }
                     value={{
-                      value: editedItem.item_category,
-                      label: editedItem.item_category,
+                      value: editedItem.itemCategory,
+                      label: editedItem.itemCategory,
                     }}
                   />
                 </div>
