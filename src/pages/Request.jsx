@@ -15,7 +15,7 @@ const Request = () => {
         <Topbar />
         <div className="flex flex-wrap w-[87vw] gap-5 justify-center">
           <div className="bg-white w-[85.5vw] rounded-lg flex flex-col justify-between p-3 gap-3">
-            <h3 className="flex text-lg font-bold m-3">Issue Summary</h3>
+            <h3 className="flex text-lg font-bold m-3">Request Summary</h3>
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={req} alt="" />

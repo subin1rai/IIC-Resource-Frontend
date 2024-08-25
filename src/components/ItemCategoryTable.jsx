@@ -1,5 +1,5 @@
 import React from "react";
-import edit from "../assets/editIcon.svg";
+import edit from "../assets/editIcon.png";
 
 const ItemCategoryTable = ({
   itemCategory,
@@ -23,7 +23,7 @@ const ItemCategoryTable = ({
               <img
                 src={edit}
                 alt=""
-                className="h-5 w-5"
+                className="h-6 w-6"
                 onClick={() => handleformVisiblity(iCat.item_category_id)}
               />
             </div>
