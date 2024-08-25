@@ -420,8 +420,8 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Payment Status:
                   <span className="font-normal  pl-4">
-                    {billDetails?.bill?.left_amount < 0 ? (
-                      <span className="text-yellow">Pending</span>
+                    {billDetails?.bill?.left_amount > 0 ? (
+                      <span className="text-yellow-500">Pending</span>
                     ) : (
                       <span className="text-green-500">Complete </span> || "--"
                     )}
