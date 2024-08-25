@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,57 +12,27 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
 const columns = [
-  { id: "req_id", label: "Request ID", maxWidth: 70, align:"center", },
-  {
-    id: "requested_by",
-    label: "Requested By",
-    maxWidth: 70,
-    align: "center",
-    
+  { id: "req_id", label: "Request ID", maxWidth: 70, align: "center" },
+  { id: "requested_by", label: "Requested By", maxWidth: 70, align: "center" },
+  { id: "for_userId", label: "Requested For", maxWidth: 70, align: "center" },
+  { 
+    id: "requested_date", 
+    label: "Requested date", 
+    maxWidth: 70, 
+    align: "center", 
+    format: (value) => new Date(value).toLocaleDateString("en-US") 
   },
-  { id: "for_userId", 
-    label: "Requested For", 
-    maxWidth: 70,
-    align:"center",
-},
-  
-  {
-    id: "requested_date",
-    label: "Requested date",
-    maxWidth: 70,
-    align: "center",
-    format: (value) => new Date(value).toLocaleDateString("en-US"),
-  },
-  {
-    id: "department",
-    label: "Department",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
-    id: "status",
-    label: "Status",
-    maxWidth: 70,
-    align: "center",
-  },
+  { id: "department", label: "Department", maxWidth: 70, align: "center" },
+  { id: "status", label: "Status", maxWidth: 70, align: "center" },
 ];
 
-function createData(req_id,requested_by, for_userId,  requested_date, department, status) {
-  return { req_id,requested_by, for_userId,  requested_date, department, status };
-}
-
-const rows = [
-  createData(1, "Nishesh",  "Mamata", "2024-03-04", "It Academics", "Issued" ),
-  createData(2, "Santosh",  "Mamata", "2024-03-05", "It Academics", "Issued" ),
-  createData(3, "Santosh",  "Mamata", "2024-03-06", "It Academics", "Pending" ),
-  // Add more rows as needed
-];
-
-export default function ReqTable() {
+export default function ReqTable({ requests }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("req_id");
+
+  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -85,7 +56,7 @@ export default function ReqTable() {
   };
 
   const descendingComparator = (a, b, orderBy) => {
-    if (orderBy === "requested_by") {
+    if (orderBy === "requested_date") {
       return new Date(b[orderBy]) - new Date(a[orderBy]);
     }
     if (b[orderBy] < a[orderBy]) {
@@ -98,7 +69,8 @@ export default function ReqTable() {
   };
 
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
+    const validArray = array.filter((item) => item != null);
+    const stabilizedThis = validArray.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
@@ -107,14 +79,23 @@ export default function ReqTable() {
     return stabilizedThis.map((el) => el[0]);
   };
 
+  // Ensure requests is defined and is an array before using it
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [rows, order, orderBy, page, rowsPerPage]
+      requests && Array.isArray(requests)
+        ? stableSort(
+            requests.filter((request) => request != null),
+            getComparator(order, orderBy)
+          ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        : [],
+    [requests, order, orderBy, page, rowsPerPage]
   );
+
+  const handleRowClick = (request_id) => {
+    if (request_id) {
+      navigate(`/specificRequest/${request_id}`);
+    }
+  };
 
   const cellStyle = {
     fontSize: "14px",
@@ -165,27 +146,55 @@ export default function ReqTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.req_id}>
-                {columns.map((column) => {
-                  const value = row[column.id];
-                  return (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
+            {visibleRows
+              .slice()
+              .reverse()
+              .map((request, index) =>
+                request ? (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={request.req_id || `unknown-${index}`}
+                    onClick={() => handleRowClick(request.req_id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {columns.map((column) => {
+                      let value = request[column.id];
+
+                      if (column.id === "status") {
+                        value = request.isApproved ? "Accepted" : "Pending";
+                      }
+
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{
+                            color:
+                              column.id === "status" && value === "Pending"
+                                ? "orange"
+                                : column.id === "status" && value === "Accepted"
+                                ? "green"
+                                : "inherit",
+                          }}
+                        >
+                          {column.format && value != null
+                            ? column.format(value)
+                            : value ?? "N/A"}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ) : null
+              )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[7]}
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={requests && Array.isArray(requests) ? requests.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

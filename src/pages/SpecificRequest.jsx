@@ -4,6 +4,33 @@ import close from "../assets/close.svg";
 import {Link} from "react-router-dom";
 
 const SpecificRequest =() =>{
+  const [requests, setRequests] = useState({
+    userId: "",
+    for_userId: "",
+    request_date: "",
+    department:"",
+    status:"",
+    items: [],
+  });
+
+  const[acceptRequest, setAcceptRequest] = useState({
+    userId: "",
+    for_userId: "",
+    request_date: "",
+    department:"",
+    status:"",
+    items: [],
+  })
+     
+
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemOptions, setItemOptions] = useState([]);
+  const [quantity, setQuantity] = useState("");
+  const [remarks, setRemarks] = useState("");
+  const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const token = localStorage.getItem("token");
 
   const customStyles = {
@@ -101,6 +128,11 @@ const SpecificRequest =() =>{
     setItemFields(newFields);
   };
 
+  const handleDecline = (requestId) => {
+    console.log(`Declined request with ID: ${requestId}`);
+    // Implement the decline logic here
+  };
+
   useEffect(() => {
     const getRequest = async () => {
       try {
@@ -163,11 +195,11 @@ const SpecificRequest =() =>{
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <Link to="/records" className="text-base">
-            Bill Records
+            Request Details
           </Link>
           <img src={front} alt="arrow" />
           <h4 className="text-base text-blue-400">
-            Request Details
+            34
           </h4>
         </div>
         <h2 className="font-semibold text-2xl">
@@ -175,36 +207,35 @@ const SpecificRequest =() =>{
         </h2>
       </div>
 
-      {/* please dont remove this during merge conflict */}
       <div className="flex gap-3">
         <button
           onClick={openAcceptForm}
           className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
         >
-          Edit Bill
+          Accept
         </button>
 
         {role === "superadmin" ? (
           <button
-            className="bg-green-500 px-6 rounded text-white font-medium py-3"
-            onClick={handleApprove}
+            className="bg-red-500 px-6 rounded text-white font-medium py-3"
+            onClick={() =>handleDecline(requests.id)}
           >
-            Approve Bill
+            Decline
           </button>
         ) : (
           <></>
         )}
       </div>
-      {/* na hatako ma thank you hai  */}
+     
     </div>
     <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
     {!loading ? (
       <div className="flex justify-between w-[75%] pb-3">
         <div className="flex flex-col gap-5 mt-7 pl-9">
           <p className="font-semibold">
-            Bill Date:
+            Requested by:
             <span className="font-normal  pl-4">
-              {formatDate(billDetails?.bill?.bill_date) || "--"}
+              {requests.userId || "--"}
             </span>
           </p>
           {/* <p className="font-semibold">
@@ -220,66 +251,32 @@ const SpecificRequest =() =>{
             </span>
           </p> */}
           <p className="font-semibold">
-            Vendor Name:
+            Requested For:
             <span className=" font-normal pl-4">
-              {billDetails?.vendor_name || "--"}
+              {requests.for_userId || "--"}
             </span>
           </p>
           <p className="font-semibold">
-            Vat/Pan No:
+            Department:
             <span className="font-normal  pl-4">
-              {billDetails?.bill?.vendors?.vat_number || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Voucher No:
-            <span className="font-normal  pl-4">
-              {billDetails?.bill?.invoice_no || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Approved Status:
-            <span className="font-normal  pl-4">
-              {billDetails?.bill?.isApproved ? (
-                <span className="text-green-500">Approved</span>
-              ) : (
-                <span className="text-yellow-500">Pending</span> || "--"
-              )}
+              {requests.users?.department || "--"}
             </span>
           </p>
         </div>
         <div className="flex flex-col gap-5 mt-7 pl-9">
-          <p className="font-semibold">
-            TDS:
+        <p className="font-semibold">
+            Requested Date:
             <span className="font-normal  pl-4">
-              {billDetails?.TDS || 0}
+            {new Date(requests.request_date).toLocaleDateString()}
             </span>
           </p>
           <p className="font-semibold">
-            Bill Amount:
+            Status:
             <span className="font-normal  pl-4">
-              {billDetails?.bill?.actual_Amount || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Paid Amount:
-            <span className="font-normal  pl-4">
-              {billDetails?.bill?.paid_amount || 0}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Pending Amount
-            <span className="font-normal  pl-4">
-              {billDetails?.bill?.left_amount || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Payment Status:
-            <span className="font-normal  pl-4">
-              {billDetails?.bill?.left_amount < 0 ? (
-                <span className="text-yellow">Pending</span>
+              {requests.isAccepted? (
+                <span className="text-green-500">Accepted</span>
               ) : (
-                <span className="text-green-500">Complete </span> || "--"
+                <span className="text-yellow-500">Pending</span> || "--"
               )}
             </span>
           </p>
@@ -291,25 +288,18 @@ const SpecificRequest =() =>{
         <table className="min-w-full table-fixed border-collapse">
       <thead>
         <tr className="bg-neutral-200">
-          <th className="p-2 text-center border-b border-neutral-200 font-medium">S.No.</th>
+          <th className="p-2 text-center border-b  border-neutral-200 font-medium">S.No.</th>
           <th className="p-2 text-center border-b  border-neutral-200 font-medium">Item Name</th>
           <th className="p-2 text-center border-b  border-neutral-200 font-medium">Quantity</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Unit Price</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Vat Amount</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Total Amount</th>
         </tr>
       </thead>
       <tbody>
-  {bill.BillItems && bill.BillItems.length > 0 ? (
-    bill.BillItems.map((billItem, index) => (
+  {requests.requestItems && requests.requestItems.length > 0 ? (
+    requests.requestItems.map((requestItems, index) => (
       <tr key={index}>
         <td className="p-2 text-center border-b border-neutral-200">{index + 1}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.item_id}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.quantity}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.unit_price}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.withVATAmount}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{billItem.total_Amount}</td>
-
+        <td className="p-2 text-center border-b border-neutral-200">{requestItems.item_id}</td>
+        <td className="p-2 text-center border-b border-neutral-200">{requestItems.quantity}</td>
         {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
         <td className="p-2 border-b border-neutral-200">{billItem.withVATAmount}</td> */}
       </tr>
@@ -317,7 +307,7 @@ const SpecificRequest =() =>{
   ) : (    
     <tr>
       <td colSpan="6" className="p-2 text-center border-b border-gray-300">
-        No bill items available
+        No Request items available
       </td>
     </tr>
 )}

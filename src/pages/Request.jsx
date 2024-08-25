@@ -2,12 +2,82 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import ReqTable from "../components/ReqTable";
+import socket from "../socket";
 // import RequestTable from "../components/RequestTable";
 import axios from "axios";
 import Chat from "../components/Chat";
 import req from "../assets/request.svg";
 
 const Request = () => {
+  const [requests, setRequests] = useState({
+    userId: "",
+    for_userId: "",
+    request_date: "",
+    department:"",
+    status:"",
+    items: [],
+  });
+
+  const [items, setItems] =useState([]);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const getRequest = async () => {
+      try {
+        
+        const response = await axios.get("http://localhost:8898/api/request", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setRequests(response.data.request);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (token) {
+      getRequest();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setItems(response.data);
+        
+        setItemOptions(
+          response.data.map((item) => ({
+            value: item.item_name,
+            label: item.item_name,
+          }))
+        );
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getItems();
+  }, [token]);
+
+  useEffect(() => {
+    socket.on("newRequest", (data) => {
+      toast.success(data.message);
+      setRequests((prevRequests) => [...prevRequests, data.requestData]);
+    });
+
+    return () => {
+      socket.off("newRequest");
+    };
+  }, []);
+
   return (
     <div className="w-screen h-screen flex justify-between bg-background reltive">
       <Sidebar />

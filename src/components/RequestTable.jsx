@@ -18,9 +18,7 @@ const RequestTable = () => {
   const [quantity, setQuantity] = useState("");
   const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
-  
 
-  // getting token from local storage
   const token = localStorage.getItem("token");
 
   const customStyles = {
@@ -161,7 +159,7 @@ const RequestTable = () => {
       }
     };
     getItems();
-  }, [token]);
+  },[token]);
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
