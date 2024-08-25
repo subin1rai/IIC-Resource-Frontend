@@ -189,19 +189,19 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       ) : (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer text-center ${loading ? "pointer-events-none opacity-50" : ""}`}
             onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer text-center ${loading ? "pointer-events-none opacity-50" : ""}`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer text-center ${loading ? "pointer-events-none opacity-50" : ""}`}
             onClick={() => {
               setIsOpen(false);
               handlePopupForm();
