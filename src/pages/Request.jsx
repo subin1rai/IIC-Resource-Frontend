@@ -14,6 +14,7 @@ const Request = () => {
     for_userId: "",
     request_date: "",
     department:"",
+    purpose:"",
     status:"",
     items: [],
   });

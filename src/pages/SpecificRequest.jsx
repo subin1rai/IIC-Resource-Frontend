@@ -10,6 +10,7 @@ const SpecificRequest =() =>{
     request_date: "",
     department:"",
     status:"",
+    purpose:"",
     items: [],
   });
 
@@ -19,6 +20,7 @@ const SpecificRequest =() =>{
     request_date: "",
     department:"",
     status:"",
+    remarks:"",
     items: [],
   })
      
@@ -134,60 +136,37 @@ const SpecificRequest =() =>{
   };
 
   useEffect(() => {
-    const getRequest = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        
-        const response = await axios.get("http://localhost:8898/api/request", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setRequests(response.data.request);
+        const [singleRequestResponse, itemsResponse] =
+          await Promise.all([
+            axios.get(`http://localhost:8898/api/singleRequest/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            axios.get("http://localhost:8898/api/items", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+          ]);
+        console.log(singleRequestResponse.data);
+        setRequests(singleRequestResponse.data);
+        setSelectedOption(value);
+        console.log(value);
+        setItems(itemsResponse.data);
+        // setBill(response.data.bill);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        setError(error.response?.data?.error);
+        setLoading(false);
       }
     };
-
-    if (token) {
-      getRequest();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    const getItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setItems(response.data);
-        
-        setItemOptions(
-          response.data.map((item) => ({
-            value: item.item_name,
-            label: item.item_name,
-          }))
-        );
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getItems();
-  }, [token]);
-
-  useEffect(() => {
-    socket.on("newRequest", (data) => {
-      toast.success(data.message);
-      setRequests((prevRequests) => [...prevRequests, data.requestData]);
-    });
-
-    return () => {
-      socket.off("newRequest");
-    };
-  }, []);
+    fetchData();
+  }, [id, token]);
 
     return (
       <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
@@ -268,6 +247,12 @@ const SpecificRequest =() =>{
             Requested Date:
             <span className="font-normal  pl-4">
             {new Date(requests.request_date).toLocaleDateString()}
+            </span>
+          </p>
+          <p className="font-semibold">
+            Purpose:
+            <span className="font-normal  pl-4">
+            {requests.purpose || "--"}
             </span>
           </p>
           <p className="font-semibold">
