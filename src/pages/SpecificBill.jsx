@@ -75,6 +75,7 @@ const SpecificBill = () => {
       case "vat 1.5":
         return (
           <Vat
+            billDetails={billDetails}
             selectedOption={selectedOption}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "vat")}
@@ -85,6 +86,7 @@ const SpecificBill = () => {
       case "pan 15":
         return (
           <Pan
+            billDetails={billDetails}
             selectedOption={selectedOption}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "pan")}
@@ -93,6 +95,7 @@ const SpecificBill = () => {
       case "noBill":
         return (
           <NoBill
+            billDetails={billDetails}
             handleChange={handleChange}
             onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
           />
@@ -417,8 +420,8 @@ const SpecificBill = () => {
                 <p className="font-semibold">
                   Payment Status:
                   <span className="font-normal  pl-4">
-                    {billDetails?.bill?.left_amount < 0 ? (
-                      <span className="text-yellow">Pending</span>
+                    {billDetails?.bill?.left_amount > 0 ? (
+                      <span className="text-yellow-500">Pending</span>
                     ) : (
                       <span className="text-green-500">Complete </span> || "--"
                     )}
@@ -499,7 +502,6 @@ const SpecificBill = () => {
       {!loading && addFormVisibility && (
         <>
           <div className="h-screen w-screen bg-overlay absolute "></div>
-
           <form
             onSubmit={handleSubmit}
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded "
@@ -690,6 +692,11 @@ const SpecificBill = () => {
                   <span className="text-red-500 self-center">{error}</span>
                 )}
                 {renderSelectedComponent()}
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                  Edit Bill
+                </button>
               </div>
             </div>
           </form>

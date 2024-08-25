@@ -217,20 +217,38 @@ export default function RecordsTable({ bills }) {
                         <TableCell
                           key={column.id}
                           align={column.align}
-                          style={{
-                            color:
-                              column.id === "payment_status" &&
-                              value === "Pending"
-                                ? "orange"
-                                : column.id === "payment_status" &&
-                                  value === "Complete"
-                                ? "green"
-                                : "inherit",
-                          }}
+                          style={cellStyle}
                         >
-                          {column.format && value != null
-                            ? column.format(value)
-                            : value ?? "N/A"}
+                          {column.id === "payment_status" ? (
+                            <div
+                              style={{
+                                display: "inline-block",
+                                padding: "4px 8px",
+                                borderRadius: "4px",
+                                backgroundColor:
+                                  value === "Pending"
+                                    ? "#fff3cd"
+                                    : value === "Complete"
+                                    ? "#d4edda"
+                                    : "#f8d7da",
+                                color:
+                                  value === "Pending"
+                                    ? "#856404"
+                                    : value === "Complete"
+                                    ? "#155724"
+                                    : "#721c24",
+                                fontWeight: "normal",
+                                textAlign: "center",
+                              }}
+                            >
+                              {value ?? "N/A"}
+                            </div>
+                          ) : column.format && value != null ? (
+                            column.format(value)
+                          ) : (
+                            value ?? "N/A"
+                          )}
+                              
                         </TableCell>
                       );
                     })}

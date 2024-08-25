@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Vat = ({ selectedOption, onDataUpdate }) => {
+const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = useState([
     {
@@ -144,7 +144,7 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
 
   return (
     <>
-      <div className="container mx-auto overflow-auto max-h-[40vh]">
+      <div className="container mx-auto overflow-auto ">
         <table className="w-fit border-collapse border border-neutral-500">
           <thead>
             <tr className="bg-blue-200">
@@ -289,11 +289,6 @@ const Vat = ({ selectedOption, onDataUpdate }) => {
           >
             Add more fields
           </span>
-        </div>
-        <div className="flex justify-end mt-4">
-          <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
-            Add Bill
-          </button>
         </div>
       </div>
     </>
