@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import close from "../assets/close.svg";
@@ -12,26 +12,7 @@ import remove from "../assets/removeIcon.svg";
 import axios from "axios";
 
 const Issue = () => {
-
-
-  // const [issue, setIssue] = useState({
-  //   issue_id: "",
-  //   issue_name: "",
-  //   quantity: "",
-  //   remarks: "",
-  //   issueData: "",
-  //   status: "",
-  //   approved_by: "",
-  //   department: "",
-  //   isReturned: "",
-  // });
-
-
-  const token = localStorage.getItem("token");
-
-  const [issues, setIssues] = useState("");
-  const [loading, setLoading] = useState(false)
-
+  const [issues, setIssues] = useState();
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [remarks, setRemarks] = useState("");
@@ -111,25 +92,22 @@ const Issue = () => {
     }),
   };
 
-  useEffect(() => {
-    const getAllIssues = async () => {
-      try {
-        setLoading(true)
-        const response = await axios.get("http://localhost:8898/api/issue", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setIssues(response.data.response);
-        setLoading(false)
-      } catch (error) {
-        console.log("Error fetching issues:", error);
-        setLoading(false)
-      }
-    };
+  const token = localStorage.getItem("token");
 
-    getAllIssues();
-  }, [token]);
+  useEffect(() => {
+    const getAllIssue = async () => {
+      const response = await axios.get(`http://localhost:8898/api/issue`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setIssues(response.data.response);
+    };
+    getAllIssue();
+  }, []);
+
+  console.log(issues);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -167,15 +145,17 @@ const Issue = () => {
                 <img src={filterIcon} alt="" />
                 Filter
               </button>
-              <button className="bg-blue-600 text-white py-2 px-3 rounded" onClick={openAddIssueForm} >
+              <button
+                className="bg-blue-600 text-white py-2 px-3 rounded"
+                onClick={openAddIssueForm}
+              >
                 Add Issue
               </button>
             </div>
           </div>
-          {!loading ? (<div className="mt-10">
-            <IssueTable issues={issues} />
-          </div>) : (<>Loading.....</>)}
-
+          <div className="mt-10">
+            {issues ? <IssueTable issues={issues} /> : <p>Loading issues...</p>}
+          </div>
         </div>
       </div>
       {filterFormVisibility && (
@@ -210,7 +190,7 @@ const Issue = () => {
       {filterFormVisibility && (
         <div
           className="absolute bg-overlay z-30 w-screen h-screen"
-          onCick={closeFilterForm}
+          onClick={closeFilterForm}
         >
           {" "}
         </div>
@@ -231,106 +211,94 @@ const Issue = () => {
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
                 <div className="flex gap-40 ">
-                  <label className="font-medium text-md">Requested by</label>
-                  <label className="font-medium text-md">Issued by</label>
+                  <label className="font-semibold">Issue Item</label>
+                  <Select
+                    className="w-[70%]"
+                    styles={customStyles}
+                    options={items}
+                    value={selectedItem}
+                    onChange={setSelectedItem}
+                    placeholder="Select Item"
+                  />
                 </div>
-                <div className="flex gap-5">
-                  <input className="border-2 rounded border-border px-3 py-2 w-[13vw]"
-                    placeholder="Request made by" />
-                  <input className="border-2 rounded border-border px-3 py-2 w-[13vw]"
-                    placeholder="Items issued by" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-60">
-                  <label htmlFor="item" className="font-medium text-md">
-                    Item
-                  </label>
-                  <label
-                    htmlFor="quantity"
-                    className="font-medium text-md"
-                  >
-                    Quantity
-                  </label>
-                </div>
-                <div className="flex items-end gap-2">
-                  <div className="flex flex-col gap-6">
-                    {itemFields.map((field, index) => (
-                      <div key={index} className="flex  gap-5 items-center">
-                        {/* <div className="flex gap-12 bg-red-600  "> */}
-                        <Select
-                          options={items}
-                          onChange={(option) =>
-                            handleItemChange(index, "item", option)
-                          }
-                          value={items.find((option) => option === field.item)}
-                          placeholder="Select Item"
-                          styles={customStyles}
-                        />
-                        <input
-                          className="border-2 rounded border-border px-3 py-2 w-[13vw]"
-                          type="number"
-                          placeholder="Enter a quantity"
-                          name={`quantity-${index}`}
-                          id={`quantity-${index}`}
-                          value={field.quantity}
-                          onChange={(e) =>
-                            handleItemChange(index, "quantity", e.target.value)
-                          }
-                        />
-                        {/* </div> */}
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => removeItemField(index)}
-                            className="flex items-center"
-                          >
-                            <img src={remove} alt="Remove" className="h-7 w-7" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  {itemFields.length >= 3 ? null : (
-                    <button
-                      type="button"
-                      onClick={addItemField}
-                      className="flex items-center mb-2"
+                <label className="font-semibold">Remarks</label>
+                <textarea
+                  rows={5}
+                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[35vw]"
+                  placeholder="Type here..."
+                  value={remarks}
+                  onChange={(e) => setRemarks(e.target.value)}
+                />
+                <div className="flex flex-col gap-4">
+                  <h4 className="font-bold"> Items to be Issued </h4>
+                  {itemFields.map((field, index) => (
+                    <div
+                      key={index}
+                      className="flex gap-2 flex-col sm:flex-row items-start sm:items-center"
                     >
-                      <img src={add} alt="Add" className="h-7 w-7 ml-3" />
-                    </button>
-                  )}
+                      <input
+                        className="border-2 border-neutral-200 p-1.5 rounded-md w-full sm:w-[14vw]"
+                        type="text"
+                        placeholder="Item"
+                        value={field.item}
+                        onChange={(e) =>
+                          handleItemChange(index, "item", e.target.value)
+                        }
+                      />
+                      <input
+                        className="border-2 border-neutral-200 p-1.5 rounded-md w-full sm:w-[14vw]"
+                        type="number"
+                        placeholder="Quantity"
+                        value={field.quantity}
+                        onChange={(e) =>
+                          handleItemChange(index, "quantity", e.target.value)
+                        }
+                      />
+                      {itemFields.length > 1 && (
+                        <button
+                          type="button"
+                          className="bg-red-500 text-white p-2 rounded"
+                          onClick={() => removeItemField(index)}
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="bg-blue-600 text-white py-2 px-4 rounded"
+                    onClick={addItemField}
+                  >
+                    Add Item
+                  </button>
                 </div>
               </div>
             </div>
+            <div className="flex justify-end gap-4">
+              <button
+                type="button"
+                className="discard-btn"
+                onClick={closeAddIssueForm}
+              >
+                <img src={remove} alt="" />
+                Remove
+              </button>
+              <button className="bg-blue-600 text-white py-2 px-4 rounded">
+                Done
+              </button>
+            </div>
           </div>
-          <div className="flex flex-col gap-3 p-2">
-            <label className="w-40 font-medium text-md" htmlFor="remarks">
-              Remarks
-            </label>
-            <textarea
-              name="remarks"
-              placeholder="Enter remarks"
-              className="border-stone-200 border-2 rounded py-2 px-4 w-80 h-32 resize-none"
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
-            />
-          </div>
-          <button className="flex self-end bg-blue-500 text-white rounded items-center w-fit p-2 px-8">
-            Done
-          </button>
         </form>
-
       )}
       {addIssueVisibility && (
         <div
           className="absolute bg-overlay z-30 w-screen h-screen"
-          onCick={closeAddIssueForm}
+          onClick={closeAddIssueForm}
         >
           {" "}
         </div>
       )}
-
     </div>
   );
 };

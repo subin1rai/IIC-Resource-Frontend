@@ -8,66 +8,60 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
-
+// Column definitions
 const columns = [
-  { id: "issue_id", label: "Issue ID", maxWidth: 70 },
-  { id: "issue_name", label: "Issued Items", maxWidth: 70 },
+  { id: "issue_id", label: "Issue ID", minWidth: 70 },
+  { id: "issued_item", label: "Issued Items", minWidth: 70 },
   {
-    id: "issueDate",
+    id: "issue_date",
     label: "Issue Date",
-    maxWidth: 70,
+    minWidth: 70,
     align: "center",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
   {
     id: "quantity",
     label: "Quantity",
-    maxWidth: 70,
+    minWidth: 70,
     align: "center",
     format: (value) => value.toFixed(2),
   },
-  {
-    id: "department",
-    label: "Department",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
-    id: "approved_by",
-    label: "Issued By",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
-    id: "status",
-    label: "Status",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
-    id: "remarks",
-    label: "Remarks",
-    maxWidth: 70,
-    align: "center",
-  },
+  { id: "department", label: "Department", minWidth: 70, align: "center" },
+  { id: "status", label: "Status", minWidth: 70, align: "center" },
+  { id: "issued_by", label: "Issued By", minWidth: 70, align: "center" },
+  { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
 ];
 
-function createData(issue_id, issued_item, issue_date, quantity, department, status, issued_by, remarks) {
-  return { issue_id, issued_item, issue_date, quantity, department, status, issued_by, remarks };
-}
-
+// Create data function
+const createData = (
+  issue_id,
+  issued_item,
+  issue_date,
+  quantity,
+  department,
+  status,
+  issued_by,
+  remarks
+) => ({
+  issue_id,
+  issued_item,
+  issue_date,
+  quantity,
+  department,
+  status,
+  issued_by,
+  remarks,
+});
 
 export default function InventoryTable({ issues }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("issue_id");
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (event, newPage) => setPage(newPage);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -80,28 +74,19 @@ export default function InventoryTable({ issues }) {
     setOrderBy(property);
   };
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
+  const getComparator = (order, orderBy) =>
+    order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
-  };
 
   const descendingComparator = (a, b, orderBy) => {
     if (orderBy === "issue_date") {
       return new Date(b[orderBy]) - new Date(a[orderBy]);
     }
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
+    if (b[orderBy] < a[orderBy]) return -1;
+    if (b[orderBy] > a[orderBy]) return 1;
     return 0;
   };
-
-
-  const rows = []
-  console.log(issues)
 
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -113,7 +98,7 @@ export default function InventoryTable({ issues }) {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () =>
       stableSort(issues, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
@@ -129,11 +114,7 @@ export default function InventoryTable({ issues }) {
     overflow: "hidden",
     textOverflow: "ellipsis",
   };
-
-  const headerStyle = {
-    fontWeight: 600,
-    backgroundColor: "#f5f5f5",
-  };
+  const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
   return (
     <Paper
@@ -191,7 +172,7 @@ export default function InventoryTable({ issues }) {
       <TablePagination
         rowsPerPageOptions={[7]}
         component="div"
-        count={rows.length}
+        count={issues.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
