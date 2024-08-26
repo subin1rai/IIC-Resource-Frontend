@@ -8,7 +8,6 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [rows, setRows] = useState([]);
   const token = localStorage.getItem("token");
 
-  // Fetch items from API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,7 +53,6 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
     };
   };
 
-  // Initialize rows with existing bill items if available
   useEffect(() => {
     console.log("billDetails:", billDetails);
     if (billDetails && billDetails.bill && billDetails.bill.BillItems) {
@@ -74,14 +72,12 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
         return calculateRowValues(initialRow, selectedOption);
       });
 
-      // Only update if there are actual changes to the data
       if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
         setRows(existingItems);
         console.log("Initialized rows with existing items:", existingItems);
         updateParentData(existingItems);
       }
     } else if (rows.length === 0) {
-      // Only initialize the first row if rows are empty
       const initialRow = calculateRowValues(
         {
           id: 1,
@@ -101,7 +97,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
       console.log("Initialized rows with default item:", [initialRow]);
       updateParentData([initialRow]);
     }
-  }, [billDetails, selectedOption, rows]);
+  }, [billDetails, selectedOption]);
 
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
@@ -195,7 +191,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
 
   return (
     <>
-      <div className="container mx-auto overflow-auto ">
+      <div className="container mx-auto overflow-auto">
         <table className="w-fit border-collapse border border-neutral-500">
           <thead>
             <tr className="bg-blue-200">
@@ -265,13 +261,14 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                     className="w-[170px] whitespace-nowrap"
                   />
                 </td>
-                <td className="px-4 py-2">
+                <td className="border border-neutral-500 px-4 py-2">
                   <input
                     value={row.quantity}
                     onChange={(e) =>
                       updateRow(index, "quantity", e.target.value)
                     }
-                    className="w-full h-full p-1 border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-center"
+                    placeholder="Quantity"
+                    className="w-full text-center"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2">
@@ -280,36 +277,66 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                     onChange={(e) =>
                       updateRow(index, "unit_price", e.target.value)
                     }
-                    className="w-full p-1 border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-center"
+                    placeholder="Unit Price"
+                    className="w-full text-center"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.amount}
+                  {row.amount.toFixed(2)}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.tds}
+                  {row.tds.toFixed(2)}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.vat}
+                  {row.vat.toFixed(2)}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.amountWithVat}
+                  {row.amountWithVat.toFixed(2)}
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.actualAmt}
+                  {row.actualAmt.toFixed(2)}
                 </td>
               </tr>
-            ))}
+            ))}{" "}
+            <tr className="bg-white">
+              <td
+                colSpan="4"
+                className="border border-neutral-500 px-4 py-2 text-right"
+              >
+                Total
+              </td>
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows
+                  .reduce((sum, row) => sum + (row.amount || 0), 0)
+                  .toFixed(2)}
+              </td>
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows.reduce((sum, row) => sum + (row.tds || 0), 0).toFixed(2)}
+              </td>{" "}
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows.reduce((sum, row) => sum + (row.vat || 0), 0).toFixed(2)}
+              </td>
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows
+                  .reduce((sum, row) => sum + (row.amountWithVat || 0), 0)
+                  .toFixed(2)}
+              </td>
+              <td className="border border-neutral-500  px-4 py-2 text-center">
+                {rows
+                  .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
+                  .toFixed(2)}
+              </td>
+            </tr>
           </tbody>
         </table>
-        <div className="mt-2 flex justify-center">
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={addRow}
-          >
-            Add Row
-          </button>
-        </div>
+      </div>
+      <div className="mt-2">
+        <span
+          onClick={addRow}
+          className="text-blue-600 hover:underline cursor-pointer"
+        >
+          Add more fields
+        </span>
       </div>
     </>
   );

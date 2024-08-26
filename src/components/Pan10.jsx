@@ -3,22 +3,22 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
-  //  const { selectedOption } = useBillContext();
+const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [items, setItems] = useState([]);
-  const [panItems, setPanItems] = useState(initialData || []);
+  const [rows, setRows] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [itemsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+          {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
-
+          }
+        );
         setItems(itemsResponse.data);
+        console.log("Fetched items:", itemsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -27,93 +27,141 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
     fetchData();
   }, [token]);
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      item_id: "",
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      amtAfterTds: 0,
-    },
-    // Add more rows as needed
-  ]);
+  const calculateRowValues = (row, selectedOption) => {
+    const quantity = parseFloat(row.quantity) || 0;
+    const unit_price = parseFloat(row.unit_price) || 0;
+    const amount = quantity * unit_price;
+
+    let tds = 0;
+    if (selectedOption === "pan 10") {
+      tds = 0.1 * amount;
+    } else if (selectedOption === "pan 15") {
+      tds = 0.15 * amount;
+    } else if (selectedOption === "pan 0") {
+      tds = 0;
+    }
+
+    const pan = amount * 0.13;
+    const amountWithPan = amount + pan;
+    const actualAmt = amountWithPan - tds;
+
+    return {
+      ...row,
+      amount,
+      tds,
+      pan,
+      amountWithPan,
+      actualAmt,
+    };
+  };
+
+  useEffect(() => {
+    console.log("billDetails:", billDetails);
+    if (billDetails && billDetails.bill && billDetails.bill.BillItems) {
+      const existingItems = billDetails.bill.BillItems.map((item, index) => {
+        const initialRow = {
+          id: index + 1,
+          item_id: item.item_id || null,
+          item_name: item.item?.item_name || "",
+          quantity: item.quantity || 0,
+          unit_price: item.unit_price || 0,
+          amount: item.amount || 0,
+          tds: item.tds || 0,
+          pan: item.pan || 0,
+          amountWithPan: item.amountWithPan || 0,
+          actualAmt: item.actualAmt || 0,
+        };
+        return calculateRowValues(initialRow, selectedOption);
+      });
+
+      if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
+        setRows(existingItems);
+        console.log("Initialized rows with existing items:", existingItems);
+        updateParentData(existingItems);
+      }
+    } else if (rows.length === 0) {
+      const initialRow = calculateRowValues(
+        {
+          id: 1,
+          item_id: null,
+          item_name: "",
+          quantity: 0,
+          unit_price: 0,
+          amount: 0,
+          tds: 0,
+          pan: 0,
+          amountWithPan: 0,
+          actualAmt: 0,
+        },
+        selectedOption
+      );
+      setRows([initialRow]);
+      console.log("Initialized rows with default item:", [initialRow]);
+      updateParentData([initialRow]);
+    }
+  }, [billDetails, selectedOption]);
 
   const handleSelectChange = (option, index) => {
-    console.log(option);
     const updatedRows = [...rows];
     updatedRows[index].item_id = option.value;
     updatedRows[index].item_name = option.label;
     setRows(updatedRows);
+    console.log("Updated rows after item selection:", updatedRows);
     updateParentData(updatedRows);
   };
 
   const addRow = () => {
-    const newRow = {
-      id: rows.length + 1,
-      item_id: "",
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      amtAfterTds: 0,
-      vat: 0,
-      amountWithVat: 0,
-    };
+    const newRow = calculateRowValues(
+      {
+        id: rows.length + 1,
+        item_id: null,
+        item_name: "",
+        quantity: 0,
+        unit_price: 0,
+        amount: 0,
+        tds: 0,
+        pan: 0,
+        amountWithPan: 0,
+        actualAmt: 0,
+      },
+      selectedOption
+    );
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
+    console.log("Added new row:", updatedRows);
     updateParentData(updatedRows);
   };
 
-  console.log(rows);
-
-  // Function to update row data
   const updateRow = (index, field, value) => {
     const newRows = [...rows];
     newRows[index][field] = parseFloat(value) || 0;
 
     if (field === "quantity" || field === "unit_price") {
-      const quantity = parseFloat(newRows[index].quantity) || 0;
-      const unit_price = parseFloat(newRows[index].unit_price) || 0;
-      const amount = quantity * unit_price;
-
-      let tds = 0;
-      let amtAfterTds = amount;
-
-      if (selectedOption === "pan 10") {
-        tds = 0.1 * amount;
-      } else if (selectedOption === "pan 15") {
-        tds = 0.15 * amount;
-      } else if (selectedOption === "pan 0") {
-        tds = 0;
-      }
-
-      amtAfterTds = amount - tds;
-
-      newRows[index].amount = amount || 0;
-      newRows[index].tds = tds || 0;
-      newRows[index].amtAfterTds = amtAfterTds || 0;
+      newRows[index] = calculateRowValues(newRows[index], selectedOption);
     }
 
     setRows(newRows);
+    console.log("Updated row:", newRows);
     updateParentData(newRows);
   };
 
   const updateParentData = (updatedRows) => {
-    const newItemsData = updatedRows.map((row) => ({
-      item_id: row.item_id,
-      item_name: row.item_name,
-      quantity: row.quantity,
-      unit_price: row.unit_price,
-      amount: row.amount,
-      tds: row.tds,
-      amtAfterTds: row.amtAfterTds,
-    }));
+    const newItemsData = updatedRows
+      .filter((row) => row.item_id && row.quantity > 0)
+      .map((row) => ({
+        item_id: row.item_id,
+        item_name: row.item_name,
+        quantity: row.quantity,
+        unit_price: row.unit_price,
+        amount: row.amount,
+        tds: row.tds,
+        pan: row.pan,
+        amountWithPan: row.amountWithPan,
+        actualAmt: row.actualAmt,
+      }));
+
+    console.log("Sending to parent:", newItemsData);
     onDataUpdate(newItemsData);
-    console.log(newItemsData);
   };
 
   const customStyles = {
@@ -145,8 +193,8 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
 
   return (
     <>
-      <div className="container mx-auto  overflow-auto max-h-[40vh]">
-        <table className=" w-fit border-collapse border border-neutral-500 ">
+      <div className="container mx-auto overflow-auto">
+        <table className="w-fit border-collapse border border-neutral-500">
           <thead>
             <tr className="bg-blue-200">
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
@@ -167,7 +215,13 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 TDS
               </th>
-              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium whitespace-nowrap">
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
+                PAN amount
+              </th>
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
+                Amount with PAN
+              </th>
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 Actual Amount
               </th>
             </tr>
@@ -176,9 +230,9 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
             {rows.map((row, index) => (
               <tr key={row.id}>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
-                  {row.id}
+                  {index + 1}
                 </td>
-                <td className="border border-neutral-500 px-4 py-2 w-64">
+                <td className="border border-neutral-500 px-4 py-2">
                   <Select
                     options={items.map((item) => {
                       const features = Object.entries(
@@ -209,36 +263,43 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
                     className="w-[170px] whitespace-nowrap"
                   />
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2">
                   <input
                     value={row.quantity}
                     onChange={(e) =>
                       updateRow(index, "quantity", e.target.value)
                     }
-                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
+                    placeholder="Quantity"
+                    className="w-full text-center"
                   />
                 </td>
-                <td className="border border-neutral-500 px-4 py-2 text-center">
+                <td className="border border-neutral-500 ">
                   <input
                     value={row.unit_price}
                     onChange={(e) =>
                       updateRow(index, "unit_price", e.target.value)
                     }
-                    className="w-full p-1 border-none shadow-none bg-transparent focus:outline-none focus:ring-0"
+                    placeholder="Unit Price"
+                    className="w-full h-full  text-center"
                   />
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="text-center border border-neutral-500 px-4 py-2">
                   {row.amount.toFixed(2)}
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
+                <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.tds.toFixed(2)}
                 </td>
-                <td className="border border-neutral-500  px-4 py-2 text-center">
-                  {row.amtAfterTds ? row.amtAfterTds.toFixed(2) : "0.00"}
+                <td className="border border-neutral-500 px-4 py-2 text-center">
+                  {row.pan.toFixed(2)}
+                </td>
+                <td className="border border-neutral-500 px-4 py-2 text-center">
+                  {row.amountWithPan.toFixed(2)}
+                </td>
+                <td className="border border-neutral-500 px-4 py-2 text-center">
+                  {row.actualAmt.toFixed(2)}
                 </td>
               </tr>
-            ))}
-
+            ))}{" "}
             <tr className="bg-white">
               <td
                 colSpan="4"
@@ -256,23 +317,23 @@ const Pan = ({ selectedOption, onDataUpdate, handleChange, initialData }) => {
               </td>
               <td className="border border-neutral-500  px-4 py-2 text-center">
                 {rows
-                  .reduce((sum, row) => sum + (row.amtAfterTds || 0), 0)
+                  .reduce((sum, row) => sum + (row.actualAmt || 0), 0)
                   .toFixed(2)}
               </td>
             </tr>
           </tbody>
         </table>
-
-        <div className="mt-2">
-          <span
-            onClick={addRow}
-            className="text-blue-600 hover:underline cursor-pointer"
-          >
-            Add more fields
-          </span>
-        </div>
+      </div>
+      <div className="mt-2">
+        <span
+          onClick={addRow}
+          className="text-blue-600 hover:underline cursor-pointer"
+        >
+          Add more fields
+        </span>
       </div>
     </>
   );
 };
+
 export default Pan;

@@ -22,7 +22,7 @@ const SpecificBill = () => {
     vendor_name: "",
     vat_number: "",
     selectedOptions: "",
-    paid_amount: 0,
+    paid_amount: "",
     items: [],
   });
 
@@ -33,7 +33,7 @@ const SpecificBill = () => {
     vendor_name: "",
     vat_number: "",
     selectedOptions: "",
-    paid_amount: 0,
+    paid_amount: "",
     items: [],
   });
 
@@ -208,11 +208,11 @@ const SpecificBill = () => {
               },
             }),
           ]);
-        console.log(singleBillResponse.data);
+
         setBillDetails(singleBillResponse.data);
 
-        const type = billDetails.bill.bill_type.toLowerCase();
-        const percent = billDetails.TDS;
+        const type = singleBillResponse.data?.bill.bill_type.toLowerCase();
+        const percent = singleBillResponse.data?.TDS || 0;
         const value = type + " " + percent;
         setSelectedOption(value);
         console.log(value);
@@ -316,7 +316,7 @@ const SpecificBill = () => {
           vendor_name: response.data.bill.vendors?.vendor_name || "",
           vat_number: response.data.bill?.vendors?.vat_number || "",
           selectedOptions: response.data.bill.selectedOptions || "",
-          paid_amount: response.data.bill.paid_amt || 0,
+          paid_amount: response.data.bill.paid_amount || 0,
           items: response.data.bill.items || [],
         });
         setLoading(false);
@@ -718,7 +718,7 @@ const SpecificBill = () => {
                         name="paid_amount"
                         id="paid_amount"
                         onChange={handleChange}
-                        value={bill?.paid_amount}
+                        value={editedBill?.paid_amount}
                       />
                     </div>
                   </div>
