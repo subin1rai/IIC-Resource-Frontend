@@ -274,7 +274,7 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
         {
           ...editedBill,
@@ -286,8 +286,15 @@ const SpecificBill = () => {
           },
         }
       );
-      setBill({ ...bill, ...editedBill });
-      closeEditBillDetailsForm();
+
+      // Assuming the API returns the updated bill in the response
+      if (response.status === 200) {
+        // Update the bill state with the response data
+        setBill(response.data.updatedBill || { ...bill, ...editedBill });
+        closeEditBillDetailsForm();
+      } else {
+        console.error("Failed to update the bill:", response.data.message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -356,7 +363,6 @@ const SpecificBill = () => {
               </h2>
             </div>
 
-            {/* please dont remove this during merge conflict */}
             <div className="flex gap-3">
               <button
                 onClick={openEditBillDetailsForm}
@@ -376,7 +382,6 @@ const SpecificBill = () => {
                 <></>
               )}
             </div>
-            {/* na hatako ma thank you hai  */}
           </div>
           <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
           {!loading ? (
