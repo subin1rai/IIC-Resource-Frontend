@@ -368,7 +368,7 @@ const AllUser = ({ users: initialUsers }) => {
         <div className="w-screen h-screen bg-overlay absolute z-10 top-0 left-0 flex justify-center items-center">
           <form
             onSubmit={handleSubmit}
-            className="bg-white w-[30rem] p-5 rounded flex flex-col gap-6"
+            className="bg-white w-[30rem] px-8 py-5 rounded flex flex-col gap-8"
           >
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-semibold">Edit User</h3>
@@ -379,9 +379,9 @@ const AllUser = ({ users: initialUsers }) => {
                 onClick={() => setEditFormVisibility(false)}
               />
             </div>
-            <div className="flex flex-col gap-6">
-              <div className="flex justify-between items-center gap-10">
-                <label htmlFor="user_name" className="w-[120px]">
+            <div className="flex flex-col gap-8">
+              <div className="flex justify-between items-center ">
+                <label htmlFor="user_name" className="w-[120px] font-medium">
                   Full Name
                 </label>
                 <input
@@ -391,7 +391,7 @@ const AllUser = ({ users: initialUsers }) => {
                   value={editedUser.user_name}
                   onChange={handleChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[250px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
                 />
               </div>
               <div className="flex justify-between items-center gap-2">
@@ -405,7 +405,7 @@ const AllUser = ({ users: initialUsers }) => {
                   value={editedUser.user_email}
                   onChange={handleChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[250px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
                 />
               </div>
               <div className="flex justify-between items-center gap-2">
@@ -417,7 +417,7 @@ const AllUser = ({ users: initialUsers }) => {
                   name="department"
                   value={editedUser.department}
                   onChange={handleChange}
-                  className="border-border border-2 rounded px-2 py-2 w-[250px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
                 >
                   <option value="" disabled>
                     Select department

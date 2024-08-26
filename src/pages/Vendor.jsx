@@ -7,7 +7,6 @@ import close from "../assets/close.svg";
 import axios from "axios";
 import VendorTable from "../components/VendorTable";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import vendorno from "../assets/vendorcount.png";
 import blacklist from "../assets/blacklist.png";
 import exportIcon from "../assets/export.svg";
@@ -45,7 +44,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
               (option) => option.value === category
             )}
             placeholder="Choose Category"
-            className="react-select-container w-[14vw]"
+            className="react-select-container w-[14vw] "
             classNamePrefix="react-select"
           />
           {categories.length > 1 && (
@@ -307,7 +306,7 @@ const Vendor = () => {
                 placeholder="Search Vendors"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border-2 px-5 w-80 border-border rounded h-fit py-2"
+                className="border-2 px-3 w-80 border-border rounded h-fit py-2 focus:outline-slate-400"
               />
               {/* Filter */}
               <button
@@ -327,7 +326,7 @@ const Vendor = () => {
               <button
                 className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
                 aria-label="Menu"
-              onClick={handleExport}
+                onClick={handleExport}
               >
                 <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
                 Export
@@ -394,7 +393,7 @@ const Vendor = () => {
             <div className="flex justify-between">
               <p className="font-semibold text-lg">Add Vendor</p>
               <img
-                className="rounded-md cursor-pointer p-3"
+                className="rounded-md cursor-pointer h-4 w-4 "
                 src={close}
                 alt="close"
                 onClick={closeAddVendorForm}
@@ -406,7 +405,7 @@ const Vendor = () => {
                   Name
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter Vendor Name"
                   autoFocus
@@ -420,7 +419,7 @@ const Vendor = () => {
                   VAT
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400 "
                   type="text"
                   placeholder="Enter VAT Number"
                   name="vat_number"
@@ -433,7 +432,7 @@ const Vendor = () => {
                   Vendor Profile
                 </label>
                 <select
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
                   name="vendor_profile"
                   id="vendor_profile"
                   onChange={handleChange}
@@ -463,7 +462,7 @@ const Vendor = () => {
                   Contact
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter Contact Number"
                   name="vendor_contact"
@@ -476,7 +475,7 @@ const Vendor = () => {
                   Payment Duration
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter Payment Duration"
                   name="payment_duration"

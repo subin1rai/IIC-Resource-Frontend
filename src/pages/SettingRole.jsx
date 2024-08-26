@@ -174,7 +174,7 @@ const SettingRole = () => {
                 placeholder="Search all Users"
                 value={userSearchTerm}
                 onChange={(e) => setUserSearchTerm(e.target.value)}
-                className="border-2 px-2 w-64 border-border rounded py-2"
+                className="border-2 px-2 w-64 border-border rounded py-2 focus:outline-slate-400"
               />
               <button
                 className="bg-button text-white rounded w-fit px-6 py-2"
@@ -206,9 +206,9 @@ const SettingRole = () => {
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
           <form
             onSubmit={handleAddUser}
-            className="bg-white p-5 rounded flex flex-col gap-6"
+            className="bg-white rounded flex flex-col gap-9 px-10 py-7"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center ">
               <h3 className="text-xl font-semibold">Add User</h3>
               <img
                 src={closeIcon}
@@ -222,7 +222,7 @@ const SettingRole = () => {
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="user_name" className="w-[120px] ">
+                <label htmlFor="user_name" className="w-[120px] font-medium">
                   Full Name
                 </label>
                 <input
@@ -232,12 +232,12 @@ const SettingRole = () => {
                   value={user.user_name}
                   onChange={handleInputChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                   autoFocus
                 />
               </div>
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="user_email" className="w-[120px]">
+                <label htmlFor="user_email" className="w-[120px] font-medium">
                   Email
                 </label>
                 <input
@@ -247,11 +247,11 @@ const SettingRole = () => {
                   value={user.user_email}
                   onChange={handleInputChange}
                   type="email"
-                  className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 />
               </div>
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="department" className="w-[120px]">
+                <label htmlFor="department" className="w-[120px] font-medium">
                   Department
                 </label>
                 <select
@@ -259,7 +259,7 @@ const SettingRole = () => {
                   name="department"
                   value={user.department}
                   onChange={handleInputChange}
-                  className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 >
                   <option value="" disabled>
                     Select Department
@@ -278,7 +278,7 @@ const SettingRole = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="bg-button text-white px-4 py-2 rounded"
+                  className="bg-button text-white px-4 py-2 rounded w-[150px]"
                 >
                   Add User
                 </button>
@@ -292,7 +292,7 @@ const SettingRole = () => {
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
           <form
             onSubmit={handleAddDepartment}
-            className="bg-white p-5 rounded flex flex-col gap-6"
+            className="bg-white  px-10 py-5 rounded flex flex-col gap-8"
           >
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-semibold">Add Department</h3>
@@ -308,7 +308,7 @@ const SettingRole = () => {
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="department_name" className="w-[120px]">
+                <label htmlFor="department_name" className="w-[100px] font-medium">
                   Name
                 </label>
                 <input
@@ -318,7 +318,7 @@ const SettingRole = () => {
                   value={newDepartment.department_name}
                   onChange={handleDepartmentChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[350px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                   autoFocus
                 />
               </div>

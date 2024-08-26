@@ -315,10 +315,10 @@ const Inventory = () => {
                 placeholder="Search items"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border-2 px-5 w-80 border-border rounded"
+                className="border-2 px-5 w-80 border-border rounded focus:outline-slate-400"
               />
               <button
-                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded "
                 aria-label="Menu"
                 onClick={displayFilterForm}
               >
@@ -370,7 +370,7 @@ const Inventory = () => {
                   Item Name
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] px-2 py-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter product name"
                   autoFocus="autofocus"
@@ -426,7 +426,7 @@ const Inventory = () => {
                   Measuring Unit
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] px-2 py-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter measuring unit"
                   name="measuring_unit"
@@ -440,7 +440,7 @@ const Inventory = () => {
                   Limit
                 </label>
                 <input
-                  className="border-2 rounded border-neutral-200 w-[250px] p-1 py-2"
+                  className="border-2 rounded border-neutral-200 w-[250px] px-2 py-2 focus:outline-slate-400"
                   type="number"
                   placeholder="Enter low limit"
                   name="low_limit"
@@ -479,7 +479,7 @@ const Inventory = () => {
                         classNamePrefix="react-select"
                       />
                       <input
-                        className="border-2 rounded border-neutral-200 w-[200px] px-2 py-2"
+                        className="border-2 rounded border-neutral-200 w-[200px] px-2 py-2 focus:outline-slate-400"
                         type="text"
                         placeholder="Enter the value"
                         value={feature.value}
@@ -507,7 +507,7 @@ const Inventory = () => {
                   <button
                     type="button"
                     onClick={addFeatureField}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline"
                   >
                     Add Feature
                   </button>
@@ -528,18 +528,22 @@ const Inventory = () => {
         </form>
       )}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 p-8 w-fit h-fit gap-5">
-          <div className="flex justify-between ">
-            <h2 className="font-semibold text-lg"> Filtering Option</h2>
+
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 px-12 py-8 w-fit h-fit gap-8">
+
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-xl "> Filtering Option</h2>
+
             <img
               src={close}
               alt=""
-              className="cursor-pointer w-4 h-4 mt-2"
+              className="cursor-pointer w-4 h-4"
               onClick={closeFilterForm}
             />
           </div>
           <div className="flex flex-col gap-3">
-            <label>Filter by Category: </label>
+
+            <label>By Category: </label>
             <div className="flex gap-8">
               <Select
                 options={categoryOptions}
@@ -568,7 +572,7 @@ const Inventory = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="">Filter by Date:</label>
+            <label htmlFor="">By Date:</label>
             <div className="flex gap-8 ">
               <input
                 className="border-2 rounded border-neutral-300 p-2 w-[250px]"
@@ -581,8 +585,53 @@ const Inventory = () => {
                 placeholder="to"
               />
             </div>
+
           </div>
-          <button className="flex self-end bg-blue-600 text-white rounded items-center w-fit p-2 px-6">
+          {/* filter by price */}
+          <div className="flex gap-8">
+            <div className="flex flex-col gap-3">
+              <label htmlFor=""> By Price: </label>
+              <div>
+                <select
+                  name=""
+                  id=""
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                >
+                  <option value="">Select an option</option>
+                  <option value="high-to-low">High to Low</option>
+                  <option value="low-to-high">Low to High</option>
+                </select>
+              </div>
+            </div>
+            {/* filter by Measuring unit */}
+            <div className="flex flex-col gap-3">
+              <label htmlFor="">By Unit:</label>
+              <div>
+                <select
+                  name=""
+                  id=""
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                >
+                  <option value="">Select an option</option>
+                  <option value="">Piece</option>
+                  <option value="">Kilogram</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          {/* filter by status */}
+          <div className="flex flex-col gap-3">
+            <label htmlFor="">By Status:</label>
+            <select name="" id=""
+
+              className="border-2 rounded border-neutral-300 p-2 w-full">
+              <option value="">Stock Status</option>
+              <option value="">In Stock</option>
+              <option value="">Out of Stock</option>
+            </select>
+          </div>
+
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg">
             Filter
           </button>
         </form>
