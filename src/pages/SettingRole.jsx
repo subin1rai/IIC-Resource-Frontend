@@ -232,7 +232,7 @@ const SettingRole = () => {
                   value={user.user_name}
                   onChange={handleInputChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[300px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                   autoFocus
                 />
               </div>
@@ -247,7 +247,7 @@ const SettingRole = () => {
                   value={user.user_email}
                   onChange={handleInputChange}
                   type="email"
-                  className="border-border border-2 rounded px-2 py-2 w-[300px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 />
               </div>
               <div className="flex justify-between items-center gap-10">
@@ -259,7 +259,7 @@ const SettingRole = () => {
                   name="department"
                   value={user.department}
                   onChange={handleInputChange}
-                  className="border-border border-2 rounded px-2 py-2 w-[300px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 >
                   <option value="" disabled>
                     Select Department
@@ -318,7 +318,7 @@ const SettingRole = () => {
                   value={newDepartment.department_name}
                   onChange={handleDepartmentChange}
                   type="text"
-                  className="border-border border-2 rounded px-2 py-2 w-[300px]"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                   autoFocus
                 />
               </div>

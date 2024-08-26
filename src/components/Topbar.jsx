@@ -277,7 +277,7 @@ const Topbar = () => {
             <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white ">
               <h2>Notification</h2>
               <button
-                className="text-sm text-blue-600 cursor-default "
+                className="text-sm text-blue-600 cursor-pointer "
                 onClick={handleState}
               >
                 Mark all as read
