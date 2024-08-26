@@ -295,7 +295,7 @@ const Category = () => {
 
         <div className="w-[86.5vw] flex  justify-between p-3">
           <div className="flex flex-col w-[32%] rounded-lg ">
-            <div className="flex  bg-blue-400 rounded-t-md justify-between px-10 py-3">
+            <div className="flex  bg-slate-400 rounded-t-md justify-between px-10 py-3">
               <h1 className="text-lg font-medium text-white ">Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("category")}
@@ -312,7 +312,7 @@ const Category = () => {
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg ">
-            <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
+            <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Item Category</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
@@ -330,7 +330,7 @@ const Category = () => {
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg">
-            <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
+            <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Features</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("feature")}

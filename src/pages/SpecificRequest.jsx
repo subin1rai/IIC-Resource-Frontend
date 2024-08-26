@@ -17,7 +17,7 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department:"",
+    department_name:"",
     status:"",
     purpose:"",
     items: [],
@@ -97,7 +97,7 @@ const SpecificRequest = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:8898/api/approveRequest/${id}`,
         {
           ...acceptRequest,
@@ -117,8 +117,6 @@ const SpecificRequest = () => {
         } else {
           toast.success("Request approved successfully");
         }
-
-        // Update the local state
         setRequestDetails((prevDetails) => ({
           ...prevDetails,
           request: {
@@ -219,7 +217,7 @@ const SpecificRequest = () => {
     };
 
     fetchSingleRequest();
-  }, [id, token]); // Dependency array includes id and token
+  }, [id, token]);
 
 
   return (
@@ -427,8 +425,9 @@ const SpecificRequest = () => {
           handleItemChange(index, "item", selectedOption.value)
         }
         value={itemOptions.find(
-          (option) => option.value === item.item
+          (option) => option.value === item
         )}
+        // requestDetails?.request?.requestItem?.item_name
         placeholder="Select Item"
         styles={customStyles}
         className="w-[190px]"
@@ -440,7 +439,7 @@ const SpecificRequest = () => {
         placeholder="Enter a quantity"
         name={`quantity-${index}`}
         id={`quantity-${index}`}
-        value={item.quantity}
+        value={requestDetails?.request?.quantity}
         onChange={(e) =>
           handleItemChange(index, "quantity", e.target.value)
         }
