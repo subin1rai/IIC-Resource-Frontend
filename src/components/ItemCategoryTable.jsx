@@ -6,11 +6,14 @@ const ItemCategoryTable = ({
   setEditFormVIsiblity,
   setEditId,
   setEditedValue,
+  setName,
 }) => {
-  const handleformVisiblity = (category_id) => {
+  const handleformVisiblity = (iCat) => {
     setEditFormVIsiblity(true);
-    setEditId(category_id);
-    console.log(category_id);
+    setEditId(iCat.category_id);
+    console.log(iCat.category_id);
+    setName(iCat.item_category_name);
+    SettingsSystemDaydreamRounded();
     setEditedValue({ type: "ItemCategory" });
   };
   return (
@@ -24,7 +27,7 @@ const ItemCategoryTable = ({
                 src={edit}
                 alt=""
                 className="h-5 w-5 cursor-pointer"
-                onClick={() => handleformVisiblity(iCat.item_category_id)}
+                onClick={() => handleformVisiblity(iCat)}
               />
             </div>
           </div>
