@@ -7,11 +7,11 @@ const ItemCategoryTable = ({
   setEditId,
   setEditedValue,
 }) => {
-  const handleformVisiblity = (category_id) => {
+  const handleformVisiblity = (iCat) => {
     setEditFormVIsiblity(true);
-    setEditId(category_id);
-    console.log(category_id);
-    setEditedValue({ type: "ItemCategory" });
+    setEditId(iCat.category_id);
+    console.log(iCat.category_id);
+    setEditedValue({ type: "ItemCategory", name: iCat.item_category_name });
   };
   return (
     <div className="flex flex-col bg-white items-center pb-4 rounded-b-md">
@@ -24,7 +24,7 @@ const ItemCategoryTable = ({
                 src={edit}
                 alt=""
                 className="h-5 w-5 cursor-pointer"
-                onClick={() => handleformVisiblity(iCat.item_category_id)}
+                onClick={() => handleformVisiblity(iCat)}
               />
             </div>
           </div>

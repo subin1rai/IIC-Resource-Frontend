@@ -6,12 +6,13 @@ const Featurestable = ({
   setEditFormVIsiblity,
   setEditId,
   setEditedValue,
+  setName,
 }) => {
-  const handleformVisiblity = (category_id) => {
+  const handleformVisiblity = (feat) => {
     setEditFormVIsiblity(true);
-    setEditId(category_id);
-    console.log(category_id);
-    setEditedValue({ type: "Feature" });
+    setEditId(feat.feature_id);
+    console.log(feat.feature_id);
+    setEditedValue({ type: "Feature", name: feat.feature_name });
   };
   return (
     <div className="flex flex-col bg-white items-center pb-4 rounded-b-md">
@@ -24,9 +25,8 @@ const Featurestable = ({
                 src={edit}
                 alt=""
                 className="h-5 w-5 cursor-pointer"
-                onClick={() => handleformVisiblity(feat.feature_id)}
+                onClick={() => handleformVisiblity(feat)}
               />
-
             </div>
           </div>
           <hr className="h-1 w-[85%] border-button" />
