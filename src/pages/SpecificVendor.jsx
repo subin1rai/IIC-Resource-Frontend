@@ -32,12 +32,14 @@ const SpecificVendor = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
 
- 
+
 
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
     vat_number: "",
     vendor_contact: "",
+    payment_duration: "",
+    vendor_profile: "",
   });
 
   const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
@@ -80,6 +82,8 @@ const SpecificVendor = () => {
       vendor_name: vendor.vendor_name,
       vat_number: vendor.vat_number,
       vendor_contact: vendor.vendor_contact,
+      payment_duration: vendor.payment_duration,
+      vendor_profile: vendor.vendor_profile,
     });
     setVendorDetailsFormVisibility(true);
   };
@@ -359,6 +363,7 @@ const SpecificVendor = () => {
                 className="border-2 rounded border-border w-72 p-2 focus:outline-slate-400"
                 name="vendor_profile"
                 id="vendor_profile"
+                value={editedVendor.vendor_profile}
                 onChange={handleChange}
               >
                 <option value="" disabled selected>
@@ -371,18 +376,19 @@ const SpecificVendor = () => {
             </div>
             {/* payment duration */}
             <div className="flex items-center gap-6">
-                <label htmlFor="payment_duration" className="w-40 font-medium">
-                  Payment Duration
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-72 p-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Payment Duration"
-                  name="payment_duration"
-                  id="payment_duration"
-                  onChange={handleChange}
-                />
-              </div>
+              <label htmlFor="payment_duration" className="w-40 font-medium">
+                Payment Duration
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-72 p-2 focus:outline-slate-400"
+                type="text"
+                placeholder="Enter Payment Duration"
+                name="payment_duration"
+                id="payment_duration"
+                onChange={handleChange}
+                value={editedVendor.payment_duration}
+              />
+            </div>
             {/* Contact Number */}
             <div className="flex justify-between gap-10 items-center">
               <label htmlFor="contact" className="font-medium">
