@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import close from "../assets/close.svg";
 import { Link } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
+import { useParams } from "react-router-dom";
+import Select from "react-select";
+import add from "../assets/addIcon.svg";
+import remove from "../assets/removeIcon.svg";
+import axios from "axios";
 
 const SpecificRequest = () => {
   const [requests, setRequests] = useState({
@@ -18,13 +27,15 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department:"",
+    department_name:"",
     status:"",
     remarks:"",
     items: [],
   });
 
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const[requestDetails, setRequestDetails] = useState({});
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
@@ -128,45 +139,46 @@ const SpecificRequest = () => {
     setItemFields(newFields);
   };
 
-  const handleDecline = (requestId) => {
-    console.log(`Declined request with ID: ${requestId}`);
+  const handleDecline = (id) => {
+    console.log(`Declined request with ID: ${id}`);
     // Implement the decline logic here
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSingleRequest = async () => {
       setLoading(true);
       try {
-        const [singleRequestResponse, itemsResponse] =
-          await Promise.all([
-            axios.get(`http://localhost:8898/api/singleRequest/${id}`, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }),
-            axios.get("http://localhost:8898/api/items", {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }),
-          ]);
-        console.log(singleRequestResponse.data);
-        setRequests(singleRequestResponse.data);
-        setSelectedOption(value);
-        console.log(value);
+        const [singleRequestResponse, itemsResponse] = await Promise.all([
+          axios.get(`http://localhost:8898/api/singleRequest/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          axios.get("http://localhost:8898/api/items", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        setRequestDetails(singleRequestResponse.data);
         setItems(itemsResponse.data);
-        // setBill(response.data.bill);
-        setLoading(false);
       } catch (error) {
-        console.error(error);
-        setError(error.response?.data?.error);
+        console.log("Error fetching Request:", error);
+      } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [id, token]);
+
+    fetchSingleRequest();
+  }, [id, token]); // Dependency array includes id and token
+
 
   return (
+    <div className="w-screen h-screen flex justify-between bg-background reltive">
+    <Sidebar />
+    <div className="flex flex-col gap-4 mx-auto  items-center">
+      <Topbar />
     <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
       <div className="flex justify-between items-center ml-2">
         <div className="flex flex-col gap-6">
@@ -175,9 +187,9 @@ const SpecificRequest = () => {
               Request Details
             </Link>
             <img src={front} alt="arrow" />
-            <h4 className="text-base text-blue-400">34</h4>
+            <h4 className="text-base text-blue-400">{requestDetails?.request?.id}</h4>
           </div>
-          <h2 className="font-semibold text-2xl">Request No.</h2>
+          <h2 className="font-semibold text-2xl">Request No. {requestDetails?.request?.id}</h2>
         </div>
 
         <div className="flex gap-3">
@@ -187,107 +199,106 @@ const SpecificRequest = () => {
           >
             Accept
           </button>
-
-          {role === "superadmin" ? (
+          
+          <button
+              className="bg-red-500 px-6 rounded text-white font-medium py-3"
+              onClick={() => handleDecline(requestDetails?.request?.id)}
+            >
+              Decline
+            </button>
+          {/* {role === "superadmin" ? (
             <button
               className="bg-red-500 px-6 rounded text-white font-medium py-3"
-              onClick={() => handleDecline(requests.id)}
+              onClick={() => handleDecline(requests.request_id)}
             >
               Decline
             </button>
           ) : (
             <></>
-          )}
+          )} */}
         </div>
       </div>
       <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
-      {!loading ? (
-        <div className="flex justify-between w-[75%] pb-3">
-          <div className="flex flex-col gap-5 mt-7 pl-9">
-            <p className="font-semibold">
-              Requested by:
-              <span className="font-normal  pl-4">
-                {requests.userId || "--"}
-              </span>
-            </p>
-            {/* <p className="font-semibold">
-            Vendor Name:
-            <span className=" pl-4">
-              {billDetails.vat_no || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Vat No:
-            <span className=" pl-4">
-              {billDetails.vat_no || "--"}
-            </span>
-          </p> */}
-          <p className="font-semibold">
-            Requested For:
-            <span className=" font-normal pl-4">
-              {requests.for_userId || "--"}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Department:
-            <span className="font-normal  pl-4">
-              {requests.users?.department || "--"}
-            </span>
-          </p>
-        </div>
-        <div className="flex flex-col gap-5 mt-7 pl-9">
-        <p className="font-semibold">
-            Requested Date:
-            <span className="font-normal  pl-4">
-            {new Date(requests.request_date).toLocaleDateString()}
-            </span>
-          </p>
-          <p className="font-semibold">
-            Status:
-            <span className="font-normal  pl-4">
-              {requests.isAccepted? (
-                <span className="text-green-500">Accepted</span>
-              ) : (
-                <span className="text-yellow-500">Pending</span> || "--"
-              )}
-            </span>
-          </p>
-        </div>
-      </div>
-    ) : (
-      <div>Loading...</div>
-    )}
-        <table className="min-w-full table-fixed border-collapse">
-      <thead>
-        <tr className="bg-neutral-200">
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">S.No.</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Item Name</th>
-          <th className="p-2 text-center border-b  border-neutral-200 font-medium">Quantity</th>
+      {loading ? (
+  <div>Loading...</div>
+) : requestDetails?.request? (
+  <div className="flex justify-between w-[75%] pb-3">
+    <div className="flex flex-col gap-5 mt-7 pl-9">
+      <p className="font-semibold">
+        Requested by:
+        <span className="font-normal pl-4">
+          {requestDetails?.request?.user_name || "--"}
+        </span>
+      </p>
+      <p className="font-semibold">
+        Requested For:
+        <span className="font-normal pl-4">
+          {requestDetails?.request?.requested_for|| "--"}
+        </span>
+      </p>
+      <p className="font-semibold">
+        Department:
+        <span className="font-normal pl-4">
+          {requestDetails?.request?.department_name || "--"}
+        </span>
+      </p>
+    </div>
+    <div className="flex flex-col gap-5 mt-7 pl-9">
+      <p className="font-semibold">
+        Requested Date:
+        <span className="font-normal pl-4">
+          {requestDetails?.request?.request_date ? new Date(requestDetails?.request?.request_date).toLocaleDateString() : "--"}
+        </span>
+      </p>
+      <p className="font-semibold">
+        Status:
+        <span className="font-normal pl-4">
+          {requestDetails?.request?.isApproved? (
+                      <span className="text-green-500">Accepted</span>
+                    ) : (
+                      <span className="text-yellow-500">Pending</span> || "--"
+                    )}
+        </span>
+      </p>
+    </div>
+  </div>
+) : (
+  <div>No request data available</div>
+)}
+<div className="flex font-semibold text-2xl py-5 px-2">
+  Items 
+</div>
+<div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mb-5"></div>
+
+<table className="min-w-full table-fixed border-collapse">
+  <thead>
+    <tr className="bg-neutral-200">
+      <th className="p-2 text-center border-b border-neutral-200 font-medium">S.No.</th>
+      <th className="p-2 text-center border-b border-neutral-200 font-medium">Item Name</th>
+      <th className="p-2 text-center border-b border-neutral-200 font-medium">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {requestDetails && requestDetails?.request?.requestItems && requestDetails?.request?.requestItems.length > 0 ? (
+      requestDetails?.request?.requestItems.map((requestItem, index) => (
+        <tr key={index}>
+          <td className="p-2 text-center border-b border-neutral-200">{index + 1}</td>
+          <td className="p-2 text-center border-b border-neutral-200">{requestItem.item_name}</td>
+          <td className="p-2 text-center border-b border-neutral-200">{requestItem.quantity}</td>
         </tr>
-      </thead>
-      <tbody>
-  {requests.requestItems && requests.requestItems.length > 0 ? (
-    requests.requestItems.map((requestItems, index) => (
-      <tr key={index}>
-        <td className="p-2 text-center border-b border-neutral-200">{index + 1}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{requestItems.item_id}</td>
-        <td className="p-2 text-center border-b border-neutral-200">{requestItems.quantity}</td>
-        {/* <td className="p-2 border-b border-neutral-200">{billItem.TDS_deduct_amount}</td>
-        <td className="p-2 border-b border-neutral-200">{billItem.withVATAmount}</td> */}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td
-                colSpan="6"
-                className="p-2 text-center border-b border-gray-300"
-              >
-                No Request items available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      ))
+    ) : (
+      <tr>
+        <td
+          colSpan="3"
+          className="p-2 text-center border-b border-gray-300"
+        >
+          No Request items available
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
       {acceptFormVisibility && (
         <form
           onSubmit={handleSubmit}
@@ -309,42 +320,37 @@ const SpecificRequest = () => {
               <div className="flex text-lg font-semibold text-zinc-600">
                 Summary
               </div>
-              {requests.map((request) => (
-                <div key={request.id} className="flex gap-16 font-medium">
+              {/* {acceptRequest.map((request) => ( */}
+                <div key={requestDetails?.request?.id} className="flex gap-16 font-medium">
+                <div className="flex flex-col gap-2">
+                    <p>
+                      Requested By:{" "}
+                      <span className="text-neutral-600">
+                        {requestDetails?.request?.user_name}
+                      </span>
+                    </p>
+                    <p>
+                      Requested For:{" "}
+                      <span className="text-neutral-600">
+                        {requestDetails?.request?.requested_for}
+                      </span>
+                    </p>
+                  </div>
                   <div className="flex flex-col gap-2">
                     <p>
-                      Item:{" "}
+                      Request Date:{" "}
                       <span className="text-neutral-600">
-                        {request.item?.item_name}
+                        {requestDetails?.request?.request_date ? new Date(requestDetails?.request?.request_date).toLocaleDateString(): "--"}
                       </span>
                     </p>
                     <p>
                       Department:{" "}
-                      <span className="text-neutral-600">Department</span>
-                    </p>
-                    <p>
-                      Quantity:{" "}
-                      <span className="text-neutral-600">
-                        {request.request_quantity}
-                      </span>
+                      <span className="text-neutral-600">{requestDetails?.request?.department_name}</span>
                     </p>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <p>
-                      Requested By:{" "}
-                      <span className="text-neutral-600">
-                        {request.users?.user_name}
-                      </span>
-                    </p>
-                    <p>
-                      Requested To:{" "}
-                      <span className="text-neutral-600">
-                        Mr.Nishesh Bishwas
-                      </span>
-                    </p>
-                  </div>
+                  
                 </div>
-              ))}
+              {/* ))} */} 
             </div>
 
             <div className="flex flex-col gap-5 p-3">
@@ -446,6 +452,8 @@ const SpecificRequest = () => {
         ></div>
       )}
       <ToastContainer />
+    </div>
+    </div>
     </div>
   );
 };
