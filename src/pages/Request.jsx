@@ -44,30 +44,6 @@ const Request = () => {
   console.log(requests);
 
   useEffect(() => {
-    const getItems = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setItems(response.data);
-
-        setItemOptions(
-          response.data.map((item) => ({
-            value: item.item_name,
-            label: item.item_name,
-          }))
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getItems();
-  }, [token]);
-
-  useEffect(() => {
     socket.on("newRequest", (data) => {
       toast.success(data.message);
       setRequests((prevRequests) => [...prevRequests, data.requestData]);
