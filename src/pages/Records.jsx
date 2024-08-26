@@ -28,7 +28,7 @@ const Records = () => {
     invoice_no: "",
     vat_number: "",
     selectedOptions: "",
-    paid_amount: 0,
+    paid_amount: "",
     items: [],
   });
 

@@ -248,7 +248,6 @@ export default function RecordsTable({ bills }) {
                           ) : (
                             value ?? "N/A"
                           )}
-                              
                         </TableCell>
                       );
                     })}
