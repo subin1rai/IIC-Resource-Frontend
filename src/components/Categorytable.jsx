@@ -6,11 +6,12 @@ const Categorytable = ({
   setEditFormVIsiblity,
   setEditId,
   setEditedValue,
+  setName,
 }) => {
-  const handleformVisiblity = (category_id) => {
+  const handleformVisiblity = (cat) => {
     setEditFormVIsiblity(true);
-    setEditId(category_id);
-    console.log(category_id);
+    setEditId(cat.category_id);
+    setName(cat.category_name);
     setEditedValue({ type: "category" });
   };
 
@@ -26,7 +27,7 @@ const Categorytable = ({
                 src={edit}
                 alt=""
                 className="h-5 w-5 cursor-pointer"
-                onClick={() => handleformVisiblity(cat.category_id)}
+                onClick={() => handleformVisiblity(cat)}
               />
             </div>
           </div>

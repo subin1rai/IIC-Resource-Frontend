@@ -25,6 +25,7 @@ const Category = () => {
   const [newItemCategory, setNewItemCategory] = useState({
     item_category_name: "",
   });
+  const [name, setName] = useState("");
   const [newDepartment, setNewDepartment] = useState({
     department_name: "",
   });
@@ -297,7 +298,9 @@ const Category = () => {
           <div className="flex flex-col w-[32%] rounded-lg ">
             <div className="flex  bg-blue-400 rounded-t-md justify-between px-10 py-3">
               <h1 className="text-lg font-medium text-white ">Category</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("category")}
                 className="w-8 h-8 mr-2 cursor-pointer"
               />
@@ -308,13 +311,16 @@ const Category = () => {
               setEditFormVIsiblity={setEditFormVIsiblity}
               setEditId={setEditId}
               setEditedValue={setEditedValue}
+              setName={setName}
             />{" "}
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg ">
             <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Item Category</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("itemCategory")}
                 className="w-8 h-8 mr-2 cursor-pointer"
               />
@@ -326,13 +332,16 @@ const Category = () => {
               setEditFormVIsiblity={setEditFormVIsiblity}
               setEditId={setEditId}
               setEditedValue={setEditedValue}
+              setName={setName}
             />
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg">
             <div className="flex bg-blue-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Features</h1>
-              <img src={add} alt="add"
+              <img
+                src={add}
+                alt="add"
                 onClick={() => displayAddPopup("feature")}
                 className="w-8 h-8 mr-2 cursor-pointer"
               />
@@ -344,6 +353,7 @@ const Category = () => {
               setEditFormVIsiblity={setEditFormVIsiblity}
               setEditId={setEditId}
               setEditedValue={setEditedValue}
+              setName={setName}
             />
           </div>
         </div>
@@ -444,7 +454,6 @@ const Category = () => {
               src={close}
               alt=""
               onClick={closeCategoryForm}
-              
             />
           </div>
           <div className="flex gap-16 justify-between items-center px-5">
@@ -481,12 +490,12 @@ const Category = () => {
             className="bg-white p-4 flex flex-col gap-8 rounded"
           >
             <div className="flex justify-between items-center px-4 py-2">
-            <p className="font-semibold text-lg">Edit Category</p>
+              <p className="font-semibold text-lg">Edit Category</p>
               <img
                 src={close}
                 alt=""
                 onClick={() => setEditFormVIsiblity(false)}
-                className="w-4 h-4"
+                className="w-4 h-4 cursor-pointer"
               />
             </div>
             <div className="flex justify-between items-center gap-12">
@@ -501,6 +510,7 @@ const Category = () => {
                 name="name"
                 id="name"
                 onChange={handleEditFormChange}
+                value={name}
               />
             </div>
             <button className="flex self-end bg-button px-4 py-2 rounded text-white">
