@@ -330,7 +330,7 @@ const Category = () => {
           </div>
 
           <div className="flex flex-col w-[32%] rounded-lg">
-            <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between">
+            <div className="flex bg-olive-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Features</h1>
               <img src={add} alt="add"
                 onClick={() => displayAddPopup("feature")}
