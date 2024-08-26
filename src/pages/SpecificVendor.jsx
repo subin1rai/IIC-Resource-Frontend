@@ -25,6 +25,8 @@ const SpecificVendor = () => {
     payment_status: "",
   });
 
+  const role = localStorage.getItem("role");
+
   const [loading, setLoading] = useState(false);
   const [dialogboxVisibilty, setDialogboxVisibility] = useState(false);
 
@@ -167,12 +169,16 @@ const SpecificVendor = () => {
               >
                 Edit Details
               </button>
-              <button
-                className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
-                onClick={() => handleShowModal(vendor_id)}
-              >
-                Add to Blacklist
-              </button>
+              {role === "superadmin" ? (
+                <button
+                  className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
+                  onClick={() => handleShowModal(vendor_id)}
+                >
+                  Add to Blacklist
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
