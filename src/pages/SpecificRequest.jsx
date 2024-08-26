@@ -17,9 +17,11 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-    department: "",
-    status: "",
-    purpose: "",
+
+    department_name:"",
+    status:"",
+    purpose:"",
+
     items: [],
   });
 
@@ -97,7 +99,7 @@ const SpecificRequest = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:8898/api/approveRequest/${id}`,
         {
           ...acceptRequest,
@@ -117,8 +119,6 @@ const SpecificRequest = () => {
         } else {
           toast.success("Request approved successfully");
         }
-
-        // Update the local state
         setRequestDetails((prevDetails) => ({
           ...prevDetails,
           request: {
@@ -220,7 +220,7 @@ const SpecificRequest = () => {
     };
 
     fetchSingleRequest();
-  }, [id, token]); // Dependency array includes id and token
+  }, [id, token]);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background reltive">
@@ -518,6 +518,7 @@ const SpecificRequest = () => {
                     // onChange={(e) => setRemarks(e.target.value)}
                   />
                 </div>
+
 
                 <div className="flex justify-end ">
                   <button
