@@ -13,7 +13,7 @@ import remove from "../assets/removeIcon.svg";
 import axios from "axios";
 
 const SpecificRequest = () => {
-  const [requests, setRequests] = useState({
+  const [request, setRequest] = useState({
     userId: "",
     for_userId: "",
     request_date: "",
@@ -29,6 +29,7 @@ const SpecificRequest = () => {
     request_date: "",
     department_name:"",
     status:"",
+    purpose:"",
     remarks:"",
     items: [],
   });
@@ -44,6 +45,12 @@ const SpecificRequest = () => {
   const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const token = localStorage.getItem("token");
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  }; 
 
   const customStyles = {
     control: (provided) => ({
@@ -91,8 +98,9 @@ const SpecificRequest = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8898/api/approveRequest",
+        `http://localhost:8898/api/approveRequest/${id}`,
         {
+          ...acceptRequest,
           items: itemFields,
           remarks,
         },
@@ -102,18 +110,33 @@ const SpecificRequest = () => {
           },
         }
       );
+      setRequest({...request, ...acceptRequest});
       if (response.status === 200) {
-        toast.success("Request accepted successfully");
-        setAcceptFormVisibility(false);
-        setLoading(false);
-        // Update the requests list or perform any necessary actions
+        if (response.data.message === "Item changed") {
+          toast.success("Request approved with item changes");
+        } else {
+          toast.success("Request approved successfully");
+        }
+
+        // Update the local state
+        setRequestDetails((prevDetails) => ({
+          ...prevDetails,
+          request: {
+            ...prevDetails.request,
+            isApproved: true,
+            status: "Holding",  // Update according to the backend response
+          },
+        }));
+      } else {
+        toast.error("Failed to approve request");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error approving request:", error);
+      toast.error("An error occurred while approving the request");
+    } finally {
       setLoading(false);
     }
   };
-
   const openAcceptForm = () => {
     setAcceptFormVisibility(true);
   };
@@ -134,15 +157,23 @@ const SpecificRequest = () => {
     }
   };
 
+  const handleChange = (e) => {
+    setAcceptRequest({ ...acceptRequest, [e.target.name]: e.target.value });
+  };
+
   const removeItemField = (index) => {
-    const newFields = itemFields.filter((_, i) => i !== index);
-    setItemFields(newFields);
+    if (itemFields.length > 1) {
+      const newFields = itemFields.filter((_, i) => i !== index);
+      setItemFields(newFields);
+    }
   };
 
   const handleDecline = (id) => {
     console.log(`Declined request with ID: ${id}`);
     // Implement the decline logic here
   };
+
+  const isHolding = requestDetails?.request?.status === "Holding";
 
   useEffect(() => {
     const fetchSingleRequest = async () => {
@@ -160,8 +191,25 @@ const SpecificRequest = () => {
             },
           }),
         ]);
-
         setRequestDetails(singleRequestResponse.data);
+        setAcceptRequest({
+          userId: singleRequestResponse.data.userId || "",
+          for_userId: singleRequestResponse.data.requested_for ||"",
+          request_date: singleRequestResponse.data.request_date ? formatDate(singleRequestResponse.data.request_date)
+          : "",
+          department_name:singleRequestResponse.data.department_name || "",
+          status:singleRequestResponse.data.status || "",
+          purpose:singleRequestResponse.data.purpose || "",
+          remarks:singleRequestResponse.data.remarks ||"",
+          items: singleRequestResponse.data.items || [],
+        });
+        const options = itemsResponse.data.map(item => ({
+          value: item.item_id, 
+          label: item.item_name, 
+        }));
+        console.log(singleRequestResponse.data);
+        console.log(options)
+        setItemOptions(options);
         setItems(itemsResponse.data);
       } catch (error) {
         console.log("Error fetching Request:", error);
@@ -183,23 +231,26 @@ const SpecificRequest = () => {
       <div className="flex justify-between items-center ml-2">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-2">
-            <Link to="/records" className="text-base">
+            <Link to="/Request" className="text-base">
               Request Details
             </Link>
             <img src={front} alt="arrow" />
-            <h4 className="text-base text-blue-400">{requestDetails?.request?.id}</h4>
+            <h4 className="text-base text-blue-400">{requestDetails?.request?.request_id}</h4>
           </div>
-          <h2 className="font-semibold text-2xl">Request No. {requestDetails?.request?.id}</h2>
+          <h2 className="font-semibold text-2xl">Request No. {requestDetails?.request?.request_id}</h2>
         </div>
 
         <div className="flex gap-3">
-          <button
-            onClick={openAcceptForm}
-            className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
-          >
-            Accept
-          </button>
-          
+        <button
+          onClick={openAcceptForm}
+          className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5 ${
+            isHolding ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600'
+          }`}
+          disabled={isHolding}
+        >
+          {isHolding ? 'On Hold' : 'Accept'}
+        </button>
+
           <button
               className="bg-red-500 px-6 rounded text-white font-medium py-3"
               onClick={() => handleDecline(requestDetails?.request?.id)}
@@ -251,15 +302,15 @@ const SpecificRequest = () => {
         </span>
       </p>
       <p className="font-semibold">
-        Status:
-        <span className="font-normal pl-4">
-          {requestDetails?.request?.isApproved? (
-                      <span className="text-green-500">Accepted</span>
-                    ) : (
-                      <span className="text-yellow-500">Pending</span> || "--"
-                    )}
-        </span>
-      </p>
+  Status:
+  <span className="font-normal pl-4">
+    {requestDetails?.request?.isApproved ? (
+      <span className="text-green-500">Approved</span>
+    ) : (
+      <span className="text-yellow-500">Pending</span>
+    )}
+  </span>
+</p>
     </div>
   </div>
 ) : (
@@ -299,7 +350,7 @@ const SpecificRequest = () => {
     )}
   </tbody>
 </table>
-      {acceptFormVisibility && (
+      {!loading && acceptFormVisibility && (
         <form
           onSubmit={handleSubmit}
           className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 gap-7 rounded w-[730px]"
@@ -335,91 +386,87 @@ const SpecificRequest = () => {
                         {requestDetails?.request?.requested_for}
                       </span>
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-2">
                     <p>
                       Request Date:{" "}
                       <span className="text-neutral-600">
                         {requestDetails?.request?.request_date ? new Date(requestDetails?.request?.request_date).toLocaleDateString(): "--"}
                       </span>
                     </p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                   
                     <p>
                       Department:{" "}
                       <span className="text-neutral-600">{requestDetails?.request?.department_name}</span>
                     </p>
+                    <p>
+                      Purpose:{" "}
+                      <span className="text-neutral-600">
+                        {requestDetails?.request?.purpose}
+                      </span>
+                    </p>
                   </div>
-                  
                 </div>
               {/* ))} */} 
             </div>
-
-            <div className="flex flex-col gap-5 p-3">
-              <div className="flex gap-5">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="item" className="font-medium text-md">
-                    Item
-                  </label>
+            <div className="flex flex-col">
+            <div className="flex p-3 gap-3">
+                <div className="flex font-medium text-md w-64">
+                  <label>Item Name:</label>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="quantity"
-                    className="font-medium text-md pl-52 ml-1 "
-                  >
-                    Quantity
-                  </label>
+                <div className="flex font-medium text-md w-64">
+                  <label>Quantity:</label>
                 </div>
               </div>
-              <div className="flex items-end gap-2">
-                <div className="flex flex-col gap-6">
-                  {itemFields.map((item, index) => (
-                    <div key={index} className="flex gap-5 items-center">
-                      <Select
-                        options={itemOptions}
-                        onChange={(selectedOption) =>
-                          handleItemChange(index, "item", selectedOption.value)
-                        }
-                        value={itemOptions.find(
-                          (option) => option.value === item.item
-                        )}
-                        placeholder="Select Item"
-                        styles={customStyles}
-                        className="w-[190px]"
-                        classNamePrefix="react-select"
-                      />
-                      <input
-                        className="border-2 rounded border-border px-3 py-2 w-[14vw]"
-                        type="number"
-                        placeholder="Enter a quantity"
-                        name={`quantity-${index}`}
-                        id={`quantity-${index}`}
-                        value={item.quantity}
-                        onChange={(e) =>
-                          handleItemChange(index, "quantity", e.target.value)
-                        }
-                      />
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => removeItemField(index)}
-                          className="flex items-center"
-                        >
-                          <img src={remove} alt="Remove" className="h-7 w-7" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                {itemFields.length < itemOptions.length && (
-                  <button
-                    type="button"
-                    onClick={addItemField}
-                    className="flex items-center mb-2"
-                  >
-                    <img src={add} alt="Add" className="h-7 w-7 ml-3" />
-                  </button>
-                )}
-              </div>
-            </div>
+              <div className="flex flex-col gap-6">
+        {itemFields.map((item, index) => (
+      <div key={index} className="flex gap-5 ml-2 items-center">
+      <Select
+        options={itemOptions}
+        onChange={(selectedOption) =>
+          handleItemChange(index, "item", selectedOption.value)
+        }
+        value={itemOptions.find(
+          (option) => option.value === item.item
+        )}
+        placeholder="Select Item"
+        styles={customStyles}
+        className="w-[190px]"
+        classNamePrefix="react-select"
+      />
+      <input
+        className="border-2 rounded border-border px-3 py-2 w-[14vw]"
+        type="number"
+        placeholder="Enter a quantity"
+        name={`quantity-${index}`}
+        id={`quantity-${index}`}
+        value={item.quantity}
+        onChange={(e) =>
+          handleItemChange(index, "quantity", e.target.value)
+        }
+      />
+      {itemFields.length > 1 && (
+        <button
+          type="button"
+          onClick={() => removeItemField(index)}
+          className="flex items-center"
+        >
+          <img src={remove} alt="Remove" className="h-7 w-7" />
+        </button>
+      )}
+      {index === itemFields.length - 1 && (
+        <button
+          type="button"
+          onClick={addItemField}
+          className="flex items-center"
+        >
+          <img src={add} alt="Add" className="h-7 w-7" />
+        </button>
+      )}
+    </div>
+  ))}
+</div>
+</div>
             <div className="flex flex-col gap-3 p-2">
               <label className=" font-medium text-md" htmlFor="remarks">
                 Remarks
@@ -428,8 +475,9 @@ const SpecificRequest = () => {
                 name="remarks"
                 placeholder="Enter remarks"
                 className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
-                value={remarks}
-                onChange={(e) => setRemarks(e.target.value)}
+                value={acceptRequest?.remarks}
+                onChange={handleChange}
+                // onChange={(e) => setRemarks(e.target.value)}
               />
             </div>
 
