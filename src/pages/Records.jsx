@@ -354,13 +354,13 @@ const Records = () => {
             <div className="container-title">
               <p className="text-lg font-bold m-1">Bill Records</p>
             </div>
-            <div className=" flex justify-between gap-3 mr-4 mt-3">
+            <div className=" flex justify-between gap-3 mr-4 mt-3 ">
               <input
                 type="text"
                 placeholder="Search bills"
                 value={searchBill}
                 onChange={(e) => setSearchBill(e.target.value)}
-                className="border-2 px-5 w-80 border-border rounded"
+                className="border-2 px-5 w-80 border-border rounded focus:outline-slate-400"
               />
               <button
                 className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
