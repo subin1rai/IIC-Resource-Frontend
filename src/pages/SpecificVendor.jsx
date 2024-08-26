@@ -179,21 +179,21 @@ const SpecificVendor = () => {
           {!loading ? (
             <div className="flex justify-between mt-5 w-[75vw] ml-12">
               <div className="flex flex-col gap-5">
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   VAT Number:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.vat_number || "--"}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Payment Duration:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.payment_duration || "--"}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Paid Amount:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {Array.isArray(vendor?.bills) && vendor.bills.length > 0
                       ? vendor.bills
                           .reduce(
@@ -205,53 +205,53 @@ const SpecificVendor = () => {
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Vendor Contact:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.vendor_contact || "--"}
                   </span>
                 </p>
               </div>
               <div className="flex flex-col gap-5">
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Last Purchase Date:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {formatDate(vendor.last_purchase_date)}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Purchase Amount:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.total_amount
                       ? Number(vendor.total_amount).toFixed(2)
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Last Paid Date:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {formatDate(vendor.last_paid)}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Payment Status:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.pending_payment > 0 ? "Pending" : "Clear"}
                   </span>
                 </p>
               </div>
               <div className="flex flex-col gap-5">
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Pending Payment:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.pending_payment
                       ? Number(vendor.pending_payment).toFixed(2)
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium text-[#6D6E70]">
+                <p className="font-medium ">
                   Next Payment Date:{" "}
-                  <span className="font-medium pl-3 text-black">
+                  <span className="font-medium pl-3 text-[#6D6E70]">
                     {formatDate(vendor.next_payment_date)}
                   </span>
                 </p>
