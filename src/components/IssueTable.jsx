@@ -10,11 +10,12 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
+
 const columns = [
   { id: "issue_id", label: "Issue ID", maxWidth: 70 },
-  { id: "issued_item", label: "Issued Items", maxWidth: 70 },
+  { id: "issue_name", label: "Issued Items", maxWidth: 70 },
   {
-    id: "issue_date",
+    id: "issueDate",
     label: "Issue Date",
     maxWidth: 70,
     align: "center",
@@ -34,14 +35,14 @@ const columns = [
     align: "center",
   },
   {
-    id: "status",
-    label: "Status",
+    id: "approved_by",
+    label: "Issued By",
     maxWidth: 70,
     align: "center",
   },
   {
-    id: "issued_by",
-    label: "Issued By",
+    id: "status",
+    label: "Status",
     maxWidth: 70,
     align: "center",
   },
@@ -57,14 +58,8 @@ function createData(issue_id, issued_item, issue_date, quantity, department, sta
   return { issue_id, issued_item, issue_date, quantity, department, status, issued_by, remarks };
 }
 
-const rows = [
-  createData(1, "Item A", "2024-03-04", 1324, "Finance", "Issued", "John Doe", "Remark A"),
-  createData(2, "Item B", "2024-03-05", 1345, "HR", "Issued", "Jane Doe", "Remark B"),
-  createData(3, "Item C", "2024-03-06", 1366, "IT", "Pending", "John Smith", "Remark C"),
-  // Add more rows as needed
-];
 
-export default function InventoryTable() {
+export default function InventoryTable({ issues }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [order, setOrder] = useState("asc");
@@ -104,6 +99,10 @@ export default function InventoryTable() {
     return 0;
   };
 
+
+  const rows = []
+  console.log(issues)
+
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -116,11 +115,11 @@ export default function InventoryTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+      stableSort(issues, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [rows, order, orderBy, page, rowsPerPage]
+    [issues, order, orderBy, page, rowsPerPage]
   );
 
   const cellStyle = {
