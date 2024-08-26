@@ -101,13 +101,10 @@ const Issue = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       setIssues(response.data.response);
     };
     getAllIssue();
   }, []);
-
-  console.log(issues);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
