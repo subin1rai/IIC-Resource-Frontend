@@ -103,24 +103,24 @@ const Dashboard = () => {
                 <div className='flex flex-col items-center '>
                   <img src={pendingpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of pending payments</p>
+                  <p className='font-medium'>Pending payments</p>
                 </div>
               </div>
             </div>
 
-            {/* Payment Summary */}
+            {/* Request Summary */}
             <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
-              <h1 className='text-lg font-bold m-5'>Payment Summary</h1>
+              <h1 className='text-lg font-bold m-5'>Request Summary</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
                   <img src={totpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Total Payment made</p>
+                  <p className='font-medium'>Number of Requests</p>
                 </div>
                 <div className='flex flex-col items-center '>
                   <img src={pendingpay} alt="items" className='w-8 h-8' />
                   <p>35</p>
-                  <p className='font-medium'>Number of pending payments</p>
+                  <p className='font-medium'>Number of pending requests</p>
                 </div>
               </div>
             </div>
