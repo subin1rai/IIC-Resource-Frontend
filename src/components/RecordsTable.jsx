@@ -53,8 +53,8 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") ?? "N/A",
   },
   {
-    id: "payment_status",
-    label: "Payment Status",
+    id: "bill_status",
+    label: "Bill Status",
     maxWidth: 70,
     align: "center",
   },
@@ -68,10 +68,11 @@ export default function RecordsTable({ bills }) {
 
   const navigate = useNavigate();
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  console.log(bills);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -205,8 +206,8 @@ export default function RecordsTable({ bills }) {
                       if (column.id === "item_name") {
                         value = bill.items?.item_name;
                       }
-                      if (column.id === "payment_status") {
-                        value = bill.left_amount > 0 ? "Pending" : "Complete";
+                      if (column.id === "bill_status") {
+                        value = bill?.isApproved ? "Approved" : "Pending";
                       }
 
                       return (
@@ -215,7 +216,7 @@ export default function RecordsTable({ bills }) {
                           align={column.align}
                           style={cellStyle}
                         >
-                          {column.id === "payment_status" ? (
+                          {column.id === "bill_status" ? (
                             <div
                               style={{
                                 display: "inline-block",
@@ -224,15 +225,15 @@ export default function RecordsTable({ bills }) {
                                 backgroundColor:
                                   value === "Pending"
                                     ? "#fff3cd"
-                                    : value === "Complete"
-                                      ? "#d4edda"
-                                      : "#f8d7da",
+                                    : value === "Approved"
+                                    ? "#d4edda"
+                                    : "#f8d7da",
                                 color:
                                   value === "Pending"
                                     ? "#856404"
-                                    : value === "Complete"
-                                      ? "#155724"
-                                      : "#721c24",
+                                    : value === "Approved"
+                                    ? "#155724"
+                                    : "#721c24",
                                 fontWeight: "normal",
                                 textAlign: "center",
                               }}
