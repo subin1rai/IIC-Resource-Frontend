@@ -12,8 +12,7 @@ const Featurestable = ({
     setEditFormVIsiblity(true);
     setEditId(feat.feature_id);
     console.log(feat.feature_id);
-    setName(feat.feature_name);
-    setEditedValue({ type: "Feature" });
+    setEditedValue({ type: "Feature", name: feat.feature_name });
   };
   return (
     <div className="flex flex-col bg-white items-center pb-4 rounded-b-md">

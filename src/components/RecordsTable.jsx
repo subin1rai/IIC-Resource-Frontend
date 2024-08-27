@@ -37,14 +37,9 @@ const columns = [
     maxWidth: 70,
     align: "center",
   },
+
   {
-    id: "item_name",
-    label: "Item Name",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
-    id: "actual_amount",
+    id: "actual_Amount",
     label: "Total Amount",
     maxWidth: 70,
     align: "center",
@@ -72,6 +67,7 @@ export default function RecordsTable({ bills }) {
   const [orderBy, setOrderBy] = useState("bill_ID");
 
   const navigate = useNavigate();
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -229,14 +225,14 @@ export default function RecordsTable({ bills }) {
                                   value === "Pending"
                                     ? "#fff3cd"
                                     : value === "Complete"
-                                    ? "#d4edda"
-                                    : "#f8d7da",
+                                      ? "#d4edda"
+                                      : "#f8d7da",
                                 color:
                                   value === "Pending"
                                     ? "#856404"
                                     : value === "Complete"
-                                    ? "#155724"
-                                    : "#721c24",
+                                      ? "#155724"
+                                      : "#721c24",
                                 fontWeight: "normal",
                                 textAlign: "center",
                               }}

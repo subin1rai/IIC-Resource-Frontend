@@ -22,7 +22,7 @@ const columns = [
   },
   {
     id: "total_amount",
-    label: "Purchase Amount",
+    label: "Total Amount",
     maxWidth: 120,
     align: "center",
     format: (value) => value?.toLocaleString("en-US") || "N/A",
@@ -59,6 +59,13 @@ const columns = [
   {
     id: "payment_status",
     label: "Payment Status",
+    maxWidth: 120,
+    align: "center",
+    format: (value) => value || "N/A",
+  },
+  {
+    id: "TDS",
+    label: "TDS",
     maxWidth: 120,
     align: "center",
     format: (value) => value || "N/A",

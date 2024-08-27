@@ -132,7 +132,7 @@ const Issue = () => {
 
         <div className="flex flex-col w-[85.5vw] bg-white p-6 rounded">
           <div className="flex justify-between w-fill">
-            <div className="flex flex-col">Issue</div>
+            <div className="flex font-bold text-lg">Issue</div>
 
             <div className="flex gap-6">
               <button
