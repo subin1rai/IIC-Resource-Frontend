@@ -576,7 +576,8 @@ const Inventory = () => {
               </label>
               {/* features form  */}
               {/* features form  */}
-              <div className="flex flex-col gap-4 w-full">
+              {/* features form  */}
+              <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto">
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-4 w-full items-center">
                     <div className="flex justify-between gap-4 flex-row items-center w-full">

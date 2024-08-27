@@ -165,7 +165,7 @@ const SettingRole = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white p-5 rounded w-[85.5vw] gap-5">
+        <div className="flex flex-col bg-white p-5 rounded-xl w-[85.5vw] gap-5 ">
           <div className="flex justify-between">
             <h3 className="text-lg font-bold m-1">Users List</h3>
             <div className="flex gap-5">
@@ -196,7 +196,7 @@ const SettingRole = () => {
               </button>
             </div>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center ">
             <AllUser users={allFilteredUsers} className="z-10" />
           </div>
         </div>
