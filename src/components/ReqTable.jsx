@@ -12,22 +12,22 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
 const columns = [
-  { id: "user_name", label: "Requested By", maxWidth: 70, align: "left" },
+  { id: "user_name", label: "Requested By", maxWidth: 70, align: "center" },
   {
     id: "requested_for",
     label: "Requested For",
     maxWidth: 70,
-    align: "left",
+    align: "center",
   },
   {
     id: "request_date",
     label: "Requested Date",
     maxWidth: 70,
-    align: "left",
+    align: "center",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "department", label: "Department", maxWidth: 70, align: "left" },
-  { id: "status", label: "Status", maxWidth: 70, align: "left" },
+  { id: "department_name", label: "Department", maxWidth: 70, align: "center" },
+  { id: "status", label: "Status", maxWidth: 70, align: "center" },
 ];
 
 export default function ReqTable({ requests }) {
@@ -112,6 +112,7 @@ export default function ReqTable({ requests }) {
   const headerStyle = {
     fontWeight: 600,
     backgroundColor: "#f5f5f5",
+    align: "center",
   };
 
   return (
@@ -174,18 +175,37 @@ export default function ReqTable({ requests }) {
                         <TableCell
                           key={column.id}
                           align={column.align}
-                          style={{
-                            color:
-                              column.id === "status" && value === "Pending"
-                                ? "orange"
-                                : column.id === "status" && value === "Accepted"
-                                ? "green"
-                                : "inherit",
-                          }}
+                          style={cellStyle}
                         >
-                          {column.format && value != null
-                            ? column.format(value)
-                            : value ?? "N/A"}
+                          {column.id === "status" ? (
+                            <div
+                              style={{
+                                display: "inline-block",
+                                padding: "4px 8px",
+                                borderRadius: "4px",
+                                backgroundColor:
+                                  value === "Pending"
+                                    ? "#fff3cd"
+                                    : value === "Complete"
+                                    ? "#d4edda"
+                                    : "#f8d7da",
+                                color:
+                                  value === "Pending"
+                                    ? "#856404"
+                                    : value === "Complete"
+                                    ? "#155724"
+                                    : "#721c24",
+                                fontWeight: "normal",
+                                textAlign: "center",
+                              }}
+                            >
+                              {value ?? "N/A"}  
+                            </div>
+                          ) : column.format && value != null ? (
+                            column.format(value)
+                          ) : (
+                            value ?? "N/A"
+                          )}
                         </TableCell>
                       );
                     })}
