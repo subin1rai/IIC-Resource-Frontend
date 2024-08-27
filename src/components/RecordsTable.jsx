@@ -40,7 +40,6 @@ const columns = [
 
   {
     id: "actual_Amount",
-    id: "actual_Amount",
     label: "Total Amount",
     maxWidth: 70,
     align: "center",
