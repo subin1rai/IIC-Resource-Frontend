@@ -71,6 +71,7 @@ const Inventory = () => {
     control: (provided) => ({
       ...provided,
       width: "100%",
+      border: "2px solid #d1d5db",
       minHeight: "42px",
     }),
     menu: (provided) => ({
@@ -467,6 +468,8 @@ const Inventory = () => {
         </div>
       </div>
 
+
+      {/* Adding item form  */}
       {addFormVisibility && (
         <form
           onSubmit={handleSubmit}
@@ -646,6 +649,8 @@ const Inventory = () => {
           </div>
         </form>
       )}
+
+      {/* Filter form */}
       {filterFormVisibility && (
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -653,15 +658,16 @@ const Inventory = () => {
         >
           <div className="flex justify-between items-center">
             <h2 className="font-semibold text-xl "> Filtering Option</h2>
-            <img
-              src={close}
-              alt=""
-              className="cursor-pointer w-4 h-4"
+            <button
+              type="button"
+              className="p-2"
               onClick={closeFilterForm}
-            />
+            >
+              <img src={close} alt="" className="cursor-pointer w-4 h-4" />
+            </button>
           </div>
           <div className="flex flex-col gap-3">
-            <label>By Category: </label>
+            <label className="font-medium" >By Category: </label>
             <div className="flex gap-8">
               <Select
                 options={categoryOptions}
@@ -696,10 +702,10 @@ const Inventory = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="">By Date:</label>
+            <label htmlFor="" className="font-medium" >By Date:</label>
             <div className="flex gap-8 ">
               <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 type="date"
                 placeholder=" from"
                 value={filterOptions.dateFrom}
@@ -711,7 +717,7 @@ const Inventory = () => {
                 }
               />
               <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 type="date"
                 placeholder="to"
                 value={filterOptions.dateTo}
@@ -726,10 +732,10 @@ const Inventory = () => {
           </div>
           <div className="flex gap-8">
             <div className="flex flex-col gap-3">
-              <label htmlFor=""> By Price: </label>
+              <label htmlFor="" className="font-medium" > By Price: </label>
               <div>
                 <select
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   value={filterOptions.unit_price}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
@@ -745,10 +751,10 @@ const Inventory = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <label htmlFor="">By Unit:</label>
+              <label htmlFor="" className="font-medium" >By Unit:</label>
               <div>
                 <select
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px]"
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   value={filterOptions.measuring_unit}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
@@ -765,9 +771,9 @@ const Inventory = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="">By Status:</label>
+            <label htmlFor="" className="font-medium" >By Status:</label>
             <select
-              className="border-2 rounded border-neutral-300 p-2 w-full"
+              className="border-2 rounded border-neutral-300 p-2 w-full focus:outline-slate-400"
               value={filterOptions.stockStatus}
               onChange={(e) =>
                 setFilterOptions((prev) => ({
@@ -782,7 +788,7 @@ const Inventory = () => {
             </select>
           </div>
           <button
-            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg"
+            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
             onClick={applyFilters}
           >
             Filter
