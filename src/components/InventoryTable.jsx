@@ -29,8 +29,8 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
     numeric: true,
   },
-  { id: "category", label: "Category", maxWidth: 120 },
-  { id: "itemCategory", label: "Item Category", maxWidth: 120 },
+  // { id: "category", label: "Category", maxWidth: 120 },
+  // { id: "itemCategory", label: "Item Category", maxWidth: 120 },
   {
     id: "recent_purchase",
     label: "Recent Purchase",
@@ -196,6 +196,29 @@ export default function InventoryTable({ items }) {
 
                     if (column.id === "recent_purchase") {
                       value = formatDate(item.recent_purchase);
+                    }
+
+                    if (column.id === "item_name") {
+                      value = item.item_name;
+
+                      if (column.id === "item_name") {
+                        value = item.item_name;
+
+                        if (
+                          item.itemsOnFeatures &&
+                          Object.keys(item.itemsOnFeatures).length > 0
+                        ) {
+                          const sortedKeys = Object.keys(
+                            item.itemsOnFeatures
+                          ).sort();
+
+                          const features = sortedKeys
+                            .map((key) => ` ${item.itemsOnFeatures[key]}`)
+                            .join(" - ");
+
+                          value = `${item.item_name} - ${features}`;
+                        }
+                      }
                     }
 
                     return (
