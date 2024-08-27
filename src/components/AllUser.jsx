@@ -9,7 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import close from "../assets/close.svg";
 
 const columns = [
@@ -34,7 +34,12 @@ const headerStyle = {
   backgroundColor: "#f5f5f5",
 };
 
-const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) => {
+const DropdownMenu = ({
+  user,
+  updateUserStatus,
+  setAllUsers,
+  handlePopupForm,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
@@ -55,7 +60,6 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
     };
   }, []);
 
-
   const handleSetActive = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -64,14 +68,16 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, set active"
+      confirmButtonText: "Yes, set active",
     }).then(async (result) => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          const response = await axios.put(`http://localhost:8898/api/role/activateUser/${user_id}`);
+          const response = await axios.put(
+            `http://localhost:8898/api/role/activateUser/${user_id}`
+          );
           if (response.status === 200) {
-            Swal.fire('User Activated', '', 'success');
+            Swal.fire("User Activated", "", "success");
             setAllUsers((prevUsers) =>
               prevUsers.map((u) =>
                 u.user_id === user_id ? { ...u, isActive: true } : u
@@ -80,14 +86,17 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
             setIsOpen(false);
           }
         } catch (error) {
-          Swal.fire('Error', 'An error occurred while activating the user.', 'error');
+          Swal.fire(
+            "Error",
+            "An error occurred while activating the user.",
+            "error"
+          );
         } finally {
           setLoading(false);
         }
       }
     });
   };
-  
 
   const handleSetInActive = () => {
     Swal.fire({
@@ -97,17 +106,18 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, deactivate it!"
+      confirmButtonText: "Yes, deactivate it!",
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true);
-        axios.put(`http://localhost:8898/api/role/deactivateUser/${user_id}`)
+        axios
+          .put(`http://localhost:8898/api/role/deactivateUser/${user_id}`)
           .then((response) => {
             if (response.status === 200) {
               Swal.fire({
                 title: "Deactivated!",
                 text: "The user has been deactivated.",
-                icon: "success"
+                icon: "success",
               });
               setAllUsers((prevUsers) =>
                 prevUsers.map((u) =>
@@ -121,7 +131,7 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
             Swal.fire({
               title: "Error",
               text: "An error occurred while deactivating the user.",
-              icon: "error"
+              icon: "error",
             });
           })
           .finally(() => {
@@ -130,7 +140,6 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       }
     });
   };
-  
 
   const handleRoleUpdate = async (role) => {
     Swal.fire({
@@ -140,23 +149,28 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: `Yes, set ${role}`
+      confirmButtonText: `Yes, set ${role}`,
     }).then(async (result) => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          const response = await axios.put(`http://localhost:8898/api/role/updateRole/${user_id}`, { role });
+          const response = await axios.put(
+            `http://localhost:8898/api/role/updateRole/${user_id}`,
+            { role }
+          );
           if (response.status === 200) {
-            Swal.fire(`Role Updated`, `User role set to ${role}`, 'success');
+            Swal.fire(`Role Updated`, `User role set to ${role}`, "success");
             setAllUsers((prevUsers) =>
-              prevUsers.map((u) =>
-                u.user_id === user_id ? { ...u, role } : u
-              )
+              prevUsers.map((u) => (u.user_id === user_id ? { ...u, role } : u))
             );
             setIsOpen(false);
           }
         } catch (error) {
-          Swal.fire('Error', 'An error occurred while updating the role.', 'error');
+          Swal.fire(
+            "Error",
+            "An error occurred while updating the role.",
+            "error"
+          );
         } finally {
           setLoading(false);
         }
@@ -169,33 +183,45 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       ref={dropdownRef}
       className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black"
       style={{
-        top: `${buttonRef.current?.getBoundingClientRect().bottom + window.scrollY}px`,
-        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120}px`,
+        top: `${
+          buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
+        }px`,
+        left: `${
+          buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
+        }px`,
       }}
     >
       {user.isActive ? (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={handleSetInActive}
           >
             Set Inactive
           </span>
 
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("superadmin")}
           >
             Set Super Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("admin")}
           >
             Set Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("departmenthead")}
           >
             Set Department Head
@@ -204,19 +230,25 @@ const DropdownMenu = ({ user, updateUserStatus, setAllUsers, handlePopupForm }) 
       ) : (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""}`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => {
               setIsOpen(false);
               handlePopupForm();
@@ -260,7 +292,6 @@ const AllUser = ({ users: initialUsers }) => {
     setAllUsers(initialUsers);
   }, [initialUsers]);
 
- 
   useEffect(() => {
     try {
       const getDepartment = async () => {
@@ -282,7 +313,6 @@ const AllUser = ({ users: initialUsers }) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
 
   const updateUserStatus = (userId, isActive) => {
     setAllUsers((prevUsers) =>
@@ -319,7 +349,7 @@ const AllUser = ({ users: initialUsers }) => {
       );
 
       if (response.data.updatedUser) {
-        Swal.fire('User Updated', '', 'success');
+        Swal.fire("User Updated", "", "success");
         setAllUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.user_id === response.data.updatedUser.user_id
@@ -328,12 +358,9 @@ const AllUser = ({ users: initialUsers }) => {
           )
         );
       } else {
-       
       }
       setEditFormVisibility(false);
-    } catch (error) {
-    
-    }
+    } catch (error) {}
   };
 
   const visibleRows = React.useMemo(
@@ -378,20 +405,32 @@ const AllUser = ({ users: initialUsers }) => {
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.isActive === false ? (
-                        <span style={{ display: "inline-block",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          backgroundColor:  "#fff3cd", 
-                          fontWeight: "normal",
-                          textAlign: "center",}}>Inactive</span>
-                      ) : (
-                        <span style={{  display: "inline-block",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          backgroundColor:"#d4edda",
-                          fontWeight: "normal",
-                          textAlign: "center", }}>Active</span>
-                      )}
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        backgroundColor: "#fff3cd",
+                        fontWeight: "normal",
+                        textAlign: "center",
+                      }}
+                    >
+                      Inactive
+                    </span>
+                  ) : (
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        backgroundColor: "#d4edda",
+                        fontWeight: "normal",
+                        textAlign: "center",
+                      }}
+                    >
+                      Active
+                    </span>
+                  )}
                 </TableCell>
                 <TableCell className="flex">
                   <DropdownMenu
@@ -479,10 +518,7 @@ const AllUser = ({ users: initialUsers }) => {
               </button>
             </div>
           </form>
-          <div
-            className=""
-            onClick={() => setEditFormVisibility(false)}
-          ></div>
+          <div className="" onClick={() => setEditFormVisibility(false)}></div>
         </div>
       )}
       <TablePagination

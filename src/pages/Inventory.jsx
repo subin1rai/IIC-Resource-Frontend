@@ -468,7 +468,6 @@ const Inventory = () => {
         </div>
       </div>
 
-
       {/* Adding item form  */}
       {addFormVisibility && (
         <form
@@ -578,8 +577,7 @@ const Inventory = () => {
                 Features
               </label>
               {/* features form  */}
-              {/* features form  */}
-              {/* features form  */}
+
               <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto">
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-4 w-full items-center">
@@ -658,16 +656,12 @@ const Inventory = () => {
         >
           <div className="flex justify-between items-center">
             <h2 className="font-semibold text-xl "> Filtering Option</h2>
-            <button
-              type="button"
-              className="p-2"
-              onClick={closeFilterForm}
-            >
+            <button type="button" className="p-2" onClick={closeFilterForm}>
               <img src={close} alt="" className="cursor-pointer w-4 h-4" />
             </button>
           </div>
           <div className="flex flex-col gap-3">
-            <label className="font-medium" >By Category: </label>
+            <label className="font-medium">By Category: </label>
             <div className="flex gap-8">
               <Select
                 options={categoryOptions}
@@ -702,7 +696,9 @@ const Inventory = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="" className="font-medium" >By Date:</label>
+            <label htmlFor="" className="font-medium">
+              By Date:
+            </label>
             <div className="flex gap-8 ">
               <input
                 className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -732,7 +728,10 @@ const Inventory = () => {
           </div>
           <div className="flex gap-8">
             <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium" > By Price: </label>
+              <label htmlFor="" className="font-medium">
+                {" "}
+                By Price:{" "}
+              </label>
               <div>
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -751,7 +750,9 @@ const Inventory = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium" >By Unit:</label>
+              <label htmlFor="" className="font-medium">
+                By Unit:
+              </label>
               <div>
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -771,7 +772,9 @@ const Inventory = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label htmlFor="" className="font-medium" >By Status:</label>
+            <label htmlFor="" className="font-medium">
+              By Status:
+            </label>
             <select
               className="border-2 rounded border-neutral-300 p-2 w-full focus:outline-slate-400"
               value={filterOptions.stockStatus}
