@@ -25,17 +25,21 @@ const SpecificVendor = () => {
     payment_status: "",
   });
 
+  const role = localStorage.getItem("role");
+
   const [loading, setLoading] = useState(false);
   const [dialogboxVisibilty, setDialogboxVisibility] = useState(false);
   const [itemCategory, setItemCategory] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
 
- 
+
 
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
     vat_number: "",
     vendor_contact: "",
+    payment_duration: "",
+    vendor_profile: "",
   });
 
   const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
@@ -78,6 +82,8 @@ const SpecificVendor = () => {
       vendor_name: vendor.vendor_name,
       vat_number: vendor.vat_number,
       vendor_contact: vendor.vendor_contact,
+      payment_duration: vendor.payment_duration,
+      vendor_profile: vendor.vendor_profile,
     });
     setVendorDetailsFormVisibility(true);
   };
@@ -171,12 +177,16 @@ const SpecificVendor = () => {
               >
                 Edit Details
               </button>
-              <button
-                className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
-                onClick={() => handleShowModal(vendor_id)}
-              >
-                Add to Blacklist
-              </button>
+              {role === "superadmin" ? (
+                <button
+                  className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
+                  onClick={() => handleShowModal(vendor_id)}
+                >
+                  Add to Blacklist
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
@@ -353,6 +363,7 @@ const SpecificVendor = () => {
                 className="border-2 rounded border-border w-72 p-2 focus:outline-slate-400"
                 name="vendor_profile"
                 id="vendor_profile"
+                value={editedVendor.vendor_profile}
                 onChange={handleChange}
               >
                 <option value="" disabled selected>
@@ -365,18 +376,19 @@ const SpecificVendor = () => {
             </div>
             {/* payment duration */}
             <div className="flex items-center gap-6">
-                <label htmlFor="payment_duration" className="w-40 font-medium">
-                  Payment Duration
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-72 p-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Payment Duration"
-                  name="payment_duration"
-                  id="payment_duration"
-                  onChange={handleChange}
-                />
-              </div>
+              <label htmlFor="payment_duration" className="w-40 font-medium">
+                Payment Duration
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-72 p-2 focus:outline-slate-400"
+                type="text"
+                placeholder="Enter Payment Duration"
+                name="payment_duration"
+                id="payment_duration"
+                onChange={handleChange}
+                value={editedVendor.payment_duration}
+              />
+            </div>
             {/* Contact Number */}
             <div className="flex justify-between gap-10 items-center">
               <label htmlFor="contact" className="font-medium">

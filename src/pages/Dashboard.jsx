@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Topbar from '../components/Topbar'
 import returneditems from '../assets/returned.png'
@@ -13,8 +13,33 @@ import pendingreq from "../assets/pendingreq.png";
 import pendingpay from "../assets/pending.png";
 import records from "../assets/records.png";
 import totpay from "../assets/totalpay.png";
+import axios from "axios";
 
 const Dashboard = () => {
+
+
+  const [dashboard, setDashboard] = useState("")
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    const getdashDetails = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setDashboard(response.data)
+      }
+      catch (error) {
+        console.error("Error fetching details:", error);
+      }
+    }
+    getdashDetails()
+  }, [token]);
+
+  console.log(dashboard)
   return (
     // main div
     <div className="w-screen h-screen flex bg-background gap-1">
@@ -31,28 +56,28 @@ const Dashboard = () => {
               {/* single summary */}
               <div className='flex flex-col items-center '>
                 <img src={items} alt="items" className='w-8 h-8' />
-                <p>35</p>
+                <p>{dashboard?.itemsCount}</p>
                 <p className='font-medium'>Number of items</p>
               </div>
               <div className='flex flex-col items-center '>
                 <img src={categoryno} alt="items" className='w-8 h-8' />
-                <p>35</p>
+                <p>{dashboard?.categoryCount}</p>
                 <p className='font-medium'>Number of Categories</p>
               </div>
               <div className='flex flex-col items-center '>
                 <img src={returneditems} alt="items" className='w-8 h-8' />
-                <p>35</p>
+                <p>{dashboard?.itemsCount}</p>
                 <p className='font-medium'>Number of returned items</p>
               </div>
               <div className='flex flex-col items-center '>
                 <img src={lowstock} alt="items" className='w-8 h-8' />
-                <p>35</p>
+                <p>{dashboard?.lowStockCount}</p>
                 <p className='font-medium'>Number of low stock items</p>
               </div>
             </div>
           </div>
 
-          
+
           {/* vendor and issue summary */}
           <div className='flex justify-around gap-5'>
             {/* vendor summary */}
@@ -61,12 +86,12 @@ const Dashboard = () => {
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
                   <img src={vendorcount} alt="items" className='w-8 h-8' />
-                  <p>35</p>
+                  <p>{dashboard?.vendorCount}</p>
                   <p className='font-medium'>Number of vendors</p>
                 </div>
                 <div className='flex flex-col items-center '>
                   <img src={blacklist} alt="items" className='w-8 h-8' />
-                  <p>35</p>
+                  <p>{dashboard?.black_listed}</p>
                   <p className='font-medium'>Number of blacklisted vendors</p>
                 </div>
               </div>
@@ -78,12 +103,12 @@ const Dashboard = () => {
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
                   <img src={issuesno} alt="items" className='w-8 h-8' />
-                  <p>35</p>
+                  <p>{dashboard?.issueCount}</p>
                   <p className='font-medium'>Number of issues</p>
                 </div>
                 <div className='flex flex-col items-center '>
                   <img src={pendingreq} alt="items" className='w-8 h-8' />
-                  <p>35</p>
+                  <p>{dashboard?.itemsCount}</p>
                   <p className='font-medium'>Number of pending requests</p>
                 </div>
               </div>
@@ -97,30 +122,30 @@ const Dashboard = () => {
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
                   <img src={records} alt="items" className='w-8 h-8' />
-                  <p>35</p>
+                  <p>{dashboard?.billsCount}</p>
                   <p className='font-medium'>Number of records</p>
                 </div>
                 <div className='flex flex-col items-center '>
                   <img src={pendingpay} alt="items" className='w-8 h-8' />
-                  <p>35</p>
-                  <p className='font-medium'>Number of pending payments</p>
+                  <p>{dashboard?.pendingPaymentCount}</p>
+                  <p className='font-medium'>Pending payments</p>
                 </div>
               </div>
             </div>
 
-            {/* Payment Summary */}
+            {/* Request Summary */}
             <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
-              <h1 className='text-lg font-bold m-5'>Payment Summary</h1>
+              <h1 className='text-lg font-bold m-5'>Request Summary</h1>
               <div className='flex justify-around mb-5'>
                 <div className='flex flex-col items-center '>
                   <img src={totpay} alt="items" className='w-8 h-8' />
-                  <p>35</p>
-                  <p className='font-medium'>Total Payment made</p>
+                  <p>{dashboard?.requestCount}</p>
+                  <p className='font-medium'>Number of Requests</p>
                 </div>
                 <div className='flex flex-col items-center '>
                   <img src={pendingpay} alt="items" className='w-8 h-8' />
-                  <p>35</p>
-                  <p className='font-medium'>Number of pending payments</p>
+                  <p>{dashboard?.pendingRequestCount}</p>
+                  <p className='font-medium'>Number of pending requests</p>
                 </div>
               </div>
             </div>

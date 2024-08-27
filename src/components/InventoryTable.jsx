@@ -197,6 +197,29 @@ export default function InventoryTable({ items }) {
                       value = formatDate(item.recent_purchase);
                     }
 
+                    if (column.id === "item_name") {
+                      value = item.item_name;
+
+                      if (column.id === "item_name") {
+                        value = item.item_name;
+
+                        if (
+                          item.itemsOnFeatures &&
+                          Object.keys(item.itemsOnFeatures).length > 0
+                        ) {
+                          const sortedKeys = Object.keys(
+                            item.itemsOnFeatures
+                          ).sort();
+
+                          const features = sortedKeys
+                            .map((key) => ` ${item.itemsOnFeatures[key]}`)
+                            .join(" - ");
+
+                          value = `${item.item_name} - ${features}`;
+                        }
+                      }
+                    }
+
                     return (
                       <TableCell
                       key={column.id}

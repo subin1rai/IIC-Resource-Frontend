@@ -6,15 +6,12 @@ const ItemCategoryTable = ({
   setEditFormVIsiblity,
   setEditId,
   setEditedValue,
-  setName,
 }) => {
   const handleformVisiblity = (iCat) => {
     setEditFormVIsiblity(true);
     setEditId(iCat.category_id);
     console.log(iCat.category_id);
-    setName(iCat.item_category_name);
-    SettingsSystemDaydreamRounded();
-    setEditedValue({ type: "ItemCategory" });
+    setEditedValue({ type: "ItemCategory", name: iCat.item_category_name });
   };
   return (
     <div className="flex flex-col bg-white items-center pb-4 rounded-b-md">

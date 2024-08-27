@@ -37,13 +37,9 @@ const columns = [
     maxWidth: 70,
     align: "center",
   },
+
   {
-    id: "item_name",
-    label: "Item Name",
-    maxWidth: 70,
-    align: "center",
-  },
-  {
+    id: "actual_Amount",
     id: "actual_Amount",
     label: "Total Amount",
     maxWidth: 70,
@@ -58,8 +54,8 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") ?? "N/A",
   },
   {
-    id: "payment_status",
-    label: "Payment Status",
+    id: "bill_status",
+    label: "Bill Status",
     maxWidth: 70,
     align: "center",
   },
@@ -76,6 +72,8 @@ export default function RecordsTable({ bills }) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  console.log(bills);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -209,8 +207,8 @@ export default function RecordsTable({ bills }) {
                       if (column.id === "item_name") {
                         value = bill.items?.item_name;
                       }
-                      if (column.id === "payment_status") {
-                        value = bill.left_amount > 0 ? "Pending" : "Complete";
+                      if (column.id === "bill_status") {
+                        value = bill?.isApproved ? "Approved" : "Pending";
                       }
 
                       return (
@@ -219,7 +217,7 @@ export default function RecordsTable({ bills }) {
                           align={column.align}
                           style={cellStyle}
                         >
-                          {column.id === "payment_status" ? (
+                          {column.id === "bill_status" ? (
                             <div
                               style={{
                                 display: "inline-block",
@@ -228,13 +226,13 @@ export default function RecordsTable({ bills }) {
                                 backgroundColor:
                                   value === "Pending"
                                     ? "#fff3cd"
-                                    : value === "Complete"
+                                    : value === "Approved"
                                     ? "#d4edda"
                                     : "#f8d7da",
                                 color:
                                   value === "Pending"
                                     ? "#856404"
-                                    : value === "Complete"
+                                    : value === "Approved"
                                     ? "#155724"
                                     : "#721c24",
                                 fontWeight: "normal",

@@ -353,7 +353,6 @@ const Category = () => {
               setEditFormVIsiblity={setEditFormVIsiblity}
               setEditId={setEditId}
               setEditedValue={setEditedValue}
-              setName={setName}
             />
           </div>
         </div>
@@ -510,7 +509,7 @@ const Category = () => {
                 name="name"
                 id="name"
                 onChange={handleEditFormChange}
-                value={name}
+                value={editedValue.name}
               />
             </div>
             <button className="flex self-end bg-button px-4 py-2 rounded text-white">

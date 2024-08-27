@@ -11,8 +11,7 @@ const Categorytable = ({
   const handleformVisiblity = (cat) => {
     setEditFormVIsiblity(true);
     setEditId(cat.category_id);
-    setName(cat.category_name);
-    setEditedValue({ type: "category" });
+    setEditedValue({ type: "category", name: cat.category_name });
   };
 
   return (
