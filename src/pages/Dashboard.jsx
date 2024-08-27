@@ -62,7 +62,7 @@ const Dashboard = () => {
               <div className='flex flex-col items-center '>
                 <img src={categoryno} alt="items" className='w-8 h-8' />
                 <p>{dashboard?.categoryCount}</p>
-                <p className='font-medium'>Number of Categories</p>
+                <p className='font-medium'>Number of categories</p>
               </div>
               <div className='flex flex-col items-center '>
                 <img src={returneditems} alt="items" className='w-8 h-8' />
@@ -128,11 +128,13 @@ const Dashboard = () => {
                 <div className='flex flex-col items-center '>
                   <img src={pendingpay} alt="items" className='w-8 h-8' />
                   <p>{dashboard?.pendingPaymentCount}</p>
-                  <p className='font-medium'>Pending payments</p>
+                  <p className='font-medium'>Number of pending payments</p>
                 </div>
               </div>
             </div>
 
+
+    
             {/* Request Summary */}
             <div className='flex flex-col bg-white w-[50%] gap-4 rounded'>
               <h1 className='text-lg font-bold m-5'>Request Summary</h1>
