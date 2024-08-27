@@ -44,7 +44,7 @@ const columns = [
     align: "center",
   },
   {
-    id: "actual_amount",
+    id: "actual_Amount",
     label: "Total Amount",
     maxWidth: 70,
     align: "center",
@@ -241,7 +241,7 @@ export default function RecordsTable({ bills }) {
                                 textAlign: "center",
                               }}
                             >
-                              {value ?? "N/A"}
+                              {value ?? "N/A"}  
                             </div>
                           ) : column.format && value != null ? (
                             column.format(value)
