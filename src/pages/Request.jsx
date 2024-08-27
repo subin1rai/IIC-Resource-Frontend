@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import ReqTable from "../components/ReqTable";
 import socket from "../socket";
+import filterIcon from "../assets/filter.svg";
 // import RequestTable from "../components/RequestTable";
 import axios from "axios";
 import Chat from "../components/Chat";
@@ -76,17 +77,34 @@ const Request = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-[85.5vw] bg-white p-6 rounded">
-          <div className="flex flex-col bg-white rounded gap-2">
-            <h3 className=" font-semibold text-2xl">Requests</h3>
-            <p>You can view your request here</p>
 
-            <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div>
-            <div className="  mt-3 ">
+        <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
+          <div className="flex w-[85.8vw] justify-between">
+            <div className="text-lg m-4">
+              <p className="flex text-lg font-bold m-3">Requests</p>
+            </div>
+          <div className="flex justify-between gap-5 m-4 mr-10">
+            {/* Filter */}
+            <button
+                className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                aria-label="Menu"
+                // onClick={displayFilterForm}
+              >
+                <img
+                  className="mt-1 justify-center align-center"
+                  src={filterIcon}
+                  alt=""
+                />
+                Filter
+              </button>
+              </div>
+            </div>
+            {/* <p>You can view your request here</p>
+            <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div> */}
+           
               {/* <RequestTable /> */}
               <ReqTable requests={requests} />
-            </div>
-          </div>
+            
         </div>
       </div>
       <div className="absolute right-12 bottom-12 z-50">
