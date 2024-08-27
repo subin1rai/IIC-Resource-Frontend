@@ -87,7 +87,6 @@ const RequestTable = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-  
     }
   };
 
@@ -119,7 +118,6 @@ const RequestTable = () => {
   useEffect(() => {
     const getRequest = async () => {
       try {
-        
         const response = await axios.get("http://localhost:8898/api/request", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -146,20 +144,19 @@ const RequestTable = () => {
         });
 
         setItems(response.data);
-        
+
         setItemOptions(
           response.data.map((item) => ({
             value: item.item_name,
             label: item.item_name,
           }))
         );
-        
       } catch (error) {
         console.log(error);
       }
     };
     getItems();
-  },[token]);
+  }, [token]);
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -178,7 +175,6 @@ const RequestTable = () => {
 
   const handleDecline = (requestId) => {
     console.log(`Declined request with ID: ${requestId}`);
-    // Implement the decline logic here
   };
 
   return (
@@ -193,18 +189,22 @@ const RequestTable = () => {
           >
             <div className="flex flex-col gap-5">
               <p>
-                Item: <span className="font-medium">{request.item?.item_name}</span>
+                Item:{" "}
+                <span className="font-medium">{request.item?.item_name}</span>
               </p>
               <p>
-                Department: <span className="font-medium">{request.users?.department}</span>
+                Department:{" "}
+                <span className="font-medium">{request.users?.department}</span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
               <p>
-                Quantity: <span className="font-medium">{request.request_quantity}</span>
+                Quantity:{" "}
+                <span className="font-medium">{request.request_quantity}</span>
               </p>
               <p>
-                Requested By: <span className="font-medium">{request.users?.user_name}</span>
+                Requested By:{" "}
+                <span className="font-medium">{request.users?.user_name}</span>
               </p>
             </div>
             <div className="flex flex-col gap-5">
@@ -249,7 +249,7 @@ const RequestTable = () => {
                 onClick={closeAcceptForm}
               />
             </div>
-            
+
             <div className="flex gap-3 bg-slate-200 p-4 flex-col rounded-lg">
               <div className="flex text-lg font-semibold text-zinc-600">
                 Summary
@@ -258,21 +258,34 @@ const RequestTable = () => {
                 <div key={request.id} className="flex gap-16 font-medium">
                   <div className="flex flex-col gap-2">
                     <p>
-                      Item: <span className="text-neutral-600">{request.item?.item_name}</span>
+                      Item:{" "}
+                      <span className="text-neutral-600">
+                        {request.item?.item_name}
+                      </span>
                     </p>
                     <p>
-                      Department: <span className="text-neutral-600">Department</span>
+                      Department:{" "}
+                      <span className="text-neutral-600">Department</span>
                     </p>
                     <p>
-                      Quantity: <span className="text-neutral-600">{request.request_quantity}</span>
+                      Quantity:{" "}
+                      <span className="text-neutral-600">
+                        {request.request_quantity}
+                      </span>
                     </p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <p>
-                      Requested By: <span className="text-neutral-600">{request.users?.user_name}</span>
+                      Requested By:{" "}
+                      <span className="text-neutral-600">
+                        {request.users?.user_name}
+                      </span>
                     </p>
                     <p>
-                      Requested To: <span className="text-neutral-600">Mr.Nishesh Bishwas</span>
+                      Requested To:{" "}
+                      <span className="text-neutral-600">
+                        Mr.Nishesh Bishwas
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -304,7 +317,9 @@ const RequestTable = () => {
                         onChange={(selectedOption) =>
                           handleItemChange(index, "item", selectedOption.value)
                         }
-                        value={itemOptions.find((option) => option.value === item.item)}
+                        value={itemOptions.find(
+                          (option) => option.value === item.item
+                        )}
                         placeholder="Select Item"
                         styles={customStyles}
                         className="w-[190px]"
@@ -345,7 +360,6 @@ const RequestTable = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-2">
-              
               <label className=" font-medium text-md" htmlFor="remarks">
                 Remarks
               </label>
@@ -357,7 +371,7 @@ const RequestTable = () => {
                 onChange={(e) => setRemarks(e.target.value)}
               />
             </div>
-           
+
             <div className="flex justify-end ">
               <button
                 type="submit"

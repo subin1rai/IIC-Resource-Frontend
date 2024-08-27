@@ -575,7 +575,6 @@ const Inventory = () => {
                 Features
               </label>
               {/* features form  */}
-              {/* features form  */}
               <div className="flex flex-col gap-4 w-full">
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-4 w-full items-center">

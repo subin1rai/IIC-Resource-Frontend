@@ -17,11 +17,9 @@ const SpecificRequest = () => {
     userId: "",
     for_userId: "",
     request_date: "",
-
-    department_name:"",
-    status:"",
-    purpose:"",
-
+    department_name: "",
+    status: "",
+    purpose: "",
     items: [],
   });
 
@@ -41,7 +39,7 @@ const SpecificRequest = () => {
   const [requestDetails, setRequestDetails] = useState({});
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [remarks, setRemarks] = useState("");
@@ -102,8 +100,9 @@ const SpecificRequest = () => {
       const response = await axios.put(
         `http://localhost:8898/api/approveRequest/${id}`,
         {
-          ...acceptRequest,
-          items: itemFields,
+          replaceItems: itemFields.filter(
+            (item) => item.id && item.item_id && item.quantity
+          ),
           remarks,
         },
         {
@@ -124,7 +123,7 @@ const SpecificRequest = () => {
           request: {
             ...prevDetails.request,
             isApproved: true,
-            status: "Holding", // Update according to the backend response
+            status: "Holding",
           },
         }));
       } else {
@@ -135,10 +134,31 @@ const SpecificRequest = () => {
       toast.error("An error occurred while approving the request");
     } finally {
       setLoading(false);
+      setAcceptFormVisibility(false);
     }
   };
+
   const openAcceptForm = () => {
     setAcceptFormVisibility(true);
+
+    setAcceptRequest({
+      ...acceptRequest,
+      items:
+        requestDetails?.request?.requestItems.map((item) => ({
+          item: item.item_id,
+          quantity: item.quantity,
+        })) || [],
+    });
+
+    setItemFields(
+      requestDetails?.request?.requestItems.map((item) => ({
+        id: item.id,
+        item_id: item.item_id,
+        quantity: item.quantity,
+      })) || [{ id: "", quantity: "", item_id: "" }]
+    );
+
+    setRemarks(requestDetails?.request?.remarks || "");
   };
 
   const closeAcceptForm = () => {
@@ -147,18 +167,20 @@ const SpecificRequest = () => {
 
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
+    console.log(value, field);
     newFields[index][field] = value;
+
     setItemFields(newFields);
   };
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_name: "", quantity: "" }]);
     }
   };
 
   const handleChange = (e) => {
-    setAcceptRequest({ ...acceptRequest, [e.target.name]: e.target.value });
+    setRemarks({ [e.target.name]: e.target.value });
   };
 
   const removeItemField = (index) => {
@@ -191,26 +213,26 @@ const SpecificRequest = () => {
             },
           }),
         ]);
+
         setRequestDetails(singleRequestResponse.data);
-        setAcceptRequest({
-          userId: singleRequestResponse.data.userId || "",
-          for_userId: singleRequestResponse.data.requested_for || "",
-          request_date: singleRequestResponse.data.request_date
-            ? formatDate(singleRequestResponse.data.request_date)
-            : "",
-          department_name: singleRequestResponse.data.department_name || "",
-          status: singleRequestResponse.data.status || "",
-          purpose: singleRequestResponse.data.purpose || "",
-          remarks: singleRequestResponse.data.remarks || "",
-          items: singleRequestResponse.data.items || [],
-        });
-        const options = itemsResponse.data.map((item) => ({
-          value: item.item_id,
-          label: item.item_name,
-        }));
-        console.log(singleRequestResponse.data);
-        console.log(options);
-        setItemOptions(options);
+        setItemFields(singleRequestResponse.data.request.requestItems);
+
+        setItemOptions(
+          (itemsResponse.data || []).map((item) => {
+            const features = Object.entries(item.itemsOnFeatures || {})
+              .filter(([key, value]) => value)
+              .map(([key, value]) => ` - ${value}`)
+              .join("");
+
+            const label = `${item.item_name}${features}`;
+
+            return {
+              value: item.item_id,
+              label: label,
+            };
+          })
+        );
+
         setItems(itemsResponse.data);
       } catch (error) {
         console.log("Error fetching Request:", error);
@@ -222,12 +244,14 @@ const SpecificRequest = () => {
     fetchSingleRequest();
   }, [id, token]);
 
+  console.log(itemFields);
+
   return (
-    <div className="w-screen h-screen flex justify-between bg-background reltive">
+    <div className="w-screen h-screen flex justify-between bg-background relative">
       <Sidebar />
-      <div className="flex flex-col gap-4 mx-auto  items-center">
+      <div className="flex flex-col gap-4 mx-auto items-center">
         <Topbar />
-        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5  rounded-md ">
+        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md ">
           <div className="flex justify-between items-center ml-2">
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
@@ -247,8 +271,8 @@ const SpecificRequest = () => {
             <div className="flex gap-3">
               <button
                 onClick={openAcceptForm}
-                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5 ${
-                  isHolding ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600"
+                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
+                  isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
                 }`}
                 disabled={isHolding}
               >
@@ -261,16 +285,6 @@ const SpecificRequest = () => {
               >
                 Decline
               </button>
-              {/* {role === "superadmin" ? (
-            <button
-              className="bg-red-500 px-6 rounded text-white font-medium py-3"
-              onClick={() => handleDecline(requests.request_id)}
-            >
-              Decline
-            </button>
-          ) : (
-            <></>
-          )} */}
             </div>
           </div>
           <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
@@ -312,11 +326,7 @@ const SpecificRequest = () => {
                 <p className="font-semibold">
                   Status:
                   <span className="font-normal pl-4">
-                    {requestDetails?.request?.isApproved ? (
-                      <span className="text-green-500">Approved</span>
-                    ) : (
-                      <span className="text-yellow-500">Pending</span>
-                    )}
+                    {requestDetails?.request?.status}
                   </span>
                 </p>
               </div>
@@ -352,7 +362,13 @@ const SpecificRequest = () => {
                         {index + 1}
                       </td>
                       <td className="p-2 text-center border-b border-neutral-200">
-                        {requestItem.item_name}
+                        {
+                          (
+                            itemOptions.find(
+                              (item) => item.value === requestItem.item_id
+                            ) || { label: "Not found" }
+                          ).label
+                        }
                       </td>
                       <td className="p-2 text-center border-b border-neutral-200">
                         {requestItem.quantity}
@@ -393,11 +409,7 @@ const SpecificRequest = () => {
                   <div className="flex text-lg font-semibold text-zinc-600">
                     Summary
                   </div>
-                  {/* {acceptRequest.map((request) => ( */}
-                  <div
-                    key={requestDetails?.request?.id}
-                    className="flex gap-16 font-medium"
-                  >
+                  <div className="flex gap-16 font-medium">
                     <div className="flex flex-col gap-2">
                       <p>
                         Requested By:{" "}
@@ -437,7 +449,6 @@ const SpecificRequest = () => {
                       </p>
                     </div>
                   </div>
-                  {/* ))} */}
                 </div>
                 <div className="flex flex-col">
                   <div className="flex p-3 gap-3">
@@ -449,19 +460,19 @@ const SpecificRequest = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
-                    {itemFields.map((item, index) => (
+                    {itemFields.map((field, index) => (
                       <div key={index} className="flex gap-5 ml-2 items-center">
                         <Select
                           options={itemOptions}
                           onChange={(selectedOption) =>
                             handleItemChange(
                               index,
-                              "item",
+                              "item_id",
                               selectedOption.value
                             )
                           }
                           value={itemOptions.find(
-                            (option) => option.value === item.item
+                            (option) => option.value === field.item_id
                           )}
                           placeholder="Select Item"
                           styles={customStyles}
@@ -474,7 +485,7 @@ const SpecificRequest = () => {
                           placeholder="Enter a quantity"
                           name={`quantity-${index}`}
                           id={`quantity-${index}`}
-                          value={item.quantity}
+                          value={field.quantity}
                           onChange={(e) =>
                             handleItemChange(index, "quantity", e.target.value)
                           }
@@ -513,12 +524,10 @@ const SpecificRequest = () => {
                     name="remarks"
                     placeholder="Enter remarks"
                     className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
-                    value={acceptRequest?.remarks}
+                    value={acceptRequest.remarks}
                     onChange={handleChange}
-                    // onChange={(e) => setRemarks(e.target.value)}
                   />
                 </div>
-
 
                 <div className="flex justify-end ">
                   <button
@@ -526,7 +535,7 @@ const SpecificRequest = () => {
                     className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
                     disabled={loading}
                   >
-                    {loading ? "Adding..." : "Confirm"}
+                    {loading ? "Processing..." : "Confirm"}
                   </button>
                 </div>
               </div>
@@ -544,4 +553,5 @@ const SpecificRequest = () => {
     </div>
   );
 };
+
 export default SpecificRequest;

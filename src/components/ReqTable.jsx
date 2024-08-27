@@ -167,7 +167,7 @@ export default function ReqTable({ requests }) {
                       let value = request[column.id];
 
                       if (column.id === "status") {
-                        value = request.isApproved ? "Accepted" : "Pending";
+                        value = request.status ? "Accepted" : "Pending";
                       }
 
                       return (
