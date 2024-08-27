@@ -21,7 +21,7 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
   },
   {
-    id: "total_amount",
+    id: "total_Amount",
     label: "Total Amount",
     maxWidth: 120,
     align: "center",
@@ -210,7 +210,7 @@ export default function VendorTable({ vendors }) {
                         <span style={{  display: "inline-block",
                           padding: "4px 8px",
                           borderRadius: "4px",
-                          backgroundColor:"#BFF6C3",
+                          backgroundColor:"#d4edda",
                           fontWeight: "normal",
                           textAlign: "center", }}>Completed</span>
                       )

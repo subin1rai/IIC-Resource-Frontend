@@ -31,6 +31,7 @@ const Dashboard = () => {
         });
 
         setDashboard(response.data)
+        console.log(response.data);
       }
       catch (error) {
         console.error("Error fetching details:", error);

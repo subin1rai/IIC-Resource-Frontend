@@ -356,7 +356,7 @@ const AllUser = ({ users: initialUsers }) => {
                         <span style={{  display: "inline-block",
                           padding: "4px 8px",
                           borderRadius: "4px",
-                          backgroundColor:"#BFF6C3",
+                          backgroundColor:"#d4edda",
                           fontWeight: "normal",
                           textAlign: "center", }}>Active</span>
                       )}

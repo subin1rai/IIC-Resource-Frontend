@@ -234,9 +234,9 @@ export default function InventoryTable({ items }) {
                             borderRadius: "4px",
                             backgroundColor:
                               value === "In Stock"
-                                ? "#BFF6C3"
-                                : value === "in stock"
                                 ? "#d4edda"
+                                : value === "in stock"
+                                ? "#155724"
                                 : "#f8d7da",
                             color:
                               value === "Low Stock"
