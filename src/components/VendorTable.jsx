@@ -49,19 +49,20 @@ const columns = [
     numeric: true,
   },
   {
+    id: "TDS",
+    label: "TDS",
+    maxWidth: 120,
+    align: "center",
+    format: (value) => value || 0,
+  },
+  {
     id: "payment_status",
     label: "Payment Status",
     maxWidth: 120,
     align: "center",
     format: (value) => value || "N/A",
   },
-  {
-    id: "TDS",
-    label: "TDS",
-    maxWidth: 120,
-    align: "center",
-    format: (value) => value || "N/A",
-  },
+ 
 ];
 
 export default function VendorTable({ vendors }) {
@@ -199,9 +200,19 @@ export default function VendorTable({ vendors }) {
                     {column.id === "payment_status" ? (
                       // Custom condition for payment_status based on pending_payment
                       vendor.pending_payment > 0 ? (
-                        <span style={{ color: "orange" }}>Pending</span>
+                        <span style={{ display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor:  "#fff3cd", 
+                          fontWeight: "normal",
+                          textAlign: "center",}}>Pending</span>
                       ) : (
-                        <span style={{ color: "green" }}>Completed</span>
+                        <span style={{  display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor:"#d4edda",
+                          fontWeight: "normal",
+                          textAlign: "center", }}>Completed</span>
                       )
                     ) : column.format &&
                       vendor &&

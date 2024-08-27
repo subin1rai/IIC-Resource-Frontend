@@ -238,7 +238,7 @@ export default function RecordsTable({ bills }) {
                                 textAlign: "center",
                               }}
                             >
-                              {value ?? "N/A"}
+                              {value ?? "N/A"}  
                             </div>
                           ) : column.format && value != null ? (
                             column.format(value)

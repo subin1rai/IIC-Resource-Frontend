@@ -9,16 +9,27 @@ import issuesno from "../assets/issuesno.png";
 import pendingreq from "../assets/pendingreq.png";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
+import { ToastContainer, toast } from "react-toastify";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 
 const Issue = () => {
-  const [issues, setIssues] = useState();
+  const [issue, setIssue] = useState({
+    issue_date:"",
+    student_name: "",
+    remarks: "",
+    items: [],
+  });
+
+  const [date, setDate] = useState("");
+  const [issues,setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [remarks, setRemarks] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [addIssueVisibility, setAddIssueVisibility] = useState(false);
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemOptions, setItemOptions] = useState([]);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -36,19 +47,65 @@ const Issue = () => {
     setAddIssueVisibility(false);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const issueData = {
+        ...issue,
+      };
+      console.log(issueData);
+      const response = await axios.post(
+        "http://localhost:8898/api/addIssue",
+        issueData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data.result);
+      setIssues((prevIssues) => [...prevIssues, response.data.result.issueData]);
+      toast.success(`${issue.issue_no} added successfully!`);
+      closeAddIssueForm(false);
+      setIssue({
+        issue_date:"",
+        student_name: "",
+        remarks: "",
+        items: [],
+      })
+    } catch (error) {
+      console.error("Error adding issue:", error);
+      setError(
+        error.response?.data?.error || "An error occurred while adding the issue"
+      );
+    }
+  };
+
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
     setItemFields(newFields);
   };
 
+  const handleChange = (e) => {
+    setIssue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const addItemField = () => {
-    setItemFields([...itemFields, { item: "", quantity: "" }]);
+    if (itemFields.length < itemOptions.length) {
+      setItemFields([...itemFields, { item: "", quantity: "" }]);
+    }
   };
 
   const removeItemField = (index) => {
-    const newFields = itemFields.filter((_, i) => i !== index);
-    setItemFields(newFields);
+    if (itemFields.length > 1) {
+      const newFields = itemFields.filter((_, i) => i !== index);
+      setItemFields(newFields);
+    }
+  };
+  const handleDateChange = (event) => {
+    const date = event;
+    setIssue((prev) => ({ ...prev, issue_date: date }));
   };
 
   const customStyles = {
@@ -96,15 +153,34 @@ const Issue = () => {
 
   useEffect(() => {
     const getAllIssue = async () => {
-      const response = await axios.get(`http://localhost:8898/api/issue`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setIssues(response.data.response);
-    };
+      try {
+        const [response, itemsResponse] = await Promise.all([
+          axios.get(`http://localhost:8898/api/issue`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
+      const options = itemsResponse.data.map((item) => ({
+        value: item.item_id,
+        label: item.item_name,
+      }));
+        setIssues(response.data.result || []);
+        setItemOptions(options);
+        console.log(itemsResponse.data);
+        setItems(itemsResponse.data);
+      } catch (error) {
+        console.error("Error fetching issues:", error);
+        setIssues([]);
+      }
+      };
     getAllIssue();
-  }, []);
+  }, [token]);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -193,9 +269,11 @@ const Issue = () => {
         </div>
       )}
       {addIssueVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
+        <form 
+        onSubmit={handleSubmit}
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2">
           <div className="flex justify-between">
-            <h2 className="font-semibold text-xl m-2"> Add Issue Details</h2>
+            <h2 className="font-semibold text-lg m-2"> Add Issue Details</h2>
             <button
               type="button"
               className="discard-btn"
@@ -207,82 +285,112 @@ const Issue = () => {
           <div className="flex flex-col gap-3 p-2">
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
-                <div className="flex gap-40 ">
-                  <label className="font-semibold">Issue Item</label>
-                  <Select
-                    className="w-[70%]"
-                    styles={customStyles}
-                    options={items}
-                    value={selectedItem}
-                    onChange={setSelectedItem}
-                    placeholder="Select Item"
-                  />
+                <div className="flex gap-6">
+              <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md" htmlFor="bill_no">
+                      Issue Date:
+                    </label>
+                    <NepaliDatePicker
+                      inputClassName="form-control focus:outline-none"
+                      className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md"
+                      value={date}
+                      onChange={handleDateChange}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
+                    />
+                  </div>
+              <div className="flex flex-col gap-4">
+                  <label className="font-medium text-md"> Student Name: </label>
+                  <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
+                  type="text"
+                  placeholder="Enter Student Name"
+                  autoFocus="autofocus"
+                  name="student_name"
+                  id="student_name"
+                  onChange={handleChange}
+                />
                 </div>
-                <label className="font-semibold">Remarks</label>
+                </div>
+              <div className="flex flex-col">
+                  <div className="flex py-3 gap-3">
+                    <div className="flex font-medium text-md w-64">
+                      <label>Item Name:</label>
+                    </div>
+                    <div className="flex font-medium text-md w-64">
+                      <label>Quantity:</label>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    {itemFields.map((items, index) => (
+                      <div key={index} className="flex gap-5  items-center">
+                        <Select
+                          options={itemOptions}
+                          onChange={(selectedOption) =>
+                            handleItemChange(
+                              index,
+                              "item",
+                              selectedOption.value
+                            )
+                          }
+                          value={itemOptions.find(
+                            (option) => option.value === items.item
+                          )}
+                          placeholder="Select Item"
+                          styles={customStyles}
+                          className="w-[190px]"
+                          classNamePrefix="react-select"
+                        />
+                        <input
+                          className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw] focus:outline-none"
+                          type="number"
+                          placeholder="Enter a quantity"
+                          name={`quantity-${index}`}
+                          id={`quantity-${index}`}
+                          value={items.quantity}
+                          onChange={(e) =>
+                            handleItemChange(index, "quantity", e.target.value)
+                          }
+                        />
+                        {itemFields.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeItemField(index)}
+                            className="flex items-center"
+                          >
+                            <img
+                              src={remove}
+                              alt="Remove"
+                              className="h-7 w-7"
+                            />
+                          </button>
+                        )}
+                        {index === itemFields.length - 1 && (
+                          <button
+                            type="button"
+                            onClick={addItemField}
+                            className="flex items-center"
+                          >
+                            <img src={add} alt="Add" className="h-7 w-7" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <label className="font-medium text-md">Remarks</label>
                 <textarea
                   rows={5}
-                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[35vw]"
-                  placeholder="Type here..."
+                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh] focus:outline-none resize-none"
+                  placeholder="Enter your Remarks here.."
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
                 />
-                <div className="flex flex-col gap-4">
-                  <h4 className="font-bold"> Items to be Issued </h4>
-                  {itemFields.map((field, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-2 flex-col sm:flex-row items-start sm:items-center"
-                    >
-                      <input
-                        className="border-2 border-neutral-200 p-1.5 rounded-md w-full sm:w-[14vw]"
-                        type="text"
-                        placeholder="Item"
-                        value={field.item}
-                        onChange={(e) =>
-                          handleItemChange(index, "item", e.target.value)
-                        }
-                      />
-                      <input
-                        className="border-2 border-neutral-200 p-1.5 rounded-md w-full sm:w-[14vw]"
-                        type="number"
-                        placeholder="Quantity"
-                        value={field.quantity}
-                        onChange={(e) =>
-                          handleItemChange(index, "quantity", e.target.value)
-                        }
-                      />
-                      {itemFields.length > 1 && (
-                        <button
-                          type="button"
-                          className="bg-red-500 text-white p-2 rounded"
-                          onClick={() => removeItemField(index)}
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    className="bg-blue-600 text-white py-2 px-4 rounded"
-                    onClick={addItemField}
-                  >
-                    Add Item
-                  </button>
-                </div>
+                
               </div>
             </div>
             <div className="flex justify-end gap-4">
-              <button
-                type="button"
-                className="discard-btn"
-                onClick={closeAddIssueForm}
-              >
-                <img src={remove} alt="" />
-                Remove
-              </button>
-              <button className="bg-blue-600 text-white py-2 px-4 rounded">
-                Done
+              <button className="bg-blue-600 text-white py-2 px-6 rounded">
+                Add Issue
               </button>
             </div>
           </div>
@@ -296,6 +404,7 @@ const Issue = () => {
           {" "}
         </div>
       )}
+      <ToastContainer pauseOnHover theme="light" />
     </div>
   );
 };

@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 import vendorno from "../assets/vendorcount.png";
 import blacklist from "../assets/blacklist.png";
 import exportIcon from "../assets/export.svg";
-
 import Select from "react-select";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {

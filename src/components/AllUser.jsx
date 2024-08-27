@@ -378,10 +378,20 @@ const AllUser = ({ users: initialUsers }) => {
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.isActive === false ? (
-                    <span className="text-red-500">Inactive</span>
-                  ) : (
-                    <span className="text-green-500">Active</span>
-                  )}
+                        <span style={{ display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor:  "#fff3cd", 
+                          fontWeight: "normal",
+                          textAlign: "center",}}>Inactive</span>
+                      ) : (
+                        <span style={{  display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor:"#d4edda",
+                          fontWeight: "normal",
+                          textAlign: "center", }}>Active</span>
+                      )}
                 </TableCell>
                 <TableCell className="flex">
                   <DropdownMenu

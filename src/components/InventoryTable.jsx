@@ -29,8 +29,7 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
     numeric: true,
   },
-  // { id: "category", label: "Category", maxWidth: 120 },
-  // { id: "itemCategory", label: "Item Category", maxWidth: 120 },
+
   {
     id: "recent_purchase",
     label: "Recent Purchase",
@@ -223,18 +222,40 @@ export default function InventoryTable({ items }) {
 
                     return (
                       <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={
-                          column.id === "stockStatus"
-                            ? { ...cellStyle, ...getStockStatusStyle(value) }
-                            : cellStyle
-                        }
-                      >
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value || "N/A"}
-                      </TableCell>
+                      key={column.id}
+                      align={column.align}
+                      style={cellStyle}
+                    >
+                      {column.id === "stockStatus" ? (
+                        <div
+                          style={{
+                            display: "inline-block",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            backgroundColor:
+                              value === "In Stock"
+                                ? "#d4edda"
+                                : value === "in stock"
+                                ? "#155724"
+                                : "#f8d7da",
+                            color:
+                              value === "Low Stock"
+                                ? "#856404"
+                                : value === "low stock"
+                                ? "#155724"
+                                : "#721c24",
+                            fontWeight: "normal",
+                            textAlign: "center",
+                          }}
+                        >
+                          {value ?? "N/A"}  
+                        </div>
+                      ) : column.format && value != null ? (
+                        column.format(value)
+                      ) : (
+                        value ?? "N/A"
+                      )}
+                    </TableCell>
                     );
                   })}
                 </TableRow>
