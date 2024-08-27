@@ -287,7 +287,7 @@ const SpecificRequest = () => {
               </button>
             </div>
           </div>
-          <div className="h-[2px] w-[99%] bg-neutral-300 mx-auto mt-5"></div>
+          <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
           {loading ? (
             <div>Loading...</div>
           ) : requestDetails?.request ? (

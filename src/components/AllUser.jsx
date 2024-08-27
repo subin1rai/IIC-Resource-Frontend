@@ -5,6 +5,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
@@ -60,29 +61,41 @@ const DropdownMenu = ({
   }, []);
 
   const handleSetActive = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.put(
-        `http://localhost:8898/api/role/activateUser/${user_id}`
-      );
-      if (response.status === 200) {
-        Swal.fire("User Activated", "", "success");
-        setAllUsers((prevUsers) =>
-          prevUsers.map((u) =>
-            u.user_id === user_id ? { ...u, isActive: true } : u
-          )
-        );
-        setIsOpen(false);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to set this user as active?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, set active",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await axios.put(
+            `http://localhost:8898/api/role/activateUser/${user_id}`
+          );
+          if (response.status === 200) {
+            Swal.fire("User Activated", "", "success");
+            setAllUsers((prevUsers) =>
+              prevUsers.map((u) =>
+                u.user_id === user_id ? { ...u, isActive: true } : u
+              )
+            );
+            setIsOpen(false);
+          }
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            "An error occurred while activating the user.",
+            "error"
+          );
+        } finally {
+          setLoading(false);
+        }
       }
-    } catch (error) {
-      Swal.fire(
-        "Error",
-        "An error occurred while activating the user.",
-        "error"
-      );
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const handleSetInActive = () => {
@@ -265,6 +278,8 @@ const DropdownMenu = ({
 
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
   const [editedUser, setEditedUser] = useState({
     user_name: "",
     user_email: "",
@@ -290,6 +305,14 @@ const AllUser = ({ users: initialUsers }) => {
       console.log(error);
     }
   }, []);
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   const updateUserStatus = (userId, isActive) => {
     setAllUsers((prevUsers) =>
@@ -340,6 +363,11 @@ const AllUser = ({ users: initialUsers }) => {
     } catch (error) {}
   };
 
+  const visibleRows = React.useMemo(
+    () => allUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [allUsers, page, rowsPerPage]
+  );
+
   return (
     <Paper
       sx={{
@@ -350,7 +378,7 @@ const AllUser = ({ users: initialUsers }) => {
       }}
     >
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 700 }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead className="z-0">
             <TableRow>
               {columns.map((column) => (
@@ -369,7 +397,7 @@ const AllUser = ({ users: initialUsers }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allUsers.map((user) => (
+            {visibleRows.map((user) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
@@ -377,9 +405,31 @@ const AllUser = ({ users: initialUsers }) => {
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.isActive === false ? (
-                    <span className="text-red-500">Inactive</span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        backgroundColor: "#fff3cd",
+                        fontWeight: "normal",
+                        textAlign: "center",
+                      }}
+                    >
+                      Inactive
+                    </span>
                   ) : (
-                    <span className="text-green-500">Active</span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        backgroundColor: "#d4edda",
+                        fontWeight: "normal",
+                        textAlign: "center",
+                      }}
+                    >
+                      Active
+                    </span>
                   )}
                 </TableCell>
                 <TableCell className="flex">
@@ -471,6 +521,15 @@ const AllUser = ({ users: initialUsers }) => {
           <div className="" onClick={() => setEditFormVisibility(false)}></div>
         </div>
       )}
+      <TablePagination
+        rowsPerPageOptions={[10]}
+        component="div"
+        count={allUsers?.length || 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Paper>
   );
 };

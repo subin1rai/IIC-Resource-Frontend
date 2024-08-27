@@ -7,7 +7,9 @@ import activeIcon from "../assets/active.png";
 import closeIcon from "../assets/close.svg";
 import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import filterIcon from "../assets/filter.svg";
+import Select from "react-select";
+import close from "../assets/close.svg"
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -18,6 +20,7 @@ const SettingRole = () => {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [numberOfActiveUsers, setNumberOfActiveUsers] = useState(0);
   const [visibleForm, setVisibleForm] = useState("");
+  const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [newDepartment, setNewDepartment] = useState({ department_name: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -31,6 +34,14 @@ const SettingRole = () => {
   const [departments, setDepartments] = useState([]);
 
   const Token = localStorage.getItem("token");
+
+  const displayFilterForm = () => {
+    setFilterFormVisibility(true);
+  }
+
+  const closeFilterForm = () => {
+    setFilterFormVisibility(false);
+  };
 
   // Fetch users and departments data
   useEffect(() => {
@@ -118,6 +129,47 @@ const SettingRole = () => {
     }
   };
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "250px",
+      borderRadius: "4px",
+      border: "2px solid #d1d5db",
+      borderColor: "#d1d5db",
+      boxShadow: "none",
+      minHeight: "41px",
+      color: "black",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      width: "45px",
+      margin: "0px",
+      color: "black",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+      color: "black",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+      color: "black",
+    }),
+  };
+
   const handleAddDepartment = async (event) => {
     event.preventDefault();
     try {
@@ -165,7 +217,7 @@ const SettingRole = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white p-5 rounded w-[85.5vw] gap-5">
+        <div className="flex flex-col bg-white p-5 rounded-xl w-[85.5vw] gap-5 ">
           <div className="flex justify-between">
             <h3 className="text-lg font-bold m-1">Users List</h3>
             <div className="flex gap-5">
@@ -176,6 +228,16 @@ const SettingRole = () => {
                 onChange={(e) => setUserSearchTerm(e.target.value)}
                 className="border-2 px-2 w-64 border-border rounded py-2 focus:outline-slate-400"
               />
+              {/* filter button */}
+              <button
+                className="flex justify-center items-center w-fit px-5 py-1.5 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+                aria-label="Menu"
+                onClick={displayFilterForm}
+              >
+                <img src={filterIcon} alt="filter icon" />
+                Filter
+              </button>
+              {/* Add user button */}
               <button
                 className="bg-button text-white rounded w-fit px-6 py-2"
                 onClick={() => {
@@ -185,6 +247,7 @@ const SettingRole = () => {
               >
                 Add User
               </button>
+              {/* Add department button */}
               <button
                 className="bg-button text-white rounded items-center px-6 py-2"
                 onClick={() => {
@@ -196,7 +259,7 @@ const SettingRole = () => {
               </button>
             </div>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center ">
             <AllUser users={allFilteredUsers} className="z-10" />
           </div>
         </div>
@@ -287,6 +350,98 @@ const SettingRole = () => {
           </form>
         </div>
       )}
+
+      {/* filter form */}
+      {filterFormVisibility && (
+        <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-xl"> Filtering Option</h2>
+              <button
+                type="button"
+                className=""
+                onClick={closeFilterForm}
+              >
+                <img src={close} alt="" className="cursor-pointer w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-8 ">
+              <div className="flex gap-6   items-center">
+                <label htmlFor="" className="font-medium">Filter by Role: </label>
+                <select name="" id=""
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  autoFocus
+                >
+                  <option value="" >Select a role</option>
+                  <option value="">Super Admin</option>
+                  <option value="">Admin</option>
+                  <option value="">User</option>
+                  <option value="">Department Head</option>
+                </select>
+              </div>
+              <div className="flex gap-7 items-center">
+                <label htmlFor="department" className="font-medium">
+                  Department:
+                </label>
+                <select
+                  id="department"
+                  name="department"
+                  value={user.department}
+                  onChange={handleInputChange}
+                  className="border-border border-2 rounded p-2 w-[250px] focus:outline-slate-400"
+                >
+                  <option value="" >
+                    Select Department
+                  </option>
+                  {departments.map((department) => (
+                    <option
+                      key={department.id}
+                      value={department.department_name}
+                    >
+                      {department.department_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-20">
+                <label htmlFor="" className="font-medium">Status:</label>
+                <div className="flex gap-8">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="status"
+                      value="active"
+                      class="mr-2"
+                    />
+                    Active
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="status"
+                      value="inactive"
+                      class="mr-2"
+                    />
+                    Inactive
+                  </label>
+
+
+                </div>
+
+              </div>
+            </div>
+            <button
+              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium"
+
+            >
+              Filter
+            </button>
+
+          </form>
+        </div>
+      )}
+
 
       {visibleForm === "department" && (
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
