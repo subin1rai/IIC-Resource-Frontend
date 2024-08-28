@@ -371,15 +371,15 @@ const SpecificBill = () => {
                 Edit Bill
               </button>
 
-              {role === "superadmin" ? (
+              {role === "superadmin" && billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
                 <button
                   className="bg-green-500 px-6 rounded text-white font-medium py-3"
                   onClick={handleApprove}
                 >
                   Approve Bill
                 </button>
-              ) : (
-                <></>
               )}
             </div>
           </div>
