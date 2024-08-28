@@ -61,7 +61,10 @@ const SpecificVendor = () => {
   ];
 
   function getNepaliMonth(dateString) {
-    const [datePart] = dateString.split("T");
+    if (!dateString) {
+      return "--";
+    }
+    const [datePart] = dateString?.split("T");
     const [year, month, day] = datePart.split("-");
     const monthIndex = parseInt(month, 10) - 1;
     return `${nepaliMonthsInEnglish[monthIndex]} ${day}, ${year}`;
@@ -242,7 +245,7 @@ const SpecificVendor = () => {
                 <p className="font-medium ">
                   Last Purchase Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {getNepaliMonth(vendor.last_purchase_date)}
+                    {getNepaliMonth(vendor?.last_purchase_date) || "--"}
                   </span>
                 </p>
                 <p className="font-medium ">
@@ -256,13 +259,13 @@ const SpecificVendor = () => {
                 <p className="font-medium ">
                   Last Paid Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {getNepaliMonth(vendor.last_paid)}
+                    {getNepaliMonth(vendor.last_paid) || "--"}
                   </span>
                 </p>
                 <p className="font-medium ">
                   Payment Status:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {vendor.pending_payment > 0 ? "Pending" : "Clear"}
+                    {vendor?.pending_payment > 0 ? "Pending" : "Clear"}
                   </span>
                 </p>
               </div>
@@ -271,14 +274,14 @@ const SpecificVendor = () => {
                   Pending Payment:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.pending_payment
-                      ? Number(vendor.pending_payment).toFixed(2)
+                      ? Number(vendor?.pending_payment).toFixed(2)
                       : "--"}
                   </span>
                 </p>
                 <p className="font-medium ">
                   Next Payment Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {getNepaliMonth(vendor.next_payment_date)}
+                    {getNepaliMonth(vendor?.next_payment_date) || "--"}
                   </span>
                 </p>
               </div>
