@@ -30,6 +30,9 @@ const UserRequest = () => {
         const response = await axios.get(
           "http://localhost:8898/api/role/allUsers"
         );
+
+        console.log(response);
+
         const filteredUsers = response.data.users.filter(
           (user) => user.department_name === userDepartment
         );
@@ -42,6 +45,8 @@ const UserRequest = () => {
         console.error(error);
       }
     };
+
+    console.log(departmentMembers);
 
     getDepartmentUsers();
   }, [userDepartment]);
