@@ -13,28 +13,29 @@ import { useState, useMemo } from "react";
 // Column definitions
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
-  { id: "issued_item", label: "Issued Items", minWidth: 70 },
+ 
   {
     id: "issue_date",
     label: "Issue Date",
     minWidth: 70,
-    align: "center",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
+  { id: "issued_item", label: "Issued Item", minWidth: 70 },
   {
-    id: "quantity",
+    id: "item_quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
     format: (value) => value.toFixed(2),
   },
+  { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
-  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "issued_by", label: "Issued By", minWidth: 70, align: "center" },
+  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+
 ];
 
-// Create data function
 const createData = (
   issue_id,
   issued_item,
@@ -152,15 +153,20 @@ export default function InventoryTable({ issues }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.issue_id}>
+            {visibleRows.map((issue) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={issue.issue_id}>
                 {columns.map((column) => {
-                  const value = row[column.id];
+                  const value = issue[column.id];
                   return (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value}
+                    <TableCell key={column.id} 
+                    align={column.align}
+                    style={cellStyle}
+                    >
+                      {column.format && value != null ? (
+                            column.format(value)
+                          ) : (
+                            value ?? "N/A"
+                          )}
                     </TableCell>
                   );
                 })}

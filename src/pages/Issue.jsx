@@ -15,9 +15,9 @@ import axios from "axios";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
-    issue_date: "",
-    student_name: "",
-    remarks: "",
+    issue_date:"",
+    requested_by: "",
+    purpose: "",
     items: [],
   });
 
@@ -25,7 +25,7 @@ const Issue = () => {
   const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [remarks, setRemarks] = useState("");
+  const [purpose, setPurpose] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [addIssueVisibility, setAddIssueVisibility] = useState(false);
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
@@ -50,10 +50,18 @@ const Issue = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const formattedItems = itemFields.map((field) => ({
+        item_name: field.item,  // Mapping 'item' to 'item_name'
+        quantity: field.quantity, 
+      }));
+  
       const issueData = {
-        ...issue,
+        issue_date: issue.issue_date,
+        requested_by: issue.requested_by,
+        purpose: purpose,  // Purpose is set separately
+        items: formattedItems,  // Add the formatted items array
       };
-      console.log(issueData);
+  
       const response = await axios.post(
         "http://localhost:8898/api/addIssue",
         issueData,
@@ -63,28 +71,25 @@ const Issue = () => {
           },
         }
       );
-      console.log(response.data.result);
-      setIssues((prevIssues) => [
-        ...prevIssues,
-        response.data.result.issueData,
-      ]);
-      toast.success(`${issue.issue_no} added successfully!`);
+      console.log("Sending data:", issueData);
+      console.log(response.data);
+      setIssues((prevIssues) => [...prevIssues, response.data.issues]);
+      closeAddIssueForm();
+      toast.success(`Items issued to ${issue.requested_by} successfully `);
       closeAddIssueForm(false);
       setIssue({
         issue_date: "",
-        student_name: "",
-        remarks: "",
+        requested_by: "",
+        purpose: "",
         items: [],
       });
+      setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
-      setError(
-        error.response?.data?.error ||
-          "An error occurred while adding the issue"
-      );
+      toast.error("Failed to add issue!");
     }
   };
-
+  
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
@@ -157,35 +162,46 @@ const Issue = () => {
 
   // get issue from backend
   useEffect(() => {
-    const getAllIssue = async () => {
+    const fetchIssues = async () => {
       try {
-        const [response, itemsResponse] = await Promise.all([
-          axios.get(`http://localhost:8898/api/issue`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-          axios.get("http://localhost:8898/api/items", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-        ]);
-        const options = itemsResponse.data.map((item) => ({
-          value: item.item_id,
-          label: item.item_name,
-        }));
-        setIssues(response.data.result || []);
-        setItemOptions(options);
-        console.log(itemsResponse.data);
-        setItems(itemsResponse.data);
+        const response = await axios.get("http://localhost:8898/api/issue", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
         setIssues([]);
       }
     };
-    getAllIssue();
+    fetchIssues();
   }, [token]);
+  
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const itemsResponse = await axios.get("http://localhost:8898/api/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const options = itemsResponse.data.map((item) => ({
+          value: item.item_name,
+          label: item.item_name,
+        }));
+        setItemOptions(options);
+        setItems(itemsResponse.data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        setItemOptions([]);
+      }
+    };
+  
+    fetchItems();
+  }, [token]);
+  
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -371,21 +387,18 @@ const Issue = () => {
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
-                  <div className="flex flex-col gap-4">
-                    <label className="font-medium text-md">
-                      {" "}
-                      Student Name:{" "}
-                    </label>
-                    <input
-                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
-                      type="text"
-                      placeholder="Enter Student Name"
-                      autoFocus="autofocus"
-                      name="student_name"
-                      id="student_name"
-                      onChange={handleChange}
-                    />
-                  </div>
+              <div className="flex flex-col gap-4">
+                  <label className="font-medium text-md"> Issued To: </label>
+                  <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
+                  type="text"
+                  placeholder="Enter Student Name"
+                  autoFocus="autofocus"
+                  name="requested_by"
+                  id="requested_by"
+                  onChange={handleChange}
+                />
+                </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex py-3 gap-3">
@@ -453,13 +466,13 @@ const Issue = () => {
                     ))}
                   </div>
                 </div>
-                <label className="font-medium text-md">Remarks</label>
+                <label className="font-medium text-md">Purpose:</label>
                 <textarea
                   rows={5}
                   className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh] focus:outline-none resize-none"
-                  placeholder="Enter your Remarks here.."
-                  value={remarks}
-                  onChange={(e) => setRemarks(e.target.value)}
+                  placeholder="Enter your purpose here.."
+                  value={purpose}
+                  onChange={(e) => setPurpose(e.target.value)}
                 />
               </div>
             </div>
