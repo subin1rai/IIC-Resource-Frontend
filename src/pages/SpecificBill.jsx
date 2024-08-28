@@ -638,10 +638,11 @@ const SpecificBill = () => {
                     </label>
                     <NepaliDatePicker
                       inputClassName="form-control"
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
                       value={editedBill.bill_date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
+                      autoFocus="autofocus"
                     />
                   </div>
 
@@ -740,7 +741,6 @@ const SpecificBill = () => {
                       <input
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter paid amount"
-                        autoFocus="autofocus"
                         name="paid_amount"
                         id="paid_amount"
                         onChange={handleChange}
