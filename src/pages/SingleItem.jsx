@@ -229,22 +229,16 @@ const SingleItem = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      self: "end",
+      alignSelf: "end",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       borderRadius: "4px",
-      borderColor: "#ccc",
       boxShadow: "none",
       minHeight: "46px",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      borderRadius: "4px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      zIndex: 9999,
     }),
     input: (provided) => ({
       ...provided,
@@ -252,7 +246,7 @@ const SingleItem = () => {
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: "#757575",
+      color: "#d1d5db",
     }),
     container: (provided) => ({
       ...provided,
@@ -263,7 +257,6 @@ const SingleItem = () => {
       padding: "2px 8px",
     }),
   };
-
   return (
     <div className="flex bg-background h-screen w-screen">
       <Sidebar />
@@ -395,7 +388,7 @@ const SingleItem = () => {
                     id="item_name"
                     name="item_name"
                     placeholder="Enter item name"
-                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
+                    className="border-2 border-neutral-200 p-2  w-[250px] rounded focus:outline-slate-400"
                     value={editedItem.item_name}
                     onChange={handleChange}
                     autoFocus
@@ -452,7 +445,7 @@ const SingleItem = () => {
                     id="measuring_unit"
                     name="measuring_unit"
                     placeholder="Enter measuring unit"
-                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
+                    className="border-2 border-neutral-200 p-2   w-[250px] rounded focus:outline-slate-400"
                     value={editedItem.measuring_unit}
                     onChange={handleChange}
                   />
@@ -464,7 +457,7 @@ const SingleItem = () => {
                     id="low_limit"
                     name="low_limit"
                     placeholder="Enter low limit"
-                    className="border-[1px] border-neutral-300 p-2 pl-3 w-[250px] rounded-md"
+                    className="border-2 border-neutral-200 p-2 w-[250px] rounded focus:outline-slate-400"
                     value={editedItem.low_limit}
                     onChange={handleChange}
                   />
@@ -499,7 +492,7 @@ const SingleItem = () => {
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-2 rounded border-neutral-200 w-[210px] px-2 py-2"
+                          className="border-2 rounded border-neutral-200 w-[210px] p-2 focus:outline-slate-400"
                           type="text"
                           placeholder="Enter the value"
                           value={feature.value}
@@ -524,11 +517,10 @@ const SingleItem = () => {
                   <button
                     type="button"
                     onClick={addFeatureField}
-                    className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors ${
-                      selectedFeatures.length >= feature.length
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
+                    className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors ${selectedFeatures.length >= feature.length
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                      }`}
                     disabled={selectedFeatures.length >= feature.length}
                   >
                     Add Feature

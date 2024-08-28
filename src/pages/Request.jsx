@@ -9,6 +9,7 @@ import axios from "axios";
 import Chat from "../components/Chat";
 import req from "../assets/request.svg";
 import close from "../assets/close.svg"
+import Select from "react-select";
 
 const Request = () => {
   const [requests, setRequests] = useState({
@@ -22,6 +23,7 @@ const Request = () => {
   });
 
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  const [departments, setDepartments] = useState([]);
 
 
   const displayFilterForm = () => {
@@ -37,6 +39,48 @@ const Request = () => {
   const [itemOptions, setItemOptions] = useState([]);
 
   const token = localStorage.getItem("token");
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: "250px",
+      borderRadius: "4px",
+      border: "2px solid #d1d5db",
+      borderColor: "#d1d5db",
+      boxShadow: "none",
+      minHeight: "41px",
+      color: "black",
+      "&:hover": {
+        borderColor: "#aaa",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "4px",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      width: "45px",
+      margin: "0px",
+      color: "black",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#757575",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+      color: "black",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "2px 8px",
+      color: "black",
+    }),
+  };
+
 
   useEffect(() => {
     const getRequest = async () => {
@@ -55,7 +99,7 @@ const Request = () => {
     getRequest();
   }, [token]);
 
-  console.log(requests);
+  // console.log(requests);
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -67,6 +111,27 @@ const Request = () => {
       socket.off("newRequest");
     };
   }, []);
+
+
+  // fetching department
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      try {
+        const departmentResponse = await axios.get(
+          "http://localhost:8898/api/getDepartment",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        // console.log(departmentResponse);
+        setDepartments(departmentResponse.data.department)
+      } catch (error) {
+        console.error("Error fetching department:", error);
+      }
+    };
+
+    fetchDepartment();
+  }, [token]);
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background reltive">
@@ -148,30 +213,30 @@ const Request = () => {
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
                   <label htmlFor="" className="font-medium">Filter by Departmnent: </label>
-                  <select name="" id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
-                  >
-                    <option value="" >Select a department</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
-                  </select>
+                  <Select
+                    options={departments.map((department) => ({
+                      value: department.department_name,
+                      label: department.department_name,
+                    }))}
+
+
+                    placeholder="Select Department"
+                    styles={customStyles}
+                  />
                 </div>
 
                 {/* div for request status */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Filter by Departmnent: </label>
+                  <label htmlFor="" className="font-medium">Filter by Status: </label>
                   <select name="" id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
 
                   >
-                    <option value="" disabled >Select status</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
+                    <option value="" >Select status</option>
+                    <option value="">Pending</option>
+                    <option value="">Holding</option>
+                    <option value="">Delivered</option>
+
                   </select>
                 </div>
 
