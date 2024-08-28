@@ -22,11 +22,20 @@ const columns = [
     format: (value) => value?.toLocaleString("en-US") || "N/A",
     numeric: true,
   },
+
   {
     id: "quantity",
-    label: "Quantity",
+    label: "Actual Quanity",
     maxWidth: 80,
-    align: "center",
+    align: "left",
+    format: (value) => value?.toLocaleString("en-US") || 0,
+    numeric: true,
+  },
+  {
+    id: "remaining_quantity",
+    label: "Available Stock",
+    maxWidth: 80,
+    align: "left",
     format: (value) => value?.toLocaleString("en-US") || 0,
     numeric: true,
   },
@@ -48,6 +57,8 @@ export default function InventoryTable({ items }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const navigate = useNavigate();
+
+  console.log(items);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

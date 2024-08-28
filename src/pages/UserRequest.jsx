@@ -248,9 +248,21 @@ const UserRequest = () => {
                       item.item_id
                         ? {
                             value: item.item_id,
-                            label: allItems.find(
-                              (i) => i.item_id === item.item_id
-                            )?.item_name,
+                            label: allItems
+                              .map((i) => {
+                                const features = Object.entries(
+                                  i.itemsOnFeatures || {}
+                                )
+                                  .filter(([key, value]) => value)
+                                  .map(([key, value]) => ` - ${value}`)
+                                  .join("");
+
+                                return `${i.item_name}${features}`;
+                              })
+                              .find(
+                                (label, idx) =>
+                                  allItems[idx].item_id === item.item_id
+                              ),
                           }
                         : null
                     }

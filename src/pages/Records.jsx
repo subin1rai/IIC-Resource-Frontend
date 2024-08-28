@@ -415,11 +415,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -429,12 +430,13 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -446,10 +448,11 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
-                        ? "bg-blue-200 text-black"
-                        : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "noBill"
+                          ? "bg-blue-200 text-black"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -474,6 +477,7 @@ const Records = () => {
                       value={date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
+                      autoFocus="autofocus"
                     />
                   </div>
 
@@ -540,9 +544,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                              value: bill?.vendors?.vendor_name,
-                              label: bill.vendor_name,
-                            }
+                                value: bill?.vendors?.vendor_name,
+                                label: bill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"
@@ -572,7 +576,6 @@ const Records = () => {
                       <input
                         className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
                         placeholder="Enter paid amount"
-                        autoFocus="autofocus"
                         name="paid_amount"
                         id="paid_amount"
                         onChange={handleChange}
@@ -604,18 +607,14 @@ const Records = () => {
         <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Filtering Option</h2>
-            <button
-              type="button"
-              className="p-2"
-              onClick={closeFilterForm}
-            >
+            <button type="button" className="p-2" onClick={closeFilterForm}>
               <img src={close} alt="" className="cursor-pointer w-4 h-4" />
             </button>
           </div>
           <div className="flex flex-col gap-6">
             <div className="flex gap-8">
               <div className="flex flex-col gap-3">
-                <label className="font-medium" >By vendor:</label>
+                <label className="font-medium">By vendor:</label>
                 <Select
                   options={vendors.map((vendor) => ({
                     value: vendor.vendor_name,
@@ -626,14 +625,13 @@ const Records = () => {
                     const selectedVendor = vendors.find(
                       (v) => v.vendor_name === option.value
                     );
-
                   }}
                   value={
                     bill.vendor_name
                       ? {
-                        value: bill?.vendors?.vendor_name,
-                        label: bill.vendor_name,
-                      }
+                          value: bill?.vendors?.vendor_name,
+                          label: bill.vendor_name,
+                        }
                       : null
                   }
                   placeholder="Select Vendor"
@@ -643,15 +641,16 @@ const Records = () => {
               </div>
               {/* Item fetching */}
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" >By Item</label>
-                <Select
-                  placeholder="Select an Item"
-                  styles={customStyles}
-                />
+                <label htmlFor="" className="font-medium">
+                  By Item
+                </label>
+                <Select placeholder="Select an Item" styles={customStyles} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium" >By Date:</label>
+              <label htmlFor="" className="font-medium">
+                By Date:
+              </label>
               <div className="flex gap-8 ">
                 <input
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -681,7 +680,10 @@ const Records = () => {
             </div>
             <div className="flex gap-8">
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" > By Price: </label>
+                <label htmlFor="" className="font-medium">
+                  {" "}
+                  By Price:{" "}
+                </label>
 
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -697,10 +699,11 @@ const Records = () => {
                   <option value="high-to-low">High to Low</option>
                   <option value="low-to-high">Low to High</option>
                 </select>
-
               </div>
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" >Bill Status</label>
+                <label htmlFor="" className="font-medium">
+                  Bill Status
+                </label>
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   value={filterOptions.billStatus}
@@ -718,10 +721,7 @@ const Records = () => {
               </div>
             </div>
           </div>
-          <button
-            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-
-          >
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
             Filter
           </button>
         </form>
