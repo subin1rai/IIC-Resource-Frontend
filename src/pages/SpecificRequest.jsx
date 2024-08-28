@@ -269,21 +269,30 @@ const SpecificRequest = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
-                onClick={openAcceptForm}
-                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
-                  }`}
-                disabled={isHolding}
-              >
-                {isHolding ? "On Hold" : "Accept"}
-              </button>
 
-              <button
-                className="bg-red-500 px-6 rounded text-white font-medium py-3"
-                onClick={() => handleDecline(requestDetails?.request?.id)}
-              >
-                Decline
-              </button>
+              {!isHolding ? (
+                <>
+                  <button
+                    onClick={openAcceptForm}
+                    className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
+                      isHolding
+                        ? "bg-gray text-black "
+                        : "bg-blue-600 text-white"
+                    }`}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="bg-red-500 px-6 rounded text-white font-medium py-3"
+                    onClick={() => handleDecline(requestDetails?.request?.id)}
+                  >
+                    Decline
+                  </button>
+                </>
+              ) : (
+                <></>
+              )}
+              
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>

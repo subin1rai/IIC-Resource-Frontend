@@ -279,7 +279,7 @@ const DropdownMenu = ({
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
+  const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [editedUser, setEditedUser] = useState({
     user_name: "",
     user_email: "",
