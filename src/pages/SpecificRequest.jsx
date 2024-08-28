@@ -197,6 +197,7 @@ const SpecificRequest = () => {
   };
 
   const isHolding = requestDetails?.request?.status === "Holding";
+  const isDelivered = requestDetails?.request?.status === "Delivered";
 
   useEffect(() => {
     const fetchSingleRequest = async () => {
@@ -245,7 +246,30 @@ const SpecificRequest = () => {
     fetchSingleRequest();
   }, [id, token]);
 
-  console.log(itemFields);
+  const handleDelivered = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/deliverRequest/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setRequestDetails((prevDetails) => ({
+        ...prevDetails,
+        request: {
+          ...prevDetails.request,
+          isApproved: true,
+          status: "Holding",
+        },
+      }));
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -270,7 +294,7 @@ const SpecificRequest = () => {
             </div>
 
             <div className="flex gap-3">
-              {!isHolding ? (
+              {!isHolding && !isDelivered ? (
                 <>
                   <button
                     onClick={openAcceptForm}
@@ -291,9 +315,19 @@ const SpecificRequest = () => {
                 </>
               ) : (
                 <>
-                  <button className="bg-green-500 px-4 py-2 rounded text-white">
-                    Delivered
-                  </button>{" "}
+                  {!isDelivered ? (
+                    <>
+                      {" "}
+                      <button
+                        className="bg-green-500 px-4 py-2 rounded text-white"
+                        onClick={handleDelivered}
+                      >
+                        Delivered
+                      </button>{" "}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </>
               )}
             </div>
