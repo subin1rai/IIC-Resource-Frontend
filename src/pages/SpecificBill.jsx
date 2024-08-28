@@ -287,6 +287,8 @@ const SpecificBill = () => {
         }
       );
 
+      console.log(response);
+
       // Assuming the API returns the updated bill in the response
       if (response.status === 200) {
         // Update the bill state with the response data

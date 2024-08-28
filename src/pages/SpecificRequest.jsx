@@ -101,7 +101,7 @@ const SpecificRequest = () => {
         `http://localhost:8898/api/approveRequest/${id}`,
         {
           replaceItems: itemFields.filter(
-            (item) => item.id && item.item_id && item.quantity
+            (item) => item.item_id && item.quantity
           ),
           remarks,
         },
@@ -152,10 +152,9 @@ const SpecificRequest = () => {
 
     setItemFields(
       requestDetails?.request?.requestItems.map((item) => ({
-        id: item.id,
         item_id: item.item_id,
         quantity: item.quantity,
-      })) || [{ id: "", quantity: "", item_id: "" }]
+      })) || [{ quantity: "", item_id: "" }]
     );
 
     setRemarks(requestDetails?.request?.remarks || "");
@@ -175,7 +174,7 @@ const SpecificRequest = () => {
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item_name: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_id: "", quantity: "" }]);
     }
   };
 
@@ -192,7 +191,6 @@ const SpecificRequest = () => {
 
   const handleDecline = (id) => {
     console.log(`Declined request with ID: ${id}`);
-    // Implement the decline logic here
   };
 
   const isHolding = requestDetails?.request?.status === "Holding";
@@ -269,7 +267,6 @@ const SpecificRequest = () => {
             </div>
 
             <div className="flex gap-3">
-
               {!isHolding ? (
                 <>
                   <button
@@ -290,9 +287,12 @@ const SpecificRequest = () => {
                   </button>
                 </>
               ) : (
-                <></>
+                <>
+                  <button className="bg-green-500 px-4 py-2 rounded text-white">
+                    Delivered
+                  </button>{" "}
+                </>
               )}
-              
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
@@ -359,8 +359,8 @@ const SpecificRequest = () => {
             </thead>
             <tbody>
               {requestDetails &&
-                requestDetails?.request?.requestItems &&
-                requestDetails?.request?.requestItems.length > 0 ? (
+              requestDetails?.request?.requestItems &&
+              requestDetails?.request?.requestItems.length > 0 ? (
                 requestDetails?.request?.requestItems.map(
                   (requestItem, index) => (
                     <tr key={index}>
@@ -434,8 +434,8 @@ const SpecificRequest = () => {
                         <span className="text-neutral-600">
                           {requestDetails?.request?.request_date
                             ? new Date(
-                              requestDetails?.request?.request_date
-                            ).toLocaleDateString()
+                                requestDetails?.request?.request_date
+                              ).toLocaleDateString()
                             : "--"}
                         </span>
                       </p>

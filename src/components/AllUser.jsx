@@ -306,6 +306,13 @@ const AllUser = ({ users: initialUsers }) => {
     }
   }, []);
 
+  const roles = {
+    user: "User",
+    superadmin: "Super Admin",
+    departmenthead: "Department Head",
+    admin: "Admin",
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -401,7 +408,7 @@ const AllUser = ({ users: initialUsers }) => {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
-                <TableCell>{user.role}</TableCell>
+                <TableCell>{roles[user.role]}</TableCell>
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.isActive === false ? (
