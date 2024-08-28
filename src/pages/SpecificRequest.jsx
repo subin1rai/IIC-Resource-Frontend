@@ -271,9 +271,8 @@ const SpecificRequest = () => {
             <div className="flex gap-3">
               <button
                 onClick={openAcceptForm}
-                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
-                  isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
-                }`}
+                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
+                  }`}
                 disabled={isHolding}
               >
                 {isHolding ? "On Hold" : "Accept"}
@@ -295,19 +294,19 @@ const SpecificRequest = () => {
               <div className="flex flex-col gap-5 mt-7 pl-9">
                 <p className="font-semibold">
                   Requested by:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.user_name || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Requested For:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.requested_for || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Department:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.department_name || "--"}
                   </span>
                 </p>
@@ -315,17 +314,15 @@ const SpecificRequest = () => {
               <div className="flex flex-col gap-5 mt-7 pl-9">
                 <p className="font-semibold">
                   Requested Date:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.request_date
-                      ? new Date(
-                          requestDetails?.request?.request_date
-                        ).toLocaleDateString()
+                      ? formatDate(requestDetails?.request?.request_date)
                       : "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Status:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.status}
                   </span>
                 </p>
@@ -353,8 +350,8 @@ const SpecificRequest = () => {
             </thead>
             <tbody>
               {requestDetails &&
-              requestDetails?.request?.requestItems &&
-              requestDetails?.request?.requestItems.length > 0 ? (
+                requestDetails?.request?.requestItems &&
+                requestDetails?.request?.requestItems.length > 0 ? (
                 requestDetails?.request?.requestItems.map(
                   (requestItem, index) => (
                     <tr key={index}>
@@ -428,8 +425,8 @@ const SpecificRequest = () => {
                         <span className="text-neutral-600">
                           {requestDetails?.request?.request_date
                             ? new Date(
-                                requestDetails?.request?.request_date
-                              ).toLocaleDateString()
+                              requestDetails?.request?.request_date
+                            ).toLocaleDateString()
                             : "--"}
                         </span>
                       </p>
