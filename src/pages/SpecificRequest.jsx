@@ -196,6 +196,7 @@ const SpecificRequest = () => {
   };
 
   const isHolding = requestDetails?.request?.status === "Holding";
+  const isDelivered = requestDetails?.request?.status === "Delivered";
 
   useEffect(() => {
     const fetchSingleRequest = async () => {
@@ -244,7 +245,30 @@ const SpecificRequest = () => {
     fetchSingleRequest();
   }, [id, token]);
 
-  console.log(itemFields);
+  const handleDelivered = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8898/api/deliverRequest/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setRequestDetails((prevDetails) => ({
+        ...prevDetails,
+        request: {
+          ...prevDetails.request,
+          isApproved: true,
+          status: "Holding",
+        },
+      }));
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -269,21 +293,43 @@ const SpecificRequest = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
-                onClick={openAcceptForm}
-                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
-                  }`}
-                disabled={isHolding}
-              >
-                {isHolding ? "On Hold" : "Accept"}
-              </button>
 
-              <button
-                className="bg-red-500 px-6 rounded text-white font-medium py-3"
-                onClick={() => handleDecline(requestDetails?.request?.id)}
-              >
-                Decline
-              </button>
+              {!isHolding && !isDelivered ? (
+                <>
+                  <button
+                    onClick={openAcceptForm}
+                    className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
+                      isHolding
+                        ? "bg-gray text-black "
+                        : "bg-blue-600 text-white"
+                    }`}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="bg-red-500 px-6 rounded text-white font-medium py-3"
+                    onClick={() => handleDecline(requestDetails?.request?.id)}
+                  >
+                    Decline
+                  </button>
+                </>
+              ) : (
+                <>
+                  {!isDelivered ? (
+                    <>
+                      {" "}
+                      <button
+                        className="bg-green-500 px-4 py-2 rounded text-white"
+                        onClick={handleDelivered}
+                      >
+                        Delivered
+                      </button>{" "}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>

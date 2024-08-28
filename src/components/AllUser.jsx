@@ -283,6 +283,7 @@ const AllUser = ({ users: initialUsers }) => {
   const [editedUser, setEditedUser] = useState({
     user_name: "",
     user_email: "",
+    contact: "",
     department: "",
   });
   const [editFormVisibility, setEditFormVisibility] = useState(false);
@@ -333,6 +334,7 @@ const AllUser = ({ users: initialUsers }) => {
     setEditedUser({
       user_name: user.user_name || "",
       user_email: user.user_email || "",
+      contact: user.contact || "",
       department: user.department || "",
     });
     setEditFormVisibility(true);
@@ -477,6 +479,20 @@ const AllUser = ({ users: initialUsers }) => {
                   id="user_name"
                   name="user_name"
                   value={editedUser.user_name}
+                  onChange={handleChange}
+                  type="text"
+                  className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
+                />
+              </div>
+              <div className="flex justify-between items-center ">
+                <label htmlFor="contact" className="w-[120px] font-medium">
+                  Contact
+                </label>
+                <input
+                  placeholder="Enter Full name"
+                  id="contact"
+                  name="contact"
+                  value={editedUser.contact}
                   onChange={handleChange}
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"

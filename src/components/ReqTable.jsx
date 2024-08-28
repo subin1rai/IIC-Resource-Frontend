@@ -168,7 +168,7 @@ export default function ReqTable({ requests }) {
                       let value = request[column.id];
 
                       if (column.id === "status") {
-                        value = request.status ? "Accepted" : "Pending";
+                        value = request.status;
                       }
 
                       return (
@@ -185,21 +185,25 @@ export default function ReqTable({ requests }) {
                                 borderRadius: "4px",
                                 backgroundColor:
                                   value === "Pending"
-                                    ? "#fff3cd"
-                                    : value === "Complete"
-                                    ? "#d4edda"
-                                    : "#f8d7da",
+                                    ? "#fff3cd" // Light yellow for Pending
+                                    : value === "Delivered"
+                                    ? "#d4edda" // Light green for Delivered
+                                    : value === "Holding"
+                                    ? "#d1ecf1" // Light blue for Holding
+                                    : "#f8d7da", // Default color if the value doesn't match any of the specified statuses
                                 color:
                                   value === "Pending"
-                                    ? "#856404"
-                                    : value === "Complete"
-                                    ? "#155724"
-                                    : "#721c24",
+                                    ? "#856404" // Dark yellow for Pending
+                                    : value === "Delivered"
+                                    ? "#155724" // Dark green for Delivered
+                                    : value === "Holding"
+                                    ? "#0c5460" // Dark blue for Holding
+                                    : "#721c24", // Default text color if the value doesn't match any of the specified statuses
                                 fontWeight: "normal",
                                 textAlign: "center",
                               }}
                             >
-                              {value ?? "N/A"}  
+                              {value ?? "N/A"}
                             </div>
                           ) : column.format && value != null ? (
                             column.format(value)

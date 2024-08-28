@@ -9,7 +9,7 @@ import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
-import close from "../assets/close.svg"
+import close from "../assets/close.svg";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -28,16 +28,19 @@ const SettingRole = () => {
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
   const [user, setUser] = useState({
     user_name: "",
+    contact: "",
     user_email: "",
     department: "",
   });
+
+  console.log(user);
   const [departments, setDepartments] = useState([]);
 
   const Token = localStorage.getItem("token");
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
-  }
+  };
 
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
@@ -300,6 +303,20 @@ const SettingRole = () => {
                 />
               </div>
               <div className="flex justify-between items-center gap-10">
+                <label htmlFor="contact" className="w-[120px] font-medium">
+                  Contact
+                </label>
+                <input
+                  placeholder="Enter user contact"
+                  id="contact"
+                  name="contact"
+                  value={user.contact}
+                  onChange={handleInputChange}
+                  type="text"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
+                />
+              </div>
+              <div className="flex justify-between items-center gap-10">
                 <label htmlFor="user_email" className="w-[120px] font-medium">
                   Email
                 </label>
@@ -357,23 +374,23 @@ const SettingRole = () => {
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
-              <button
-                type="button"
-                className=""
-                onClick={closeFilterForm}
-              >
+              <button type="button" className="" onClick={closeFilterForm}>
                 <img src={close} alt="" className="cursor-pointer w-4 h-4" />
               </button>
             </div>
 
             <div className="flex flex-col gap-8 ">
               <div className="flex gap-6   items-center">
-                <label htmlFor="" className="font-medium">Filter by Role: </label>
-                <select name="" id=""
+                <label htmlFor="" className="font-medium">
+                  Filter by Role:{" "}
+                </label>
+                <select
+                  name=""
+                  id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   autoFocus
                 >
-                  <option value="" >Select a role</option>
+                  <option value="">Select a role</option>
                   <option value="">Super Admin</option>
                   <option value="">Admin</option>
                   <option value="">User</option>
@@ -391,9 +408,7 @@ const SettingRole = () => {
                   onChange={handleInputChange}
                   className="border-border border-2 rounded p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" >
-                    Select Department
-                  </option>
+                  <option value="">Select Department</option>
                   {departments.map((department) => (
                     <option
                       key={department.id}
@@ -405,7 +420,9 @@ const SettingRole = () => {
                 </select>
               </div>
               <div className="flex gap-20">
-                <label htmlFor="" className="font-medium">Status:</label>
+                <label htmlFor="" className="font-medium">
+                  Status:
+                </label>
                 <div className="flex gap-8">
                   <label className="flex items-center">
                     <input
@@ -425,23 +442,15 @@ const SettingRole = () => {
                     />
                     Inactive
                   </label>
-
-
                 </div>
-
               </div>
             </div>
-            <button
-              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium"
-
-            >
+            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium">
               Filter
             </button>
-
           </form>
         </div>
       )}
-
 
       {visibleForm === "department" && (
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
@@ -463,7 +472,10 @@ const SettingRole = () => {
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex justify-between items-center gap-10">
-                <label htmlFor="department_name" className="w-[100px] font-medium">
+                <label
+                  htmlFor="department_name"
+                  className="w-[100px] font-medium"
+                >
                   Name
                 </label>
                 <input
