@@ -15,14 +15,14 @@ import axios from "axios";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
-    issue_date:"",
+    issue_date: "",
     student_name: "",
     remarks: "",
     items: [],
   });
 
   const [date, setDate] = useState("");
-  const [issues,setIssues] = useState([]);
+  const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [remarks, setRemarks] = useState("");
@@ -64,19 +64,23 @@ const Issue = () => {
         }
       );
       console.log(response.data.result);
-      setIssues((prevIssues) => [...prevIssues, response.data.result.issueData]);
+      setIssues((prevIssues) => [
+        ...prevIssues,
+        response.data.result.issueData,
+      ]);
       toast.success(`${issue.issue_no} added successfully!`);
       closeAddIssueForm(false);
       setIssue({
-        issue_date:"",
+        issue_date: "",
         student_name: "",
         remarks: "",
         items: [],
-      })
+      });
     } catch (error) {
       console.error("Error adding issue:", error);
       setError(
-        error.response?.data?.error || "An error occurred while adding the issue"
+        error.response?.data?.error ||
+          "An error occurred while adding the issue"
       );
     }
   };
@@ -151,25 +155,26 @@ const Issue = () => {
 
   const token = localStorage.getItem("token");
 
+  // get issue from backend
   useEffect(() => {
     const getAllIssue = async () => {
       try {
         const [response, itemsResponse] = await Promise.all([
           axios.get(`http://localhost:8898/api/issue`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
-        axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
-      ]);
-      const options = itemsResponse.data.map((item) => ({
-        value: item.item_id,
-        label: item.item_name,
-      }));
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          axios.get("http://localhost:8898/api/items", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+        const options = itemsResponse.data.map((item) => ({
+          value: item.item_id,
+          label: item.item_name,
+        }));
         setIssues(response.data.result || []);
         setItemOptions(options);
         console.log(itemsResponse.data);
@@ -178,7 +183,7 @@ const Issue = () => {
         console.error("Error fetching issues:", error);
         setIssues([]);
       }
-      };
+    };
     getAllIssue();
   }, [token]);
 
@@ -231,47 +236,115 @@ const Issue = () => {
           </div>
         </div>
       </div>
+      
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-4">
-          <div className="flex justify-between">
-            <h2 className="font-semibold text-xl"> Select Filtering Option</h2>
+        <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-xl"> Filtering Option</h2>
+              <button
+                type="button"
+                className=""
+                onClick={closeFilterForm}
+              >
+                <img src={close} alt="" className="cursor-pointer w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-6">
+              {/*div for department and status  */}
+              <div className="flex gap-8">
+                {/* div for department */}
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">Issued Item: </label>
+                  <select name="" id=""
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    autoFocus
+                  >
+                    <option value="" >Select an item</option>
+                  </select>
+                </div>
+
+                {/* div for request status */}
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium"> Department: </label>
+                  <select name="" id=""
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+
+                  >
+                    <option value="" disabled >Select department</option>
+                    <option value="">BIT</option>
+                    <option value="">SSD</option>
+                    <option value="">BBA</option>
+                    <option value="">Resource</option>
+                  </select>
+                </div>
+
+              </div>
+
+              {/* filter by requested date */}
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium" >Issue Date:</label>
+                <div className="flex gap-8 ">
+                  <input
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    type="date"
+                    placeholder=" from"
+                  />
+                  <input
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    type="date"
+                    placeholder="to"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-8">
+                {/* div for department */}
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">Issued By: </label>
+                  <select name="" id=""
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    autoFocus
+                  >
+                    <option value="" >Select a department</option>
+                    <option value="">BIT</option>
+                    <option value="">SSD</option>
+                    <option value="">BBA</option>
+                    <option value="">Resource</option>
+                  </select>
+                </div>
+
+                {/* div for request status */}
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium"> Status: </label>
+                  <select name="" id=""
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+
+                  >
+                    <option value="" disabled >Select status</option>
+                    <option value="">Pending</option>
+                    <option value="">Dispatched</option>
+                    <option value="">Denied</option>
+                  </select>
+                </div>
+
+              </div>
             <button
-              type="button"
-              className="discard-btn"
-              onClick={closeFilterForm}
+              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+
             >
-              <img src={close} alt="" />
+              Filter
             </button>
-          </div>
-          <label>Select Category</label>
-          <div className="flex gap-6"></div>
-          <label>Select Date:</label>
-          <div className="flex gap-6">
-            <input
-              className="border-2  border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
-              type="date"
-              placeholder=" from"
-            />
-            <input
-              className="border-2 border-neutral-200 p-1.5 rounded-md w-[14.4vw]"
-              type="date"
-              placeholder="to"
-            />
-          </div>
-        </form>
-      )}
-      {filterFormVisibility && (
-        <div
-          className="absolute bg-overlay z-30 w-screen h-screen"
-          onClick={closeFilterForm}
-        >
-          {" "}
+          </form>
         </div>
       )}
       {addIssueVisibility && (
-        <form 
-        onSubmit={handleSubmit}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2">
+        <form
+          onSubmit={handleSubmit}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2"
+        >
           <div className="flex justify-between">
             <h2 className="font-semibold text-lg m-2"> Add Issue Details</h2>
             <button
@@ -286,7 +359,7 @@ const Issue = () => {
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
                 <div className="flex gap-6">
-              <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4">
                     <label className="font-medium text-md" htmlFor="bill_no">
                       Issue Date:
                     </label>
@@ -298,20 +371,23 @@ const Issue = () => {
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
-              <div className="flex flex-col gap-4">
-                  <label className="font-medium text-md"> Student Name: </label>
-                  <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
-                  type="text"
-                  placeholder="Enter Student Name"
-                  autoFocus="autofocus"
-                  name="student_name"
-                  id="student_name"
-                  onChange={handleChange}
-                />
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md">
+                      {" "}
+                      Student Name:{" "}
+                    </label>
+                    <input
+                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
+                      type="text"
+                      placeholder="Enter Student Name"
+                      autoFocus="autofocus"
+                      name="student_name"
+                      id="student_name"
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
-                </div>
-              <div className="flex flex-col">
+                <div className="flex flex-col">
                   <div className="flex py-3 gap-3">
                     <div className="flex font-medium text-md w-64">
                       <label>Item Name:</label>
@@ -385,7 +461,6 @@ const Issue = () => {
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
                 />
-                
               </div>
             </div>
             <div className="flex justify-end gap-4">

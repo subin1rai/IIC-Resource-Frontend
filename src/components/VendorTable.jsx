@@ -53,7 +53,7 @@ const columns = [
     label: "Payment Duration",
     maxWidth: 120,
     align: "center",
-    format: (value) => value?.toFixed(2) || "N/A",
+    format: (value) => value || "N/A",
     numeric: true,
   },
   {
@@ -70,7 +70,6 @@ const columns = [
     align: "center",
     format: (value) => value || "N/A",
   },
- 
 ];
 
 export default function VendorTable({ vendors }) {
@@ -208,19 +207,31 @@ export default function VendorTable({ vendors }) {
                     {column.id === "payment_status" ? (
                       // Custom condition for payment_status based on pending_payment
                       vendor.pending_payment > 0 ? (
-                        <span style={{ display: "inline-block",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          backgroundColor:  "#fff3cd", 
-                          fontWeight: "normal",
-                          textAlign: "center",}}>Pending</span>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            backgroundColor: "#fff3cd",
+                            fontWeight: "normal",
+                            textAlign: "center",
+                          }}
+                        >
+                          Pending
+                        </span>
                       ) : (
-                        <span style={{  display: "inline-block",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          backgroundColor:"#d4edda",
-                          fontWeight: "normal",
-                          textAlign: "center", }}>Completed</span>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            backgroundColor: "#d4edda",
+                            fontWeight: "normal",
+                            textAlign: "center",
+                          }}
+                        >
+                          Completed
+                        </span>
                       )
                     ) : column.format &&
                       vendor &&
