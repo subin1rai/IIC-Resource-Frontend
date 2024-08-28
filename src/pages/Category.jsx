@@ -294,7 +294,7 @@ const Category = () => {
         {/* <div className="flex absolute top-0 left-0">  <Chat /> */}
         {/* </div> */}
 
-        <div className="w-[86.5vw] flex  justify-between overflow-auto max-h-96 p-3">
+        <div className="w-[86.5vw] flex  justify-between  p-3 h-[65vh]">
           <div className="flex flex-col w-[32%] rounded-lg ">
             <div className="flex  bg-slate-400 rounded-t-md justify-between px-10 py-3">
               <h1 className="text-lg font-medium text-white ">Category</h1>
@@ -315,8 +315,8 @@ const Category = () => {
             />{" "}
           </div>
 
-          <div className="flex flex-col w-[32%] overflow-auto max-h-96 rounded-lg  ">
-            <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between ">
+          <div className="flex flex-col w-[32%] rounded-lg  ">
+            <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Item Category</h1>
               <img
                 src={add}
@@ -336,7 +336,7 @@ const Category = () => {
             />
           </div>
 
-          <div className="flex flex-col w-[32%] overflow-auto max-h-96 rounded-lg">
+          <div className="flex flex-col w-[32%] rounded-lg">
             <div className="flex bg-slate-400  rounded-t-md px-10 py-3 justify-between">
               <h1 className="text-lg font-medium text-white"> Features</h1>
               <img
