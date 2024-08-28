@@ -13,14 +13,14 @@ import { useState, useMemo } from "react";
 // Column definitions
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
-  { id: "issued_item", label: "Issued Items", minWidth: 70 },
+ 
   {
     id: "issue_date",
     label: "Issue Date",
     minWidth: 70,
-    align: "center",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
+  { id: "issued_item", label: "Issued Item", minWidth: 70 },
   {
     id: "item_quantity",
     label: "Quantity",
@@ -28,13 +28,14 @@ const columns = [
     align: "center",
     format: (value) => value.toFixed(2),
   },
+  { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
-  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "issued_by", label: "Issued By", minWidth: 70, align: "center" },
+  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+
 ];
 
-// Create data function
 const createData = (
   issue_id,
   issued_item,

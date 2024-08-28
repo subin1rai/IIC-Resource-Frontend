@@ -16,7 +16,7 @@ import axios from "axios";
 const Issue = () => {
   const [issue, setIssue] = useState({
     issue_date:"",
-    issued_to: "",
+    requested_by: "",
     purpose: "",
     items: [],
   });
@@ -57,7 +57,7 @@ const Issue = () => {
   
       const issueData = {
         issue_date: issue.issue_date,
-        issued_to: issue.issued_to,
+        requested_by: issue.requested_by,
         purpose: purpose,  // Purpose is set separately
         items: formattedItems,  // Add the formatted items array
       };
@@ -74,18 +74,12 @@ const Issue = () => {
       console.log("Sending data:", issueData);
       console.log(response.data);
       setIssues((prevIssues) => [...prevIssues, response.data.issues]);
-      toast.success(`Issue added successfully!`);
       closeAddIssueForm();
-      console.log(response.data.result);
-      setIssues((prevIssues) => [
-        ...prevIssues,
-        response.data.result.issueData,
-      ]);
-      toast.success(`${issue.issue_no} added successfully!`);
+      toast.success(`Items issued to ${issue.requested_by} successfully `);
       closeAddIssueForm(false);
       setIssue({
         issue_date: "",
-        issued_to: "",
+        requested_by: "",
         purpose: "",
         items: [],
       });
@@ -170,7 +164,7 @@ const Issue = () => {
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/getIssue", {
+        const response = await axios.get("http://localhost:8898/api/issue", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -181,7 +175,6 @@ const Issue = () => {
         setIssues([]);
       }
     };
-  
     fetchIssues();
   }, [token]);
   
@@ -401,8 +394,8 @@ const Issue = () => {
                   type="text"
                   placeholder="Enter Student Name"
                   autoFocus="autofocus"
-                  name="issued_to"
-                  id="issued_to"
+                  name="requested_by"
+                  id="requested_by"
                   onChange={handleChange}
                 />
                 </div>
