@@ -42,9 +42,7 @@ const SpecificRequest = () => {
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
   const [quantity, setQuantity] = useState("");
-  const [remarks, setRemarks] = useState({
-    remarks: "",
-  });
+  const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -103,7 +101,7 @@ const SpecificRequest = () => {
         `http://localhost:8898/api/approveRequest/${id}`,
         {
           replaceItems: itemFields.filter(
-            (item) => item.item_id && item.quantity
+            (item) => item.id && item.item_id && item.quantity
           ),
           remarks,
         },
@@ -154,9 +152,10 @@ const SpecificRequest = () => {
 
     setItemFields(
       requestDetails?.request?.requestItems.map((item) => ({
+        id: item.id,
         item_id: item.item_id,
         quantity: item.quantity,
-      })) || [{ quantity: "", item_id: "" }]
+      })) || [{ id: "", quantity: "", item_id: "" }]
     );
 
     setRemarks(requestDetails?.request?.remarks || "");
@@ -176,15 +175,14 @@ const SpecificRequest = () => {
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item_id: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_name: "", quantity: "" }]);
     }
   };
 
   const handleChange = (e) => {
-    setRemarks(e.target.value);
+    setRemarks({ [e.target.name]: e.target.value });
   };
 
-  console.log(remarks);
   const removeItemField = (index) => {
     if (itemFields.length > 1) {
       const newFields = itemFields.filter((_, i) => i !== index);
@@ -194,6 +192,7 @@ const SpecificRequest = () => {
 
   const handleDecline = (id) => {
     console.log(`Declined request with ID: ${id}`);
+    // Implement the decline logic here
   };
 
   const isHolding = requestDetails?.request?.status === "Holding";
@@ -270,32 +269,21 @@ const SpecificRequest = () => {
             </div>
 
             <div className="flex gap-3">
-              {!isHolding ? (
-                <>
-                  <button
-                    onClick={openAcceptForm}
-                    className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
-                      isHolding
-                        ? "bg-gray text-black "
-                        : "bg-blue-600 text-white"
-                    }`}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="bg-red-500 px-6 rounded text-white font-medium py-3"
-                    onClick={() => handleDecline(requestDetails?.request?.id)}
-                  >
-                    Decline
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button className="bg-green-500 px-4 py-2 rounded text-white">
-                    Delivered
-                  </button>{" "}
-                </>
-              )}
+              <button
+                onClick={openAcceptForm}
+                className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${isHolding ? "bg-gray text-black " : "bg-blue-600 text-white"
+                  }`}
+                disabled={isHolding}
+              >
+                {isHolding ? "On Hold" : "Accept"}
+              </button>
+
+              <button
+                className="bg-red-500 px-6 rounded text-white font-medium py-3"
+                onClick={() => handleDecline(requestDetails?.request?.id)}
+              >
+                Decline
+              </button>
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
@@ -362,8 +350,8 @@ const SpecificRequest = () => {
             </thead>
             <tbody>
               {requestDetails &&
-              requestDetails?.request?.requestItems &&
-              requestDetails?.request?.requestItems.length > 0 ? (
+                requestDetails?.request?.requestItems &&
+                requestDetails?.request?.requestItems.length > 0 ? (
                 requestDetails?.request?.requestItems.map(
                   (requestItem, index) => (
                     <tr key={index}>
@@ -437,8 +425,8 @@ const SpecificRequest = () => {
                         <span className="text-neutral-600">
                           {requestDetails?.request?.request_date
                             ? new Date(
-                                requestDetails?.request?.request_date
-                              ).toLocaleDateString()
+                              requestDetails?.request?.request_date
+                            ).toLocaleDateString()
                             : "--"}
                         </span>
                       </p>
@@ -533,6 +521,7 @@ const SpecificRequest = () => {
                     name="remarks"
                     placeholder="Enter remarks"
                     className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
+                    value={acceptRequest.remarks}
                     onChange={handleChange}
                   />
                 </div>
