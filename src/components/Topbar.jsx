@@ -27,7 +27,10 @@ const Topbar = () => {
   const [notification, setNotification] = useState([]);
   const [notReadCount, setNotReadCount] = useState(0);
   const [initials, setInitials] = useState("");
-  const [bgColor, setBgColor] = useState(getRandomColor());
+  const [bgColor, setBgColor] = useState(() => {
+    // Try to get the color from localStorage, or generate a new one if not found
+    return localStorage.getItem("initialsBgColor") || getRandomColor();
+  });
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -131,20 +134,19 @@ const Topbar = () => {
 
       let initials = "";
       if (nameParts.length === 1) {
-        // If there's only one name (e.g., "John")
         initials = nameParts[0][0];
       } else if (nameParts.length >= 2) {
-        // If there are multiple names (e.g., "John Doe" or "John Michael Doe")
         initials = `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`;
       }
 
       setInitials(initials.toUpperCase());
-    }
-  }, []);
 
-  useEffect(() => {
-    setBgColor(getRandomColor());
-  }, [initials]);
+      // Save the color to localStorage
+      if (!localStorage.getItem("initialsBgColor")) {
+        localStorage.setItem("initialsBgColor", bgColor);
+      }
+    }
+  }, [bgColor]);
 
   const handleState = async () => {
     try {
@@ -213,7 +215,7 @@ const Topbar = () => {
         <p className="font-semibold text-xl">{greeting}, Admin</p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
-        <button className="  p-5 relative" onClick={popUpNotification}>
+        <button className="p-5 relative" onClick={popUpNotification}>
           <img src={notificationIcon} alt="" className="w-7 h-7" />
 
           {notReadCount === 0 ? null : (
@@ -223,7 +225,7 @@ const Topbar = () => {
           )}
         </button>
 
-        <details className="relative  ">
+        <details className="relative">
           <summary className="list-none cursor-pointer ">
             <div
               className="h-9 w-9 rounded-full flex justify-center items-center select-none font-semibold text-white"
@@ -242,7 +244,6 @@ const Topbar = () => {
               </div>
               <div className="flex flex-col">
                 <h1 className="font-medium text-xl text-nowrap ">{fullName}</h1>
-                {/* <h3 className="font-normal text-l ">Mahima</h3> */}
               </div>
             </div>
             <hr className="border-[1px] border-neutral-300 m-2"></hr>
@@ -266,61 +267,7 @@ const Topbar = () => {
             </div>
           </ul>
         </details>
-      </div>
-      {notificationPopUp && (
-        <>
-          <div
-            ref={dropdownRef}
-            className="absolute border-[1px] border-neutral-300 rounded-md top-16 right-24 w-1/4 h-1/2 bg-white z-20 overflow-y-scroll custom-scrollbar"
-            style={{ overflowY: "scroll" }}
-          >
-            <div className="flex px-4 py-3 text-xl gap-2 items-center justify-between bg-white ">
-              <h2>Notification</h2>
-              <button
-                className="text-sm text-blue-600 cursor-pointer "
-                onClick={handleState}
-              >
-                Mark all as read
-              </button>
-            </div>
-            <div className="w-full m-auto bg-background h-0.5"></div>
-            {notification.length === 0 ? (
-              <div className="px-6 py-3">No notifications found.</div>
-            ) : (
-              notification
-                .slice()
-                .reverse()
-                .map((notification) => (
-                  <div
-                    key={notification.notification_id}
-                    className={`border-b border-neutral-300 px-6 py-3  ${
-                      notification.state
-                        ? "bg-white"
-                        : "bg-purple-100 cursor-default"
-                    }`}
-                  >
-                    <div
-                      onClick={() =>
-                        handleSingleState(notification.notification_id)
-                      }
-                    >
-                      <h3 className="text-sml font-medium">
-                        {notification.message}
-                      </h3>
-
-                      <p className="text-[0.8rem] py-1 text-neutral-500">
-                        {formatDate(notification.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                ))
-            )}
-          </div>
-        </>
-      )}
-
-      <div className="absolute right-0">
-        <ToastContainer pauseOnHover theme="light" className="relative" />
+        <ToastContainer />
       </div>
     </div>
   );
