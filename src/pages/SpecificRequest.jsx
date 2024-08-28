@@ -42,7 +42,9 @@ const SpecificRequest = () => {
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
   const [quantity, setQuantity] = useState("");
-  const [remarks, setRemarks] = useState("");
+  const [remarks, setRemarks] = useState({
+    remarks: "",
+  });
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -101,7 +103,7 @@ const SpecificRequest = () => {
         `http://localhost:8898/api/approveRequest/${id}`,
         {
           replaceItems: itemFields.filter(
-            (item) => item.id && item.item_id && item.quantity
+            (item) => item.item_id && item.quantity
           ),
           remarks,
         },
@@ -152,10 +154,9 @@ const SpecificRequest = () => {
 
     setItemFields(
       requestDetails?.request?.requestItems.map((item) => ({
-        id: item.id,
         item_id: item.item_id,
         quantity: item.quantity,
-      })) || [{ id: "", quantity: "", item_id: "" }]
+      })) || [{ quantity: "", item_id: "" }]
     );
 
     setRemarks(requestDetails?.request?.remarks || "");
@@ -175,14 +176,15 @@ const SpecificRequest = () => {
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item_name: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_id: "", quantity: "" }]);
     }
   };
 
   const handleChange = (e) => {
-    setRemarks({ [e.target.name]: e.target.value });
+    setRemarks(e.target.value);
   };
 
+  console.log(remarks);
   const removeItemField = (index) => {
     if (itemFields.length > 1) {
       const newFields = itemFields.filter((_, i) => i !== index);
@@ -192,7 +194,6 @@ const SpecificRequest = () => {
 
   const handleDecline = (id) => {
     console.log(`Declined request with ID: ${id}`);
-    // Implement the decline logic here
   };
 
   const isHolding = requestDetails?.request?.status === "Holding";
@@ -289,7 +290,11 @@ const SpecificRequest = () => {
                   </button>
                 </>
               ) : (
-                <></>
+                <>
+                  <button className="bg-green-500 px-4 py-2 rounded text-white">
+                    Delivered
+                  </button>{" "}
+                </>
               )}
             </div>
           </div>
@@ -301,19 +306,19 @@ const SpecificRequest = () => {
               <div className="flex flex-col gap-5 mt-7 pl-9">
                 <p className="font-semibold">
                   Requested by:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.user_name || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Requested For:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.requested_for || "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Department:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.department_name || "--"}
                   </span>
                 </p>
@@ -321,17 +326,15 @@ const SpecificRequest = () => {
               <div className="flex flex-col gap-5 mt-7 pl-9">
                 <p className="font-semibold">
                   Requested Date:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.request_date
-                      ? new Date(
-                          requestDetails?.request?.request_date
-                        ).toLocaleDateString()
+                      ? formatDate(requestDetails?.request?.request_date)
                       : "--"}
                   </span>
                 </p>
                 <p className="font-semibold">
                   Status:
-                  <span className="font-normal pl-4">
+                  <span className="font-medium pl-4 text-[#6D6E70]">
                     {requestDetails?.request?.status}
                   </span>
                 </p>
@@ -530,7 +533,6 @@ const SpecificRequest = () => {
                     name="remarks"
                     placeholder="Enter remarks"
                     className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
-                    value={acceptRequest.remarks}
                     onChange={handleChange}
                   />
                 </div>

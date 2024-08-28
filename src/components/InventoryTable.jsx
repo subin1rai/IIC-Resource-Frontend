@@ -26,7 +26,8 @@ const columns = [
     id: "quantity",
     label: "Quantity",
     maxWidth: 80,
-    format: (value) => value?.toLocaleString("en-US") || "N/A",
+    align: "center",
+    format: (value) => value?.toLocaleString("en-US") || 0,
     numeric: true,
   },
 
@@ -35,6 +36,7 @@ const columns = [
     label: "Recent Purchase",
     maxWidth: 120,
     numeric: true,
+    align: "center",
   },
   { id: "stockStatus", label: "Status", maxWidth: 120 },
 ];
@@ -186,7 +188,7 @@ export default function InventoryTable({ items }) {
                     let value = item[column.id];
 
                     if (column.id === "quantity") {
-                      value = item?.quantity;
+                      value = item?.quantity || 0;
                     }
 
                     if (column.id === "total_Amount") {
@@ -194,7 +196,7 @@ export default function InventoryTable({ items }) {
                     }
 
                     if (column.id === "recent_purchase") {
-                      value = formatDate(item.recent_purchase);
+                      value = formatDate(item.recent_purchase) || "N/A";
                     }
 
                     if (column.id === "item_name") {
@@ -222,40 +224,40 @@ export default function InventoryTable({ items }) {
 
                     return (
                       <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={cellStyle}
-                    >
-                      {column.id === "stockStatus" ? (
-                        <div
-                          style={{
-                            display: "inline-block",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            backgroundColor:
-                              value === "In Stock"
-                                ? "#d4edda"
-                                : value === "in stock"
-                                ? "#155724"
-                                : "#f8d7da",
-                            color:
-                              value === "Low Stock"
-                                ? "#856404"
-                                : value === "low stock"
-                                ? "#155724"
-                                : "#721c24",
-                            fontWeight: "normal",
-                            textAlign: "center",
-                          }}
-                        >
-                          {value ?? "N/A"}  
-                        </div>
-                      ) : column.format && value != null ? (
-                        column.format(value)
-                      ) : (
-                        value ?? "N/A"
-                      )}
-                    </TableCell>
+                        key={column.id}
+                        align={column.align}
+                        style={cellStyle}
+                      >
+                        {column.id === "stockStatus" ? (
+                          <div
+                            style={{
+                              display: "inline-block",
+                              padding: "4px 8px",
+                              borderRadius: "4px",
+                              backgroundColor:
+                                value === "In Stock"
+                                  ? "#d4edda"
+                                  : value === "in stock"
+                                  ? "#155724"
+                                  : "#f8d7da",
+                              color:
+                                value === "Low Stock"
+                                  ? "#856404"
+                                  : value === "low stock"
+                                  ? "#155724"
+                                  : "#721c24",
+                              fontWeight: "normal",
+                              textAlign: "center",
+                            }}
+                          >
+                            {value ?? "Low Stock"}
+                          </div>
+                        ) : column.format && value != null ? (
+                          column.format(value)
+                        ) : (
+                          value ?? "N/A"
+                        )}
+                      </TableCell>
                     );
                   })}
                 </TableRow>
