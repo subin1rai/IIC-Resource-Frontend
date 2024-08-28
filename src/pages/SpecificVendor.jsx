@@ -32,8 +32,6 @@ const SpecificVendor = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
 
-
-
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
     vat_number: "",
@@ -46,15 +44,30 @@ const SpecificVendor = () => {
 
   const { vendor_id } = useParams();
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "--";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  //  for nepali date
+  const nepaliMonthsInEnglish = [
+    "Baisakh",
+    "Jestha",
+    "Ashadh",
+    "Shrawan",
+    "Bhadra",
+    "Ashwin",
+    "Kartik",
+    "Mangsir",
+    "Poush",
+    "Magh",
+    "Falgun",
+    "Chaitra",
+  ];
+
+  function getNepaliMonth(dateString) {
+    const [datePart] = dateString.split("T");
+    const [year, month, day] = datePart.split("-");
+    const monthIndex = parseInt(month, 10) - 1;
+    return `${nepaliMonthsInEnglish[monthIndex]} ${day}, ${year}`;
+  }
+
+  // nepali date ends here
 
   const handleShowModal = (vendor_id) => {
     Swal.fire({
@@ -122,7 +135,6 @@ const SpecificVendor = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // You might want to update the vendor state or show a message here
     } catch (error) {
       console.log(error);
     }
@@ -210,12 +222,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {Array.isArray(vendor?.bills) && vendor.bills.length > 0
                       ? vendor.bills
-                        .reduce(
-                          (sum, bill) =>
-                            sum + (Number(bill.paid_amount) || 0),
-                          0
-                        )
-                        .toFixed(2)
+                          .reduce(
+                            (sum, bill) =>
+                              sum + (Number(bill.paid_amount) || 0),
+                            0
+                          )
+                          .toFixed(2)
                       : "--"}
                   </span>
                 </p>
@@ -230,7 +242,7 @@ const SpecificVendor = () => {
                 <p className="font-medium ">
                   Last Purchase Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {formatDate(vendor.last_purchase_date)}
+                    {getNepaliMonth(vendor.last_purchase_date)}
                   </span>
                 </p>
                 <p className="font-medium ">
@@ -244,7 +256,7 @@ const SpecificVendor = () => {
                 <p className="font-medium ">
                   Last Paid Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {formatDate(vendor.last_paid)}
+                    {getNepaliMonth(vendor.last_paid)}
                   </span>
                 </p>
                 <p className="font-medium ">
@@ -266,7 +278,7 @@ const SpecificVendor = () => {
                 <p className="font-medium ">
                   Next Payment Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {formatDate(vendor.next_payment_date)}
+                    {getNepaliMonth(vendor.next_payment_date)}
                   </span>
                 </p>
               </div>
