@@ -362,27 +362,27 @@ const Vendor = () => {
               <div className="flex gap-8">
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Issued Item: </label>
+                  <label htmlFor="" className="font-medium">  Total Amount: </label>
                   <select name="" id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
+                    
                   >
-                    <option value="" >Select an item</option>
+                    <option value="" disabled >Select an option</option>
+                    <option value="" >High to low</option>
+                    <option value="" >Low to high</option>
                   </select>
                 </div>
 
                 {/* div for request status */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium"> Department: </label>
+                  <label htmlFor="" className="font-medium"> Payment Duration: </label>
                   <select name="" id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
 
                   >
-                    <option value="" disabled >Select department</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
+                    <option value="" disabled >Select an option</option>
+                    <option value="" >High to low</option>
+                    <option value="" >Low to high</option>
                   </select>
                 </div>
 
@@ -390,7 +390,7 @@ const Vendor = () => {
 
               {/* filter by requested date */}
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" >Issue Date:</label>
+                <label htmlFor="" className="font-medium" >Recent Purchase:</label>
                 <div className="flex gap-8 ">
                   <input
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -409,34 +409,50 @@ const Vendor = () => {
             <div className="flex gap-8">
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Issued By: </label>
+                  <label htmlFor="" className="font-medium">TDS: </label>
                   <select name="" id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
+                    
                   >
-                    <option value="" >Select a department</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
+                   <option value="" disabled >Select an option</option>
+            
+                    <option value="" >High to low</option>
+                    <option value="" >Low to high</option>
+                  </select>
+                </div>
+                
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">Payment Status: </label>
+                  <select name="" id=""
+                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    
+                  >
+                   <option value="" disabled >Select an option</option>
+                    <option value="" >Pending</option>
+                    <option value="" >Paid</option>
                   </select>
                 </div>
 
                 {/* div for request status */}
+               
+
+              </div>
+
+              <div className="flex gap-8">
+                {/* div for department */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium"> Status: </label>
+                  <label htmlFor="" className="font-medium"> Category: </label>
                   <select name="" id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
 
                   >
-                    <option value="" disabled >Select status</option>
-                    <option value="">Pending</option>
-                    <option value="">Dispatched</option>
-                    <option value="">Denied</option>
+                    <option value="" disabled >Select category</option>
+                    <option value="">Blacklisted</option>
+                    <option value="">Whitelisted</option>
+                   
                   </select>
                 </div>
-
-              </div>
+                </div>
             <button
               className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
 
