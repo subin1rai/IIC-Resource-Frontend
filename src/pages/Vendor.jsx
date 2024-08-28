@@ -15,7 +15,10 @@ import Select from "react-select";
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
     if (categories.length < 5) {
-      setCategories([...categories, ""]);
+      setCategories([
+        ...categories,
+        { item_category_id: "", item_category_name: "" },
+      ]);
     }
   };
 
@@ -25,9 +28,12 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   };
 
   const handleCategoryChange = (index, selectedOption) => {
-    const newCategories = [...categories];
-    newCategories[index] = selectedOption.value;
-    setCategories(newCategories);
+    const updatedCategories = [...categories];
+    updatedCategories[index] = {
+      item_category_id: selectedOption.value,
+      item_category_name: selectedOption.label,
+    };
+    setCategories(updatedCategories);
   };
 
   return (
@@ -40,10 +46,10 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
               handleCategoryChange(index, selectedOption)
             }
             value={itemCategoryOptions.find(
-              (option) => option.value === category
+              (option) => option.value === category.item_category_id
             )}
             placeholder="Choose Category"
-            className="react-select-container w-[14vw] "
+            className="react-select-container w-[14vw]"
             classNamePrefix="react-select"
           />
           {categories.length > 1 && (
@@ -80,13 +86,18 @@ const Vendor = () => {
     categories: [""],
   });
 
+  console.log(vendor);
+
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [vendors, setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState({
+    item_category_id: "",
+    item_category_name: "",
+  });
   const [itemCategory, setItemCategory] = useState([]);
   const [blackListCount, setBlackListCount] = useState(0);
 
