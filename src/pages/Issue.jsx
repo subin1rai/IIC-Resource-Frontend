@@ -324,10 +324,9 @@ const Issue = () => {
 
                   >
                     <option value="" disabled >Select status</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
+                    <option value="">Pending</option>
+                    <option value="">Dispatched</option>
+                    <option value="">Denied</option>
                   </select>
                 </div>
 
