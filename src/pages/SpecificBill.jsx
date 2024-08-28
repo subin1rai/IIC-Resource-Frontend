@@ -287,6 +287,8 @@ const SpecificBill = () => {
         }
       );
 
+      console.log(response);
+
       // Assuming the API returns the updated bill in the response
       if (response.status === 200) {
         // Update the bill state with the response data
@@ -371,15 +373,15 @@ const SpecificBill = () => {
                 Edit Bill
               </button>
 
-              {role === "superadmin" ? (
+              {role === "superadmin" && billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
                 <button
                   className="bg-green-500 px-6 rounded text-white font-medium py-3"
                   onClick={handleApprove}
                 >
                   Approve Bill
                 </button>
-              ) : (
-                <></>
               )}
             </div>
           </div>

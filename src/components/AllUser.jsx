@@ -279,7 +279,7 @@ const DropdownMenu = ({
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
+  const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [editedUser, setEditedUser] = useState({
     user_name: "",
     user_email: "",
@@ -305,6 +305,13 @@ const AllUser = ({ users: initialUsers }) => {
       console.log(error);
     }
   }, []);
+
+  const roles = {
+    user: "User",
+    superadmin: "Super Admin",
+    departmenthead: "Department Head",
+    admin: "Admin",
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -401,7 +408,7 @@ const AllUser = ({ users: initialUsers }) => {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
-                <TableCell>{user.role}</TableCell>
+                <TableCell>{roles[user.role]}</TableCell>
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
                   {user.isActive === false ? (

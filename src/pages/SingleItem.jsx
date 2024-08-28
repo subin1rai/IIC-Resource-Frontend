@@ -212,8 +212,6 @@ const SingleItem = () => {
       );
       await fetchItemData();
 
-      console.log(response);
-
       if (response.data.updatedItem) {
         setItem(response.data.updatedItem);
       } else if (response.data) {
@@ -300,21 +298,29 @@ const SingleItem = () => {
               <div className="flex flex-col gap-5">
                 <div className="flex gap-4">
                   <p className="font-semibold">Item Name:</p>
-                  <span className="font-medium text-[#6D6E70]">{item.item_name}</span>
+                  <span className="font-medium text-[#6D6E70]">
+                    {item.item_name}
+                  </span>
                 </div>
                 <div className="flex gap-4">
                   <p className="font-semibold">Measuring Unit:</p>
-                  <span className="font-medium text-[#6D6E70]">{item.measuring_unit}</span>
+                  <span className="font-medium text-[#6D6E70]">
+                    {item.measuring_unit}
+                  </span>
                 </div>
                 <div className="flex gap-4">
                   <p className="font-semibold">Low Limit:</p>
-                  <span className="font-medium text-[#6D6E70]">{item.low_limit}</span>
+                  <span className="font-medium text-[#6D6E70]">
+                    {item.low_limit}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-col gap-5">
                 <div className="flex gap-4">
                   <p className="font-semibold">Category:</p>
-                  <span className="font-medium text-[#6D6E70]">{item.category}</span>
+                  <span className="font-medium text-[#6D6E70]">
+                    {item.category}
+                  </span>
                 </div>
                 <div className="flex gap-4">
                   <p className="font-semibold">Actual Quantity:</p>
@@ -324,7 +330,9 @@ const SingleItem = () => {
                 </div>
                 <div className="flex gap-4">
                   <p className="font-semibold">Item Category:</p>
-                  <span className="font-medium text-[#6D6E70]">{item.itemCategory}</span>
+                  <span className="font-medium text-[#6D6E70]">
+                    {item.itemCategory}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-col gap-5">
@@ -333,7 +341,9 @@ const SingleItem = () => {
                     ([key, value]) => (
                       <div key={key} className="flex gap-4">
                         <p className="font-semibold">{key}:</p>
-                        <span className="font-medium text-[#6D6E70]">{value}</span>
+                        <span className="font-medium text-[#6D6E70]">
+                          {value}
+                        </span>
                       </div>
                     )
                   )}
