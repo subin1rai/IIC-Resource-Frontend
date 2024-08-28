@@ -78,8 +78,6 @@ const SpecificBill = () => {
     }
   };
 
-  console.log(editedBill);
-
   const { bill_id } = useParams();
 
   const token = localStorage.getItem("token");
@@ -98,8 +96,6 @@ const SpecificBill = () => {
       console.log(error);
     }
   };
-
-  console.log(billDetails);
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -215,11 +211,9 @@ const SpecificBill = () => {
         const percent = singleBillResponse.data?.TDS || 0;
         const value = type + " " + percent;
         setSelectedOption(value);
-        console.log(value);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
-        // setBill(response.data.bill);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -269,8 +263,6 @@ const SpecificBill = () => {
     }));
   };
 
-  console.log(selectedOption);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -287,12 +279,12 @@ const SpecificBill = () => {
         }
       );
 
-      console.log(response);
+      console.log(response.data.result);
 
       // Assuming the API returns the updated bill in the response
       if (response.status === 200) {
         // Update the bill state with the response data
-        setBill(response.data.updatedBill || { ...bill, ...editedBill });
+        setBillDetails(response.data.result);
         closeEditBillDetailsForm();
       } else {
         console.error("Failed to update the bill:", response.data.message);
@@ -341,6 +333,31 @@ const SpecificBill = () => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
+
+  //  for nepali date
+  const nepaliMonthsInEnglish = [
+    "Baisakh",
+    "Jestha",
+    "Ashadh",
+    "Shrawan",
+    "Bhadra",
+    "Ashwin",
+    "Kartik",
+    "Mangsir",
+    "Poush",
+    "Magh",
+    "Falgun",
+    "Chaitra",
+  ];
+
+  function getNepaliMonth(dateString) {
+    const [datePart] = dateString.split("T");
+    const [year, month, day] = datePart.split("-");
+    const monthIndex = parseInt(month, 10) - 1;
+    return `${nepaliMonthsInEnglish[monthIndex]} ${day}, ${year}`;
+  }
+
+  // nepali date ends here
 
   return (
     <div className="flex bg-background h-screen w-screen ">
@@ -502,8 +519,10 @@ const SpecificBill = () => {
               </tr>
             </thead>
             <tbody>
-              {bill.BillItems && bill.BillItems.length > 0 ? (
-                bill.BillItems.map((billItem, index) => (
+              {!loading &&
+              billDetails?.bill?.BillItems &&
+              billDetails?.bill?.BillItems.length > 0 ? (
+                billDetails?.bill?.BillItems.map((billItem, index) => (
                   <tr key={index}>
                     <td className="p-2 text-center border-b border-neutral-200">
                       {index + 1}

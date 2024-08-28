@@ -42,7 +42,9 @@ const SpecificRequest = () => {
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
   const [quantity, setQuantity] = useState("");
-  const [remarks, setRemarks] = useState("");
+  const [remarks, setRemarks] = useState({
+    remarks: "",
+  });
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -179,9 +181,10 @@ const SpecificRequest = () => {
   };
 
   const handleChange = (e) => {
-    setRemarks({ [e.target.name]: e.target.value });
+    setRemarks(e.target.value);
   };
 
+  console.log(remarks);
   const removeItemField = (index) => {
     if (itemFields.length > 1) {
       const newFields = itemFields.filter((_, i) => i !== index);
@@ -530,7 +533,6 @@ const SpecificRequest = () => {
                     name="remarks"
                     placeholder="Enter remarks"
                     className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
-                    value={acceptRequest.remarks}
                     onChange={handleChange}
                   />
                 </div>
