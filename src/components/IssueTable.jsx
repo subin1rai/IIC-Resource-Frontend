@@ -22,7 +22,7 @@ const columns = [
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
   {
-    id: "quantity",
+    id: "item_quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
@@ -152,15 +152,20 @@ export default function InventoryTable({ issues }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.issue_id}>
+            {visibleRows.map((issue) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={issue.issue_id}>
                 {columns.map((column) => {
-                  const value = row[column.id];
+                  const value = issue[column.id];
                   return (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value}
+                    <TableCell key={column.id} 
+                    align={column.align}
+                    style={cellStyle}
+                    >
+                      {column.format && value != null ? (
+                            column.format(value)
+                          ) : (
+                            value ?? "N/A"
+                          )}
                     </TableCell>
                   );
                 })}

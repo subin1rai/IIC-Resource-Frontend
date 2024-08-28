@@ -12,22 +12,22 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 
 const columns = [
-  { id: "user_name", label: "Requested By", maxWidth: 70, align: "center" },
+  { id: "user_name", label: "Requested By", maxWidth: 70, align: "left" },
   {
     id: "requested_for",
     label: "Requested For",
     maxWidth: 70,
-    align: "center",
+    align: "left",
   },
   {
     id: "request_date",
     label: "Requested Date",
     maxWidth: 70,
-    align: "center",
+    align: "left",
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "department_name", label: "Department", maxWidth: 70, align: "center" },
-  { id: "status", label: "Status", maxWidth: 70, align: "center" },
+  { id: "department_name", label: "Department", maxWidth: 70, align: "left" },
+  { id: "status", label: "Status", maxWidth: 70, align: "left" },
 ];
 
 export default function ReqTable({ requests }) {
