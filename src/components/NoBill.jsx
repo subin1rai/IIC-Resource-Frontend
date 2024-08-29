@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const NoBill = ({ onDataUpdate, handleChange, initialData }) => {
+const NoBill = ({ onDataUpdate, initialData }) => {
   const [items, setItems] = useState([]);
   const [noBillItems, setNoBillItems] = useState(initialData || []);
   // const [vendors, setVendors] = useState([]);
@@ -20,7 +20,7 @@ const NoBill = ({ onDataUpdate, handleChange, initialData }) => {
             headers: { Authorization: `Bearer ${token}` },
           }),
           // axios.get("http://localhost:8898/api/vendor", {
-          //   headers: { Authorization: `Bearer ${token}` },
+          //   headers: { Authorization: `Bearer ${token}` }, b
           // }),
         ]);
         // Update items state with the fetched data
@@ -37,7 +37,7 @@ const NoBill = ({ onDataUpdate, handleChange, initialData }) => {
   const [rows, setRows] = useState([
     {
       id: 1,
-      item_id: "",
+      item_id: null,
       item_name: "",
       quantity: 0,
       unit_price: 0,

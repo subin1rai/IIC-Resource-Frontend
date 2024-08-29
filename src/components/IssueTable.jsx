@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useMemo } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,53 +9,30 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { useState, useMemo } from "react";
 
 // Column definitions
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
- 
   {
     id: "issue_date",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "issued_item", label: "Issued Item", minWidth: 70 },
+  { id: "issue_name", label: "Issued Item", minWidth: 70 },
   {
-    id: "item_quantity",
+    id: "quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
-    format: (value) => value.toFixed(2),
+    // format: (value) => value.toFixed(2),
   },
   { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
-  { id: "issued_by", label: "Issued By", minWidth: 70, align: "center" },
+  { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
-
 ];
-
-const createData = (
-  issue_id,
-  issued_item,
-  issue_date,
-  quantity,
-  department,
-  status,
-  issued_by,
-  remarks
-) => ({
-  issue_id,
-  issued_item,
-  issue_date,
-  quantity,
-  department,
-  status,
-  issued_by,
-  remarks,
-});
 
 export default function InventoryTable({ issues }) {
   const [page, setPage] = useState(0);
@@ -118,17 +96,10 @@ export default function InventoryTable({ issues }) {
   const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
   return (
-    <Paper
-      sx={{
-        width: "100%",
-        overflow: "hidden",
-        cursor: "pointer",
-        fontSize: "18px",
-      }}
-    >
+    <Paper sx={{ width: "100%", overflow: "hidden", cursor: "pointer", fontSize: "18px" }}>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+        <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
@@ -152,21 +123,15 @@ export default function InventoryTable({ issues }) {
               ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {visibleRows.map((issue) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={issue.issue_id}>
                 {columns.map((column) => {
                   const value = issue[column.id];
                   return (
-                    <TableCell key={column.id} 
-                    align={column.align}
-                    style={cellStyle}
-                    >
-                      {column.format && value != null ? (
-                            column.format(value)
-                          ) : (
-                            value ?? "N/A"
-                          )}
+                    <TableCell key={column.id} align={column.align} style={cellStyle}>
+                      {column.format && value != null ? column.format(value) : (value ?? "N/A")}
                     </TableCell>
                   );
                 })}
