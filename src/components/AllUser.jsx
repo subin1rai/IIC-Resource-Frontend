@@ -15,6 +15,8 @@ import close from "../assets/close.svg";
 const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "left" },
+  { id: "contact", label: "Contact Number", maxWidth: 70, align: "left" },
+
   { id: "role", label: "Role", maxWidth: 70, align: "left" },
   { id: "department", label: "Department", maxWidth: 70, align: "left" },
   { id: "status", label: "Status", maxWidth: 70, align: "left" },
@@ -183,45 +185,39 @@ const DropdownMenu = ({
       ref={dropdownRef}
       className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black"
       style={{
-        top: `${
-          buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
-        }px`,
-        left: `${
-          buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
-        }px`,
+        top: `${buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
+          }px`,
+        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
+          }px`,
       }}
     >
       {user.isActive ? (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={handleSetInActive}
           >
             Set Inactive
           </span>
 
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("superadmin")}
           >
             Set Super Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("admin")}
           >
             Set Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("departmenthead")}
           >
             Set Department Head
@@ -230,25 +226,22 @@ const DropdownMenu = ({
       ) : (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => {
               setIsOpen(false);
               handlePopupForm();
@@ -369,7 +362,7 @@ const AllUser = ({ users: initialUsers }) => {
       } else {
       }
       setEditFormVisibility(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const visibleRows = React.useMemo(
@@ -410,6 +403,8 @@ const AllUser = ({ users: initialUsers }) => {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
+                <TableCell>{user.contact}</TableCell>
+
                 <TableCell>{roles[user.role]}</TableCell>
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
