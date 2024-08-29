@@ -651,8 +651,10 @@ const Inventory = () => {
                     onClick={addFeatureField}
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline w-fit cursor-pointer"
                   >
-                    Add Feature
-                  </span>
+
+                    Add more Feature
+                  </button>
+
                 )}
               </div>
             </div>
