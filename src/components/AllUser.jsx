@@ -181,7 +181,7 @@ const DropdownMenu = ({
   const dropdownContent = (
     <div
       ref={dropdownRef}
-      className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black"
+      className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black text-sm"
       style={{
         top: `${
           buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
@@ -201,7 +201,6 @@ const DropdownMenu = ({
           >
             Set Inactive
           </span>
-
           <span
             className={`hover:bg-background w-full p-3 cursor-pointer ${
               loading ? "pointer-events-none opacity-50" : ""
@@ -245,19 +244,19 @@ const DropdownMenu = ({
           >
             Remove user
           </span>
-          <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
-            onClick={() => {
-              setIsOpen(false);
-              handlePopupForm();
-            }}
-          >
-            Edit user
-          </span>
         </>
-      )}
+      )}{" "}
+      <span
+        className={`hover:bg-background w-full p-3 cursor-pointer ${
+          loading ? "pointer-events-none opacity-50" : ""
+        }`}
+        onClick={() => {
+          setIsOpen(false);
+          handlePopupForm();
+        }}
+      >
+        Edit user
+      </span>
     </div>
   );
 
@@ -350,6 +349,7 @@ const AllUser = ({ users: initialUsers }) => {
       const updatedUser = {
         user_name: editedUser.user_name,
         user_email: editedUser.user_email,
+        contact: editedUser.contact,
         department: editedUser.department,
       };
       const response = await axios.put(
@@ -489,7 +489,7 @@ const AllUser = ({ users: initialUsers }) => {
                   Contact
                 </label>
                 <input
-                  placeholder="Enter Full name"
+                  placeholder="Enter contact number"
                   id="contact"
                   name="contact"
                   value={editedUser.contact}
@@ -519,7 +519,7 @@ const AllUser = ({ users: initialUsers }) => {
                 <select
                   id="department"
                   name="department"
-                  value={editedUser.department}
+                  value={editedUser.department_name}
                   onChange={handleChange}
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
                 >
