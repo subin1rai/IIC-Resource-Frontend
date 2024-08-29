@@ -68,11 +68,16 @@ const Inventory = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "100%",
-      border: "2px solid #d1d5db",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       minHeight: "42px",
+      "&:hover": {
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      },
+      boxShadow: "none"
+
     }),
     menu: (provided) => ({
       ...provided,
@@ -81,6 +86,22 @@ const Inventory = () => {
     container: (provided) => ({
       ...provided,
       width: "250px",
+    }),
+  };
+
+  const featureStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: '200px',
+      padding: "3px 0",
+      marginLeft: '4px',
+      borderColor: state.isFocused ? '#94a3b8' : '#e5e5e5', // outline-slate-400 when focused, neutral-200 otherwise
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      boxShadow: state.isFocused ? '0 0 0 1px #94a3b8' : 'none',
+      '&:hover': {
+        borderColor: state.isFocused ? '#94a3b8' : '#e5e5e5',
+      },
     }),
   };
 
@@ -578,10 +599,10 @@ const Inventory = () => {
               </label>
               {/* features form  */}
 
-              <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto">
+              <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto ">
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-4 w-full items-center">
-                    <div className="flex justify-between gap-4 flex-row items-center w-full">
+                    <div className="flex justify-between gap-4 flex-row items-center w-full mt-1">
                       <Select
                         options={featureOptions}
                         onChange={(selectedOption) =>
@@ -595,11 +616,12 @@ const Inventory = () => {
                           (option) => option.value === feature.feature
                         )}
                         placeholder="Choose Feature"
-                        className="w-[200px]"
-                        classNamePrefix="react-select"
+
+                        styles={featureStyles}
+
                       />
                       <input
-                        className="border-2 rounded border-neutral-200 w-[200px] px-2 py-2 focus:outline-slate-400"
+                        className="border-2 rounded border-neutral-200 w-[200px] p-2 focus:outline-slate-400"
                         type="text"
                         placeholder="Enter the value"
                         value={feature.value}
@@ -624,26 +646,28 @@ const Inventory = () => {
                   </div>
                 ))}
                 {selectedFeatures.length < featureOptions.length && (
-                  <button
+                  <span
                     type="button"
                     onClick={addFeatureField}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline"
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline w-fit cursor-pointer"
                   >
+
                     Add more Feature
                   </button>
+
                 )}
               </div>
             </div>
             {error && <span className="text-red-500">{error}</span>}
-            <div className="flex justify-end ">
-              <button
-                type="submit"
-                className="flex justify-center bg-blue-600 text-white rounded items-center w-fit p-2 px-6"
-                disabled={loading}
-              >
-                {loading ? "Adding..." : "Add Item"}
-              </button>
-            </div>
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6 focus:outline-blue-700"
+              disabled={loading}
+            >
+              {loading ? "Adding..." : "ADD "}
+            </button>
+
           </div>
         </form>
       )}

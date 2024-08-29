@@ -126,12 +126,19 @@ export default function InventoryTable({ issues }) {
 
           <TableBody>
             {visibleRows.map((issue) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={issue.issue_id}>
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={issue.issue_id}
+              >
                 {columns.map((column) => {
                   const value = issue[column.id];
                   return (
+
                     <TableCell key={column.id} align={column.align} style={cellStyle}>
                       {column.format && value != null ? column.format(value) : (value ?? "N/A")}
+
                     </TableCell>
                   );
                 })}
