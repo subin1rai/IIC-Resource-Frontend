@@ -651,21 +651,23 @@ const Inventory = () => {
                     onClick={addFeatureField}
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline w-fit cursor-pointer"
                   >
-                    Add Feature
-                  </span>
+
+                    Add more Feature
+                  </button>
+
                 )}
               </div>
             </div>
             {error && <span className="text-red-500">{error}</span>}
-            
-              <button
-                type="submit"
-                className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6"
-                disabled={loading}
-              >
-                {loading ? "Adding..." : "ADD "}
-              </button>
-            
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6 focus:outline-blue-700"
+              disabled={loading}
+            >
+              {loading ? "Adding..." : "ADD "}
+            </button>
+
           </div>
         </form>
       )}
