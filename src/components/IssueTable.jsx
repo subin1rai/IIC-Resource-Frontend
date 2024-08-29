@@ -13,7 +13,7 @@ import { useState, useMemo } from "react";
 // Column definitions
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
- 
+
   {
     id: "issue_date",
     label: "Issue Date",
@@ -33,7 +33,6 @@ const columns = [
   { id: "issued_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
-
 ];
 
 const createData = (
@@ -154,19 +153,23 @@ export default function InventoryTable({ issues }) {
           </TableHead>
           <TableBody>
             {visibleRows.map((issue) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={issue.issue_id}>
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={issue.issue_id}
+              >
                 {columns.map((column) => {
                   const value = issue[column.id];
                   return (
-                    <TableCell key={column.id} 
-                    align={column.align}
-                    style={cellStyle}
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={cellStyle}
                     >
-                      {column.format && value != null ? (
-                            column.format(value)
-                          ) : (
-                            value ?? "N/A"
-                          )}
+                      {column.format && value != null
+                        ? column.format(value)
+                        : value ?? "N/A"}
                     </TableCell>
                   );
                 })}
