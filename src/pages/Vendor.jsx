@@ -49,7 +49,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
               (option) => option.value === category.item_category_id
             )}
             placeholder="Choose Category"
-            className="react-select-container w-[14vw]"
+            className="react-select-container w-[14vw] "
             classNamePrefix="react-select"
           />
           {categories.length > 1 && (

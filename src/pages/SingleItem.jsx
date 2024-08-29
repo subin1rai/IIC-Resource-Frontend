@@ -517,7 +517,7 @@ const SingleItem = () => {
                   <button
                     type="button"
                     onClick={addFeatureField}
-                    className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors ${selectedFeatures.length >= feature.length
+                    className={`flex items-center gap-2 text-blue-600 w-fit outline-none hover:underline hover:text-blue-800 transition-colors ${selectedFeatures.length >= feature.length
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                       }`}
@@ -527,8 +527,8 @@ const SingleItem = () => {
                   </button>
                 </div>
               </div>
-              <button className="bg-blue-500 w-fit px-5 text-white py-2 rounded self-end">
-                Save Edit
+              <button className="bg-blue-500 px-5 text-white py-2 rounded focus:outline-blue-600 ">
+                Save Changes
               </button>
             </div>
           </form>
