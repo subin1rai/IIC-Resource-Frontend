@@ -16,7 +16,7 @@ import axios from "axios";
 const Issue = () => {
   const [issue, setIssue] = useState({
     issue_date:"",
-    requested_by: "",
+    issued_to: "",
     purpose: "",
     items: [],
   });
@@ -51,17 +51,18 @@ const Issue = () => {
     event.preventDefault();
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item,  // Mapping 'item' to 'item_name'
-        quantity: field.quantity, 
+        item_name: field.item, // Mapping 'item' to 'item_name'
+        quantity: field.quantity,
       }));
-  
+
       const issueData = {
         issue_date: issue.issue_date,
-        requested_by: issue.requested_by,
+
+        issued_to: issue.issued_to,
         purpose: purpose,  // Purpose is set separately
         items: formattedItems,  // Add the formatted items array
       };
-  
+
       const response = await axios.post(
         "http://localhost:8898/api/addIssue",
         issueData,
@@ -72,24 +73,30 @@ const Issue = () => {
         }
       );
       console.log("Sending data:", issueData);
-      console.log(response.data);
-      setIssues((prevIssues) => [...prevIssues, response.data.issues]);
+      console.log(issues);
+      const newIssue = response.data.issues;
+      const formattedNewIssue = {
+        issue_id: newIssue.id,
+        issue_date: newIssue.issue_Date,
+        issue_item: formattedItems.map(item => item.item_name).join(', '),
+        item_quantity: formattedItems.reduce((sum, item) => sum + Number(item.quantity), 0),
+        requested_by: newIssue.issued_to,
+        department: newIssue.department || 'N/A', 
+        issued_by: newIssue.approved_by || 'N/A', 
+        status: newIssue.status || 'Dispatched', 
+        remarks: newIssue.purpose || 'N/A',
+      };
+  
+      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
-      toast.success(`Items issued to ${issue.requested_by} successfully `);
-      closeAddIssueForm(false);
-      setIssue({
-        issue_date: "",
-        requested_by: "",
-        purpose: "",
-        items: [],
-      });
+      toast.success(`Items issued to ${issue.issued_to} successfully `);
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
       toast.error("Failed to add issue!");
     }
   };
-  
+
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
@@ -169,6 +176,7 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
@@ -177,16 +185,20 @@ const Issue = () => {
     };
     fetchIssues();
   }, [token]);
-  
+
+  console.log(issues);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsResponse = await axios.get("http://localhost:8898/api/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,
@@ -198,10 +210,9 @@ const Issue = () => {
         setItemOptions([]);
       }
     };
-  
+
     fetchItems();
   }, [token]);
-  
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -252,17 +263,13 @@ const Issue = () => {
           </div>
         </div>
       </div>
-      
+
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
-              <button
-                type="button"
-                className=""
-                onClick={closeFilterForm}
-              >
+              <button type="button" className="" onClick={closeFilterForm}>
                 <img src={close} alt="" className="cursor-pointer w-4 h-4" />
               </button>
             </div>
@@ -272,35 +279,46 @@ const Issue = () => {
               <div className="flex gap-8">
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Issued Item: </label>
-                  <select name="" id=""
+                  <label htmlFor="" className="font-medium">
+                    Issued Item:{" "}
+                  </label>
+                  <select
+                    name=""
+                    id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                     autoFocus
                   >
-                    <option value="" >Select an item</option>
+                    <option value="">Select an item</option>
                   </select>
                 </div>
 
                 {/* div for request status */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium"> Department: </label>
-                  <select name="" id=""
+                  <label htmlFor="" className="font-medium">
+                    {" "}
+                    Department:{" "}
+                  </label>
+                  <select
+                    name=""
+                    id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-
                   >
-                    <option value="" disabled >Select department</option>
+                    <option value="" disabled>
+                      Select department
+                    </option>
                     <option value="">BIT</option>
                     <option value="">SSD</option>
                     <option value="">BBA</option>
                     <option value="">Resource</option>
                   </select>
                 </div>
-
               </div>
 
               {/* filter by requested date */}
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" >Issue Date:</label>
+                <label htmlFor="" className="font-medium">
+                  Issue Date:
+                </label>
                 <div className="flex gap-8 ">
                   <input
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -317,40 +335,46 @@ const Issue = () => {
             </div>
 
             <div className="flex gap-8">
-                {/* div for department */}
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Issued By: </label>
-                  <select name="" id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
-                  >
-                    <option value="" >Select a department</option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
-                  </select>
-                </div>
-
-                {/* div for request status */}
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium"> Status: </label>
-                  <select name="" id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-
-                  >
-                    <option value="" disabled >Select status</option>
-                    <option value="">Pending</option>
-                    <option value="">Dispatched</option>
-                    <option value="">Denied</option>
-                  </select>
-                </div>
-
+              {/* div for department */}
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Issued By:{" "}
+                </label>
+                <select
+                  name=""
+                  id=""
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  autoFocus
+                >
+                  <option value="">Select a department</option>
+                  <option value="">BIT</option>
+                  <option value="">SSD</option>
+                  <option value="">BBA</option>
+                  <option value="">Resource</option>
+                </select>
               </div>
-            <button
-              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
 
-            >
+              {/* div for request status */}
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  {" "}
+                  Status:{" "}
+                </label>
+                <select
+                  name=""
+                  id=""
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                >
+                  <option value="" disabled>
+                    Select status
+                  </option>
+                  <option value="">Pending</option>
+                  <option value="">Dispatched</option>
+                  <option value="">Denied</option>
+                </select>
+              </div>
+            </div>
+            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
               Filter
             </button>
           </form>
@@ -387,6 +411,7 @@ const Issue = () => {
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
+
               <div className="flex flex-col gap-4">
                   <label className="font-medium text-md"> Issued To: </label>
                   <input
@@ -394,11 +419,12 @@ const Issue = () => {
                   type="text"
                   placeholder="Enter Student Name"
                   autoFocus="autofocus"
-                  name="requested_by"
-                  id="requested_by"
+                  name="issued_to"
+                  id="issued_to"
                   onChange={handleChange}
                 />
                 </div>
+
                 </div>
                 <div className="flex flex-col">
                   <div className="flex py-3 gap-3">
