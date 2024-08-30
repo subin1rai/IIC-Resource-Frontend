@@ -15,8 +15,8 @@ import axios from "axios";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
-    issue_date: "",
-    requested_by: "",
+    issue_date:"",
+    issued_to: "",
     purpose: "",
     items: [],
   });
@@ -57,9 +57,10 @@ const Issue = () => {
 
       const issueData = {
         issue_date: issue.issue_date,
-        requested_by: issue.requested_by,
-        purpose: purpose, // Purpose is set separately
-        items: formattedItems, // Add the formatted items array
+
+        issued_to: issue.issued_to,
+        purpose: purpose,  // Purpose is set separately
+        items: formattedItems,  // Add the formatted items array
       };
 
       const response = await axios.post(
@@ -72,17 +73,23 @@ const Issue = () => {
         }
       );
       console.log("Sending data:", issueData);
-      console.log(response.data);
-      setIssues((prevIssues) => [...prevIssues, response.data.issues]);
+      console.log(issues);
+      const newIssue = response.data.issues;
+      const formattedNewIssue = {
+        issue_id: newIssue.id,
+        issue_date: newIssue.issue_Date,
+        issue_item: formattedItems.map(item => item.item_name).join(', '),
+        item_quantity: formattedItems.reduce((sum, item) => sum + Number(item.quantity), 0),
+        requested_by: newIssue.issued_to,
+        department: newIssue.department || 'N/A', 
+        issued_by: newIssue.approved_by || 'N/A', 
+        status: newIssue.status || 'Dispatched', 
+        remarks: newIssue.purpose || 'N/A',
+      };
+  
+      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
-      toast.success(`Items issued to ${issue.requested_by} successfully `);
-      closeAddIssueForm(false);
-      setIssue({
-        issue_date: "",
-        requested_by: "",
-        purpose: "",
-        items: [],
-      });
+      toast.success(`Items issued to ${issue.issued_to} successfully `);
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
@@ -169,6 +176,7 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
@@ -403,18 +411,20 @@ const Issue = () => {
                       options={{ calenderLocale: "en", valueLocale: "en" }}
                     />
                   </div>
-                  <div className="flex flex-col gap-4">
-                    <label className="font-medium text-md"> Issued To: </label>
-                    <input
-                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
-                      type="text"
-                      placeholder="Enter Student Name"
-                      autoFocus="autofocus"
-                      name="requested_by"
-                      id="requested_by"
-                      onChange={handleChange}
-                    />
-                  </div>
+
+              <div className="flex flex-col gap-4">
+                  <label className="font-medium text-md"> Issued To: </label>
+                  <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
+                  type="text"
+                  placeholder="Enter Student Name"
+                  autoFocus="autofocus"
+                  name="issued_to"
+                  id="issued_to"
+                  onChange={handleChange}
+                />
+                </div>
+
                 </div>
                 <div className="flex flex-col">
                   <div className="flex py-3 gap-3">
