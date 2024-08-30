@@ -76,8 +76,7 @@ const Inventory = () => {
       "&:hover": {
         border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
-      boxShadow: "none"
-
+      boxShadow: "none",
     }),
     menu: (provided) => ({
       ...provided,
@@ -92,15 +91,15 @@ const Inventory = () => {
   const featureStyles = {
     control: (provided, state) => ({
       ...provided,
-      width: '200px',
+      width: "200px",
       padding: "3px 0",
-      marginLeft: '4px',
-      borderColor: state.isFocused ? '#94a3b8' : '#e5e5e5', // outline-slate-400 when focused, neutral-200 otherwise
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      boxShadow: state.isFocused ? '0 0 0 1px #94a3b8' : 'none',
-      '&:hover': {
-        borderColor: state.isFocused ? '#94a3b8' : '#e5e5e5',
+      marginLeft: "4px",
+      borderColor: state.isFocused ? "#94a3b8" : "#e5e5e5", // outline-slate-400 when focused, neutral-200 otherwise
+      borderWidth: "1px",
+      borderStyle: "solid",
+      boxShadow: state.isFocused ? "0 0 0 1px #94a3b8" : "none",
+      "&:hover": {
+        borderColor: state.isFocused ? "#94a3b8" : "#e5e5e5",
       },
     }),
   };
@@ -616,9 +615,7 @@ const Inventory = () => {
                           (option) => option.value === feature.feature
                         )}
                         placeholder="Choose Feature"
-
                         styles={featureStyles}
-
                       />
                       <input
                         className="border-2 rounded border-neutral-200 w-[200px] p-2 focus:outline-slate-400"
@@ -657,15 +654,14 @@ const Inventory = () => {
               </div>
             </div>
             {error && <span className="text-red-500">{error}</span>}
-            
-              <button
-                type="submit"
-                className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6"
-                disabled={loading}
-              >
-                {loading ? "Adding..." : "ADD "}
-              </button>
-            
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6"
+              disabled={loading}
+            >
+              {loading ? "Adding..." : "ADD "}
+            </button>
           </div>
         </form>
       )}
