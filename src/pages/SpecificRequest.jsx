@@ -11,6 +11,7 @@ import Select from "react-select";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const SpecificRequest = () => {
   const [request, setRequest] = useState({
@@ -250,6 +251,28 @@ const SpecificRequest = () => {
     fetchSingleRequest();
   }, [id, token]);
 
+  // showing dialog box 
+  const handleShowModal = (id) => {
+    Swal.fire({
+      title: "Is the request delivered?",
+      text: "You won't be able to revert this!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, do it",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelivered(id);
+        Swal.fire(
+          "Delivered!",
+          "This request has been delivered.",
+          "success"
+        );
+      }
+    });
+  };
+
   const handleDelivered = async () => {
     try {
       const response = await axios.put(
@@ -266,7 +289,7 @@ const SpecificRequest = () => {
         request: {
           ...prevDetails.request,
           isApproved: true,
-          status: "Holding",
+          status: "Delivered",
         },
       }));
       console.log(response);
@@ -281,61 +304,64 @@ const SpecificRequest = () => {
       <div className="flex flex-col gap-4 mx-auto items-center">
         <Topbar />
         <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md ">
-          <div className="flex justify-between items-center ml-2">
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-2">
-                <Link to="/Request" className="text-base">
-                  Request Details
-                </Link>
-                <img src={front} alt="arrow" />
-                <h4 className="text-base text-blue-400">
-                  {requestDetails?.request?.request_id}
-                </h4>
-              </div>
+          <div className="flex flex-col gap-6 w-full ml-3">
+            <div className="flex items-center gap-2">
+              <Link to="/Request" className="text-base">
+                Request Details
+              </Link>
+              <img src={front} alt="arrow" />
+              <h4 className="text-base text-blue-400">
+                {requestDetails?.request?.request_id}
+              </h4>
+            </div>
+
+            <div className=" flex w-full justify-between">
               <h2 className="font-semibold text-2xl">
                 Request No. {requestDetails?.request?.request_id}
               </h2>
-            </div>
-
-            <div className="flex gap-3">
-              {!isHolding && !isDelivered ? (
-                <>
-                  <button
-                    onClick={openAcceptForm}
-                    className={`flex justify-end px-6 py-3 h-fit w-fit rounded font-medium  mr-5 ${
-                      isHolding
+              <div className="flex mr-7 ">
+                {!isHolding && !isDelivered ? (
+                  <>
+                    <button
+                      onClick={openAcceptForm}
+                      className={`flex justify-end px-5 py-2 h-fit w-fit rounded font-medium mr-5 ${isHolding
                         ? "bg-gray text-black "
                         : "bg-blue-600 text-white"
-                    }`}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="bg-red-500 px-6 rounded text-white font-medium py-3"
-                    onClick={() => handleDecline(requestDetails?.request?.id)}
-                  >
-                    Decline
-                  </button>
-                </>
-              ) : (
-                <>
-                  {!isDelivered ? (
-                    <>
-                      {" "}
-                      <button
-                        className="bg-green-500 px-4 py-2 rounded text-white"
-                        onClick={handleDelivered}
-                      >
-                        Delivered
-                      </button>{" "}
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
+                        }`}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="bg-red-500 px-5 rounded text-white font-medium py-2"
+                      onClick={() => handleDecline(requestDetails?.request?.id)}
+                    >
+                      Decline
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {!isDelivered ? (
+                      <>
+                        {" "}
+                        <button
+                          className="bg-green-500 px-4 py-2 rounded text-white"
+                          onClick={() => handleShowModal(id)}
+                        >
+                          Delivered
+                        </button>{" "}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
+
+
+
+
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
           {loading ? (
             <div>Loading...</div>
@@ -400,8 +426,8 @@ const SpecificRequest = () => {
             </thead>
             <tbody>
               {requestDetails &&
-              requestDetails?.request?.requestItems &&
-              requestDetails?.request?.requestItems.length > 0 ? (
+                requestDetails?.request?.requestItems &&
+                requestDetails?.request?.requestItems.length > 0 ? (
                 requestDetails?.request?.requestItems.map(
                   (requestItem, index) => (
                     <tr key={index}>
@@ -475,8 +501,8 @@ const SpecificRequest = () => {
                         <span className="text-neutral-600">
                           {requestDetails?.request?.request_date
                             ? new Date(
-                                requestDetails?.request?.request_date
-                              ).toLocaleDateString()
+                              requestDetails?.request?.request_date
+                            ).toLocaleDateString()
                             : "--"}
                         </span>
                       </p>
