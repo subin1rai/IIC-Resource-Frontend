@@ -113,7 +113,7 @@ const SpecificBill = () => {
       const response = await axios.put(
         `http://localhost:8898/api/approveBill/${bill_id}`
       );
-      setBillDetails((prev) => ({ ...prev, bill: { BillItems: { isApproved: true } } }))
+      // setBillDetails((prev) => ({ ...prev,  response.data }))
 
       console.log(response);
     } catch (error) {
