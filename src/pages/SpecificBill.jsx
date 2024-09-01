@@ -99,11 +99,7 @@ const SpecificBill = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleApprove(bill_id);
-        Swal.fire(
-          "Approved!",
-          "This bill has been approved.",
-          "success"
-        );
+        Swal.fire("Approved!", "This bill has been approved.", "success");
       }
     });
   };
@@ -120,7 +116,7 @@ const SpecificBill = () => {
       console.log(error);
     }
   };
-  console.log(billDetails)
+  console.log(billDetails);
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -384,6 +380,7 @@ const SpecificBill = () => {
 
   // nepali date ends here
 
+  const handleDecline = () => {};
   return (
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
@@ -408,19 +405,34 @@ const SpecificBill = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
-                onClick={openEditBillDetailsForm}
-                className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
-              >
-                Edit Bill
-              </button>
+              {role === "admin" && billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
+                <button
+                  onClick={openEditBillDetailsForm}
+                  className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white "
+                >
+                  Edit Bill
+                </button>
+              )}
 
-              {role === "superadmin" && billDetails?.bill?.isApproved ? (
+              {role === "admin" || billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
+                <button
+                  className="bg-red-500 px-6 rounded text-white font-medium py-3"
+                  onClick={handleDecline}
+                >
+                  Decline Bill
+                </button>
+              )}
+
+              {role === "admin" || billDetails?.bill?.isApproved ? (
                 <></>
               ) : (
                 <button
                   className="bg-green-500 px-6 rounded text-white font-medium py-3"
-                  onClick={() => handleShowModal(bill_id)}
+                  onClick={handleApprove}
                 >
                   Approve Bill
                 </button>
@@ -545,8 +557,8 @@ const SpecificBill = () => {
             </thead>
             <tbody>
               {!loading &&
-                billDetails?.bill?.BillItems &&
-                billDetails?.bill?.BillItems.length > 0 ? (
+              billDetails?.bill?.BillItems &&
+              billDetails?.bill?.BillItems.length > 0 ? (
                 billDetails?.bill?.BillItems.map((billItem, index) => (
                   <tr key={index}>
                     <td className="p-2 text-center border-b border-neutral-200">
@@ -604,11 +616,12 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -618,12 +631,13 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -635,10 +649,11 @@ const SpecificBill = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
-                        ? "bg-blue-200 text-black"
-                        : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "noBill"
+                          ? "bg-blue-200 text-black"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -731,9 +746,9 @@ const SpecificBill = () => {
                         value={
                           editedBill.vendor_name
                             ? {
-                              value: editedBill.vendor_name,
-                              label: editedBill.vendor_name,
-                            }
+                                value: editedBill.vendor_name,
+                                label: editedBill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"
