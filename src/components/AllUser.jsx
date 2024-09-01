@@ -16,7 +16,6 @@ const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "left" },
   { id: "contact", label: "Contact Number", maxWidth: 70, align: "left" },
-
   { id: "role", label: "Role", maxWidth: 70, align: "left" },
   { id: "department", label: "Department", maxWidth: 70, align: "left" },
   { id: "status", label: "Status", maxWidth: 70, align: "left" },
@@ -180,6 +179,7 @@ const DropdownMenu = ({
     });
   };
 
+
   const dropdownContent = (
     <div
       ref={dropdownRef}
@@ -272,6 +272,7 @@ const DropdownMenu = ({
 
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
+
   const [contactError, setContactError] = useState("");
   const [error, setError] = useState(null);
   const [page, setPage] = React.useState(0);
@@ -303,6 +304,8 @@ const AllUser = ({ users: initialUsers }) => {
       console.log(error);
     }
   }, []);
+
+ 
 
   const roles = {
     user: "User",
