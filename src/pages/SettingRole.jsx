@@ -46,6 +46,7 @@ const SettingRole = () => {
 
   console.log(user);
   const [departments, setDepartments] = useState([]);
+  const [activeUser, setActiveUser] = useState ([]);
 
   const Token = localStorage.getItem("token");
 
@@ -69,11 +70,8 @@ const SettingRole = () => {
         ]);
 
         const users = userResponse.data.users || [];
-        const activeUsers = userResponse.data.activeUsers || [];
         setUsers(users);
-        setActiveUsers(activeUsers);
         setNumberOfUsers(users.length);
-        setNumberOfActiveUsers(activeUsers.length);
         setDepartments(departmentResponse.data.department || []);
       } catch (err) {
         console.error(err);
@@ -84,6 +82,26 @@ const SettingRole = () => {
     };
     fetchData();
   }, [Token]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const activeResponse = await axios.get(
+          "http://localhost:8898/api/role/activeUser",
+          {
+            headers: { Authorization: `Bearer ${Token}` },
+          }
+        );
+        console.log(activeResponse);
+        const activeUser = activeResponse.data.activeUser || [];
+        setActiveUser(activeUser);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  },[Token]);
 
   // Filter all users by search term
   useEffect(() => {
@@ -240,7 +258,7 @@ const SettingRole = () => {
           <div className="flex justify-around">
             <div className="flex flex-col items-center justify-center gap-2">
               <img className="w-8 h-8" src={activeIcon} alt="Active Users" />
-              <h4>{numberOfActiveUsers}</h4>
+              <h4>{activeUser}</h4>
               <p className="font-medium">Number of Active Users</p>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
