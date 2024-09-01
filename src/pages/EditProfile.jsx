@@ -31,7 +31,7 @@ const EditProfile = () => {
         {/* Topbar component */}
         <Topbar />
         
-        <div className="bg-white w-[99%] mx-auto h-[100%] flex flex-col p-8 rounded-md relative">
+        <div className="bg-white w-[99%] mx-auto h-[100%] flex flex-col p-8 rounded-md ">
           <h1 className="text-xl font-semibold"> My Profile</h1>
           <h3 className="font-light text-light mb-8">Make changes on your profile details.</h3>
           <div className="flex">
@@ -42,15 +42,12 @@ const EditProfile = () => {
               </div>
 
                  {/* Input field for nickname */}
-              <div className="flex flex-col gap-4">
-              <label className="text-lg font-normal">Nickname:</label>
-              <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
-              </div>
+              
               <div className="flex flex-col gap-4">
               <label className="text-lg font-normal">Email Address:</label>
               <div className="flex flex-col gap">
                 <input className="border-2 rounded border-neutral-200 w-[20vw] p-1 py-2" />
-                <p className="font-light text-light">This is your primary email address and will be used to send notification emails.</p>
+                <p className="font-light text-sm">This is your primary email address and will be used to send notification emails.</p>
               </div>
               </div>
               <div className="flex flex-col gap-4">
@@ -61,12 +58,12 @@ const EditProfile = () => {
             </div>
             <div className="flex relative">
               <img
-                className="w-40 h-40 z-20 rounded-full"
+                className="w-28 h-28 z-20 "
                 src={image}
                 alt="Profile"
               />
               <img
-                className="ml-32 w-8 h-8 absolute z-50"
+                className="ml-20 w-6 h-6 absolute z-50"
                 src={camera}
                 alt="Camera"
                 onClick={handleImageClick}
