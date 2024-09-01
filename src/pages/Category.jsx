@@ -377,7 +377,7 @@ const Category = () => {
               Name
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
               type="text"
               placeholder="e.g assets, consumables"
               autoFocus="autofocus"
@@ -389,7 +389,7 @@ const Category = () => {
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex justify-between items-center">
             <button
-              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto focus:outline-blue-400 "
               type="submit"
             >
               Add Category
@@ -420,7 +420,7 @@ const Category = () => {
               Name
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
               type="text"
               placeholder="e.g electronics, stationary"
               autoFocus="autofocus"
@@ -432,7 +432,7 @@ const Category = () => {
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex justify-between items-center">
             <button
-              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto "
+              className="bg-blue-600 text-white py-2 px-3 rounded ml-auto focus:outline-blue-400"
               type="submit"
             >
               Add Item Category
@@ -460,7 +460,7 @@ const Category = () => {
               Name:
             </label>
             <input
-              className=" border-2 rounded border-neutral-200 w-[14vw] p-2"
+              className=" border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
               type="text"
               placeholder="e.g brand, size, colour"
               autoFocus="autofocus"
@@ -472,7 +472,7 @@ const Category = () => {
           {error && <span className="text-red-500 ml-4">{error}</span>}
           <div className="flex self-end mr-4 mt-4">
             <button
-              className="bg-blue-600 text-white py-2 px-3 rounded"
+              className="bg-blue-600 text-white py-2 px-3 rounded focus:outline-blue-400"
               type="submit"
             >
               Add Feature
@@ -502,7 +502,7 @@ const Category = () => {
                 Category Name
               </label>
               <input
-                className=" border-2 rounded border-neutral-200 p-2"
+                className=" border-2 rounded border-neutral-200 p-2 focus:outline-slate-400"
                 type="text"
                 placeholder=""
                 autoFocus="autofocus"
@@ -512,7 +512,7 @@ const Category = () => {
                 value={editedValue.name}
               />
             </div>
-            <button className="flex self-end bg-button px-4 py-2 rounded text-white">
+            <button className="flex self-end bg-button px-4 py-2 rounded text-white focus:outline-blue-400">
               Save Change
             </button>
           </form>

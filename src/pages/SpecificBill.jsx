@@ -13,6 +13,7 @@ import Select from "react-select";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
+import Swal from "sweetalert2";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -86,16 +87,36 @@ const SpecificBill = () => {
 
   const role = localStorage.getItem("role");
 
+  const handleShowModal = (bill_id) => {
+    Swal.fire({
+      title: "Are you sure you want to approve this bill?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleApprove(bill_id);
+        Swal.fire("Approved!", "This bill has been approved.", "success");
+      }
+    });
+  };
+
   const handleApprove = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8898/api/approveBill/${bill_id}`
       );
+      // setBillDetails((prev) => ({ ...prev,  response.data }))
+
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(billDetails);
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -359,6 +380,7 @@ const SpecificBill = () => {
 
   // nepali date ends here
 
+  const handleDecline = () => {};
   return (
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
@@ -383,14 +405,29 @@ const SpecificBill = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
-                onClick={openEditBillDetailsForm}
-                className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white mr-5"
-              >
-                Edit Bill
-              </button>
+              {role === "admin" && billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
+                <button
+                  onClick={openEditBillDetailsForm}
+                  className="flex justify-end bg-blue-600 px-6 py-3 h-fit w-fit rounded font-medium text-white "
+                >
+                  Edit Bill
+                </button>
+              )}
 
-              {role === "superadmin" && billDetails?.bill?.isApproved ? (
+              {role === "admin" || billDetails?.bill?.isApproved ? (
+                <></>
+              ) : (
+                <button
+                  className="bg-red-500 px-6 rounded text-white font-medium py-3"
+                  onClick={handleDecline}
+                >
+                  Decline Bill
+                </button>
+              )}
+
+              {role === "admin" || billDetails?.bill?.isApproved ? (
                 <></>
               ) : (
                 <button
