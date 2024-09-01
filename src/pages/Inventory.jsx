@@ -653,7 +653,7 @@ const Inventory = () => {
                   >
 
                     Add more Feature
-                  </button>
+                  </span>
 
                 )}
               </div>
