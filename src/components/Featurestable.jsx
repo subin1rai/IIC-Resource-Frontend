@@ -15,7 +15,7 @@ const Featurestable = ({
     setEditedValue({ type: "Feature", name: feat.feature_name });
   };
   return (
-    <div className="flex flex-col bg-white items-center pb-4 rounded-b-md">
+    <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
       {feature.map((feat) => (
         <div className="w-full flex flex-col items-center">
           <div className="w-[80%] py-4">

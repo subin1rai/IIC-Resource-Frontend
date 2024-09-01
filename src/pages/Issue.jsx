@@ -125,16 +125,15 @@ const Issue = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      width: "100%",
+      alignSelf: "end",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       borderRadius: "4px",
-      borderColor: "#D0D5DD",
       boxShadow: "none",
-      minHeight: "43px",
-      color: "black",
+      minHeight: "46px",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
@@ -405,7 +404,7 @@ const Issue = () => {
                     </label>
                     <NepaliDatePicker
                       inputClassName="form-control focus:outline-none"
-                      className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md"
+                      className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                       value={date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
@@ -415,7 +414,7 @@ const Issue = () => {
               <div className="flex flex-col gap-4">
                   <label className="font-medium text-md"> Issued To: </label>
                   <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-none"
+                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
                   type="text"
                   placeholder="Enter Student Name"
                   autoFocus="autofocus"
@@ -456,7 +455,7 @@ const Issue = () => {
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw] focus:outline-none"
+                          className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                           type="number"
                           placeholder="Enter a quantity"
                           name={`quantity-${index}`}
@@ -495,7 +494,7 @@ const Issue = () => {
                 <label className="font-medium text-md">Purpose:</label>
                 <textarea
                   rows={5}
-                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh] focus:outline-none resize-none"
+                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
                   placeholder="Enter your purpose here.."
                   value={purpose}
                   onChange={(e) => setPurpose(e.target.value)}

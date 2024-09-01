@@ -212,17 +212,17 @@ const Records = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "250px",
       borderRadius: "4px",
-      border: "2px solid #d1d5db",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       borderColor: "#d1d5db",
       boxShadow: "none",
       minHeight: "41px",
       color: "black",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
@@ -235,6 +235,7 @@ const Records = () => {
       width: "45px",
       margin: "0px",
       color: "black",
+      outline: "slate",
     }),
     placeholder: (provided) => ({
       ...provided,
@@ -473,7 +474,7 @@ const Records = () => {
                     </label>
                     <NepaliDatePicker
                       inputClassName="form-control focus:outline-none"
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                       value={date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
@@ -487,7 +488,7 @@ const Records = () => {
                         Bill No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -502,7 +503,7 @@ const Records = () => {
                       Voucher No:
                     </label>
                     <input
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                       placeholder="Enter voucher number"
                       autoFocus="autofocus"
                       name="invoice_no"
@@ -558,7 +559,7 @@ const Records = () => {
                         VAT/PAN No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 focus:outline-none p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300  p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                         placeholder="Enter Vat/Pan number"
                         autoFocus="autofocus"
                         name="vat_number"
@@ -574,7 +575,7 @@ const Records = () => {
                         Paid amount:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"

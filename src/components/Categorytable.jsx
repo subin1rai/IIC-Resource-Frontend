@@ -15,7 +15,7 @@ const Categorytable = ({
   };
 
   return (
-    <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto">
+    <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
       {category.map((cat) => (
         <div className="w-full flex flex-col items-center">
           <div className="w-[80%] py-4">

@@ -165,16 +165,17 @@ const SpecificBill = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+     control: (provided, state) => ({
       ...provided,
-      width: "254px",
+      width: "250px",
       borderRadius: "4px",
-      borderColor: "lightgrey",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      borderColor: "#d1d5db",
       boxShadow: "none",
       minHeight: "41px",
       color: "black",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
@@ -693,7 +694,7 @@ const SpecificBill = () => {
                       Bill Date:
                     </label>
                     <NepaliDatePicker
-                      inputClassName="form-control"
+                      inputClassName="form-control focus:outline-none"
                       className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
                       value={editedBill.bill_date}
                       onChange={handleDateChange}
@@ -709,7 +710,7 @@ const SpecificBill = () => {
                       </label>
                       <input
                         type="number"
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -725,7 +726,7 @@ const SpecificBill = () => {
                     </label>
                     <input
                        type="number"
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                       placeholder="Enter voucher number"
                       autoFocus="autofocus"
                       name="invoice_no"
@@ -781,7 +782,7 @@ const SpecificBill = () => {
                         VAT/PAN No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 focus:outline-none p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter Vat/Pan number"
                         autoFocus="autofocus"
                         name="vat_number"
@@ -797,7 +798,7 @@ const SpecificBill = () => {
                         Paid amount:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"
