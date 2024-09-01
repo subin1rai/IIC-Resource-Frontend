@@ -1,14 +1,92 @@
-import * as React from "react";
-import front from "../assets/arrow-right.svg";
-import close from "../assets/close.svg";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import filter from "../assets/filter.svg";
-import VendorHistory from "../components/vendorHistory";
 import Swal from "sweetalert2";
+import Select from "react-select";
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
+import VendorHistory from "../components/vendorHistory";
+import front from "../assets/arrow-right.svg";
+import close from "../assets/close.svg";
+import CircularProgress from "@mui/material/CircularProgress";
+import filter from "../assets/filter.svg";
+
+const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
+  const addCategory = () => {
+    if (categories.length < 5) {
+      setCategories([
+        ...categories,
+        { item_category_id: "", item_category_name: "" },
+      ]);
+    }
+  };
+
+  const removeCategory = (index) => {
+    const newCategories = categories.filter((_, i) => i !== index);
+    setCategories(newCategories);
+  };
+
+  const handleCategoryChange = (index, selectedOption) => {
+    const updatedCategories = [...categories];
+    updatedCategories[index] = {
+      item_category_id: selectedOption.value,
+      item_category_name: selectedOption.label,
+    };
+    setCategories(updatedCategories);
+  };
+  console.log(categories);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {categories.map((category, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <Select
+            options={itemCategoryOptions}
+            onChange={(selectedOption) =>
+              handleCategoryChange(index, selectedOption)
+            }
+            value={itemCategoryOptions.find(
+              (option) => option.value === category.item_category_id
+            )}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            placeholder="Choose Category"
+            className="react-select-container w-[14vw]"
+            classNamePrefix="react-select"
+          />
+
+          {categories.length > 1 && (
+            <button
+              type="button"
+              onClick={() => removeCategory(index)}
+              className="bg-red-500 text-white px-2 py-1 rounded"
+            >
+              -
+            </button>
+          )}
+          {index === categories.length - 1 && (
+            <button
+              type="button"
+              onClick={addCategory}
+              className="bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              +
+            </button>
+          )}
+        </div>
+      ))}
+      {categories.length === 0 && (
+        <button
+          type="button"
+          onClick={addCategory}
+          className="bg-blue-500 text-white px-2 py-1 rounded"
+        >
+          Add Category
+        </button>
+      )}
+    </div>
+  );
+};
 
 const SpecificVendor = () => {
   const [vendor, setVendor] = useState({
@@ -23,14 +101,17 @@ const SpecificVendor = () => {
     pending_payment: "",
     next_payment_date: "",
     payment_status: "",
+    vendorCategory: [],
+    bills: [],
   });
 
   const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
 
   const [loading, setLoading] = useState(false);
-  const [dialogboxVisibilty, setDialogboxVisibility] = useState(false);
-  const [itemCategory, setItemCategory] = useState([]);
+  const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
+  const [error, setError] = useState("");
 
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
@@ -38,13 +119,13 @@ const SpecificVendor = () => {
     vendor_contact: "",
     payment_duration: "",
     vendor_profile: "",
+    vendorCategory: [],
   });
-
-  const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
 
   const { vendor_id } = useParams();
 
-  //  for nepali date
+  console.log(editedVendor);
+
   const nepaliMonthsInEnglish = [
     "Baisakh",
     "Jestha",
@@ -69,8 +150,6 @@ const SpecificVendor = () => {
     const monthIndex = parseInt(month, 10) - 1;
     return `${nepaliMonthsInEnglish[monthIndex]} ${day}, ${year}`;
   }
-
-  // nepali date ends here
 
   const handleShowModal = (vendor_id) => {
     Swal.fire({
@@ -100,22 +179,24 @@ const SpecificVendor = () => {
       vendor_contact: vendor.vendor_contact,
       payment_duration: vendor.payment_duration,
       vendor_profile: vendor.vendor_profile,
+      vendorCategory: vendor.vendorCategory || [],
     });
     setVendorDetailsFormVisibility(true);
   };
 
   const closeVendorDetailsForm = () => {
+    setError("");
     setVendorDetailsFormVisibility(false);
   };
 
   const handleChange = (e) => {
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
   };
-  const token = localStorage.getItem("token");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8898/api/updateVendor/${vendor_id}`,
         editedVendor,
         {
@@ -124,22 +205,33 @@ const SpecificVendor = () => {
           },
         }
       );
-      setVendor({ ...vendor, ...editedVendor });
+      setVendor({ ...vendor, ...response.data });
       closeVendorDetailsForm();
+      Swal.fire("Success", "Vendor updated successfully", "success");
     } catch (error) {
       console.log(error);
+      setError("Failed to update vendor. Please try again.");
     }
   };
 
   const handleBlackList = async () => {
     try {
-      await axios.put(`http://localhost:8898/api/blacklist/${vendor_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        `http://localhost:8898/api/blacklist/${vendor_id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
+      Swal.fire(
+        "Error",
+        "Failed to blacklist the vendor. Please try again.",
+        "error"
+      );
     }
   };
 
@@ -155,52 +247,72 @@ const SpecificVendor = () => {
             },
           }
         );
-        console.log(response);
         setVendor(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
+        setLoading(false);
       }
     };
 
     fetchSingleVendor();
-  }, [vendor_id]);
+  }, [vendor_id, token]);
+
+  useEffect(() => {
+    const fetchItemCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8898/api/itemCategory",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const options = response.data.allData.map((category) => ({
+          value: category.item_category_id,
+          label: category.item_category_name,
+        }));
+        setItemCategoryOptions(options);
+      } catch (error) {
+        console.error("Error fetching item categories:", error);
+      }
+    };
+
+    fetchItemCategories();
+  }, [token]);
 
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
       <Sidebar />
-
-      <div className="flex flex-col gap-4 mx-auto  items-center">
+      <div className="flex flex-col gap-4 mx-auto items-center">
         <Topbar />
-
-        <div className="flex flex-col w-[85.5vw]  bg-white rounded pb-9">
-          <div className="flex justify-between items-end h-fit ">
+        <div className="flex flex-col w-[85.5vw] bg-white rounded pb-9">
+          <div className="flex justify-between items-end h-fit">
             <div className="flex flex-col">
               <div className="flex px-8 py-5 items-center gap-2">
                 <Link to="/vendors">Vendor</Link>
                 <img src={front} alt="" />
-                <p className="text-blue-600  text-base">{vendor.vendor_name}</p>
+                <p className="text-blue-600 text-base">{vendor.vendor_name}</p>
               </div>
               <h3 className="text-2xl pl-8 font-semibold">
                 {vendor.vendor_name}
               </h3>
             </div>
-            <div className="flex gap-4 pr-10 items-end  ">
+            <div className="flex gap-4 pr-10 items-end">
               <button
                 className="bg-blue-700 h-fit w-fit p-2 px-4 text-white rounded"
                 onClick={openVendorDetailsForm}
               >
                 Edit Details
               </button>
-              {role === "superadmin" ? (
+              {role === "superadmin" && (
                 <button
                   className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
                   onClick={() => handleShowModal(vendor_id)}
                 >
                   Add to Blacklist
                 </button>
-              ) : (
-                <></>
               )}
             </div>
           </div>
@@ -208,22 +320,22 @@ const SpecificVendor = () => {
           {!loading ? (
             <div className="flex justify-between mt-5 w-[75vw] ml-12">
               <div className="flex flex-col gap-5">
-                <p className="font-medium ">
+                <p className="font-medium">
                   VAT Number:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.vat_number || "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Payment Duration:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.payment_duration || "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Paid Amount:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {Array.isArray(vendor?.bills) && vendor.bills.length > 0
+                    {vendor.bills && vendor.bills.length > 0
                       ? vendor.bills
                           .reduce(
                             (sum, bill) =>
@@ -234,7 +346,7 @@ const SpecificVendor = () => {
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Vendor Contact:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.vendor_contact || "--"}
@@ -242,13 +354,13 @@ const SpecificVendor = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-5">
-                <p className="font-medium ">
+                <p className="font-medium">
                   Last Purchase Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {getNepaliMonth(vendor?.last_purchase_date) || "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Purchase Amount:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.total_amount
@@ -256,13 +368,13 @@ const SpecificVendor = () => {
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Last Paid Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {getNepaliMonth(vendor.last_paid) || "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Payment Status:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor?.pending_payment > 0 ? "Pending" : "Clear"}
@@ -270,7 +382,7 @@ const SpecificVendor = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-5">
-                <p className="font-medium ">
+                <p className="font-medium">
                   Pending Payment:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.pending_payment
@@ -278,19 +390,30 @@ const SpecificVendor = () => {
                       : "--"}
                   </span>
                 </p>
-                <p className="font-medium ">
+                <p className="font-medium">
                   Next Payment Date:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {getNepaliMonth(vendor?.next_payment_date) || "--"}
                   </span>
                 </p>
+                <p className="font-medium">
+                  Features:{" "}
+                  <span className="font-medium pl-3 text-[#6D6E70]">
+                    {vendor?.vendorCategory
+                      .map((category) => category.item_category_name)
+                      .join(", ") || "--"}
+                  </span>
+                </p>
               </div>
             </div>
           ) : (
-            "loading..."
+            <p className="text-center mt-5">
+              {" "}
+              <CircularProgress />
+            </p>
           )}
         </div>
-        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md ">
+        <div className="bg-white w-[99%] mx-auto flex flex-col p-5 rounded-md">
           <div className="flex justify-between mb-7">
             <h2 className="font-semibold px-4 text-2xl">Purchase History</h2>
             <div className="flex gap-5">
@@ -307,124 +430,121 @@ const SpecificVendor = () => {
           <VendorHistory history={vendor} />
         </div>
       </div>
-
-      {dialogboxVisibilty && (
-        <>
-          <div
-            className="h-screen w-screen bg-overlay absolute z-20"
-            onClick={() => setDialogboxVisibility(false)}
-          >
-            <div className="bg-white flex absolute top-1/2  left-1/2 items-center transform -translate-x-1/2 -translate-y-1/2 p-9 rounded">
-              <p></p>
-            </div>
-          </div>
-        </>
-      )}
       {addFormVisibility && (
         <>
-          <div
-            className="h-screen  w-screen bg-overlay absolute z-20"
-            onClick={closeVendorDetailsForm}
-          ></div>
-
+          <div className="bg-overlay h-screen w-screen absolute z-10"></div>
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7  rounded "
+            className="flex absolute z-20 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7rounded"
           >
             <div className="flex justify-between">
-              <p className="font-semibold text-2xl">Edit Details</p>
-              <button
-                type="button"
-                className="w-8 h-8"
+              <p className="font-semibold text-lg">Edit Vendor</p>
+              <img
+                className="rounded-md cursor-pointer h-4 w-4"
+                src={close}
+                alt="close"
                 onClick={closeVendorDetailsForm}
-              >
-                <img src={close} alt="close icon" className="w-4 h-4 " />
-              </button>
-            </div>
-            <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vendor_name" className="font-medium">
-                Vendor Name
-              </label>
-              <input
-                className="w-72 border-2 rounded border-border pl-2 h-fit py-2 focus:outline-slate-400"
-                type="text"
-                placeholder="Edit Vendor Name"
-                name="vendor_name"
-                id="vendor_name"
-                onChange={handleChange}
-                value={editedVendor.vendor_name}
               />
             </div>
-            <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="vat_no" className="font-medium">
-                VAT Number
-              </label>
-              <input
-                className="w-72 border-2 rounded border-border pl-2 h-fit py-2 focus:outline-slate-400"
-                type="text"
-                placeholder="Edit VAT Number"
-                name="vat_number"
-                id="vat_no"
-                onChange={handleChange}
-                value={editedVendor.vat_number}
-              />
-            </div>
-            {/* vendor profile */}
-            <div className="flex items-center gap-6">
-              <label htmlFor="vendor_profile" className="w-40 font-medium">
-                Vendor Profile
-              </label>
-              <select
-                className="border-2 rounded border-border w-72 p-2 focus:outline-slate-400"
-                name="vendor_profile"
-                id="vendor_profile"
-                value={editedVendor.vendor_profile}
-                onChange={handleChange}
-              >
-                <option value="" disabled selected>
-                  Select Vendor Profile
-                </option>
-                <option value="big">Big</option>
-                <option value="medium">Medium</option>
-                <option value="small">Small</option>
-              </select>
-            </div>
-            {/* payment duration */}
-            <div className="flex items-center gap-6">
-              <label htmlFor="payment_duration" className="w-40 font-medium">
-                Payment Duration
-              </label>
-              <input
-                className="border-2 rounded border-neutral-200 w-72 p-2 focus:outline-slate-400"
-                type="text"
-                placeholder="Enter Payment Duration"
-                name="payment_duration"
-                id="payment_duration"
-                onChange={handleChange}
-                value={editedVendor.payment_duration}
-              />
-            </div>
-            {/* Contact Number */}
-            <div className="flex justify-between gap-10 items-center">
-              <label htmlFor="contact" className="font-medium">
-                Contact Number
-              </label>
-              <input
-                className="w-72 border-2 rounded border-border pl-2 h-fit py-2 focus:outline-slate-400"
-                type="text"
-                placeholder="Edit Contact Number"
-                name="vendor_contact"
-                id="vendor_contact"
-                onChange={handleChange}
-                value={editedVendor.vendor_contact}
-              />
-            </div>
-            <div className="flex justify-end  ">
+            <div className="flex flex-col gap-10">
+              <div className="flex items-center gap-6">
+                <label htmlFor="vendor_name" className="w-40 font-medium">
+                  Name
+                </label>
+                <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                  type="text"
+                  placeholder="Enter Vendor Name"
+                  autoFocus
+                  name="vendor_name"
+                  id="vendor_name"
+                  value={editedVendor.vendor_name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label htmlFor="vat_number" className="w-40 font-medium">
+                  VAT
+                </label>
+                <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                  type="text"
+                  placeholder="Enter VAT Number"
+                  name="vat_number"
+                  id="vat_number"
+                  value={editedVendor.vat_number}
+                  onChange={handleChange}
+                  maxLength={9}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label htmlFor="vendor_profile" className="w-40 font-medium">
+                  Vendor Profile
+                </label>
+                <select
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                  name="vendor_profile"
+                  id="vendor_profile"
+                  value={editedVendor.vendor_profile}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>
+                    Select Vendor Profile
+                  </option>
+                  <option value="big">Big</option>
+                  <option value="medium">Medium</option>
+                  <option value="small">Small</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-6">
+                <label className="w-40 font-medium self-start">
+                  Categories
+                </label>
+                <CategoryFields
+                  categories={editedVendor.vendorCategory}
+                  setCategories={(newCategories) =>
+                    setEditedVendor({
+                      ...editedVendor,
+                      vendorCategory: newCategories,
+                    })
+                  }
+                  itemCategoryOptions={itemCategoryOptions}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label htmlFor="vendor_contact" className="w-40 font-medium">
+                  Contact
+                </label>
+                <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                  type="tel"
+                  placeholder="Enter Contact Number"
+                  name="vendor_contact"
+                  id="vendor_contact"
+                  value={editedVendor.vendor_contact}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label htmlFor="payment_duration" className="w-40 font-medium">
+                  Payment Duration
+                </label>
+                <input
+                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                  type="text"
+                  placeholder="Enter Payment Duration"
+                  name="payment_duration"
+                  id="payment_duration"
+                  value={editedVendor.payment_duration}
+                  onChange={handleChange}
+                />
+              </div>
+              {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="bg-blue-700 p-2 px-5 rounded text-white"
+                className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end"
               >
-                Save Changes
+                Update Vendor
               </button>
             </div>
           </form>
