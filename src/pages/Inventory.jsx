@@ -648,9 +648,7 @@ const Inventory = () => {
                     onClick={addFeatureField}
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors hover:underline w-fit cursor-pointer"
                   >
-
                     Add more Feature
-
                   </span>
                 )}
               </div>
@@ -659,178 +657,169 @@ const Inventory = () => {
 
             <button
               type="submit"
-
               className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6 focus:outline-blue-700"
-
               disabled={loading}
             >
               {loading ? "Adding..." : "ADD "}
             </button>
-
-
           </div>
         </form>
-      )
-      }
+      )}
 
       {/* Filter form */}
-      {
-        filterFormVisibility && (
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 px-12 py-8 w-fit h-fit gap-8"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-xl "> Filtering Option</h2>
-              <button type="button" className="p-2" onClick={closeFilterForm}>
-                <img src={close} alt="" className="cursor-pointer w-4 h-4" />
-              </button>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label className="font-medium">By Category: </label>
-              <div className="flex gap-8">
-                <Select
-                  options={categoryOptions}
-                  onChange={(selectedOption) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      category: selectedOption.value,
-                    }))
-                  }
-                  value={categoryOptions.find(
-                    (option) => option.value === filterOptions.category
-                  )}
-                  placeholder="Choose Category"
-                  styles={customStyles}
-                  classNamePrefix="react-select"
-                />
-                <Select
-                  options={itemCategoryOptions}
-                  onChange={(selectedOption) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      itemCategory: selectedOption.value,
-                    }))
-                  }
-                  value={itemCategoryOptions.find(
-                    (option) => option.value === filterOptions.itemCategory
-                  )}
-                  placeholder="Choose Item Category"
-                  styles={customStyles}
-                  classNamePrefix="react-select"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium">
-                By Date:
-              </label>
-              <div className="flex gap-8 ">
-                <input
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  type="date"
-                  placeholder=" from"
-                  value={filterOptions.dateFrom}
-                  onChange={(e) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      dateFrom: e.target.value,
-                    }))
-                  }
-                />
-                <input
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  type="date"
-                  placeholder="to"
-                  value={filterOptions.dateTo}
-                  onChange={(e) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      dateTo: e.target.value,
-                    }))
-                  }
-                />
-              </div>
-            </div>
+      {filterFormVisibility && (
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white flex flex-col z-50 px-12 py-8 w-fit h-fit gap-8"
+        >
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-xl "> Filtering Option</h2>
+            <button type="button" className="p-2" onClick={closeFilterForm}>
+              <img src={close} alt="" className="cursor-pointer w-4 h-4" />
+            </button>
+          </div>
+          <div className="flex flex-col gap-3">
+            <label className="font-medium">By Category: </label>
             <div className="flex gap-8">
-              <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium">
-                  {" "}
-                  By Price:{" "}
-                </label>
-                <div>
-                  <select
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    value={filterOptions.unit_price}
-                    onChange={(e) =>
-                      setFilterOptions((prev) => ({
-                        ...prev,
-                        priceSort: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select an option</option>
-                    <option value="high-to-low">High to Low</option>
-                    <option value="low-to-high">Low to High</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium">
-                  By Unit:
-                </label>
-                <div>
-                  <select
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    value={filterOptions.measuring_unit}
-                    onChange={(e) =>
-                      setFilterOptions((prev) => ({
-                        ...prev,
-                        unit: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select an option</option>
-                    <option value="Piece">Piece</option>
-                    <option value="Kilogram">Kilogram</option>
-                  </select>
-                </div>
-              </div>
+              <Select
+                options={categoryOptions}
+                onChange={(selectedOption) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    category: selectedOption.value,
+                  }))
+                }
+                value={categoryOptions.find(
+                  (option) => option.value === filterOptions.category
+                )}
+                placeholder="Choose Category"
+                styles={customStyles}
+                classNamePrefix="react-select"
+              />
+              <Select
+                options={itemCategoryOptions}
+                onChange={(selectedOption) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    itemCategory: selectedOption.value,
+                  }))
+                }
+                value={itemCategoryOptions.find(
+                  (option) => option.value === filterOptions.itemCategory
+                )}
+                placeholder="Choose Item Category"
+                styles={customStyles}
+                classNamePrefix="react-select"
+              />
             </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium">
-                By Status:
-              </label>
-              <select
-                className="border-2 rounded border-neutral-300 p-2 w-full focus:outline-slate-400"
-                value={filterOptions.stockStatus}
+          </div>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="" className="font-medium">
+              By Date:
+            </label>
+            <div className="flex gap-8 ">
+              <input
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                type="date"
+                placeholder=" from"
+                value={filterOptions.dateFrom}
                 onChange={(e) =>
                   setFilterOptions((prev) => ({
                     ...prev,
-                    stockStatus: e.target.value,
+                    dateFrom: e.target.value,
                   }))
                 }
-              >
-                <option value="">Stock Status</option>
-                <option value="In Stock">In Stock</option>
-                <option value="Low Stock">Low Stock</option>
-              </select>
+              />
+              <input
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                type="date"
+                placeholder="to"
+                value={filterOptions.dateTo}
+                onChange={(e) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    dateTo: e.target.value,
+                  }))
+                }
+              />
             </div>
-            <button
-              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-              onClick={applyFilters}
+          </div>
+          <div className="flex gap-8">
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                {" "}
+                By Price:{" "}
+              </label>
+              <div>
+                <select
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.unit_price}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      priceSort: e.target.value,
+                    }))
+                  }
+                >
+                  <option value="">Select an option</option>
+                  <option value="high-to-low">High to Low</option>
+                  <option value="low-to-high">Low to High</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                By Unit:
+              </label>
+              <div>
+                <select
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.measuring_unit}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      unit: e.target.value,
+                    }))
+                  }
+                >
+                  <option value="">Select an option</option>
+                  <option value="Piece">Piece</option>
+                  <option value="Kilogram">Kilogram</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="" className="font-medium">
+              By Status:
+            </label>
+            <select
+              className="border-2 rounded border-neutral-300 p-2 w-full focus:outline-slate-400"
+              value={filterOptions.stockStatus}
+              onChange={(e) =>
+                setFilterOptions((prev) => ({
+                  ...prev,
+                  stockStatus: e.target.value,
+                }))
+              }
             >
-              Filter
-            </button>
-          </form>
-        )
-      }
-      {
-        (addFormVisibility || filterFormVisibility) && (
-          <div className="bg-overlay absolute w-screen h-screen z-40"></div>
-        )
-      }
-    </div >
+              <option value="">Stock Status</option>
+              <option value="In Stock">In Stock</option>
+              <option value="Low Stock">Low Stock</option>
+            </select>
+          </div>
+          <button
+            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+            onClick={applyFilters}
+          >
+            Filter
+          </button>
+        </form>
+      )}
+      {(addFormVisibility || filterFormVisibility) && (
+        <div className="bg-overlay absolute w-screen h-screen z-40"></div>
+      )}
+    </div>
   );
 };
 
