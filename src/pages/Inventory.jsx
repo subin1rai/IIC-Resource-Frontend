@@ -39,6 +39,17 @@ const Inventory = () => {
     stockStatus: "",
   });
 
+  const getFilteredFeatureOptions = (index) => {
+    const selectedFeatureIds = selectedFeatures.map(
+      (feature) => feature.feature
+    );
+    return featureOptions.filter(
+      (option) =>
+        !selectedFeatureIds.includes(option.value) ||
+        option.value === selectedFeatures[index].feature
+    );
+  };
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState([]);
@@ -603,7 +614,7 @@ const Inventory = () => {
                   <div key={index} className="flex gap-4 w-full items-center">
                     <div className="flex justify-between gap-4 flex-row items-center w-full mt-1">
                       <Select
-                        options={featureOptions}
+                        options={getFilteredFeatureOptions(index)}
                         onChange={(selectedOption) =>
                           handleFeatureChange(
                             index,

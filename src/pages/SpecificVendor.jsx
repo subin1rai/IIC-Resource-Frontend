@@ -34,14 +34,24 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
     };
     setCategories(updatedCategories);
   };
-  console.log(categories);
+
+  const getFilteredOptions = (index) => {
+    const selectedCategoryIds = categories.map(
+      (category) => category.item_category_id
+    );
+    return itemCategoryOptions.filter(
+      (option) =>
+        !selectedCategoryIds.includes(option.value) ||
+        option.value === categories[index].item_category_id
+    );
+  };
 
   return (
     <div className="flex flex-col gap-3">
       {categories.map((category, index) => (
         <div key={index} className="flex items-center gap-2">
           <Select
-            options={itemCategoryOptions}
+            options={getFilteredOptions(index)}
             onChange={(selectedOption) =>
               handleCategoryChange(index, selectedOption)
             }
