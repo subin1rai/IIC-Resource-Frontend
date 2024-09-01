@@ -53,16 +53,15 @@ const SpecificRequest = () => {
 
   console.log(itemFields);
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      width: "100%",
+      alignSelf: "end",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       borderRadius: "4px",
-      borderColor: "#D0D5DD",
       boxShadow: "none",
-      minHeight: "43px",
-      color: "black",
+      minHeight: "46px",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
