@@ -9,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 // Column definitions
 const columns = [
@@ -32,6 +34,7 @@ const columns = [
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+  { id: "edit", label: "Edit", minWidth: 70, align: "center"},
 ];
 
 export default function InventoryTable({ issues }) {
@@ -137,9 +140,14 @@ export default function InventoryTable({ issues }) {
                   return (
 
                     <TableCell key={column.id} align={column.align} style={cellStyle}>
-                      {column.format && value != null ? column.format(value) : (value ?? "N/A")}
-
-                    </TableCell>
+                    {column.id === "edit" ? (
+                      <IconButton color="primary">
+                        <EditIcon />
+                      </IconButton>
+                    ) : (
+                      (column.format && value != null ? column.format(value) : (value ?? "N/A"))
+                    )}
+                  </TableCell>
                   );
                 })}
               </TableRow>

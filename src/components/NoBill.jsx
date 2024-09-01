@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 
-const NoBill = ({ onDataUpdate, initialData }) => {
+const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
   const [items, setItems] = useState([]);
-  const [noBillItems, setNoBillItems] = useState(initialData || []);
+  // const [noBillItems, setNoBillItems] = useState(initialData || []);
   // const [vendors, setVendors] = useState([]);
 
   // Retrieve token from localStorage
@@ -34,87 +34,112 @@ const NoBill = ({ onDataUpdate, initialData }) => {
     fetchData();
   }, [token]);
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      item_id: null,
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      amtAfterTds: 0,
-      vat: 0,
-      amountWithVat: 0,
-    },
-    // Add more rows as needed
-  ]);
-  // Handle change in the select dropdown for item names
+  const [rows, setRows] = useState([]);
+  
   const handleSelectChange = (option, index) => {
-    console.log(option);
     const updatedRows = [...rows];
     updatedRows[index].item_id = option.value;
     updatedRows[index].item_name = option.label;
     setRows(updatedRows);
+    console.log("Updated rows after item selection:", updatedRows);
     updateParentData(updatedRows);
   };
 
   const addRow = () => {
-    const newRow = {
-      id: rows.length + 1,
-      item_id: "",
-      item_name: "",
-      quantity: 0,
-      unit_price: 0,
-      amount: 0,
-      tds: 0,
-      amtAfterTds: 0,
-      vat: 0,
-      amountWithVat: 0,
-    };
+    const newRow = calculateRowValues(
+      {
+        id: rows.length + 1,
+        item_id: null,
+        item_name: "",
+        quantity: 0,
+        unit_price: 0,
+        amount: 0,
+      },
+      selectedOption
+    );
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
+    console.log("Added new row:", updatedRows);
     updateParentData(updatedRows);
   };
 
-  // Function to update row data
   const updateRow = (index, field, value) => {
     const newRows = [...rows];
     newRows[index][field] = parseFloat(value) || 0;
 
     if (field === "quantity" || field === "unit_price") {
-      const quantity = parseFloat(newRows[index].quantity) || 0;
-      const unit_price = parseFloat(newRows[index].unit_price) || 0;
-      const amount = quantity * unit_price;
-
-      const tds = (amount / 1.13) * 0.015;
-      const amtAfterTds = amount - tds;
-
-      const vat = amtAfterTds * 0.13; // Assuming VAT is 13%
-      const amountWithVat = amtAfterTds + vat;
-
-      newRows[index].amount = amount || 0;
-      newRows[index].tds = tds || 0;
-      newRows[index].amtAfterTds = amtAfterTds || 0;
-      newRows[index].vat = vat || 0;
-      newRows[index].amountWithVat = amountWithVat || 0;
+      newRows[index] = calculateRowValues(newRows[index], selectedOption);
     }
 
     setRows(newRows);
+    console.log("Updated row:", newRows);
     updateParentData(newRows);
   };
 
-  const updateParentData = (updatedRows) => {
-    const newItemsData = updatedRows.map((row) => ({
-      item_id: row.item_id,
-      item_name: row.item_name,
-      quantity: row.quantity,
-      unit_price: row.unit_price,
-      amount: row.amount,
-    }));
-    onDataUpdate(newItemsData);
+  
+  const calculateRowValues = (row, selectedOption) => {
+    const quantity = parseFloat(row.quantity) || 0;
+    const unit_price = parseFloat(row.unit_price) || 0;
+    const amount = quantity * unit_price;
+
+    return {
+      ...row,
+      amount,
+    };
   };
 
+  useEffect(() => {
+    console.log("billDetails:", billDetails);
+    if (billDetails && billDetails.bill && billDetails.bill.BillItems) {
+      const existingItems = billDetails.bill.BillItems.map((item, index) => {
+        const initialRow = {
+          id: index + 1,
+          item_id: item.item_id || null,
+          item_name: item.item?.item_name || "",
+          quantity: item.quantity || 0,
+          unit_price: item.unit_price || 0,
+          amount: item.amount || 0,
+        };
+        return calculateRowValues(initialRow, selectedOption);
+      });
+
+      if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
+        setRows(existingItems);
+        console.log("Initialized rows with existing items:", existingItems);
+        updateParentData(existingItems);
+      }
+    } else if (rows.length === 0) {
+      const initialRow = calculateRowValues(
+        {
+          id: 1,
+          item_id: null,
+          item_name: "",
+          quantity: 0,
+          unit_price: 0,
+          amount: 0,
+        },
+        selectedOption
+      );
+      setRows([initialRow]);
+      console.log("Initialized rows with default item:", [initialRow]);
+      updateParentData([initialRow]);
+    }
+  }, [billDetails, selectedOption]);
+
+  const updateParentData = (updatedRows) => {
+    const newItemsData = updatedRows
+      .filter((row) => row.item_id && row.quantity > 0)
+      .map((row) => ({
+        item_id: row.item_id,
+        item_name: row.item_name,
+        quantity: row.quantity,
+        unit_price: row.unit_price,
+        amount: row.amount,
+      }));
+
+    console.log("Sending to parent:", newItemsData);
+    onDataUpdate(newItemsData);
+  };
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -224,8 +249,7 @@ const NoBill = ({ onDataUpdate, initialData }) => {
                   {row.amount.toFixed(2)}
                 </td>
               </tr>
-            ))}
-
+            ))}{" "}
             <tr className="bg-white">
               <td
                 colSpan="4"
