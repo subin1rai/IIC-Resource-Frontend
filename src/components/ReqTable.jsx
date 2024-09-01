@@ -9,7 +9,9 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Box from "@mui/material/Box";
+import empty from "../assets/EmptyRequest.svg"
 
 const columns = [
   { id: "user_name", label: "Requested By", maxWidth: 70, align: "left" },
@@ -31,8 +33,8 @@ const columns = [
 ];
 
 export default function ReqTable({ requests }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("req_id");
 
@@ -83,14 +85,13 @@ export default function ReqTable({ requests }) {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  // Ensure requests is defined and is an array before using it
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () =>
       requests && Array.isArray(requests)
         ? stableSort(
-            requests.filter((request) => request != null),
-            getComparator(order, orderBy)
-          ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          requests.filter((request) => request != null),
+          getComparator(order, orderBy)
+        ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : [],
     [requests, order, orderBy, page, rowsPerPage]
   );
@@ -114,6 +115,28 @@ export default function ReqTable({ requests }) {
     backgroundColor: "#f5f5f5",
     align: "center",
   };
+
+  if (!requests || requests.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "480px",
+          width: "100%",
+        }}
+      >
+        <img
+          src={empty}
+          className="h-56"
+          alt="No requests"
+        />
+
+      </Box>
+    );
+  }
 
   return (
     <Paper
@@ -185,20 +208,20 @@ export default function ReqTable({ requests }) {
                                 borderRadius: "4px",
                                 backgroundColor:
                                   value === "Pending"
-                                    ? "#fff3cd" // Light yellow for Pending
+                                    ? "#fff3cd"
                                     : value === "Delivered"
-                                    ? "#d4edda" // Light green for Delivered
-                                    : value === "Holding"
-                                    ? "#d1ecf1" // Light blue for Holding
-                                    : "#f8d7da", // Default color if the value doesn't match any of the specified statuses
+                                      ? "#d4edda"
+                                      : value === "Holding"
+                                        ? "#d1ecf1"
+                                        : "#f8d7da",
                                 color:
                                   value === "Pending"
-                                    ? "#856404" // Dark yellow for Pending
+                                    ? "#856404"
                                     : value === "Delivered"
-                                    ? "#155724" // Dark green for Delivered
-                                    : value === "Holding"
-                                    ? "#0c5460" // Dark blue for Holding
-                                    : "#721c24", // Default text color if the value doesn't match any of the specified statuses
+                                      ? "#155724"
+                                      : value === "Holding"
+                                        ? "#0c5460"
+                                        : "#721c24",
                                 fontWeight: "normal",
                                 textAlign: "center",
                               }}
