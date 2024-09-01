@@ -26,12 +26,23 @@ const SettingRole = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
+  const [contactError, setContactError] = useState("");
+
   const [user, setUser] = useState({
     user_name: "",
     contact: "",
     user_email: "",
     department: "",
   });
+
+  const initialUserState = {
+    user_name: "",
+    contact: "",
+    user_email: "",
+    department: "",
+  };
+
+  
 
   console.log(user);
   const [departments, setDepartments] = useState([]);
@@ -103,9 +114,25 @@ const SettingRole = () => {
     };
   }, []);
 
-  const handleInputChange = (e) => {
-    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const validateContact = (contact) => {
+    const contactNumber = parseInt(contact);
+    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
+      setContactError("Contact number must be between 9700000000 and 9899999999.");
+      return false;
+    }
+    setContactError("");
+    return true;
   };
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
+    if (name === "contact") {
+      validateContact(value);
+    }
+  };
+
 
   const handleDepartmentChange = (e) => {
     setNewDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -113,6 +140,12 @@ const SettingRole = () => {
 
   const handleAddUser = async (event) => {
     event.preventDefault();
+    
+    if (!validateContact(user.contact)) {
+      setError("Please correct the contact number.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:8898/api/role/addUser",
@@ -123,15 +156,15 @@ const SettingRole = () => {
       );
       toast.success(`${user.user_name} added successfully!`);
       setAddUserFormVisibility(false);
-      setError(null); // Clear error when form is closed
+      setError(null);
       setUsers((prev) => [...prev, response.data.newUser]);
       setNumberOfUsers((prev) => prev + 1);
+      setUser(initialUserState);
     } catch (error) {
-      console.error();
+      console.error(error);
       setError(error?.response?.data?.error || "Failed to add user");
     }
   };
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -464,7 +497,7 @@ const SettingRole = () => {
                 className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   setVisibleForm("");
-                  setError(null); // Clear error when closing the form
+                  setError(null); 
                 }}
               />
             </div>

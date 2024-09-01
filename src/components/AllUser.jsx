@@ -272,6 +272,8 @@ const DropdownMenu = ({
 
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
+  const [contactError, setContactError] = useState("");
+  const [error, setError] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [editedUser, setEditedUser] = useState({
@@ -309,6 +311,17 @@ const AllUser = ({ users: initialUsers }) => {
     admin: "Admin",
   };
 
+
+  const validateContact = (contact) => {
+    const contactNumber = parseInt(contact);
+    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
+      setContactError("Please enter a valid 10-digit contact number starting with 97, 98, or 99.");
+      return false;
+    }
+    setContactError("");
+    return true;
+  }
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -337,11 +350,23 @@ const AllUser = ({ users: initialUsers }) => {
   };
 
   const handleChange = (e) => {
-    setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setEditedUser({ ...editedUser, [name]: value });
+    
+    if (name === 'contact') {
+      validateContact(value);
+    }
   };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+   
+    if (!validateContact(editedUser.contact)) {
+      setError("Please correct the contact number.");
+      return;
+    }
+
     try {
       const response = await axios.put(
         `http://localhost:8898/api/role/editUser/${editedUser.user_id}`, 
@@ -360,7 +385,10 @@ const AllUser = ({ users: initialUsers }) => {
             u.user_id === editedUser.user_id ? { ...u, ...editedUser } : u
           )
         );
-        setEditFormVisibility(false); // Close the edit form
+        setEditFormVisibility(false); 
+        setError(null);
+        setContactError("");
+
       } else {
         console.error("Failed to update the user:", response.data.message);
       }
@@ -466,8 +494,11 @@ const AllUser = ({ users: initialUsers }) => {
               <img
                 src={close}
                 alt="Close"
+                
                 className="w-4 h-4 cursor-pointer"
-                onClick={() => setEditFormVisibility(false)}
+                onClick={() => { setEditFormVisibility(false);
+                  setError(null); 
+                }}
               />
             </div>
             <div className="flex flex-col gap-8">
@@ -499,8 +530,10 @@ const AllUser = ({ users: initialUsers }) => {
                   onChange={handleChange}
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
+                  
                 />
               </div>
+              
               <div className="flex justify-between items-center gap-2">
                 <label htmlFor="user_email" className="w-[120px]">
                   Email
@@ -541,14 +574,21 @@ const AllUser = ({ users: initialUsers }) => {
                   ))}
                 </select>
               </div>
+              {error && <div className="text-red-500  self-start">{error}</div>}
               <button type="submit" className="bg-button text-white py-2 w-fit px-4 rounded self-end mt-2">
                 Edit User
               </button>
             </div>
+            
           </form>
-          <div className="" onClick={() => setEditFormVisibility(false)}></div>
+          <div className="" onClick={() => {
+            setEditFormVisibility(false);
+            setError(null);
+            setContactError("");
+          }}></div>
         </div>
       )}
+      
       <TablePagination
         rowsPerPageOptions={[10]}
         component="div"
