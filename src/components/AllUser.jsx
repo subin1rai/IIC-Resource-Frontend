@@ -15,6 +15,8 @@ import close from "../assets/close.svg";
 const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
   { id: "user_email", label: "Email Address", maxWidth: 70, align: "left" },
+  { id: "contact", label: "Contact Number", maxWidth: 70, align: "left" },
+
   { id: "role", label: "Role", maxWidth: 70, align: "left" },
   { id: "department", label: "Department", maxWidth: 70, align: "left" },
   { id: "status", label: "Status", maxWidth: 70, align: "left" },
@@ -183,44 +185,38 @@ const DropdownMenu = ({
       ref={dropdownRef}
       className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black text-sm"
       style={{
-        top: `${
-          buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
-        }px`,
-        left: `${
-          buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
-        }px`,
+        top: `${buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
+          }px`,
+        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
+          }px`,
       }}
     >
       {user.isActive ? (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={handleSetInActive}
           >
             Set Inactive
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("superadmin")}
           >
             Set Super Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("admin")}
           >
             Set Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => handleRoleUpdate("departmenthead")}
           >
             Set Department Head
@@ -229,21 +225,20 @@ const DropdownMenu = ({
       ) : (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${
-              loading ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+              }`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
           </span>
+
         </>
       )}{" "}
       <span
@@ -280,6 +275,7 @@ const AllUser = ({ users: initialUsers }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [editedUser, setEditedUser] = useState({
+    user_id: null,
     user_name: "",
     user_email: "",
     contact: "",
@@ -331,10 +327,11 @@ const AllUser = ({ users: initialUsers }) => {
 
   const handlePopupForm = (user) => {
     setEditedUser({
+      user_id: user.user_id,
       user_name: user.user_name || "",
       user_email: user.user_email || "",
       contact: user.contact || "",
-      department: user.department || "",
+      department: user.department_name || "",
     });
     setEditFormVisibility(true);
   };
@@ -346,31 +343,33 @@ const AllUser = ({ users: initialUsers }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const updatedUser = {
-        user_name: editedUser.user_name,
-        user_email: editedUser.user_email,
-        contact: editedUser.contact,
-        department: editedUser.department,
-      };
       const response = await axios.put(
-        `http://localhost:8898/api/updateUser/${editedUser.user_id}`,
-        updatedUser
+        `http://localhost:8898/api/role/editUser/${editedUser.user_id}`, 
+        {
+          user_name: editedUser.user_name,
+          user_email: editedUser.user_email,
+          contact: editedUser.contact,
+          department: editedUser.department,
+        }
       );
-
-      if (response.data.updatedUser) {
-        Swal.fire("User Updated", "", "success");
+  
+      if (response.status === 200) {
+        // Update the specific user in the local state
         setAllUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.user_id === response.data.updatedUser.user_id
-              ? response.data.updatedUser
-              : user
+          prevUsers.map((u) =>
+            u.user_id === editedUser.user_id ? { ...u, ...editedUser } : u
           )
         );
+        setEditFormVisibility(false); // Close the edit form
       } else {
+        console.error("Failed to update the user:", response.data.message);
       }
-      setEditFormVisibility(false);
-    } catch (error) {}
+    } catch (error) {
+      console.error("An error occurred while updating the user:", error);
+    }
   };
+  
+ 
 
   const visibleRows = React.useMemo(
     () => allUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -410,6 +409,8 @@ const AllUser = ({ users: initialUsers }) => {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
                 <TableCell>{user.user_name}</TableCell>
                 <TableCell>{user.user_email}</TableCell>
+                <TableCell>{user.contact}</TableCell>
+
                 <TableCell>{roles[user.role]}</TableCell>
                 <TableCell>{user.department_name}</TableCell>
                 <TableCell>
@@ -476,6 +477,7 @@ const AllUser = ({ users: initialUsers }) => {
                 </label>
                 <input
                   placeholder="Enter Full name"
+                  autoFocus="autofocus"
                   id="user_name"
                   name="user_name"
                   value={editedUser.user_name}
@@ -491,6 +493,7 @@ const AllUser = ({ users: initialUsers }) => {
                 <input
                   placeholder="Enter contact number"
                   id="contact"
+                  autoFocus="autofocus"
                   name="contact"
                   value={editedUser.contact}
                   onChange={handleChange}
@@ -504,6 +507,7 @@ const AllUser = ({ users: initialUsers }) => {
                 </label>
                 <input
                   placeholder="Enter Email"
+                   autoFocus="autofocus"
                   id="user_email"
                   name="user_email"
                   value={editedUser.user_email}
@@ -519,7 +523,8 @@ const AllUser = ({ users: initialUsers }) => {
                 <select
                   id="department"
                   name="department"
-                  value={editedUser.department_name}
+                    autoFocus="autofocus"
+                  value={editedUser.department}
                   onChange={handleChange}
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
                 >
@@ -536,7 +541,7 @@ const AllUser = ({ users: initialUsers }) => {
                   ))}
                 </select>
               </div>
-              <button className="bg-button text-white py-2 w-fit px-4 rounded self-end mt-2">
+              <button type="submit" className="bg-button text-white py-2 w-fit px-4 rounded self-end mt-2">
                 Edit User
               </button>
             </div>
