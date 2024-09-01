@@ -19,6 +19,7 @@ const SingleItem = () => {
     product_category_name: "",
     measuring_unit: "",
     low_limit: "",
+    quantity: "",
     features: "",
   });
 
@@ -260,9 +261,9 @@ const SingleItem = () => {
   return (
     <div className="flex bg-background h-screen w-screen">
       <Sidebar />
-      <div className="flex flex-col mx-auto gap-4">
+      <div className="flex flex-col mx-auto gap-4 ">
         <Topbar />
-        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md relative">
+        <div className="bg-white w-[99%] mx-auto h-50 flex flex-col p-5 rounded-md ">
           <div className="flex justify-between w-[98%]">
             <div className="flex flex-col gap-1">
               <div className="flex justify-center items-end gap-2 h-10 p-4">
@@ -318,7 +319,7 @@ const SingleItem = () => {
                 <div className="flex gap-4">
                   <p className="font-semibold">Actual Quantity:</p>
                   <div className="font-medium text-[#6D6E70]">
-                    <span>fix this</span>
+                    <span>{item.quantity || 0}</span>
                   </div>
                 </div>
                 <div className="flex gap-4">
