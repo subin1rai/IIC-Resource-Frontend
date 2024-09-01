@@ -93,6 +93,7 @@ const Vendor = () => {
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [vendors, setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
+  const [contactError, setContactError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState({
     item_category_id: "",
@@ -121,8 +122,25 @@ const Vendor = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setVendor((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (name === "contact") {
+      validateContact(value);
+    }
   };
+
+  const validateContact = (vendor_contact) => {
+    const contactNumber = parseInt(vendor_contact);
+    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
+      setContactError("Contact number must be between 9700000000 and 9899999999.");
+      return false;
+    }
+    setContactError("");
+    return true;
+  };
+
+ 
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -153,6 +171,11 @@ const Vendor = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!validateContact(vendor.vendor_contact)) {
+      setError("Please correct the contact number.");
+      return;
+    }
     try {
       const vendorData = {
         ...vendor,
