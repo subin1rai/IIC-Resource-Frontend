@@ -11,6 +11,8 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import empty from "../assets/EmptyIssue.svg"
+import Box from "@mui/material/Box";
 
 // Column definitions
 const columns = [
@@ -34,7 +36,7 @@ const columns = [
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
-  { id: "edit", label: "Edit", minWidth: 70, align: "center"},
+  { id: "edit", label: "Edit", minWidth: 70, align: "center" },
 ];
 
 export default function InventoryTable({ issues }) {
@@ -98,11 +100,33 @@ export default function InventoryTable({ issues }) {
   };
   const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
+  if (!issues || issues.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "480px",
+          width: "100%",
+        }}
+      >
+        <img
+          src={empty}
+          className="h-56"
+          alt="No requests"
+        />
+
+      </Box>
+    );
+  }
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", cursor: "pointer", fontSize: "18px" }}>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
-        <TableHead>
+          <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
@@ -140,14 +164,14 @@ export default function InventoryTable({ issues }) {
                   return (
 
                     <TableCell key={column.id} align={column.align} style={cellStyle}>
-                    {column.id === "edit" ? (
-                      <IconButton color="primary">
-                        <EditIcon />
-                      </IconButton>
-                    ) : (
-                      (column.format && value != null ? column.format(value) : (value ?? "N/A"))
-                    )}
-                  </TableCell>
+                      {column.id === "edit" ? (
+                        <IconButton color="primary">
+                          <EditIcon />
+                        </IconButton>
+                      ) : (
+                        (column.format && value != null ? column.format(value) : (value ?? "N/A"))
+                      )}
+                    </TableCell>
                   );
                 })}
               </TableRow>
