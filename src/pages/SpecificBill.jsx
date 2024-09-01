@@ -13,6 +13,7 @@ import Select from "react-select";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
+import Swal from "sweetalert2";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -86,16 +87,40 @@ const SpecificBill = () => {
 
   const role = localStorage.getItem("role");
 
+  const handleShowModal = (bill_id) => {
+    Swal.fire({
+      title: "Are you sure you want to approve this bill?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleApprove(bill_id);
+        Swal.fire(
+          "Approved!",
+          "This bill has been approved.",
+          "success"
+        );
+      }
+    });
+  };
+
   const handleApprove = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8898/api/approveBill/${bill_id}`
       );
+      // setBillDetails((prev) => ({ ...prev,  response.data }))
+
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(billDetails)
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -395,7 +420,7 @@ const SpecificBill = () => {
               ) : (
                 <button
                   className="bg-green-500 px-6 rounded text-white font-medium py-3"
-                  onClick={handleApprove}
+                  onClick={() => handleShowModal(bill_id)}
                 >
                   Approve Bill
                 </button>
@@ -520,8 +545,8 @@ const SpecificBill = () => {
             </thead>
             <tbody>
               {!loading &&
-              billDetails?.bill?.BillItems &&
-              billDetails?.bill?.BillItems.length > 0 ? (
+                billDetails?.bill?.BillItems &&
+                billDetails?.bill?.BillItems.length > 0 ? (
                 billDetails?.bill?.BillItems.map((billItem, index) => (
                   <tr key={index}>
                     <td className="p-2 text-center border-b border-neutral-200">
@@ -579,12 +604,11 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "vat 0" ||
+                      className={` w-36 ${selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4 py-1`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -594,13 +618,12 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "pan 0" ||
+                      className={` w-36 ${selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent py-1 px-4`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -612,11 +635,10 @@ const SpecificBill = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "noBill"
-                          ? "bg-blue-200 text-black"
-                          : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
+                        ? "bg-blue-200 text-black"
+                        : "border-neutral-300"
+                        } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -709,9 +731,9 @@ const SpecificBill = () => {
                         value={
                           editedBill.vendor_name
                             ? {
-                                value: editedBill.vendor_name,
-                                label: editedBill.vendor_name,
-                              }
+                              value: editedBill.vendor_name,
+                              label: editedBill.vendor_name,
+                            }
                             : null
                         }
                         placeholder="Select Vendor"
