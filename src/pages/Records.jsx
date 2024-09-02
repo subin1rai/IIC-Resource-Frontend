@@ -416,12 +416,11 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "vat 0" ||
+                      className={` w-36 ${selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4 py-1`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -431,13 +430,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "pan 0" ||
+                      className={` w-36 ${selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent py-1 px-4`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -449,11 +447,10 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "noBill"
-                          ? "bg-blue-200 text-black"
-                          : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
+                        ? "bg-blue-200 text-black"
+                        : "border-neutral-300"
+                        } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -545,9 +542,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                                value: bill?.vendors?.vendor_name,
-                                label: bill.vendor_name,
-                              }
+                              value: bill?.vendors?.vendor_name,
+                              label: bill.vendor_name,
+                            }
                             : null
                         }
                         placeholder="Select Vendor"
@@ -630,9 +627,9 @@ const Records = () => {
                   value={
                     bill.vendor_name
                       ? {
-                          value: bill?.vendors?.vendor_name,
-                          label: bill.vendor_name,
-                        }
+                        value: bill?.vendors?.vendor_name,
+                        label: bill.vendor_name,
+                      }
                       : null
                   }
                   placeholder="Select Vendor"
@@ -648,35 +645,30 @@ const Records = () => {
                 <Select placeholder="Select an Item" styles={customStyles} />
               </div>
             </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="" className="font-medium">
-                By Date:
-              </label>
-              <div className="flex gap-8 ">
-                <input
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  type="date"
-                  placeholder=" from"
-                  value={filterOptions.dateFrom}
-                  onChange={(e) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      dateFrom: e.target.value,
-                    }))
-                  }
+            <div className="flex gap-8">
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Bill From:
+                </label>
+
+                <NepaliDatePicker
+                  inputClassName="form-control focus:outline-none"
+                  className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                  // onChange={handleDateChange}
+                  options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
-                <input
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  type="date"
-                  placeholder="to"
-                  value={filterOptions.dateTo}
-                  onChange={(e) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      dateTo: e.target.value,
-                    }))
-                  }
+              </div>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Bill To:
+                </label>
+                <NepaliDatePicker
+                  inputClassName="form-control focus:outline-none"
+                  className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                  // onChange={handleDateChange}
+                  options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
+
               </div>
             </div>
             <div className="flex gap-8">
