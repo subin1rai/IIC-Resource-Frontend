@@ -7,7 +7,7 @@ export default {
         background: "#f0f1f3",
         overlay: "#3756828e",
         button: "#4379EE",
-        gray: "#E4ECFF",
+        gray: "#F8F9FA",
         customGray:"#e9e9e9",
         overlay: "#3756828e",
         border: "#D0D5DD",

@@ -14,6 +14,7 @@ import SpecificVendor from "./pages/SpecificVendor";
 import SpecificBill from "./pages/SpecificBill";
 import UserHome from "./pages/UserHome";
 import UserRequest from "./pages/UserRequest";
+import RequestHistory from "./pages/RequestHistory";
 import Reset from "./pages/Reset";
 import Otp from "./pages/Otp";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -92,6 +93,7 @@ function App() {
                 <Route path="/userhome" element={<UserHome />} />
 
                 <Route path="/userRequest" element={<UserRequest />} />
+                <Route path="/requestHistory" element={<RequestHistory />} />
                 {/* Redirect non-admin users to userhome if they try to access admin routes */}
                 <Route
                   path="/dashboard"
