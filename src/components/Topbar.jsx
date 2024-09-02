@@ -66,8 +66,8 @@ const Topbar = () => {
 
   const navigate = useNavigate();
 
-  const openEditProfile = () => {
-    navigate("/editProfile");
+  const openChangePassword = () => {
+    navigate("/changePassword");
   };
 
   useEffect(() => {
@@ -258,9 +258,9 @@ const Topbar = () => {
               <div className="flex justify-center">
                 <button
                   className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white "
-                  onClick={openEditProfile}
+                  onClick={openChangePassword}
                 >
-                  Edit profile
+                  Change Password
                 </button>
               </div>
             </div>

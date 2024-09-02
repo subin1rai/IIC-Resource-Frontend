@@ -83,7 +83,6 @@ const SpecificBill = () => {
   const { bill_id } = useParams();
 
   const token = localStorage.getItem("token");
-
   // please dont remove this
 
   const role = localStorage.getItem("role");
@@ -252,7 +251,15 @@ const SpecificBill = () => {
       }
     };
     fetchData();
-  }, [bill_id, token]);
+  }, [bill_id, token]
+);
+
+// const checkPermissions = () => {
+//   const role = localStorage.getItem("role");
+//   if (role != "superadmin" || role !="admin") {
+//     console.error("Unauthorized cfgdgg");
+//   }
+// };
 
   const openEditBillDetailsForm = () => {
     // setEditedBill({
@@ -314,18 +321,17 @@ const SpecificBill = () => {
       // }
       const response = await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
-        {
+          dataToSubmit,
+          {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          ...editedBill,
-          selectedOption: selectedOption,
+          
         }
       );
 
       console.log(response.data.result);
-
-      // Assuming the API returns the updated bill in the response
+     
       if (response.status === 200) {
         // Update the bill state with the response data
         setBillDetails(response.data.result);
@@ -335,8 +341,7 @@ const SpecificBill = () => {
       }
     } catch (error) {
       console.log(error);
-    }
-  };
+    }};
 
   useEffect(() => {
     const fetchSingleBill = async () => {
@@ -350,7 +355,6 @@ const SpecificBill = () => {
             },
           }
         );
-
         setEditedBill({
           bill_no: response.data.bill.bill_no || "",
           bill_date: response.data.bill.bill_date

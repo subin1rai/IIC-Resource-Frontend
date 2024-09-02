@@ -24,6 +24,8 @@ const Issue = () => {
   const [date, setDate] = useState("");
   const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredIssues, setFilteredIssues] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [purpose, setPurpose] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -216,6 +218,16 @@ const Issue = () => {
     fetchItems();
   }, [token]);
 
+  useEffect(() => {
+    let results = issues;
+    if (searchTerm) {
+      results = results.filter((issue) =>
+        issue.issued_to.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    setFilteredIssues(results);
+  }, [searchTerm, issues]);
+
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
       <Sidebar />
@@ -229,12 +241,12 @@ const Issue = () => {
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={issuesno} alt="" />
                 <h4>5</h4>
-                <p className="font-medium">Number of categories</p>
+                <p className="font-medium">Number of Items issued</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={pendingreq} alt="" />
                 <h4>5</h4>
-                <p className="font-medium">Number of items</p>
+                <p className="font-medium">Number of Items to be returned</p>
               </div>
             </div>
           </div>
@@ -245,6 +257,13 @@ const Issue = () => {
             <div className="flex font-bold text-lg">Issue</div>
 
             <div className="flex gap-6">
+            <input
+                type="text"
+                placeholder="Search Issues"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border-2 px-3 w-80 border-border rounded h-fit py-2 focus:outline-slate-400"
+              />
               <button
                 onClick={displayFilterForm}
                 className="border flex items-center gap-4 border-border px-4 py-2 rounded"
@@ -349,7 +368,7 @@ const Issue = () => {
                   autoFocus
                 >
                   <option value="">Select a department</option>
-                  <option value="">BIT</option>
+                  <option value="">BIT</option> 
                   <option value="">SSD</option>
                   <option value="">BBA</option>
                   <option value="">Resource</option>

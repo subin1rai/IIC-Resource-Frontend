@@ -78,7 +78,7 @@ export default function VendorTable({ vendors }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("vendor_name");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
