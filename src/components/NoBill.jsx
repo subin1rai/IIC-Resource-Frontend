@@ -223,7 +223,19 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
                         : null
                     }
                     placeholder="Select Item"
-                    styles={customStyles}
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150, // Adjust this as needed
+                        overflowY: 'auto', // This ensures only the menu list scrolls
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
                     className="w-[170px] whitespace-nowrap"
                   />
                 </td>

@@ -14,7 +14,7 @@ const Navbar = () => {
         <NavLink to="/userHome">Home</NavLink>
         <NavLink to="/userRequest">Request</NavLink>
         <NavLink to="/userHistory">History</NavLink>
-        <NavLink to="/userHowto">How to?</NavLink>
+        <NavLink to="/userHowto" >How to?</NavLink>
 
       </div>
       <div className="flex gap-5">
