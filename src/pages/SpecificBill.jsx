@@ -355,7 +355,6 @@ const SpecificBill = () => {
             },
           }
         );
-
         setEditedBill({
           bill_no: response.data.bill.bill_no || "",
           bill_date: response.data.bill.bill_date

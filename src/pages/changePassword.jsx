@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState({
@@ -12,6 +13,12 @@ const ChangePassword = () => {
   });
 
   const token = localStorage.getItem('token');
+
+  const navigate = useNavigate();
+
+  const goBack = () =>{
+    navigate("/dashboard")
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,12 +34,15 @@ const ChangePassword = () => {
       );
       // Handle success
       toast.success("Password changed successfully!");
+      goBack();
     } catch (error) {
       // Extract the error message
       const errorMessage = error.response?.data?.error || error.message || "An unexpected error occurred.";
       toast.error(errorMessage);
     }
   };
+
+  
 
   const handleChange = (e) => {
     setPassword((prev) => ({ ...prev, [e.target.name]: e.target.value }));
