@@ -563,7 +563,7 @@ const Inventory = () => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
@@ -597,7 +597,7 @@ const Inventory = () => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
@@ -667,11 +667,11 @@ const Inventory = () => {
                           }),
                           menuList: (provided) => ({
                             ...provided,
-                            maxHeight: 150, // Adjust this as needed
-                            overflowY: 'auto', // This ensures only the menu list scrolls
+                            maxHeight: 150,
+                            overflowY: "auto",
                           }),
                         }}
-                        menuPortalTarget={document.body} // Ensure dropdown is fully visible
+                        menuPortalTarget={document.body}
                       />
                       <input
                         className="border-2 rounded border-neutral-200 w-[200px] p-2 focus:outline-slate-400"
