@@ -215,7 +215,8 @@ const SpecificVendor = () => {
           },
         }
       );
-      setVendor({ ...vendor, ...response.data });
+      console.log(response);
+      setVendor({ ...vendor, ...response.data.updatedData });
       closeVendorDetailsForm();
       Swal.fire("Success", "Vendor updated successfully", "success");
     } catch (error) {
@@ -267,6 +268,8 @@ const SpecificVendor = () => {
 
     fetchSingleVendor();
   }, [vendor_id, token]);
+
+  console.log(vendor);
 
   useEffect(() => {
     const fetchItemCategories = async () => {

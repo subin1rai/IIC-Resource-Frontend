@@ -4,41 +4,25 @@ import Topbar from "../components/Topbar";
 import ReqTable from "../components/ReqTable";
 import socket from "../socket";
 import filterIcon from "../assets/filter.svg";
-// import RequestTable from "../components/RequestTable";
 import axios from "axios";
 import Chat from "../components/Chat";
 import req from "../assets/request.svg";
-import close from "../assets/close.svg"
+import close from "../assets/close.svg";
 import Select from "react-select";
 
 const Request = () => {
-  const [requests, setRequests] = useState({
-    userId: "",
-    for_userId: "",
-    request_date: "",
-    department: "",
-    purpose: "",
-    status: "",
-    items: [],
-  });
-
+  const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [departments, setDepartments] = useState([]);
-
-
-  const displayFilterForm = () => {
-    setFilterFormVisibility(true);
-  }
-
-  const closeFilterForm = () => {
-    setFilterFormVisibility(false);
-  };
-
-
-  const [items, setItems] = useState([]);
-  const [itemOptions, setItemOptions] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const token = localStorage.getItem("token");
+
+  console.log(departments);
 
   const customStyles = {
     control: (provided, state) => ({
@@ -79,7 +63,6 @@ const Request = () => {
     }),
   };
 
-
   useEffect(() => {
     const getRequest = async () => {
       try {
@@ -89,6 +72,7 @@ const Request = () => {
           },
         });
         setRequests(response.data.request);
+        setFilteredRequests(response.data.request); // Initially, all requests are displayed
       } catch (error) {
         console.log(error);
       }
@@ -96,8 +80,6 @@ const Request = () => {
 
     getRequest();
   }, [token]);
-
-  // console.log(requests);
 
   useEffect(() => {
     socket.on("newRequest", (data) => {
@@ -110,8 +92,6 @@ const Request = () => {
     };
   }, []);
 
-
-  // fetching department
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
@@ -121,8 +101,7 @@ const Request = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        // console.log(departmentResponse);
-        setDepartments(departmentResponse.data.department)
+        setDepartments(departmentResponse.data.department);
       } catch (error) {
         console.error("Error fetching department:", error);
       }
@@ -130,6 +109,48 @@ const Request = () => {
 
     fetchDepartment();
   }, [token]);
+
+  const displayFilterForm = () => {
+    setFilterFormVisibility(true);
+  };
+
+  const closeFilterForm = () => {
+    setFilterFormVisibility(false);
+  };
+
+  console.log(selectedDepartment);
+  const handleFilter = () => {
+    let filtered = requests;
+
+    console.log(selectedDepartment);
+
+    if (selectedDepartment) {
+      filtered = filtered.filter(
+        (request) => request.department_name === selectedDepartment.value
+      );
+    }
+
+    if (selectedStatus) {
+      filtered = filtered.filter(
+        (request) => request.status === selectedStatus
+      );
+    }
+
+    if (dateFrom) {
+      filtered = filtered.filter(
+        (request) => new Date(request.request_date) >= new Date(dateFrom)
+      );
+    }
+
+    if (dateTo) {
+      filtered = filtered.filter(
+        (request) => new Date(request.request_date) <= new Date(dateTo)
+      );
+    }
+
+    setFilteredRequests(filtered);
+    setFilterFormVisibility(false); // Close filter form after applying filters
+  };
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background reltive">
@@ -162,11 +183,8 @@ const Request = () => {
               <input
                 type="text"
                 placeholder="Search requests"
-                // value={userSearchTerm}
-                // onChange={(e) => setUserSearchTerm(e.target.value)}
                 className="border-2 px-2 w-64 border-border rounded py-2 focus:outline-slate-400"
               />
-              {/* Filter */}
               <button
                 className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
                 aria-label="Menu"
@@ -181,93 +199,83 @@ const Request = () => {
               </button>
             </div>
           </div>
-          {/* <p>You can view your request here</p>
-            <div className="w-[100%] mx-auto mt-5 bg-button h-1"></div> */}
-
-          {/* <RequestTable /> */}
-          <ReqTable requests={requests} />
-
+          <ReqTable requests={filteredRequests} />
         </div>
       </div>
 
-      {/* filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
             <div className="flex justify-between">
-              <h2 className="font-semibold text-xl"> Filtering Option</h2>
-              <button
-                type="button"
-                className=""
-                onClick={closeFilterForm}
-              >
+              <h2 className="font-semibold text-xl">Filtering Option</h2>
+              <button type="button" className="" onClick={closeFilterForm}>
                 <img src={close} alt="" className="cursor-pointer w-4 h-4" />
               </button>
             </div>
-
             <div className="flex flex-col gap-6">
-              {/*div for department and status  */}
               <div className="flex gap-8">
-                {/* div for department */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Filter by Departmnent: </label>
+                  <label htmlFor="" className="font-medium">
+                    Filter by Department:{" "}
+                  </label>
                   <Select
                     options={departments.map((department) => ({
                       value: department.department_name,
                       label: department.department_name,
                     }))}
-
-
+                    value={selectedDepartment}
+                    onChange={(option) => setSelectedDepartment(option)}
                     placeholder="Select Department"
                     styles={customStyles}
                   />
                 </div>
 
-                {/* div for request status */}
                 <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">Filter by Status: </label>
-                  <select name="" id=""
+                  <label htmlFor="" className="font-medium">
+                    Filter by Status:{" "}
+                  </label>
+                  <select
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-
                   >
-                    <option value="" >Select status</option>
-                    <option value="">Pending</option>
-                    <option value="">Holding</option>
-                    <option value="">Delivered</option>
-
+                    <option value="">Select status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Holding">Holding</option>
+                    <option value="Delivered">Delivered</option>
                   </select>
                 </div>
-
               </div>
 
-              {/* filter by requested date */}
               <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium" >By Date:</label>
+                <label htmlFor="" className="font-medium">
+                  By Date:
+                </label>
                 <div className="flex gap-8 ">
                   <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                     type="date"
-                    placeholder=" from"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="border-2 border-neutral-300 p-2 rounded w-full focus:outline-slate-400"
                   />
                   <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                     type="date"
-                    placeholder="to"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="border-2 border-neutral-300 p-2 rounded w-full focus:outline-slate-400"
                   />
                 </div>
               </div>
             </div>
             <button
               className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-
+              onClick={handleFilter}
             >
               Filter
             </button>
           </form>
         </div>
       )}
-
-      
     </div>
   );
 };
