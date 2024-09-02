@@ -257,7 +257,7 @@ const Issue = () => {
               </button>
             </div>
           </div>
-          <div className="mt-10">
+          <div className="mt-3">
             {issues ? <IssueTable issues={issues} /> : <p>Loading issues...</p>}
           </div>
         </div>
@@ -450,7 +450,19 @@ const Issue = () => {
                             (option) => option.value === items.item
                           )}
                           placeholder="Select Item"
-                          styles={customStyles}
+                          styles={{
+                            ...customStyles,
+                            menuPortal: (provided) => ({
+                              ...provided,
+                              zIndex: 9999,
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              maxHeight: 150, // Adjust this as needed
+                              overflowY: 'auto', // This ensures only the menu list scrolls
+                            }),
+                          }}
+                          menuPortalTarget={document.body}
                           className="w-[190px]"
                           classNamePrefix="react-select"
                         />

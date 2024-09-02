@@ -272,15 +272,26 @@ const UserRequest = () => {
                         : null
                     }
                     placeholder="Select Item"
-                    styles={customStyles}
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150, // Adjust this as needed
+                        overflowY: 'auto', // This ensures only the menu list scrolls
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
                     className="w-[170px] whitespace-nowrap"
                   />
 
                   <input
-                    type="number"
                     name={`quantity_${index}`}
                     placeholder="Enter quantity"
-                    className="border-stone-200 border-2 rounded py-2 px-4 w-64"
+                    className="border-stone-200 border-2 rounded py-2 px-4 w-64 focus:outline-slate-400"
                     value={item.quantity}
                     onChange={(e) =>
                       handleItemChange(index, "quantity", e.target.value)
@@ -314,7 +325,24 @@ const UserRequest = () => {
                   onChange={handleSelectChange}
                   placeholder="Select Member"
                   className="w-full"
-                  // styles={customStyles}
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      minHeight:"46px",
+
+                    }),
+                    menuPortal: (provided) => ({
+                      ...provided,
+                      zIndex: 9999,
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      width:"100%",
+                      maxHeight: 150, // Adjust this as needed
+                      overflowY: 'auto', // This ensures only the menu list scrolls
+                    }),
+                  }}
+                  menuPortalTarget={document.body}
                 />
               </div>
               <div className="flex flex-col p-3 gap-3">

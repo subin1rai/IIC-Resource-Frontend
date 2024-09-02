@@ -774,7 +774,19 @@ const SpecificBill = () => {
                             : null
                         }
                         placeholder="Select Vendor"
-                        styles={customStyles}
+                        styles={{
+                          ...customStyles,
+                          menuPortal: (provided) => ({
+                            ...provided,
+                            zIndex: 9999,
+                          }),
+                          menuList: (provided) => ({
+                            ...provided,
+                            maxHeight: 150, // Adjust this as needed
+                            overflowY: 'auto', // This ensures only the menu list scrolls
+                          }),
+                        }}
+                        menuPortalTarget={document.body}
                       />
                     </div>
                     <div className="flex flex-col gap-3">

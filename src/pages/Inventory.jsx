@@ -547,7 +547,19 @@ const Inventory = () => {
                       (option) => option.value === itemData.category
                     )}
                     placeholder="Choose Category"
-                    styles={customStyles}
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150, // Adjust this as needed
+                        overflowY: 'auto', // This ensures only the menu list scrolls
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
                     className="react-select-container"
                     classNamePrefix="react-select"
                   />
@@ -569,7 +581,19 @@ const Inventory = () => {
                       (option) => option.value === itemData.itemCategory
                     )}
                     placeholder="Choose Item Category"
-                    styles={customStyles}
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150, // Adjust this as needed
+                        overflowY: 'auto', // This ensures only the menu list scrolls
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
                     classNamePrefix="react-select"
                   />
                 </div>
@@ -611,7 +635,7 @@ const Inventory = () => {
               </label>
               {/* features form  */}
 
-              <div className="flex flex-col gap-4 w-full max-h-[220px] overflow-auto ">
+              <div className="flex flex-col gap-4 w-full max-h-[200px] overflow-auto ">
                 {selectedFeatures.map((feature, index) => (
                   <div key={index} className="flex gap-4 w-full items-center">
                     <div className="flex justify-between gap-4 flex-row items-center w-full mt-1">
@@ -628,7 +652,19 @@ const Inventory = () => {
                           (option) => option.value === feature.feature
                         )}
                         placeholder="Choose Feature"
-                        styles={featureStyles}
+                        styles={{
+                          ...featureStyles,
+                          menuPortal: (provided) => ({
+                            ...provided,
+                            zIndex: 9999,
+                          }),
+                          menuList: (provided) => ({
+                            ...provided,
+                            maxHeight: 150, // Adjust this as needed
+                            overflowY: 'auto', // This ensures only the menu list scrolls
+                          }),
+                        }}
+                        menuPortalTarget={document.body} // Ensure dropdown is fully visible
                       />
                       <input
                         className="border-2 rounded border-neutral-200 w-[200px] p-2 focus:outline-slate-400"
