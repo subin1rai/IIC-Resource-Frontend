@@ -622,6 +622,9 @@ const SpecificRequest = () => {
           <ToastContainer />
         </div>
       </div>
+      <div className="absolute right-12 bottom-12 z-50">
+        <Chat />
+      </div>
     </div>
   );
 };

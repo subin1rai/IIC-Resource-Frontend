@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState, useMemo } from "react";
 import Box from "@mui/material/Box";
-import empty from "../assets/EmptyRequest.svg"
+import empty from "../assets/EmptyRequest.svg";
 
 const columns = [
   { id: "user_name", label: "Requested By", maxWidth: 70, align: "left" },
@@ -116,27 +116,7 @@ export default function ReqTable({ requests }) {
     align: "center",
   };
 
-  if (!requests || requests.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "480px",
-          width: "100%",
-        }}
-      >
-        <img
-          src={empty}
-          className="h-56"
-          alt="No requests"
-        />
-
-      </Box>
-    );
-  }
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - (requests?.length || 0)) : 0;
 
   return (
     <Paper
@@ -174,71 +154,101 @@ export default function ReqTable({ requests }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows
-              .slice()
-              .reverse()
-              .map((request, index) =>
-                request ? (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={request.req_id || `unknown-${index}`}
-                    onClick={() => handleRowClick(request.request_id)}
-                    style={{ cursor: "pointer" }}
+            {(!requests || requests.length === 0) ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "370px",
+                      width: "100%",
+                    }}
                   >
-                    {columns.map((column) => {
-                      let value = request[column.id];
+                    <img
+                      src={empty}
+                      alt="No requests"
+                      className="h-72 w-72"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                    
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              visibleRows
+                .slice()
+                .reverse()
+                .map((request, index) =>
+                  request ? (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={request.req_id || `unknown-${index}`}
+                      onClick={() => handleRowClick(request.request_id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {columns.map((column) => {
+                        let value = request[column.id];
 
-                      if (column.id === "status") {
-                        value = request.status;
-                      }
+                        if (column.id === "status") {
+                          value = request.status;
+                        }
 
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={cellStyle}
-                        >
-                          {column.id === "status" ? (
-                            <div
-                              style={{
-                                display: "inline-block",
-                                padding: "4px 8px",
-                                borderRadius: "4px",
-                                backgroundColor:
-                                  value === "Pending"
-                                    ? "#fff3cd"
-                                    : value === "Delivered"
-                                      ? "#d4edda"
-                                      : value === "Holding"
-                                        ? "#d1ecf1"
-                                        : "#f8d7da",
-                                color:
-                                  value === "Pending"
-                                    ? "#856404"
-                                    : value === "Delivered"
-                                      ? "#155724"
-                                      : value === "Holding"
-                                        ? "#0c5460"
-                                        : "#721c24",
-                                fontWeight: "normal",
-                                textAlign: "center",
-                              }}
-                            >
-                              {value ?? "N/A"}
-                            </div>
-                          ) : column.format && value != null ? (
-                            column.format(value)
-                          ) : (
-                            value ?? "N/A"
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ) : null
-              )}
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={cellStyle}
+                          >
+                            {column.id === "status" ? (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  backgroundColor:
+                                    value === "Pending"
+                                      ? "#fff3cd"
+                                      : value === "Delivered"
+                                        ? "#d4edda"
+                                        : value === "Holding"
+                                          ? "#d1ecf1"
+                                          : "#f8d7da",
+                                  color:
+                                    value === "Pending"
+                                      ? "#856404"
+                                      : value === "Delivered"
+                                        ? "#155724"
+                                        : value === "Holding"
+                                          ? "#0c5460"
+                                          : "#721c24",
+                                  fontWeight: "normal",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {value ?? "N/A"}
+                              </div>
+                            ) : column.format && value != null ? (
+                              column.format(value)
+                            ) : (
+                              value ?? "N/A"
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ) : null
+                )
+            )}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={columns.length} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -250,6 +260,9 @@ export default function ReqTable({ requests }) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
       />
     </Paper>
   );

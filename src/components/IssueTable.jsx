@@ -100,27 +100,7 @@ export default function InventoryTable({ issues }) {
   };
   const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
-  if (!issues || issues.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "480px",
-          width: "100%",
-        }}
-      >
-        <img
-          src={empty}
-          className="h-56"
-          alt="No requests"
-        />
 
-      </Box>
-    );
-  }
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", cursor: "pointer", fontSize: "18px" }}>
@@ -152,41 +132,70 @@ export default function InventoryTable({ issues }) {
           </TableHead>
 
           <TableBody>
-            {visibleRows.map((issue) => (
-              <TableRow
-                hover
-                role="checkbox"
-                tabIndex={-1}
-                key={issue.issue_id}
-              >
-                {columns.map((column) => {
-                  const value = issue[column.id];
-                  return (
-
-                    <TableCell key={column.id} align={column.align} style={cellStyle}>
-                      {column.id === "edit" ? (
-                        <IconButton color="primary">
-                          <EditIcon />
-                        </IconButton>
-                      ) : (
-                        (column.format && value != null ? column.format(value) : (value ?? "N/A"))
-                      )}
-                    </TableCell>
-                  );
-                })}
+            {!issues || issues.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "350px",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      src={empty}
+                      alt="No issues"
+                      className="h-80 w-80"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                  </Box>
+                </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              <>
+                {visibleRows.map((issue) => (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={issue.issue_id}
+                  >
+                    {columns.map((column) => {
+                      const value = issue[column.id];
+                      return (
+
+                        <TableCell key={column.id} align={column.align} style={cellStyle}>
+                          {column.id === "edit" ? (
+                            <IconButton color="primary">
+                              <EditIcon />
+                            </IconButton>
+                          ) : (
+                            (column.format && value != null ? column.format(value) : (value ?? "N/A"))
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[7]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={issues.length}
+        count={issues && Array.isArray(issues) ? issues.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
       />
     </Paper>
   );
