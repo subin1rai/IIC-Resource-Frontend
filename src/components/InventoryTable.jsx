@@ -9,6 +9,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
+import empty from "../assets/Emptyitem.svg"
+import Box from "@mui/material/Box";
+
 
 // all the columns of inventpry table
 const columns = [
@@ -183,107 +186,123 @@ export default function InventoryTable({ items }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows
-              .slice()
-              .reverse()
-              .map((item) => (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={item.item_id}
-                  onClick={() => handleRowClick(item.item_id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {columns.map((column) => {
-                    let value = item[column.id];
+            {!items || items.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "370px",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      src={empty}
+                      alt="No requests"
+                      className="h-72 w-72"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              <>
+                {visibleRows
+                  .slice()
+                  .reverse()
+                  .map((item) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={item.item_id}
+                      onClick={() => handleRowClick(item.item_id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {columns.map((column) => {
+                        let value = item[column.id];
 
-                    if (column.id === "quantity") {
-                      value = item?.quantity || 0;
-                    }
+                        if (column.id === "quantity") {
+                          value = item?.quantity || 0;
+                        } else if (column.id === "total_Amount") {
+                          value = "Rs " + Number(item.total_Amount).toFixed(2);
+                        } else if (column.id === "recent_purchase") {
+                          value = formatDate(item.recent_purchase) || "N/A";
+                        } else if (column.id === "item_name") {
+                          value = item.item_name;
 
-                    if (column.id === "total_Amount") {
-                      value = "Rs " + Number(item.total_Amount).toFixed(2);
-                    }
-
-                    if (column.id === "recent_purchase") {
-                      value = formatDate(item.recent_purchase) || "N/A";
-                    }
-
-                    if (column.id === "item_name") {
-                      value = item.item_name;
-
-                      if (column.id === "item_name") {
-                        value = item.item_name;
-
-                        if (
-                          item.itemsOnFeatures &&
-                          Object.keys(item.itemsOnFeatures).length > 0
-                        ) {
-                          const sortedKeys = Object.keys(
-                            item.itemsOnFeatures
-                          ).sort();
-
-                          const features = sortedKeys
-                            .map((key) => ` ${item.itemsOnFeatures[key]}`)
-                            .join(" - ");
-
-                          value = `${item.item_name} - ${features}`;
+                          if (
+                            item.itemsOnFeatures &&
+                            Object.keys(item.itemsOnFeatures).length > 0
+                          ) {
+                            const sortedKeys = Object.keys(item.itemsOnFeatures).sort();
+                            const features = sortedKeys
+                              .map((key) => ` ${item.itemsOnFeatures[key]}`)
+                              .join(" - ");
+                            value = `${item.item_name} - ${features}`;
+                          }
                         }
-                      }
-                    }
 
-                    return (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={cellStyle}
-                      >
-                        {column.id === "stockStatus" ? (
-                          <div
-                            style={{
-                              display: "inline-block",
-                              padding: "4px 8px",
-                              borderRadius: "4px",
-                              backgroundColor:
-                                value === "In Stock"
-                                  ? "#d4edda"
-                                  : value === "in stock"
-                                  ? "#155724"
-                                  : "#f8d7da",
-                              color:
-                                value === "Low Stock"
-                                  ? "#856404"
-                                  : value === "low stock"
-                                  ? "#155724"
-                                  : "#721c24",
-                              fontWeight: "normal",
-                              textAlign: "center",
-                            }}
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={cellStyle}
                           >
-                            {value ?? "Low Stock"}
-                          </div>
-                        ) : column.format && value != null ? (
-                          column.format(value)
-                        ) : (
-                          value ?? "N/A"
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
+                            {column.id === "stockStatus" ? (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  backgroundColor:
+                                    value === "In Stock"
+                                      ? "#d4edda"
+                                      : value === "in stock"
+                                        ? "#155724"
+                                        : "#f8d7da",
+                                  color:
+                                    value === "Low Stock"
+                                      ? "#856404"
+                                      : value === "low stock"
+                                        ? "#155724"
+                                        : "#721c24",
+                                  fontWeight: "normal",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {value ?? "Low Stock"}
+                              </div>
+                            ) : column.format && value != null ? (
+                              column.format(value)
+                            ) : (
+                              value ?? "N/A"
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+              </>
+            )}
           </TableBody>
+
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={items.length}
+        count={items && Array.isArray(items) ? items.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
       />
     </Paper>
   );

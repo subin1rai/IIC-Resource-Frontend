@@ -11,6 +11,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
+import empty from "../assets/Emptybills.svg"
+import Box from "@mui/material/Box";
+
 
 const columns = [
   { id: "bill_no", label: "Bill Number", maxWidth: 70 },
@@ -184,74 +187,99 @@ export default function RecordsTable({ bills }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows
-              .slice()
-              .reverse()
-              .map((bill, index) =>
-                bill ? (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={bill.bill_ID || `unknown-${index}`}
-                    onClick={() => handleRowClick(bill.bill_id)}
-                    style={{ cursor: "pointer" }}
+            {(!bills || bills.length === 0) ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "370px",
+                      width: "100%",
+                    }}
                   >
-                    {columns.map((column) => {
-                      let value = bill[column.id];
+                    <img
+                      src={empty}
+                      alt="No bills"
+                      className="h-72 w-72"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              visibleRows
+                .slice()
+                .reverse()
+                .map((bill, index) =>
+                  bill ? (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={bill.bill_ID || `unknown-${index}`}
+                      onClick={() => handleRowClick(bill.bill_id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {columns.map((column) => {
+                        let value = bill[column.id];
 
-                      if (column.id === "vendor_name") {
-                        value = bill.vendors?.vendor_name;
-                      }
-                      if (column.id === "item_name") {
-                        value = bill.items?.item_name;
-                      }
-                      if (column.id === "bill_status") {
-                        value = bill?.isApproved ? "Approved" : "Pending";
-                      }
+                        if (column.id === "vendor_name") {
+                          value = bill.vendors?.vendor_name;
+                        }
+                        if (column.id === "item_name") {
+                          value = bill.items?.item_name;
+                        }
+                        if (column.id === "bill_status") {
+                          value = bill?.isApproved ? "Approved" : "Pending";
+                        }
 
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={cellStyle}
-                        >
-                          {column.id === "bill_status" ? (
-                            <div
-                              style={{
-                                display: "inline-block",
-                                padding: "4px 8px",
-                                borderRadius: "4px",
-                                backgroundColor:
-                                  value === "Pending"
-                                    ? "#fff3cd"
-                                    : value === "Approved"
-                                    ? "#d4edda"
-                                    : "#f8d7da",
-                                color:
-                                  value === "Pending"
-                                    ? "#856404"
-                                    : value === "Approved"
-                                    ? "#155724"
-                                    : "#721c24",
-                                fontWeight: "normal",
-                                textAlign: "center",
-                              }}
-                            >
-                              {value ?? "N/A"}  
-                            </div>
-                          ) : column.format && value != null ? (
-                            column.format(value)
-                          ) : (
-                            value ?? "N/A"
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ) : null
-              )}
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={cellStyle}
+                          >
+                            {column.id === "bill_status" ? (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  backgroundColor:
+                                    value === "Pending"
+                                      ? "#fff3cd"
+                                      : value === "Approved"
+                                        ? "#d4edda"
+                                        : "#f8d7da",
+                                  color:
+                                    value === "Pending"
+                                      ? "#856404"
+                                      : value === "Approved"
+                                        ? "#155724"
+                                        : "#721c24",
+                                  fontWeight: "normal",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {value ?? "N/A"}
+                              </div>
+                            ) : column.format && value != null ? (
+                              column.format(value)
+                            ) : (
+                              value ?? "N/A"
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ) : null
+                )
+            )}
           </TableBody>
+
         </Table>
       </TableContainer>
       <TablePagination
