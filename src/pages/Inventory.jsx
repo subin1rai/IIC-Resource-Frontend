@@ -65,6 +65,9 @@ const Inventory = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
 
+  const [measuringUnit, setMeasuringUnit] = useState([])
+
+
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
   ]);
@@ -235,6 +238,8 @@ const Inventory = () => {
     }
   };
 
+
+
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -274,6 +279,18 @@ const Inventory = () => {
           }
         );
 
+        const unitResponse = await axios.get(
+          "http://localhost:8898/api/units",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        setMeasuringUnit(unitResponse.data.measuring_unit)
+        console.log(measuringUnit)
+
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);
@@ -304,6 +321,10 @@ const Inventory = () => {
 
     getAllItems();
   }, []);
+
+
+
+
 
   const handleDateChange = (name) => (date) => {
     setFilterOptions((prev) => ({ ...prev, [name]: date }));
@@ -836,8 +857,7 @@ const Inventory = () => {
                   }
                 >
                   <option value="">Select an option</option>
-                  <option value="Piece">Piece</option>
-                  <option value="Kilogram">Kilogram</option>
+                  {measuringUnit.map((unit)=>(<option value="">{unit}</option>))}
                 </select>
               </div>
             </div>
