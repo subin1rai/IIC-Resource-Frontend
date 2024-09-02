@@ -67,7 +67,7 @@ const SpecificBill = () => {
           items: data,
         }));
         break;
-      case "noBill":
+      case "NOBILL":
         // setNoBillData(data);
         setEditedBill((prevBill) => ({
           ...prevBill,
@@ -141,12 +141,13 @@ const SpecificBill = () => {
             onDataUpdate={(data) => handleDataUpdate(data, "pan")}
           />
         );
-      case "noBill":
+      case "NOBILL":
         return (
           <NoBill
             billDetails={billDetails}
+            selectedOption={selectedOption}
             handleChange={handleChange}
-            onDataUpdate={(data) => handleDataUpdate(data, "noBill")}
+            onDataUpdate={(data) => handleDataUpdate(data, "NOBILL")}
           />
         );
       default:
@@ -164,16 +165,17 @@ const SpecificBill = () => {
   };
 
   const customStyles = {
-    control: (provided) => ({
+     control: (provided, state) => ({
       ...provided,
-      width: "254px",
+      width: "250px",
       borderRadius: "4px",
-      borderColor: "lightgrey",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      borderColor: "#d1d5db",
       boxShadow: "none",
       minHeight: "41px",
       color: "black",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
@@ -231,7 +233,8 @@ const SpecificBill = () => {
         const type = singleBillResponse.data?.bill.bill_type.toLowerCase();
         const percent = singleBillResponse.data?.TDS || 0;
         const value = type + " " + percent;
-        setSelectedOption(value);
+        const noBillValue = type;
+        setSelectedOption(value, noBillValue);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
@@ -281,22 +284,37 @@ const SpecificBill = () => {
     setBill((prevBill) => ({
       ...prevBill,
       selectedOptions: value,
+      items: value === "NOBILL" ? [] : prevBill.items,
     }));
+    if (value === "NOBILL") {
+      setEditedBill((prevEditedBill) => ({
+        ...prevEditedBill,
+        items: [],
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+
+      const dataToSubmit = {
+        ...editedBill,
+        selectedOption: selectedOption,
+      };
+  
+      // Handle NOBILL case specifically
+      // if (selectedOption === "NOBILL") {
+      //   dataToSubmit.items = []; 
+      // }
       const response = await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
-        {
-          ...editedBill,
-          selectedOption: selectedOption,
-        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          ...editedBill,
+          selectedOption: selectedOption,
         }
       );
 
@@ -329,6 +347,7 @@ const SpecificBill = () => {
         );
 
         setBill(response.data.bill);
+        setSelectedOption(response.data.bill.bill_type);
         setEditedBill({
           bill_no: response.data.bill.bill_no || "",
           bill_date: response.data.bill.bill_date
@@ -342,6 +361,7 @@ const SpecificBill = () => {
           items: response.data.bill.items || [],
         });
         setLoading(false);
+        console.log(response);
       } catch (error) {
         console.error("Error fetching Bill data:", error);
       }
@@ -647,10 +667,10 @@ const SpecificBill = () => {
                     <div className="h-[100%] bg-neutral-300 w-1"></div>
                     <span
                       onClick={() =>
-                        handleBillChange({ target: { value: "noBill" } })
+                        handleBillChange({ target: { value: "NOBILL" } })
                       }
                       className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "noBill"
+                        selectedOption === "NOBILL"
                           ? "bg-blue-200 text-black"
                           : "border-neutral-300"
                       } px-4 whitespace-nowrap`}
@@ -674,7 +694,7 @@ const SpecificBill = () => {
                       Bill Date:
                     </label>
                     <NepaliDatePicker
-                      inputClassName="form-control"
+                      inputClassName="form-control focus:outline-none"
                       className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md "
                       value={editedBill.bill_date}
                       onChange={handleDateChange}
@@ -689,7 +709,8 @@ const SpecificBill = () => {
                         Bill No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        type="number"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter bill number"
                         autoFocus="autofocus"
                         name="bill_no"
@@ -704,7 +725,8 @@ const SpecificBill = () => {
                       Voucher No:
                     </label>
                     <input
-                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                       type="number"
+                      className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                       placeholder="Enter voucher number"
                       autoFocus="autofocus"
                       name="invoice_no"
@@ -760,7 +782,7 @@ const SpecificBill = () => {
                         VAT/PAN No:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 focus:outline-none p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter Vat/Pan number"
                         autoFocus="autofocus"
                         name="vat_number"
@@ -776,7 +798,7 @@ const SpecificBill = () => {
                         Paid amount:
                       </label>
                       <input
-                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md"
+                        className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                         placeholder="Enter paid amount"
                         name="paid_amount"
                         id="paid_amount"

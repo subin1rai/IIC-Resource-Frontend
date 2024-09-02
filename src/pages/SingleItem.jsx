@@ -258,6 +258,18 @@ const SingleItem = () => {
       padding: "2px 8px",
     }),
   };
+
+  const getFilteredFeatureOptions = (index) => {
+    const selectedFeatureIds = selectedFeatures.map(
+      (feature) => feature.feature
+    );
+    return featureOptions.filter(
+      (option) =>
+        !selectedFeatureIds.includes(option.value) ||
+        option.value === selectedFeatures[index].feature
+    );
+  };
+
   return (
     <div className="flex bg-background h-screen w-screen">
       <Sidebar />
@@ -476,7 +488,7 @@ const SingleItem = () => {
                     <div key={index} className="flex gap-4 w-full items-center">
                       <div className="flex justify-between gap-4 flex-row items-center w-full">
                         <Select
-                          options={featureOptions}
+                          options={getFilteredFeatureOptions(index)}
                           onChange={(selectedOption) =>
                             handleFeatureChange(
                               index,
@@ -518,11 +530,12 @@ const SingleItem = () => {
                   <button
                     type="button"
                     onClick={addFeatureField}
-                    className={`flex items-center gap-2 text-blue-600 w-fit outline-none hover:underline hover:text-blue-800 transition-colors ${selectedFeatures.length >= feature.length
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                      }`}
-                    disabled={selectedFeatures.length >= feature.length}
+                    className={`flex items-center gap-2 text-blue-600 w-fit outline-none hover:underline hover:text-blue-800 transition-colors ${
+                      selectedFeatures.length >= featureOptions.length
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={selectedFeatures.length >= featureOptions.length}
                   >
                     Add Feature
                   </button>

@@ -41,17 +41,15 @@ const Request = () => {
   const token = localStorage.getItem("token");
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      width: "250px",
+      alignSelf: "end",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       borderRadius: "4px",
-      border: "2px solid #d1d5db",
-      borderColor: "#d1d5db",
       boxShadow: "none",
-      minHeight: "41px",
-      color: "black",
+      minHeight: "46px",
       "&:hover": {
-        borderColor: "#aaa",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
       },
     }),
     menu: (provided) => ({
@@ -269,9 +267,7 @@ const Request = () => {
         </div>
       )}
 
-      <div className="absolute right-12 bottom-12 z-50">
-        <Chat />
-      </div>
+      
     </div>
   );
 };

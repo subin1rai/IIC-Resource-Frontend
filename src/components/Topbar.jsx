@@ -8,6 +8,7 @@ import notificationIcon from "../assets/notification.svg";
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import profile from "../assets/profile.png";
+import empty from "../assets/Emptynoti.svg"; // Import the new image
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +29,6 @@ const Topbar = () => {
   const [notReadCount, setNotReadCount] = useState(0);
   const [initials, setInitials] = useState("");
   const [bgColor, setBgColor] = useState(() => {
-    // Try to get the color from localStorage, or generate a new one if not found
     return localStorage.getItem("initialsBgColor") || getRandomColor();
   });
   const dropdownRef = useRef(null);
@@ -141,7 +141,6 @@ const Topbar = () => {
 
       setInitials(initials.toUpperCase());
 
-      // Save the color to localStorage
       if (!localStorage.getItem("initialsBgColor")) {
         localStorage.setItem("initialsBgColor", bgColor);
       }
@@ -285,7 +284,16 @@ const Topbar = () => {
               </div>
               <div className="w-full m-auto bg-background h-0.5"></div>
               {notification.length === 0 ? (
-                <div className="px-6 py-3">No notifications found.</div>
+                <div className="flex items-center justify-center p-4">
+                  <img
+                    src={empty}
+                    alt="No notifications"
+                    className="w-56 h-56"
+                  />
+                  {/* <p className="text-center text-gray-500">
+                    No notifications available
+                  </p> */}
+                </div>
               ) : (
                 notification
                   .slice()
@@ -293,11 +301,10 @@ const Topbar = () => {
                   .map((notification) => (
                     <div
                       key={notification.notification_id}
-                      className={`border-b border-neutral-300 px-6 py-3  ${
-                        notification.state
-                          ? "bg-white"
-                          : "bg-purple-100 cursor-default"
-                      }`}
+                      className={`border-b border-neutral-300 px-6 py-3  ${notification.state
+                        ? "bg-white"
+                        : "bg-purple-100 cursor-default"
+                        }`}
                     >
                       <div
                         onClick={() =>

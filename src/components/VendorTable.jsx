@@ -9,6 +9,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
+import empty from "../assets/Emptyvendor.svg"
+import Box from "@mui/material/Box";
 
 const columns = [
   { id: "vendor_name", label: "Vendor Name", maxWidth: 120 },
@@ -159,6 +161,8 @@ export default function VendorTable({ vendors }) {
     backgroundColor: "#f5f5f5",
   };
 
+
+
   return (
     <Paper
       sx={{
@@ -194,69 +198,94 @@ export default function VendorTable({ vendors }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((vendor) => (
-              <TableRow
-                hover
-                role="checkbox"
-                tabIndex={-1}
-                key={vendor?.vendor_id || Math.random()}
-                onClick={() => handleRowClick(vendor?.vendor_id)}
-              >
-                {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align}>
-                    {column.id === "payment_status" ? (
-                      // Custom condition for payment_status based on pending_payment
-                      vendor.pending_payment > 0 ? (
-                        <span
-                          style={{
-                            display: "inline-block",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            backgroundColor: "#fff3cd",
-                            fontWeight: "normal",
-                            textAlign: "center",
-                          }}
-                        >
-                          Pending
-                        </span>
-                      ) : (
-                        <span
-                          style={{
-                            display: "inline-block",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            backgroundColor: "#d4edda",
-                            fontWeight: "normal",
-                            textAlign: "center",
-                          }}
-                        >
-                          Completed
-                        </span>
-                      )
-                    ) : column.format &&
-                      vendor &&
-                      vendor[column.id] !== undefined ? (
-                      column.format(vendor[column.id])
-                    ) : vendor && vendor[column.id] !== undefined ? (
-                      vendor[column.id]
-                    ) : (
-                      "N/A"
-                    )}
-                  </TableCell>
-                ))}
+            {(!vendors || vendors.length === 0) ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "380px",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      src={empty}
+                      alt="No requests"
+                      className="h-72 w-72"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                  </Box>
+                </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              visibleRows.map((vendor) => (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={vendor?.vendor_id || Math.random()}
+                  onClick={() => handleRowClick(vendor?.vendor_id)}
+                >
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align={column.align}>
+                      {column.id === "payment_status" ? (
+                        vendor.pending_payment > 0 ? (
+                          <span
+                            style={{
+                              display: "inline-block",
+                              padding: "4px 8px",
+                              borderRadius: "4px",
+                              backgroundColor: "#fff3cd",
+                              fontWeight: "normal",
+                              textAlign: "center",
+                            }}
+                          >
+                            Pending
+                          </span>
+                        ) : (
+                          <span
+                            style={{
+                              display: "inline-block",
+                              padding: "4px 8px",
+                              borderRadius: "4px",
+                              backgroundColor: "#d4edda",
+                              fontWeight: "normal",
+                              textAlign: "center",
+                            }}
+                          >
+                            Completed
+                          </span>
+                        )
+                      ) : column.format && vendor && vendor[column.id] !== undefined ? (
+                        column.format(vendor[column.id])
+                      ) : vendor && vendor[column.id] !== undefined ? (
+                        vendor[column.id]
+                      ) : (
+                        "N/A"
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
           </TableBody>
+
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={vendors?.length || 0}
+        count={vendors && Array.isArray(vendors) ? vendors.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
       />
     </Paper>
   );
