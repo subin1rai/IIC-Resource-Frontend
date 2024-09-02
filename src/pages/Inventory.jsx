@@ -65,6 +65,9 @@ const Inventory = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
 
+  const [measuringUnit, setMeasuringUnit] = useState([])
+
+
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
   ]);
@@ -235,6 +238,8 @@ const Inventory = () => {
     }
   };
 
+
+
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -274,6 +279,18 @@ const Inventory = () => {
           }
         );
 
+        const unitResponse = await axios.get(
+          "http://localhost:8898/api/units",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        setMeasuringUnit(unitResponse.data.measuring_unit)
+        console.log(measuringUnit)
+
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);
@@ -305,6 +322,14 @@ const Inventory = () => {
     getAllItems();
   }, []);
 
+
+
+
+
+  const handleDateChange = (name) => (date) => {
+    setFilterOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
   useEffect(() => {
     const filterItems = () => {
       const lowercasedTerm = searchTerm.toLowerCase();
@@ -333,7 +358,7 @@ const Inventory = () => {
 
     if (filterOptions.dateFrom && filterOptions.dateTo) {
       filteredResults = filteredResults.filter((item) => {
-        const itemDate = new Date(item.createdAt);
+        const itemDate = item.recent_purchase;
         return (
           itemDate >= new Date(filterOptions.dateFrom) &&
           itemDate <= new Date(filterOptions.dateTo)
@@ -344,16 +369,16 @@ const Inventory = () => {
     if (filterOptions.priceSort) {
       filteredResults.sort((a, b) => {
         if (filterOptions.priceSort === "high-to-low") {
-          return b.price - a.price;
+          return b.unit_price - a.unit_price;
         } else {
-          return a.price - b.price;
+          return a.unit_price - b.unit_price;
         }
       });
     }
 
-    if (filterOptions.unit) {
+    if (filterOptions.measuring_unit) {
       filteredResults = filteredResults.filter(
-        (item) => item.measuring_unit === filterOptions.unit
+        (item) => item.measuring_unit === filterOptions.measuring_unit
       );
     }
 
@@ -386,10 +411,13 @@ const Inventory = () => {
           (item) => item.itemCategory === filterOptions.itemCategory
         );
       }
+      console.log(filterOptions.dateFrom);
+      console.log(filterOptions.dateTo);
 
       if (filterOptions.dateFrom && filterOptions.dateTo) {
         newFilteredItems = newFilteredItems.filter((item) => {
-          const itemDate = new Date(item.createdAt);
+          const itemDate = new Date(item.recent_purchase);
+          console.log(item.recent_purchase);
           return (
             itemDate >= new Date(filterOptions.dateFrom) &&
             itemDate <= new Date(filterOptions.dateTo)
@@ -556,7 +584,7 @@ const Inventory = () => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
@@ -590,7 +618,7 @@ const Inventory = () => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
@@ -660,11 +688,11 @@ const Inventory = () => {
                           }),
                           menuList: (provided) => ({
                             ...provided,
-                            maxHeight: 150, // Adjust this as needed
-                            overflowY: 'auto', // This ensures only the menu list scrolls
+                            maxHeight: 150,
+                            overflowY: "auto",
                           }),
                         }}
-                        menuPortalTarget={document.body} // Ensure dropdown is fully visible
+                        menuPortalTarget={document.body}
                       />
                       <input
                         className="border-2 rounded border-neutral-200 w-[200px] p-2 focus:outline-slate-400"
@@ -768,12 +796,11 @@ const Inventory = () => {
               <label htmlFor="" className="font-medium">
                 Purchase From:
               </label>
-
               <NepaliDatePicker
                 inputClassName="form-control focus:outline-none"
                 className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateFrom}
-                // onChange={handleDateChange}
+                onChange={handleDateChange("dateFrom")}
                 options={{ calenderLocale: "en", valueLocale: "en" }}
               />
             </div>
@@ -785,12 +812,12 @@ const Inventory = () => {
                 inputClassName="form-control focus:outline-none"
                 className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateTo}
-                // onChange={handleDateChange}
+                onChange={handleDateChange("dateTo")}
                 options={{ calenderLocale: "en", valueLocale: "en" }}
               />
-
             </div>
           </div>
+
           <div className="flex gap-8">
             <div className="flex flex-col gap-3">
               <label htmlFor="" className="font-medium">
@@ -830,8 +857,7 @@ const Inventory = () => {
                   }
                 >
                   <option value="">Select an option</option>
-                  <option value="Piece">Piece</option>
-                  <option value="Kilogram">Kilogram</option>
+                  {measuringUnit.map((unit)=>(<option value="">{unit}</option>))}
                 </select>
               </div>
             </div>
@@ -863,6 +889,7 @@ const Inventory = () => {
           </button>
         </form>
       )}
+
       {(addFormVisibility || filterFormVisibility) && (
         <div className="bg-overlay absolute w-screen h-screen z-40"></div>
       )}

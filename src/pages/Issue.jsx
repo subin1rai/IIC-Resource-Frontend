@@ -15,7 +15,7 @@ import axios from "axios";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
-    issue_date:"",
+    issue_date: "",
     issued_to: "",
     purpose: "",
     items: [],
@@ -59,8 +59,8 @@ const Issue = () => {
         issue_date: issue.issue_date,
 
         issued_to: issue.issued_to,
-        purpose: purpose,  // Purpose is set separately
-        items: formattedItems,  // Add the formatted items array
+        purpose: purpose, // Purpose is set separately
+        items: formattedItems, // Add the formatted items array
       };
 
       const response = await axios.post(
@@ -78,15 +78,18 @@ const Issue = () => {
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map(item => item.item_name).join(', '),
-        item_quantity: formattedItems.reduce((sum, item) => sum + Number(item.quantity), 0),
+        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_quantity: formattedItems.reduce(
+          (sum, item) => sum + Number(item.quantity),
+          0
+        ),
         requested_by: newIssue.issued_to,
-        department: newIssue.department || 'N/A', 
-        issued_by: newIssue.approved_by || 'N/A', 
-        status: newIssue.status || 'Dispatched', 
-        remarks: newIssue.purpose || 'N/A',
+        department: newIssue.department || "N/A",
+        issued_by: newIssue.approved_by || "N/A",
+        status: newIssue.status || "Dispatched",
+        remarks: newIssue.purpose || "N/A",
       };
-  
+
       setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
       toast.success(`Items issued to ${issue.issued_to} successfully `);
@@ -411,19 +414,18 @@ const Issue = () => {
                     />
                   </div>
 
-              <div className="flex flex-col gap-4">
-                  <label className="font-medium text-md"> Issued To: </label>
-                  <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Student Name"
-                  autoFocus="autofocus"
-                  name="issued_to"
-                  id="issued_to"
-                  onChange={handleChange}
-                />
-                </div>
-
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md"> Issued To: </label>
+                    <input
+                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
+                      type="text"
+                      placeholder="Enter Student Name"
+                      autoFocus="autofocus"
+                      name="issued_to"
+                      id="issued_to"
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex py-3 gap-3">

@@ -122,6 +122,7 @@ const SpecificVendor = () => {
   const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
   const [error, setError] = useState("");
+  const [contactError, setContactError] = useState("");
 
   const [editedVendor, setEditedVendor] = useState({
     vendor_name: "",
@@ -133,8 +134,6 @@ const SpecificVendor = () => {
   });
 
   const { vendor_id } = useParams();
-
-  console.log(editedVendor);
 
   const nepaliMonthsInEnglish = [
     "Baisakh",
@@ -200,11 +199,20 @@ const SpecificVendor = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
+    if (name === 'contact') {
+      validateContact(value);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!validateContact(editedVendor.vendor_contact)) {
+      setError("Please correct the contact number.");
+      return;
+    }
+
     try {
       const response = await axios.put(
         `http://localhost:8898/api/updateVendor/${vendor_id}`,
@@ -215,6 +223,7 @@ const SpecificVendor = () => {
           },
         }
       );
+      console.log(response);
       setVendor({ ...vendor, ...response.data });
       closeVendorDetailsForm();
       Swal.fire("Success", "Vendor updated successfully", "success");
@@ -224,6 +233,7 @@ const SpecificVendor = () => {
     }
   };
 
+  console.log(vendor);
   const handleBlackList = async () => {
     try {
       await axios.put(
@@ -291,6 +301,16 @@ const SpecificVendor = () => {
 
     fetchItemCategories();
   }, [token]);
+
+  const validateContact = (vendor_contact) => {
+    const contactNumber = parseInt(vendor_contact);
+    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
+      setContactError("Please enter a valid 10-digit contact number starting with 97, 98, or 99.");
+      return false;
+    }
+    setContactError("");
+    return true;
+  }
 
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
@@ -412,6 +432,12 @@ const SpecificVendor = () => {
                     {vendor?.vendorCategory
                       .map((category) => category.item_category_name)
                       .join(", ") || "--"}
+                  </span>
+                </p>
+                <p className="font-medium">
+                  Profile:{" "}
+                  <span className="font-medium pl-3 text-[#6D6E70]">
+                    {vendor?.vendor_profile}
                   </span>
                 </p>
               </div>

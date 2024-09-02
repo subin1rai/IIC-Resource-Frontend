@@ -31,6 +31,14 @@ const columns = [
     numeric: true,
   },
   {
+    id: "TDS",
+    label: "Total TDS",
+    maxWidth: 120,
+    align: "center",
+    format: (value) => value?.toFixed(2) || "N/A",
+    numeric: true,
+  },
+  {
     id: "last_purchase_date",
     label: "Recent Purchase",
     maxWidth: 120,

@@ -34,8 +34,8 @@ const columns = [
   { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
-  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+  { id: "status", label: "Status", minWidth: 70, align: "center" },
   { id: "edit", label: "Edit", minWidth: 70, align: "center" },
 ];
 

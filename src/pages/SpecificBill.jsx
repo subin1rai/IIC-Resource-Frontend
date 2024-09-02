@@ -46,9 +46,10 @@ const SpecificBill = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(
-    billDetails.bill_type + " " + billDetails.TDS
-  );
+  const [selectedOption, setSelectedOption] = useState();
+  // billDetails.bill_type + " " + billDetails.TDS
+
+  console.log(selectedOption);
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
@@ -164,7 +165,7 @@ const SpecificBill = () => {
   };
 
   const customStyles = {
-     control: (provided, state) => ({
+    control: (provided, state) => ({
       ...provided,
       width: "250px",
       borderRadius: "4px",
@@ -229,12 +230,17 @@ const SpecificBill = () => {
 
         setBillDetails(singleBillResponse.data);
 
-        const type = singleBillResponse.data?.bill.bill_type.toLowerCase();
-        const percent = singleBillResponse.data?.TDS || 0;
-        const value = type + " " + percent;
-        const noBillValue = type;
-        setSelectedOption(value, noBillValue);
-        console.log("User role:", role);
+        console.log(
+          "My billitem: ",
+          singleBillResponse.data.bill.BillItems[0].TDS
+        );
+
+        setSelectedOption(
+          singleBillResponse.data?.bill.bill_type.toLowerCase() +
+            " " +
+            singleBillResponse.data.bill.BillItems[0].TDS
+        );
+
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
         setLoading(false);
@@ -304,12 +310,15 @@ const SpecificBill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-
       const dataToSubmit = {
         ...editedBill,
         selectedOption: selectedOption,
       };
-  
+
+      // Handle NOBILL case specifically
+      // if (selectedOption === "NOBILL") {
+      //   dataToSubmit.items = [];
+      // }
       const response = await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
           dataToSubmit,
@@ -347,8 +356,6 @@ const SpecificBill = () => {
           }
         );
 
-        setBill(response.data.bill);
-        setSelectedOption(response.data.bill.bill_type);
         setEditedBill({
           bill_no: response.data.bill.bill_no || "",
           bill_date: response.data.bill.bill_date
@@ -726,7 +733,7 @@ const SpecificBill = () => {
                       Voucher No:
                     </label>
                     <input
-                       type="number"
+                      type="number"
                       className="border-[1px] border-neutral-300 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
                       placeholder="Enter voucher number"
                       autoFocus="autofocus"
@@ -784,7 +791,7 @@ const SpecificBill = () => {
                           menuList: (provided) => ({
                             ...provided,
                             maxHeight: 150, // Adjust this as needed
-                            overflowY: 'auto', // This ensures only the menu list scrolls
+                            overflowY: "auto", // This ensures only the menu list scrolls
                           }),
                         }}
                         menuPortalTarget={document.body}
