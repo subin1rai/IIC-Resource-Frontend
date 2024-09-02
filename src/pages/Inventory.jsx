@@ -14,6 +14,8 @@ import removeIcon from "../assets/removeIcon.svg";
 import item from "../assets/item.png";
 import categoryIcon from "../assets/categoryno.png";
 import exportIcon from "../assets/export.svg";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -303,6 +305,10 @@ const Inventory = () => {
     getAllItems();
   }, []);
 
+  const handleDateChange = (name) => (date) => {
+    setFilterOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
   useEffect(() => {
     const filterItems = () => {
       const lowercasedTerm = searchTerm.toLowerCase();
@@ -331,7 +337,7 @@ const Inventory = () => {
 
     if (filterOptions.dateFrom && filterOptions.dateTo) {
       filteredResults = filteredResults.filter((item) => {
-        const itemDate = new Date(item.createdAt);
+        const itemDate = item.recent_purchase;
         return (
           itemDate >= new Date(filterOptions.dateFrom) &&
           itemDate <= new Date(filterOptions.dateTo)
@@ -342,16 +348,16 @@ const Inventory = () => {
     if (filterOptions.priceSort) {
       filteredResults.sort((a, b) => {
         if (filterOptions.priceSort === "high-to-low") {
-          return b.price - a.price;
+          return b.unit_price - a.unit_price;
         } else {
-          return a.price - b.price;
+          return a.unit_price - b.unit_price;
         }
       });
     }
 
-    if (filterOptions.unit) {
+    if (filterOptions.measuring_unit) {
       filteredResults = filteredResults.filter(
-        (item) => item.measuring_unit === filterOptions.unit
+        (item) => item.measuring_unit === filterOptions.measuring_unit
       );
     }
 
@@ -384,10 +390,13 @@ const Inventory = () => {
           (item) => item.itemCategory === filterOptions.itemCategory
         );
       }
+      console.log(filterOptions.dateFrom);
+      console.log(filterOptions.dateTo);
 
       if (filterOptions.dateFrom && filterOptions.dateTo) {
         newFilteredItems = newFilteredItems.filter((item) => {
-          const itemDate = new Date(item.createdAt);
+          const itemDate = new Date(item.recent_purchase);
+          console.log(item.recent_purchase);
           return (
             itemDate >= new Date(filterOptions.dateFrom) &&
             itemDate <= new Date(filterOptions.dateTo)
@@ -706,6 +715,7 @@ const Inventory = () => {
                 placeholder="Choose Category"
                 styles={customStyles}
                 classNamePrefix="react-select"
+                autoFocus
               />
               <Select
                 options={itemCategoryOptions}
@@ -724,37 +734,33 @@ const Inventory = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <label htmlFor="" className="font-medium">
-              By Date:
-            </label>
-            <div className="flex gap-8 ">
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                type="date"
-                placeholder=" from"
+          <div className="flex gap-8">
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Purchase From:
+              </label>
+              <NepaliDatePicker
+                inputClassName="form-control focus:outline-none"
+                className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateFrom}
-                onChange={(e) =>
-                  setFilterOptions((prev) => ({
-                    ...prev,
-                    dateFrom: e.target.value,
-                  }))
-                }
+                onChange={handleDateChange("dateFrom")}
+                options={{ calenderLocale: "en", valueLocale: "en" }}
               />
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                type="date"
-                placeholder="to"
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Purchase To:
+              </label>
+              <NepaliDatePicker
+                inputClassName="form-control focus:outline-none"
+                className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateTo}
-                onChange={(e) =>
-                  setFilterOptions((prev) => ({
-                    ...prev,
-                    dateTo: e.target.value,
-                  }))
-                }
+                onChange={handleDateChange("dateTo")}
+                options={{ calenderLocale: "en", valueLocale: "en" }}
               />
             </div>
           </div>
+
           <div className="flex gap-8">
             <div className="flex flex-col gap-3">
               <label htmlFor="" className="font-medium">
@@ -827,6 +833,7 @@ const Inventory = () => {
           </button>
         </form>
       )}
+
       {(addFormVisibility || filterFormVisibility) && (
         <div className="bg-overlay absolute w-screen h-screen z-40"></div>
       )}
