@@ -134,8 +134,6 @@ const SpecificVendor = () => {
 
   const { vendor_id } = useParams();
 
-  console.log(editedVendor);
-
   const nepaliMonthsInEnglish = [
     "Baisakh",
     "Jestha",
@@ -216,7 +214,7 @@ const SpecificVendor = () => {
         }
       );
       console.log(response);
-      setVendor({ ...vendor, ...response.data.updatedData });
+      setVendor({ ...vendor, ...response.data });
       closeVendorDetailsForm();
       Swal.fire("Success", "Vendor updated successfully", "success");
     } catch (error) {
@@ -225,6 +223,7 @@ const SpecificVendor = () => {
     }
   };
 
+  console.log(vendor);
   const handleBlackList = async () => {
     try {
       await axios.put(
@@ -268,8 +267,6 @@ const SpecificVendor = () => {
 
     fetchSingleVendor();
   }, [vendor_id, token]);
-
-  console.log(vendor);
 
   useEffect(() => {
     const fetchItemCategories = async () => {
@@ -415,6 +412,12 @@ const SpecificVendor = () => {
                     {vendor?.vendorCategory
                       .map((category) => category.item_category_name)
                       .join(", ") || "--"}
+                  </span>
+                </p>
+                <p className="font-medium">
+                  Profile:{" "}
+                  <span className="font-medium pl-3 text-[#6D6E70]">
+                    {vendor?.vendor_profile}
                   </span>
                 </p>
               </div>

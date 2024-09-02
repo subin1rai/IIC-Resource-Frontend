@@ -786,7 +786,7 @@ const SpecificBill = () => {
                           menuList: (provided) => ({
                             ...provided,
                             maxHeight: 150, // Adjust this as needed
-                            overflowY: 'auto', // This ensures only the menu list scrolls
+                            overflowY: "auto", // This ensures only the menu list scrolls
                           }),
                         }}
                         menuPortalTarget={document.body}
