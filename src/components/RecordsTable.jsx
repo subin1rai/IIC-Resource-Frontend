@@ -11,9 +11,8 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
-import empty from "../assets/Emptybills.svg"
+import empty from "../assets/Emptybills.svg";
 import Box from "@mui/material/Box";
-
 
 const columns = [
   { id: "bill_no", label: "Bill Number", maxWidth: 70 },
@@ -33,6 +32,12 @@ const columns = [
     label: "Voucher Number",
     maxWidth: 70,
     align: "center",
+  },
+  {
+    id: "bill_type",
+    label: "Bill Type",
+    maxWidth: 30,
+    align: "left",
   },
   {
     id: "vendor_name",
@@ -187,7 +192,7 @@ export default function RecordsTable({ bills }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!bills || bills.length === 0) ? (
+            {!bills || bills.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
@@ -252,14 +257,14 @@ export default function RecordsTable({ bills }) {
                                     value === "Pending"
                                       ? "#fff3cd"
                                       : value === "Approved"
-                                        ? "#d4edda"
-                                        : "#f8d7da",
+                                      ? "#d4edda"
+                                      : "#f8d7da",
                                   color:
                                     value === "Pending"
                                       ? "#856404"
                                       : value === "Approved"
-                                        ? "#155724"
-                                        : "#721c24",
+                                      ? "#155724"
+                                      : "#721c24",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}
@@ -279,7 +284,6 @@ export default function RecordsTable({ bills }) {
                 )
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
       <TablePagination

@@ -43,6 +43,8 @@ const Login = () => {
         navigate("/dashboard");
       } else if (response.data.role === "departmenthead") {
         navigate("/userHome");
+      } else {
+        navigate("/login");
       }
     } catch (error) {
       console.log("Login error:", error);
