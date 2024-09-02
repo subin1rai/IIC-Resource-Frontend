@@ -14,6 +14,8 @@ import removeIcon from "../assets/removeIcon.svg";
 import item from "../assets/item.png";
 import categoryIcon from "../assets/categoryno.png";
 import exportIcon from "../assets/export.svg";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -706,6 +708,7 @@ const Inventory = () => {
                 placeholder="Choose Category"
                 styles={customStyles}
                 classNamePrefix="react-select"
+                autoFocus
               />
               <Select
                 options={itemCategoryOptions}
@@ -724,35 +727,32 @@ const Inventory = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <label htmlFor="" className="font-medium">
-              By Date:
-            </label>
-            <div className="flex gap-8 ">
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                type="date"
-                placeholder=" from"
+          <div className="flex gap-8">
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Purchase From:
+              </label>
+
+              <NepaliDatePicker
+                inputClassName="form-control focus:outline-none"
+                className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateFrom}
-                onChange={(e) =>
-                  setFilterOptions((prev) => ({
-                    ...prev,
-                    dateFrom: e.target.value,
-                  }))
-                }
+                // onChange={handleDateChange}
+                options={{ calenderLocale: "en", valueLocale: "en" }}
               />
-              <input
-                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                type="date"
-                placeholder="to"
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Purchase To:
+              </label>
+              <NepaliDatePicker
+                inputClassName="form-control focus:outline-none"
+                className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                 value={filterOptions.dateTo}
-                onChange={(e) =>
-                  setFilterOptions((prev) => ({
-                    ...prev,
-                    dateTo: e.target.value,
-                  }))
-                }
+                // onChange={handleDateChange}
+                options={{ calenderLocale: "en", valueLocale: "en" }}
               />
+
             </div>
           </div>
           <div className="flex gap-8">
