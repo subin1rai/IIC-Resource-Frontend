@@ -100,7 +100,6 @@ const Vendor = () => {
     categories: [""],
   });
 
-  console.log(vendor);
 
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -116,8 +115,15 @@ const Vendor = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [blackListCount, setBlackListCount] = useState(0);
 
+
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+
+
+  const [filterOptions, setFilterOptions] = useState({
+    totalAmount: "",
+    
+  })
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -159,6 +165,30 @@ const Vendor = () => {
     setContactError("");
     return true;
   };
+
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "100%",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      minHeight: "42px",
+      "&:hover": {
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      },
+      boxShadow: "none",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "250px",
+    }),
+  };
+
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -298,14 +328,18 @@ const Vendor = () => {
       );
     }
 
-    if (selectedCategory) {
-      results = results.filter(
-        (vendor) => vendor.category === selectedCategory.value
-      );
-    }
+
+    // if (){
+
+    // }
+    // if (selectedCategory) {
+    //   results = results.filter(
+    //     (vendor) => vendor.category === selectedCategory.value
+    //   );
+    // }
 
     setFilteredVendors(results);
-  }, [searchTerm, selectedCategory, vendors]);
+  }, [searchTerm, vendors]);
 
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
@@ -420,7 +454,7 @@ const Vendor = () => {
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   >
-                    <option value="" disabled>
+                    <option value="" >
                       Select an option
                     </option>
                     <option value="">High to low</option>
@@ -439,7 +473,7 @@ const Vendor = () => {
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   >
-                    <option value="" disabled>
+                    <option value="" >
                       Select an option
                     </option>
                     <option value="">High to low</option>
@@ -487,7 +521,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Select an option
                   </option>
 
@@ -505,7 +539,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Select an option
                   </option>
                   <option value="">Pending</option>
@@ -521,19 +555,49 @@ const Vendor = () => {
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
                   {" "}
-                  Category:{" "}
+                  Status:{" "}
                 </label>
                 <select
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
-                    Select category
+                  <option value="" >
+                    Select status
                   </option>
                   <option value="">Blacklisted</option>
                   <option value="">Whitelisted</option>
                 </select>
+              </div>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Category:
+                </label>
+                <Select
+                  options={itemCategoryOptions}
+                  onChange={(selectedOption) =>
+                    handleCategoryChange(selectedOption, { name: "category" })
+                  }
+                  value={itemCategoryOptions.find(
+                    (option) => option.value === vendor.category
+                  )}
+                  placeholder="Choose Category"
+                  styles={{
+                    ...customStyles,
+                    menuPortal: (provided) => ({
+                      ...provided,
+                      zIndex:99,
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      maxHeight: 170, // Adjust this as needed
+                      overflowY: "auto", // This ensures only the menu list scrolls
+                    }),
+                  }}
+                  menuPortalTarget={document.body}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
               </div>
             </div>
             <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
