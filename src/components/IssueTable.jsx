@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useMemo } from "react";
+import { useState,useEffect, useMemo } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,10 +14,12 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import IconButton from "@mui/material/IconButton";
+import { ToastContainer, toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import empty from "../assets/EmptyIssue.svg"
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import Box from "@mui/material/Box";
+import axios from "axios";
 
 // Column definitions
 const columns = [
@@ -46,6 +48,7 @@ const columns = [
 
 export default function InventoryTable({ issues }) {
   const [page, setPage] = useState(0);
+  const [issu, setIssues] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(7);
   const [date, setDate] = useState("");
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
@@ -56,6 +59,13 @@ export default function InventoryTable({ issues }) {
   const [orderBy, setOrderBy] = useState("issue_id");
   
   const [issue, setIssue] = useState({
+    issue_date: "",
+    issued_to: "",
+    purpose: "",
+    items: [],
+  });
+
+  const [editedIssue, setEditedIssue] = useState({
     issue_date: "",
     issued_to: "",
     purpose: "",
@@ -111,62 +121,106 @@ export default function InventoryTable({ issues }) {
   };
 
 
+  
+  console.log(issues);
+
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const response = await axios.get("http://localhost:8898/api/issue", {
+         
+        });
+        console.log(response);
+        setIssues(response.data.issue || []);
+      } catch (error) {
+        console.error("Error fetching issues:", error);
+        setIssues([]);
+      }
+    };
+    fetchIssues();
+  }, []);
+
+  console.log(issues);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+         
+        );
+        const options = itemsResponse.data.map((item) => ({
+          value: item.item_name,
+          label: item.item_name,
+        }));
+        setItemOptions(options);
+       
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        setItemOptions([]);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+
   const handleChange = (e) => {
     setIssue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // try {
-    //   const formattedItems = itemFields.map((field) => ({
-    //     item_name: field.item, // Mapping 'item' to 'item_name'
-    //     quantity: field.quantity,
-    //   }));
+    try {
+      const formattedItems = itemFields.map((field) => ({
+        item_name: field.item, // Mapping 'item' to 'item_name'
+        quantity: field.quantity,
+      }));
+ 
+     
+      const issueData = {
+        issue_date: issue.issue_date,
 
-    //   const issueData = {
-    //     issue_date: issue.issue_date,
+        issued_to: issue.issued_to,
+        purpose: purpose, // Purpose is set separately
+        items: formattedItems, // Add the formatted items array
+      };
 
-    //     issued_to: issue.issued_to,
-    //     purpose: purpose, // Purpose is set separately
-    //     items: formattedItems, // Add the formatted items array
-    //   };
+      const response = await axios.put(
+        `http://localhost:8898/api/editIssue/${issue_id}`,
+        issueData,
+        
+      );
+      console.log("Sending data:", issueData);
+      console.log(issues);
+      const newIssue = response.data.issues;
+      const formattedNewIssue = {
+        issue_id: newIssue.id,
+        issue_date: newIssue.issue_Date,
+        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_quantity: formattedItems.reduce(
+          (sum, item) => sum + Number(item.quantity),
+          0
+        ),
+        requested_by: newIssue.issued_to,
+        department: newIssue.department || "N/A",
+        issued_by: newIssue.approved_by || "N/A",
+        status: newIssue.status || "Dispatched",
+        remarks: newIssue.purpose || "N/A",
+      };
 
-    //   const response = await axios.post(
-    //     "http://localhost:8898/api/editIssue",
-    //     issueData,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log("Sending data:", issueData);
-    //   console.log(issues);
-    //   const newIssue = response.data.issues;
-    //   const formattedNewIssue = {
-    //     issue_id: newIssue.id,
-    //     issue_date: newIssue.issue_Date,
-    //     issue_item: formattedItems.map((item) => item.item_name).join(", "),
-    //     item_quantity: formattedItems.reduce(
-    //       (sum, item) => sum + Number(item.quantity),
-    //       0
-    //     ),
-    //     requested_by: newIssue.issued_to,
-    //     department: newIssue.department || "N/A",
-    //     issued_by: newIssue.approved_by || "N/A",
-    //     status: newIssue.status || "Dispatched",
-    //     remarks: newIssue.purpose || "N/A",
-    //   };
-
-    //   setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
-    //   closeAddIssueForm();
-    //   toast.success(`Items issued to ${issue.issued_to} successfully `);
-    //   setItemFields([{ item: "", quantity: "" }]);
-    // } catch (error) {
-    //   console.error("Error adding issue:", error);
-    //   toast.error("Failed to add issue!");
-    // }
+      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
+      closeEditIssueForm();
+      toast.success(`Items issued to ${issue.issued_to} successfully `);
+      setItemFields([{ item: "", quantity: "" }]);
+    } catch (error) {
+      console.error("Error editing issue:", error);
+      toast.error("Failed to edit issue!");
+    }
   };
+
 
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
@@ -196,7 +250,7 @@ export default function InventoryTable({ issues }) {
   };
 
   const openEditIssueForm = (issue) => {
-  
+    setEditedIssue(issue);
     setEditIssueVisibility(true);
   };
 
