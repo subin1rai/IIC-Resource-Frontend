@@ -42,13 +42,7 @@ const Login = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      console.log("Role from response:", response.data.role);
-      // Store necessary information in local storage
-      localStorage.setItem("token", response.data.token);
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("user_name", response.data.user_name);
-      localStorage.setItem("department", response.data.department_name);
-      localStorage.setItem("role", response.data.role);
 
       if (
         response.data.role === "admin" ||
