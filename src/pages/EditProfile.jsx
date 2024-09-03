@@ -5,6 +5,7 @@ import Topbar from "../components/Topbar";
 import profile from "../assets/profile.png";
 import camera from "../assets/camera.png";
 import changePassword from "./changePassword";
+import { useSelector } from "react-redux";
 
 const EditProfile = () => {
   const [image, setImage] = useState(profile);

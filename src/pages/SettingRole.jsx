@@ -46,7 +46,6 @@ const SettingRole = () => {
     department: "",
   };
 
-  console.log(user);
   const [departments, setDepartments] = useState([]);
   const [activeUser, setActiveUser] = useState([]);
 

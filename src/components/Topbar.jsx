@@ -130,7 +130,8 @@ const Topbar = () => {
     fetchNotification();
   }, [token]);
 
-  const fullName = localStorage.getItem("user_name");
+  const fullName = userInfo.user_name;
+  console.log(userInfo);
   useEffect(() => {
     if (fullName) {
       const nameParts = fullName.trim().split(" ");

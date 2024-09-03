@@ -87,7 +87,7 @@ const SpecificBill = () => {
   const token = userInfo.token;
   // please dont remove this
 
-  const role = localStorage.getItem("role");
+  const role = userInfo.role;
 
   const handleShowModal = (bill_id) => {
     Swal.fire({
