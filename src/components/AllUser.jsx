@@ -11,6 +11,8 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import Swal from "sweetalert2";
 import close from "../assets/close.svg";
+import empty from "../assets/Emptyuser.svg"
+import Box from "@mui/material/Box";
 
 const columns = [
   { id: "user_name", label: "User Name", maxWidth: 70, align: "left" },
@@ -242,9 +244,8 @@ const DropdownMenu = ({
         </>
       )}{" "}
       <span
-        className={`hover:bg-background w-full p-3 cursor-pointer ${
-          loading ? "pointer-events-none opacity-50" : ""
-        }`}
+        className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
+          }`}
         onClick={() => {
           setIsOpen(false);
           handlePopupForm();
@@ -305,7 +306,7 @@ const AllUser = ({ users: initialUsers }) => {
     }
   }, []);
 
- 
+
 
   const roles = {
     user: "User",
@@ -355,7 +356,7 @@ const AllUser = ({ users: initialUsers }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedUser({ ...editedUser, [name]: value });
-    
+
     if (name === 'contact') {
       validateContact(value);
     }
@@ -364,7 +365,7 @@ const AllUser = ({ users: initialUsers }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-   
+
     if (!validateContact(editedUser.contact)) {
       setError("Please correct the contact number.");
       return;
@@ -372,7 +373,7 @@ const AllUser = ({ users: initialUsers }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/role/editUser/${editedUser.user_id}`, 
+        `http://localhost:8898/api/role/editUser/${editedUser.user_id}`,
         {
           user_name: editedUser.user_name,
           user_email: editedUser.user_email,
@@ -380,7 +381,7 @@ const AllUser = ({ users: initialUsers }) => {
           department: editedUser.department,
         }
       );
-  
+
       if (response.status === 200) {
         // Update the specific user in the local state
         setAllUsers((prevUsers) =>
@@ -388,7 +389,7 @@ const AllUser = ({ users: initialUsers }) => {
             u.user_id === editedUser.user_id ? { ...u, ...editedUser } : u
           )
         );
-        setEditFormVisibility(false); 
+        setEditFormVisibility(false);
         setError(null);
         setContactError("");
 
@@ -399,8 +400,8 @@ const AllUser = ({ users: initialUsers }) => {
       console.error("An error occurred while updating the user:", error);
     }
   };
-  
- 
+
+
 
   const visibleRows = React.useMemo(
     () => allUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -436,56 +437,84 @@ const AllUser = ({ users: initialUsers }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleRows.map((user) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
-                <TableCell>{user.user_name}</TableCell>
-                <TableCell>{user.user_email}</TableCell>
-                <TableCell>{user.contact}</TableCell>
-
-                <TableCell>{roles[user.role]}</TableCell>
-                <TableCell>{user.department_name}</TableCell>
-                <TableCell>
-                  {user.isActive === false ? (
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 8px",
-                        borderRadius: "4px",
-                        backgroundColor: "#fff3cd",
-                        fontWeight: "normal",
-                        textAlign: "center",
-                      }}
-                    >
-                      Inactive
-                    </span>
-                  ) : (
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 8px",
-                        borderRadius: "4px",
-                        backgroundColor: "#d4edda",
-                        fontWeight: "normal",
-                        textAlign: "center",
-                      }}
-                    >
-                      Active
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell className="flex">
-                  <DropdownMenu
-                    user={user}
-                    updateUserStatus={updateUserStatus}
-                    setAllUsers={setAllUsers}
-                    handlePopupForm={() => handlePopupForm(user)}
-                  />
+            {(!visibleRows || visibleRows.length === 0) ? (
+              <TableRow>
+                <TableCell colSpan={columns.length}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "370px",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      src={empty}
+                      alt="No users"
+                      className="h-72 w-72"
+                      style={{ maxWidth: "300px", marginBottom: "20px" }}
+                    />
+                  </Box>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              visibleRows.map((user) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
+                  <TableCell>{user.user_name}</TableCell>
+                  <TableCell>{user.user_email}</TableCell>
+                  <TableCell>{user.contact}</TableCell>
+                  <TableCell>{roles[user.role]}</TableCell>
+                  <TableCell>{user.department_name}</TableCell>
+                  <TableCell>
+                    {user.isActive ? (
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor: "#d4edda", // Green for active
+                          fontWeight: "normal",
+                          textAlign: "center",
+                          color: "#155724", // Dark green text for active
+                        }}
+                      >
+                        Active
+                      </span>
+                    ) : (
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          backgroundColor: "#fff3cd", // Yellow for inactive
+                          fontWeight: "normal",
+                          textAlign: "center",
+                          color: "#856404", // Dark yellow text for inactive
+                        }}
+                      >
+                        Inactive
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell className="flex">
+                    <DropdownMenu
+                      user={user}
+                      updateUserStatus={updateUserStatus}
+                      setAllUsers={setAllUsers}
+                      handlePopupForm={() => handlePopupForm(user)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
+
         </Table>
       </TableContainer>
+
+      {/* edit form */}
       {editFormVisibility && (
         <div className="w-screen h-screen bg-overlay absolute z-10 top-0 left-0 flex justify-center items-center">
           <form
@@ -497,10 +526,11 @@ const AllUser = ({ users: initialUsers }) => {
               <img
                 src={close}
                 alt="Close"
-                
+
                 className="w-4 h-4 cursor-pointer"
-                onClick={() => { setEditFormVisibility(false);
-                  setError(null); 
+                onClick={() => {
+                  setEditFormVisibility(false);
+                  setError(null);
                 }}
               />
             </div>
@@ -533,17 +563,17 @@ const AllUser = ({ users: initialUsers }) => {
                   onChange={handleChange}
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
-                  
+
                 />
               </div>
-              
+
               <div className="flex justify-between items-center gap-2">
                 <label htmlFor="user_email" className="w-[120px]">
                   Email
                 </label>
                 <input
                   placeholder="Enter Email"
-                   autoFocus="autofocus"
+                  autoFocus="autofocus"
                   id="user_email"
                   name="user_email"
                   value={editedUser.user_email}
@@ -559,7 +589,7 @@ const AllUser = ({ users: initialUsers }) => {
                 <select
                   id="department"
                   name="department"
-                    autoFocus="autofocus"
+                  autoFocus="autofocus"
                   value={editedUser.department}
                   onChange={handleChange}
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
@@ -582,7 +612,7 @@ const AllUser = ({ users: initialUsers }) => {
                 Edit User
               </button>
             </div>
-            
+
           </form>
           <div className="" onClick={() => {
             setEditFormVisibility(false);
@@ -591,15 +621,17 @@ const AllUser = ({ users: initialUsers }) => {
           }}></div>
         </div>
       )}
-      
       <TablePagination
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={allUsers?.length || 0}
+        count={allUsers && Array.isArray(allUsers) ? allUsers.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
       />
     </Paper>
   );

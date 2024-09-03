@@ -28,6 +28,9 @@ const SettingRole = () => {
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
   const [contactError, setContactError] = useState("");
 
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("");
+
   const [user, setUser] = useState({
     user_name: "",
     contact: "",
@@ -42,11 +45,9 @@ const SettingRole = () => {
     department: "",
   };
 
-  
-
   console.log(user);
   const [departments, setDepartments] = useState([]);
-  const [activeUser, setActiveUser] = useState ([]);
+  const [activeUser, setActiveUser] = useState([]);
 
   const Token = localStorage.getItem("token");
 
@@ -57,6 +58,8 @@ const SettingRole = () => {
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
   };
+
+  console.log(selectedRole)
 
   // Fetch users and departments data
   useEffect(() => {
@@ -101,7 +104,7 @@ const SettingRole = () => {
     };
 
     fetchData();
-  },[Token]);
+  }, [Token]);
 
   // Filter all users by search term
   useEffect(() => {
@@ -118,6 +121,30 @@ const SettingRole = () => {
     };
     filterAllUsers();
   }, [userSearchTerm, users]);
+
+
+
+  // filter handle
+  const handleFilter = () => {
+
+    let filtered = users;
+    if (selectedDepartment) {
+      filtered = filtered.filter(
+        (user) => user.department_name === selectedDepartment.value
+      );
+    }
+
+    if (selectedRole) {
+      filtered = filtered.filter(
+        (user) => user.role === selectedRole
+      );
+    }
+
+    setAllFilteredUsers(filtered);
+    setFilterFormVisibility(false); // Close filter form after applying filters
+  };
+
+
 
   // Socket listener for activated users
   useEffect(() => {
@@ -158,7 +185,7 @@ const SettingRole = () => {
 
   const handleAddUser = async (event) => {
     event.preventDefault();
-    
+
     if (!validateContact(user.contact)) {
       setError("Please correct the contact number.");
       return;
@@ -434,39 +461,32 @@ const SettingRole = () => {
                   Filter by Role:{" "}
                 </label>
                 <select
-                  name=""
-                  id=""
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   autoFocus
                 >
                   <option value="">Select a role</option>
-                  <option value="">Super Admin</option>
-                  <option value="">Admin</option>
-                  <option value="">User</option>
-                  <option value="">Department Head</option>
+                  <option value="superadmin">Super Admin</option>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                  <option value="departmenthead">Department Head</option>
                 </select>
               </div>
               <div className="flex gap-7 items-center">
                 <label htmlFor="department" className="font-medium">
                   Department:
                 </label>
-                <select
-                  id="department"
-                  name="department"
-                  value={user.department}
-                  onChange={handleInputChange}
-                  className="border-border border-2 rounded p-2 w-[250px] focus:outline-slate-400"
-                >
-                  <option value="">Select Department</option>
-                  {departments.map((department) => (
-                    <option
-                      key={department.id}
-                      value={department.department_name}
-                    >
-                      {department.department_name}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  options={departments.map((department) => ({
+                    value: department.department_name,
+                    label: department.department_name,
+                  }))}
+                  value={selectedDepartment}
+                  onChange={(option) => setSelectedDepartment(option)}
+                  placeholder="Select Department"
+                  styles={customStyles}
+                />
               </div>
               <div className="flex gap-20">
                 <label htmlFor="" className="font-medium">
@@ -494,7 +514,10 @@ const SettingRole = () => {
                 </div>
               </div>
             </div>
-            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium">
+            <button
+              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium"
+              onClick={handleFilter}
+            >
               Filter
             </button>
           </form>
@@ -515,7 +538,7 @@ const SettingRole = () => {
                 className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   setVisibleForm("");
-                  setError(null); 
+                  setError(null);
                 }}
               />
             </div>
