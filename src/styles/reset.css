@@ -1,13 +1,12 @@
 .reset {
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    position: absolute;
-    align-items: center;
-    background-color: #ffffff;
-    width: 100vw;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  position: absolute;
+  align-items: center;
+  background-color: #ffffff;
+  width: 100vw;
 
-    
   .back-btn {
     background-color: #fff;
     border: 2px solid #007bff;
@@ -26,9 +25,9 @@
       align-items: center;
       gap: 5px;
     }
-  
+
     &:hover {
-      background-color:#252f8a;
+      background-color: #252f8a;
       border: none;
       .redirect {
         text-decoration: none;
@@ -36,25 +35,25 @@
       }
     }
   }
-    
-    .resetform {
+
+  .resetform {
     background-color: #fff;
     width: 40vw;
     padding-top: 70px;
     height: 50vh;
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     gap: 10 px;
     border-radius: 10px;
 
-    h2{
+    h2 {
       font-size: xx-large;
       font-weight: 700;
     }
 
-    label{
-        padding: 20px;
+    label {
+      padding: 20px;
     }
 
     input {

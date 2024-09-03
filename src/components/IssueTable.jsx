@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import empty from "../assets/EmptyIssue.svg"
+import empty from "../assets/EmptyIssue.svg";
 import Box from "@mui/material/Box";
 
 // Column definitions
@@ -35,7 +35,12 @@ const columns = [
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
-  { id: "issued_status", label: "Issued Item Status", minWidth: 70, align: "center" },
+  {
+    id: "issued_status",
+    label: "Issued Item Status",
+    minWidth: 70,
+    align: "center",
+  },
   { id: "edit", label: "Edit", minWidth: 70, align: "center" },
 ];
 
@@ -100,10 +105,15 @@ export default function InventoryTable({ issues }) {
   };
   const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
-
-
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", cursor: "pointer", fontSize: "18px" }}>
+    <Paper
+      sx={{
+        width: "100%",
+        overflow: "hidden",
+        cursor: "pointer",
+        fontSize: "18px",
+      }}
+    >
       <TableContainer sx={{ maxHeight: 510 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -157,54 +167,57 @@ export default function InventoryTable({ issues }) {
             ) : (
               <>
                 {visibleRows.map((issue) => (
-                 <TableRow
-                 hover
-                 role="checkbox"
-                 tabIndex={-1}
-                 key={issue.issue_id}
-               >
-                 {columns.map((column) => {
-                   const value = issue[column.id];
-                   return (
-                     <TableCell key={column.id} align={column.align} style={cellStyle}>
-                       {column.id === "issued_status" ? (
-                         <div
-                           style={{
-                             display: "inline-block",
-                             padding: "4px 8px",
-                             borderRadius: "4px",
-                             backgroundColor:
-                               value === "Pending"
-                                 ? "#fff3cd"
-                                 : value === "Approved"
-                                   ? "#d4edda"
-                                   : "#f8d7da",
-                             color:
-                               value === "Pending"
-                                 ? "#856404"
-                                 : value === "Approved"
-                                   ? "#155724"
-                                   : "#721c24",
-                             fontWeight: "normal",
-                             textAlign: "center",
-                           }}
-                         >
-                           {value ?? "Not Returned"}
-                         </div>
-                       ) : column.id === "edit" ? (
-                         <IconButton color="primary">
-                           <EditIcon />
-                         </IconButton>
-                       ) : column.format && value != null ? (
-                         column.format(value)
-                       ) : (
-                         value ?? ""
-                       )}
-                     </TableCell>
-                   );
-                 })}
-               </TableRow>
-               
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={issue.issue_id}
+                  >
+                    {columns.map((column) => {
+                      const value = issue[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={cellStyle}
+                        >
+                          {column.id === "issued_status" ? (
+                            <div
+                              style={{
+                                display: "inline-block",
+                                padding: "4px 8px",
+                                borderRadius: "4px",
+                                backgroundColor:
+                                  value === "Pending"
+                                    ? "#fff3cd"
+                                    : value === "Approved"
+                                    ? "#d4edda"
+                                    : "#f8d7da",
+                                color:
+                                  value === "Pending"
+                                    ? "#856404"
+                                    : value === "Approved"
+                                    ? "#155724"
+                                    : "#721c24",
+                                fontWeight: "normal",
+                                textAlign: "center",
+                              }}
+                            >
+                              {value ?? "Not Returned"}
+                            </div>
+                          ) : column.id === "edit" ? (
+                            <IconButton color="primary">
+                              <EditIcon />
+                            </IconButton>
+                          ) : column.format && value != null ? (
+                            column.format(value)
+                          ) : (
+                            value ?? ""
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
                 ))}
               </>
             )}
@@ -220,7 +233,9 @@ export default function InventoryTable({ issues }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          count === 0
+            ? "No records"
+            : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
         }
       />
     </Paper>

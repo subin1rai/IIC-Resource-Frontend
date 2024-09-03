@@ -388,6 +388,8 @@ const SettingRole = () => {
                   name="contact"
                   value={user.contact}
                   onChange={handleInputChange}
+                  maxLength={10} // Limit input to 10 characters
+                  pattern="[0-9]*"
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 />

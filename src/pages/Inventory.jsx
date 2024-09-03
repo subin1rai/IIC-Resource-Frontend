@@ -37,7 +37,7 @@ const Inventory = () => {
     dateFrom: "",
     dateTo: "",
     priceSort: "",
-    unit: "",
+    measuring_unit: "",
     stockStatus: "",
   });
 
@@ -65,8 +65,7 @@ const Inventory = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
 
-  const [measuringUnit, setMeasuringUnit] = useState([])
-
+  const [measuringUnit, setMeasuringUnit] = useState([]);
 
   const [selectedFeatures, setSelectedFeatures] = useState([
     { feature: "", value: "" },
@@ -238,8 +237,6 @@ const Inventory = () => {
     }
   };
 
-
-
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -286,10 +283,10 @@ const Inventory = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
+        );
 
-        setMeasuringUnit(unitResponse.data.measuring_unit)
-        console.log(measuringUnit)
+        setMeasuringUnit(unitResponse.data.measuring_unit);
+        console.log(measuringUnit);
 
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
@@ -321,10 +318,6 @@ const Inventory = () => {
 
     getAllItems();
   }, []);
-
-
-
-
 
   const handleDateChange = (name) => (date) => {
     setFilterOptions((prev) => ({ ...prev, [name]: date }));
@@ -365,14 +358,14 @@ const Inventory = () => {
         );
       });
     }
-
     if (filterOptions.priceSort) {
       filteredResults.sort((a, b) => {
-        if (filterOptions.priceSort === "high-to-low") {
+        if (filterOptions.priceSort === "low-to-high") {
           return b.unit_price - a.unit_price;
-        } else {
+        } else if (filterOptions.priceSort === "high-to-low") {
           return a.unit_price - b.unit_price;
         }
+        return 0;
       });
     }
 
@@ -391,66 +384,6 @@ const Inventory = () => {
     setFilteredItems(filteredResults);
     setFilterFormVisibility(false);
   };
-
-  useEffect(() => {
-    const filterItems = () => {
-      const lowercasedTerm = searchTerm.toLowerCase();
-      let newFilteredItems = items.filter((item) =>
-        item.item_name.toLowerCase().includes(lowercasedTerm)
-      );
-
-      // Apply additional filters
-      if (filterOptions.category) {
-        newFilteredItems = newFilteredItems.filter(
-          (item) => item.category === filterOptions.category
-        );
-      }
-
-      if (filterOptions.itemCategory) {
-        newFilteredItems = newFilteredItems.filter(
-          (item) => item.itemCategory === filterOptions.itemCategory
-        );
-      }
-      console.log(filterOptions.dateFrom);
-      console.log(filterOptions.dateTo);
-
-      if (filterOptions.dateFrom && filterOptions.dateTo) {
-        newFilteredItems = newFilteredItems.filter((item) => {
-          const itemDate = new Date(item.recent_purchase);
-          console.log(item.recent_purchase);
-          return (
-            itemDate >= new Date(filterOptions.dateFrom) &&
-            itemDate <= new Date(filterOptions.dateTo)
-          );
-        });
-      }
-
-      if (filterOptions.priceSort) {
-        newFilteredItems.sort((a, b) => {
-          if (filterOptions.priceSort === "high-to-low") {
-            return b.unit_price - a.unit_price;
-          } else {
-            return a.unit_price - b.unit_price;
-          }
-        });
-      }
-
-      if (filterOptions.measuring_unit) {
-        newFilteredItems = newFilteredItems.filter(
-          (item) => item.measuring_unit === filterOptions.measuring_unit
-        );
-      }
-
-      if (filterOptions.stockStatus) {
-        newFilteredItems = newFilteredItems.filter(
-          (item) => item.stockStatus === filterOptions.stockStatus
-        );
-      }
-
-      setFilteredItems(newFilteredItems);
-    };
-    filterItems();
-  }, [searchTerm, items, filterOptions]);
 
   return (
     <div className="bg-background flex justify-between h-screen w-screen relative">
@@ -849,15 +782,17 @@ const Inventory = () => {
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   value={filterOptions.measuring_unit}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setFilterOptions((prev) => ({
                       ...prev,
-                      unit: e.target.value,
-                    }))
-                  }
+                      measuring_unit: e.target.value,
+                    }));
+                  }}
                 >
                   <option value="">Select an option</option>
-                  {measuringUnit.map((unit)=>(<option value="">{unit}</option>))}
+                  {measuringUnit.map((unit) => (
+                    <option value={unit}>{unit}</option>
+                  ))}
                 </select>
               </div>
             </div>

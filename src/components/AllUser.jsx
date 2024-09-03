@@ -541,7 +541,7 @@ const AllUser = ({ users: initialUsers }) => {
                 </label>
                 <input
                   placeholder="Enter Full name"
-                  autoFocus="autofocus"
+                  autoFocus
                   id="user_name"
                   name="user_name"
                   value={editedUser.user_name}
@@ -557,11 +557,12 @@ const AllUser = ({ users: initialUsers }) => {
                 <input
                   placeholder="Enter contact number"
                   id="contact"
-                  autoFocus="autofocus"
                   name="contact"
                   value={editedUser.contact}
                   onChange={handleChange}
                   type="text"
+                  maxLength={10} // Limit input to 10 characters
+                  pattern="[0-9]*"
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
 
                 />
@@ -573,7 +574,6 @@ const AllUser = ({ users: initialUsers }) => {
                 </label>
                 <input
                   placeholder="Enter Email"
-                  autoFocus="autofocus"
                   id="user_email"
                   name="user_email"
                   value={editedUser.user_email}
@@ -589,7 +589,6 @@ const AllUser = ({ users: initialUsers }) => {
                 <select
                   id="department"
                   name="department"
-                  autoFocus="autofocus"
                   value={editedUser.department}
                   onChange={handleChange}
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
@@ -608,8 +607,8 @@ const AllUser = ({ users: initialUsers }) => {
                 </select>
               </div>
               {error && <div className="text-red-500  self-start">{error}</div>}
-              <button type="submit" className="bg-button text-white py-2 w-fit px-4 rounded self-end mt-2">
-                Edit User
+              <button type="submit" className="bg-button text-white py-2 w-full px-4 rounded self-end mt-4 mb-3 focus: outline-blue-600">
+                Save Changes
               </button>
             </div>
 
