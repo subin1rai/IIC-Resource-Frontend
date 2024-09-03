@@ -14,6 +14,7 @@ import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const SpecificBill = () => {
   const [bill, setBill] = useState({
@@ -82,7 +83,8 @@ const SpecificBill = () => {
 
   const { bill_id } = useParams();
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
   // please dont remove this
 
   const role = localStorage.getItem("role");
@@ -251,15 +253,14 @@ const SpecificBill = () => {
       }
     };
     fetchData();
-  }, [bill_id, token]
-);
+  }, [bill_id, token]);
 
-// const checkPermissions = () => {
-//   const role = localStorage.getItem("role");
-//   if (role != "superadmin" || role !="admin") {
-//     console.error("Unauthorized cfgdgg");
-//   }
-// };
+  // const checkPermissions = () => {
+  //   const role = localStorage.getItem("role");
+  //   if (role != "superadmin" || role !="admin") {
+  //     console.error("Unauthorized cfgdgg");
+  //   }
+  // };
 
   const openEditBillDetailsForm = () => {
     // setEditedBill({
@@ -321,17 +322,16 @@ const SpecificBill = () => {
       // }
       const response = await axios.put(
         `http://localhost:8898/api/updateBill/${bill_id}`,
-          dataToSubmit,
-          {
+        dataToSubmit,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          
         }
       );
 
       console.log(response.data.result);
-     
+
       if (response.status === 200) {
         // Update the bill state with the response data
         setBillDetails(response.data.result);
@@ -341,7 +341,8 @@ const SpecificBill = () => {
       }
     } catch (error) {
       console.log(error);
-    }};
+    }
+  };
 
   useEffect(() => {
     const fetchSingleBill = async () => {

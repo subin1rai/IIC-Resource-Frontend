@@ -16,6 +16,7 @@ import categoryIcon from "../assets/categoryno.png";
 import exportIcon from "../assets/export.svg";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import { useSelector } from "react-redux";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -165,7 +166,8 @@ const Inventory = () => {
     }));
   };
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -286,8 +288,6 @@ const Inventory = () => {
         );
 
         setMeasuringUnit(unitResponse.data.measuring_unit);
-        console.log(measuringUnit);
-
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);
         setFeature(featureResponse.data.feature);

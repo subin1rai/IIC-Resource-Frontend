@@ -12,6 +12,7 @@ import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -169,7 +170,8 @@ const Issue = () => {
     }),
   };
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   // get issue from backend
   useEffect(() => {

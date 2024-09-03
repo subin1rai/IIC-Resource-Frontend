@@ -3,12 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import "../styles/reset.css";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const Reset = () => {
   const location = useLocation();
   const { email } = location.state || {};
-
-  console.log(email);
 
   // State to handle password and confirm password
   const [newPassword, setNewPassword] = useState("");

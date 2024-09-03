@@ -19,6 +19,7 @@ import records from "../assets/records.png";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
+import { useSelector } from "react-redux";
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -55,7 +56,8 @@ const Records = () => {
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
@@ -560,7 +562,7 @@ const Records = () => {
                           menuList: (provided) => ({
                             ...provided,
                             maxHeight: 150, // Adjust this as needed
-                            overflowY: 'auto', // This ensures only the menu list scrolls
+                            overflowY: "auto", // This ensures only the menu list scrolls
                           }),
                         }}
                         menuPortalTarget={document.body}
