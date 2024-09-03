@@ -2,8 +2,8 @@ import React from "react";
 import logo from "../assets/Top.png";
 import userprofile from "../assets/userProfile.svg";
 import { NavLink } from "react-router-dom";
-import notificationIcon from "../assets/notification.svg"
-import userProfile from "../assets/userProfile.svg"
+import notificationIcon from "../assets/notification.svg";
+import userProfile from "../assets/userProfile.svg";
 
 const Navbar = () => {
   return (
@@ -14,8 +14,6 @@ const Navbar = () => {
         <NavLink to="/userHome">Home</NavLink>
         <NavLink to="/userRequest">Request</NavLink>
         <NavLink to="/requestHistory">History</NavLink>
-       
-
       </div>
       <div className="flex gap-5">
         <img src={notificationIcon} alt="" />

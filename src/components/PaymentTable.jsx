@@ -34,9 +34,9 @@ const columns = [
     maxWidth: 120,
     align: "center",
     format: (value) => {
-        if (!value) return "N/A";
-        const date = new Date(value);
-        return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
+      if (!value) return "N/A";
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
     },
     numeric: true,
   },
@@ -47,9 +47,9 @@ const columns = [
     maxWidth: 120,
     align: "center",
     format: (value) => {
-        if (!value) return "N/A";
-        const date = new Date(value);
-        return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
+      if (!value) return "N/A";
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0];
     },
     numeric: true,
   },
