@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Message from "./Message";
 import sendIcon from "../assets/sendMessageIcon.svg";
+import { useSelector } from "react-redux";
 
 function Messages({ conversation }) {
   const user_id = conversation.user_id;
@@ -9,7 +10,10 @@ function Messages({ conversation }) {
     message: "",
   });
   const [messages, setMessages] = useState([]);
-  const token = localStorage.getItem("token");
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
   const messagesEndRef = useRef(null);
 
   const handleChange = (e) => {
@@ -70,9 +74,11 @@ function Messages({ conversation }) {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.receiverId === user_id ? "justify-end" : "justify-start"
-              } p-2 rounded-md ${message.receiverId !== user_id ? "bg-gray-800" : ""
-              }`}
+            className={`flex ${
+              message.receiverId === user_id ? "justify-end" : "justify-start"
+            } p-2 rounded-md ${
+              message.receiverId !== user_id ? "bg-gray-800" : ""
+            }`}
           >
             <Message message={message} conversation={conversation} />
           </div>

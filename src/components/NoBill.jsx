@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
   const [items, setItems] = useState([]);
@@ -9,7 +10,8 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
   // const [vendors, setVendors] = useState([]);
 
   // Retrieve token from localStorage
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   // Fetch data (items) on component mount
   useEffect(() => {
@@ -35,7 +37,7 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
   }, [token]);
 
   const [rows, setRows] = useState([]);
-  
+
   const handleSelectChange = (option, index) => {
     const updatedRows = [...rows];
     updatedRows[index].item_id = option.value;
@@ -76,7 +78,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
     updateParentData(newRows);
   };
 
-  
   const calculateRowValues = (row, selectedOption) => {
     const quantity = parseFloat(row.quantity) || 0;
     const unit_price = parseFloat(row.unit_price) || 0;
@@ -232,7 +233,7 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
