@@ -30,9 +30,7 @@ import ChangePassword from "./pages/changePassword";
 
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
   const userInfo = useSelector((state) => state.user.userInfo);
-
   const userType = userInfo?.role || null;
 
   return (

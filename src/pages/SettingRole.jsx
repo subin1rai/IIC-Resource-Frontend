@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
 import close from "../assets/close.svg";
+import { useSelector } from "react-redux";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -49,7 +50,8 @@ const SettingRole = () => {
   const [departments, setDepartments] = useState([]);
   const [activeUser, setActiveUser] = useState([]);
 
-  const Token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -59,15 +61,13 @@ const SettingRole = () => {
     setFilterFormVisibility(false);
   };
 
-  console.log(selectedRole)
-
   // Fetch users and departments data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [userResponse, departmentResponse] = await Promise.all([
           axios.get("http://localhost:8898/api/role/allUsers", {
-            headers: { Authorization: `Bearer ${Token}` },
+            headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get("http://localhost:8898/api/getDepartment"),
         ]);
@@ -84,7 +84,7 @@ const SettingRole = () => {
       }
     };
     fetchData();
-  }, [Token]);
+  }, [token]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,7 +92,7 @@ const SettingRole = () => {
         const activeResponse = await axios.get(
           "http://localhost:8898/api/role/activeUser",
           {
-            headers: { Authorization: `Bearer ${Token}` },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         console.log(activeResponse);
@@ -104,7 +104,7 @@ const SettingRole = () => {
     };
 
     fetchData();
-  }, [Token]);
+  }, [token]);
 
   // Filter all users by search term
   useEffect(() => {
@@ -122,11 +122,8 @@ const SettingRole = () => {
     filterAllUsers();
   }, [userSearchTerm, users]);
 
-
-
   // filter handle
   const handleFilter = () => {
-
     let filtered = users;
     if (selectedDepartment) {
       filtered = filtered.filter(
@@ -135,16 +132,12 @@ const SettingRole = () => {
     }
 
     if (selectedRole) {
-      filtered = filtered.filter(
-        (user) => user.role === selectedRole
-      );
+      filtered = filtered.filter((user) => user.role === selectedRole);
     }
 
     setAllFilteredUsers(filtered);
     setFilterFormVisibility(false); // Close filter form after applying filters
   };
-
-
 
   // Socket listener for activated users
   useEffect(() => {
@@ -161,14 +154,19 @@ const SettingRole = () => {
 
   const validateContact = (contact) => {
     const contactNumber = parseInt(contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Contact number must be between 9700000000 and 9899999999.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Contact number must be between 9700000000 and 9899999999."
+      );
       return false;
     }
     setContactError("");
     return true;
   };
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -177,7 +175,6 @@ const SettingRole = () => {
       validateContact(value);
     }
   };
-
 
   const handleDepartmentChange = (e) => {
     setNewDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -196,7 +193,7 @@ const SettingRole = () => {
         "http://localhost:8898/api/role/addUser",
         user,
         {
-          headers: { Authorization: `Bearer ${Token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success(`${user.user_name} added successfully!`);
@@ -256,7 +253,7 @@ const SettingRole = () => {
         "http://localhost:8898/api/addDepartment",
         newDepartment,
         {
-          headers: { Authorization: `Bearer ${Token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success(`${newDepartment.department_name} added successfully!`);

@@ -10,6 +10,7 @@ import axios from "axios";
 import Select from "react-select";
 import addIcon from "../assets/addIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
+import { useSelector } from "react-redux";
 
 const SingleItem = () => {
   const [item, setItem] = useState({
@@ -45,7 +46,8 @@ const SingleItem = () => {
   const [editFormVisibility, setEditFormVisibility] = useState(false);
 
   const { id } = useParams();
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   useEffect(() => {
     const getSingleItem = async () => {
@@ -337,7 +339,7 @@ const SingleItem = () => {
                 <div className="flex gap-4">
                   <p className="font-semibold">Item Category:</p>
                   <span className="font-medium text-[#6D6E70]">
-                    {item.itemCategory}
+                    {item?.itemCategory}
                   </span>
                 </div>
               </div>
