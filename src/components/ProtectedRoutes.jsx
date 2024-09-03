@@ -8,4 +8,3 @@ const ProtectedRoutes = () => {
   return isLoggedin === "true" ? <Outlet /> : <Navigate to={"/"} />;
 };
 export default ProtectedRoutes;
-

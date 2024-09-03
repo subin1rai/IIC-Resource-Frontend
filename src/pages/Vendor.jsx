@@ -13,6 +13,7 @@ import exportIcon from "../assets/export.svg";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import { useSelector } from "react-redux";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
@@ -69,7 +70,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={() => removeCategory(index)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
+              className="bg-red-500 text-white px-2 py-1 rounded focus: outline-red-800"
             >
               -
             </button>
@@ -78,7 +79,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={addCategory}
-              className="bg-blue-500 text-white px-2 py-1 rounded"
+              className="bg-blue-500 text-white px-2 py-1 rounded focus:outline-blue-800"
             >
               +
             </button>
@@ -99,7 +100,6 @@ const Vendor = () => {
     categories: [""],
   });
 
-  console.log(vendor);
 
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
@@ -115,7 +115,19 @@ const Vendor = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [blackListCount, setBlackListCount] = useState(0);
 
-  const token = localStorage.getItem("token");
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
+
+  const [filterOptions, setFilterOptions] = useState({
+    amountOption: "",
+    durationOption: "",
+    purchaseFrom: "",
+    purchaseTo: "",
+    TDS: "",
+    payment_status: "",
+  })
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -144,14 +156,41 @@ const Vendor = () => {
 
   const validateContact = (vendor_contact) => {
     const contactNumber = parseInt(vendor_contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Contact number must be between 9700000000 and 9899999999.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Contact number must be between 9700000000 and 9899999999."
+      );
       return false;
     }
     setContactError("");
     return true;
   };
 
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "100%",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      minHeight: "42px",
+      "&:hover": {
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+      },
+      boxShadow: "none",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "250px",
+    }),
+  };
 
 
 
@@ -167,7 +206,6 @@ const Vendor = () => {
             },
           }
         );
-        console.log("Item Category Data:", response.data);
         setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
@@ -285,22 +323,50 @@ const Vendor = () => {
   }, [token]);
 
   useEffect(() => {
-    let results = vendors;
-
-    if (searchTerm) {
-      results = results.filter((vendor) =>
-        vendor.vendor_name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filterVendors = () => {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const newFilteredVendors = vendors.filter((vendor) =>
+        vendor.vendor_name.toLowerCase().includes(lowercasedTerm)
       );
+      setFilteredVendors(newFilteredVendors);
+    };
+    filterVendors();
+  }, [searchTerm, vendors]);
+
+  // filter functionality
+  const applyFilters = () => {
+    let filteredResults = [...vendors];
+
+    if (filterOptions.amountOption) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.amountOption === "low-to-high") {
+          return a.total_amount - b.total_amount;
+        } else if (filterOptions.amountOption === "high-to-low") {
+          return b.total_amount - a.total_amount;
+        }
+        return 0;
+      });
     }
 
-    if (selectedCategory) {
-      results = results.filter(
-        (vendor) => vendor.category === selectedCategory.value
-      );
+    if (filterOptions.durationOption) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.durationOption === "low-to-high") {
+
+          return a.payment_duration - b.payment_duration;
+        } else if (filterOptions.durationOption === "high-to-low") {
+          return b.payment_duration - a.payment_duration;
+        }
+        return 0;
+      });
     }
 
-    setFilteredVendors(results);
-  }, [searchTerm, selectedCategory, vendors]);
+    setFilteredVendors(filteredResults)
+    setFilterFormVisibility(false);
+
+
+  }
+
+  console.log(filteredVendors)
 
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
@@ -392,8 +458,11 @@ const Vendor = () => {
 
       {/* filter form */}
       {filterFormVisibility && (
+
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -407,19 +476,25 @@ const Vendor = () => {
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
                   <label htmlFor="" className="font-medium">
-                    {" "}
-                    Total Amount:{" "}
+                    Total Amount:
                   </label>
                   <select
                     name=""
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    value={filterOptions.amountOption}
+                    onChange={(e) =>
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        amountOption: e.target.value,
+                      }))
+                    }
                   >
-                    <option value="" disabled>
+                    <option value="" >
                       Select an option
                     </option>
-                    <option value="">High to low</option>
-                    <option value="">Low to high</option>
+                    <option value="high-to-low">High to low</option>
+                    <option value="low-to-high">Low to high</option>
                   </select>
                 </div>
 
@@ -433,12 +508,19 @@ const Vendor = () => {
                     name=""
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    value={filterOptions.durationOption}
+                    onChange={(e) =>
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        durationOption: e.target.value,
+                      }))
+                    }
                   >
-                    <option value="" disabled>
+                    <option value="" >
                       Select an option
                     </option>
-                    <option value="">High to low</option>
-                    <option value="">Low to high</option>
+                    <option value="high-to-low">High to low</option>
+                    <option value="low-to-high">Low to high</option>
                   </select>
                 </div>
               </div>
@@ -467,7 +549,6 @@ const Vendor = () => {
                     // onChange={handleDateChange}
                     options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
-
                 </div>
               </div>
             </div>
@@ -483,7 +564,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Select an option
                   </option>
 
@@ -501,7 +582,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Select an option
                   </option>
                   <option value="">Pending</option>
@@ -517,22 +598,53 @@ const Vendor = () => {
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
                   {" "}
-                  Category:{" "}
+                  Status:{" "}
                 </label>
                 <select
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" disabled>
-                    Select category
+                  <option value="" >
+                    Select status
                   </option>
                   <option value="">Blacklisted</option>
                   <option value="">Whitelisted</option>
                 </select>
               </div>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Category:
+                </label>
+                <Select
+                  options={itemCategoryOptions}
+                  onChange={(selectedOption) =>
+                    handleCategoryChange(selectedOption, { name: "category" })
+                  }
+                  value={itemCategoryOptions.find(
+                    (option) => option.value === vendor.category
+                  )}
+                  placeholder="Choose Category"
+                  styles={{
+                    ...customStyles,
+                    menuPortal: (provided) => ({
+                      ...provided,
+                      zIndex: 99,
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      maxHeight: 170, // Adjust this as needed
+                      overflowY: "auto", // This ensures only the menu list scrolls
+                    }),
+                  }}
+                  menuPortalTarget={document.body}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
+              </div>
             </div>
-            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
+            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+              onClick={applyFilters}>
               Filter
             </button>
           </form>
@@ -627,7 +739,8 @@ const Vendor = () => {
                   name="vendor_contact"
                   id="vendor_contact"
                   onChange={handleChange}
-                  maxLength={0}
+                  maxLength={10} // Limit input to 10 characters
+                  pattern="[0-9]*"
                 />
               </div>
               <div className="flex items-center gap-6">
@@ -644,7 +757,7 @@ const Vendor = () => {
                 />
               </div>
               {error && <span className="text-red-500">{error}</span>}
-              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end">
+              <button className="bg-blue-600 text-white py-3 px-4 w-full justify-center rounded-md focus: outline-blue-600">
                 Add vendor
               </button>
             </div>

@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
 import close from "../assets/close.svg";
+import { useSelector } from "react-redux";
 
 const SettingRole = () => {
   const [users, setUsers] = useState([]);
@@ -28,6 +29,9 @@ const SettingRole = () => {
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
   const [contactError, setContactError] = useState("");
 
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("");
+
   const [user, setUser] = useState({
     user_name: "",
     contact: "",
@@ -42,13 +46,11 @@ const SettingRole = () => {
     department: "",
   };
 
-  
-
-  console.log(user);
   const [departments, setDepartments] = useState([]);
-  const [activeUser, setActiveUser] = useState ([]);
+  const [activeUser, setActiveUser] = useState([]);
 
-  const Token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -64,7 +66,7 @@ const SettingRole = () => {
       try {
         const [userResponse, departmentResponse] = await Promise.all([
           axios.get("http://localhost:8898/api/role/allUsers", {
-            headers: { Authorization: `Bearer ${Token}` },
+            headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get("http://localhost:8898/api/getDepartment"),
         ]);
@@ -81,7 +83,7 @@ const SettingRole = () => {
       }
     };
     fetchData();
-  }, [Token]);
+  }, [token]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +91,7 @@ const SettingRole = () => {
         const activeResponse = await axios.get(
           "http://localhost:8898/api/role/activeUser",
           {
-            headers: { Authorization: `Bearer ${Token}` },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         console.log(activeResponse);
@@ -101,7 +103,7 @@ const SettingRole = () => {
     };
 
     fetchData();
-  },[Token]);
+  }, [token]);
 
   // Filter all users by search term
   useEffect(() => {
@@ -119,6 +121,23 @@ const SettingRole = () => {
     filterAllUsers();
   }, [userSearchTerm, users]);
 
+  // filter handle
+  const handleFilter = () => {
+    let filtered = users;
+    if (selectedDepartment) {
+      filtered = filtered.filter(
+        (user) => user.department_name === selectedDepartment.value
+      );
+    }
+
+    if (selectedRole) {
+      filtered = filtered.filter((user) => user.role === selectedRole);
+    }
+
+    setAllFilteredUsers(filtered);
+    setFilterFormVisibility(false); // Close filter form after applying filters
+  };
+
   // Socket listener for activated users
   useEffect(() => {
     socket.on("activated_user", (data) => {
@@ -134,14 +153,19 @@ const SettingRole = () => {
 
   const validateContact = (contact) => {
     const contactNumber = parseInt(contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Contact number must be between 9700000000 and 9899999999.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Contact number must be between 9700000000 and 9899999999."
+      );
       return false;
     }
     setContactError("");
     return true;
   };
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -151,14 +175,13 @@ const SettingRole = () => {
     }
   };
 
-
   const handleDepartmentChange = (e) => {
     setNewDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleAddUser = async (event) => {
     event.preventDefault();
-    
+
     if (!validateContact(user.contact)) {
       setError("Please correct the contact number.");
       return;
@@ -169,7 +192,7 @@ const SettingRole = () => {
         "http://localhost:8898/api/role/addUser",
         user,
         {
-          headers: { Authorization: `Bearer ${Token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success(`${user.user_name} added successfully!`);
@@ -229,7 +252,7 @@ const SettingRole = () => {
         "http://localhost:8898/api/addDepartment",
         newDepartment,
         {
-          headers: { Authorization: `Bearer ${Token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success(`${newDepartment.department_name} added successfully!`);
@@ -361,6 +384,8 @@ const SettingRole = () => {
                   name="contact"
                   value={user.contact}
                   onChange={handleInputChange}
+                  maxLength={10} // Limit input to 10 characters
+                  pattern="[0-9]*"
                   type="text"
                   className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
                 />
@@ -434,39 +459,32 @@ const SettingRole = () => {
                   Filter by Role:{" "}
                 </label>
                 <select
-                  name=""
-                  id=""
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   autoFocus
                 >
                   <option value="">Select a role</option>
-                  <option value="">Super Admin</option>
-                  <option value="">Admin</option>
-                  <option value="">User</option>
-                  <option value="">Department Head</option>
+                  <option value="superadmin">Super Admin</option>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                  <option value="departmenthead">Department Head</option>
                 </select>
               </div>
               <div className="flex gap-7 items-center">
                 <label htmlFor="department" className="font-medium">
                   Department:
                 </label>
-                <select
-                  id="department"
-                  name="department"
-                  value={user.department}
-                  onChange={handleInputChange}
-                  className="border-border border-2 rounded p-2 w-[250px] focus:outline-slate-400"
-                >
-                  <option value="">Select Department</option>
-                  {departments.map((department) => (
-                    <option
-                      key={department.id}
-                      value={department.department_name}
-                    >
-                      {department.department_name}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  options={departments.map((department) => ({
+                    value: department.department_name,
+                    label: department.department_name,
+                  }))}
+                  value={selectedDepartment}
+                  onChange={(option) => setSelectedDepartment(option)}
+                  placeholder="Select Department"
+                  styles={customStyles}
+                />
               </div>
               <div className="flex gap-20">
                 <label htmlFor="" className="font-medium">
@@ -494,7 +512,10 @@ const SettingRole = () => {
                 </div>
               </div>
             </div>
-            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium">
+            <button
+              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium"
+              onClick={handleFilter}
+            >
               Filter
             </button>
           </form>
@@ -515,7 +536,7 @@ const SettingRole = () => {
                 className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   setVisibleForm("");
-                  setError(null); 
+                  setError(null);
                 }}
               />
             </div>

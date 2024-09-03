@@ -12,6 +12,7 @@ import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -169,7 +170,8 @@ const Issue = () => {
     }),
   };
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   // get issue from backend
   useEffect(() => {
@@ -257,7 +259,7 @@ const Issue = () => {
             <div className="flex font-bold text-lg">Issue</div>
 
             <div className="flex gap-6">
-            <input
+              <input
                 type="text"
                 placeholder="Search Issues"
                 value={searchTerm}
@@ -368,7 +370,7 @@ const Issue = () => {
                   autoFocus
                 >
                   <option value="">Select a department</option>
-                  <option value="">BIT</option> 
+                  <option value="">BIT</option>
                   <option value="">SSD</option>
                   <option value="">BBA</option>
                   <option value="">Resource</option>
@@ -480,7 +482,7 @@ const Issue = () => {
                             menuList: (provided) => ({
                               ...provided,
                               maxHeight: 150, // Adjust this as needed
-                              overflowY: 'auto', // This ensures only the menu list scrolls
+                              overflowY: "auto", // This ensures only the menu list scrolls
                             }),
                           }}
                           menuPortalTarget={document.body}

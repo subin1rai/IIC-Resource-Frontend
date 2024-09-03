@@ -10,6 +10,7 @@ import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import filter from "../assets/filter.svg";
+import { useSelector } from "react-redux";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
@@ -47,7 +48,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 items-center">
       {categories.map((category, index) => (
         <div key={index} className="flex items-center gap-2">
           <Select
@@ -69,7 +70,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={() => removeCategory(index)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
+              className="bg-red-500 text-white px-2 py-1 rounded focus:outline-red-800"
             >
               -
             </button>
@@ -78,7 +79,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={addCategory}
-              className="bg-blue-500 text-white px-2 py-1 rounded"
+              className="bg-blue-500 text-white px-2 py-1 rounded focus:outline-blue-800"
             >
               +
             </button>
@@ -115,11 +116,12 @@ const SpecificVendor = () => {
     bills: [],
   });
 
-  const role = localStorage.getItem("role");
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+  const role = userInfo.role;
 
   const [loading, setLoading] = useState(false);
-  const [addFormVisibility, setVendorDetailsFormVisibility] = useState(false);
+  const [editFormVisibility, setEditFormVisibility] = useState(false);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
   const [error, setError] = useState("");
   const [contactError, setContactError] = useState("");
@@ -190,18 +192,18 @@ const SpecificVendor = () => {
       vendor_profile: vendor.vendor_profile,
       vendorCategory: vendor.vendorCategory || [],
     });
-    setVendorDetailsFormVisibility(true);
+    setEditFormVisibility(true);
   };
 
   const closeVendorDetailsForm = () => {
     setError("");
-    setVendorDetailsFormVisibility(false);
+    setEditFormVisibility(false);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
-    if (name === 'contact') {
+    if (name === "contact") {
       validateContact(value);
     }
   };
@@ -304,13 +306,19 @@ const SpecificVendor = () => {
 
   const validateContact = (vendor_contact) => {
     const contactNumber = parseInt(vendor_contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Please enter a valid 10-digit contact number starting with 97, 98, or 99.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Please enter a valid 10-digit contact number starting with 97 or 98."
+      );
       return false;
     }
     setContactError("");
     return true;
-  }
+  };
 
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
@@ -427,7 +435,7 @@ const SpecificVendor = () => {
                   </span>
                 </p>
                 <p className="font-medium">
-                  Features:{" "}
+                  Categories:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor?.vendorCategory
                       .map((category) => category.item_category_name)
@@ -466,12 +474,13 @@ const SpecificVendor = () => {
           <VendorHistory history={vendor} />
         </div>
       </div>
-      {addFormVisibility && (
+
+      {editFormVisibility && (
         <>
           <div className="bg-overlay h-screen w-screen absolute z-10"></div>
           <form
             onSubmit={handleSubmit}
-            className="flex absolute z-20 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7rounded"
+            className="flex absolute z-20 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
           >
             <div className="flex justify-between">
               <p className="font-semibold text-lg">Edit Vendor</p>
@@ -482,7 +491,7 @@ const SpecificVendor = () => {
                 onClick={closeVendorDetailsForm}
               />
             </div>
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-7">
               <div className="flex items-center gap-6">
                 <label htmlFor="vendor_name" className="w-40 font-medium">
                   Name
@@ -578,9 +587,9 @@ const SpecificVendor = () => {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end"
+                className="bg-blue-600 text-white py-3 px-4 w-full justify-center rounded-md focus: outline-blue-600 mb-1 mt-4"
               >
-                Update Vendor
+                Save Changes
               </button>
             </div>
           </form>

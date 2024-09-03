@@ -9,7 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
-import empty from "../assets/Emptyvendor.svg"
+import empty from "../assets/Emptyvendor.svg";
 import Box from "@mui/material/Box";
 
 const columns = [
@@ -58,13 +58,7 @@ const columns = [
     format: (value) => value || "N/A",
     numeric: true,
   },
-  {
-    id: "TDS",
-    label: "TDS",
-    maxWidth: 120,
-    align: "center",
-    format: (value) => value || 0,
-  },
+
   {
     id: "payment_status",
     label: "Payment Status",
@@ -85,6 +79,8 @@ export default function VendorTable({ vendors }) {
     setPage(newPage);
   };
 
+
+  console.log(vendors)
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -161,8 +157,6 @@ export default function VendorTable({ vendors }) {
     backgroundColor: "#f5f5f5",
   };
 
-
-
   return (
     <Paper
       sx={{
@@ -198,7 +192,9 @@ export default function VendorTable({ vendors }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!vendors || vendors.length === 0) ? (
+
+            {(!visibleRows || visibleRows.length === 0) ? (
+
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
@@ -259,7 +255,9 @@ export default function VendorTable({ vendors }) {
                             Completed
                           </span>
                         )
-                      ) : column.format && vendor && vendor[column.id] !== undefined ? (
+                      ) : column.format &&
+                        vendor &&
+                        vendor[column.id] !== undefined ? (
                         column.format(vendor[column.id])
                       ) : vendor && vendor[column.id] !== undefined ? (
                         vendor[column.id]
@@ -272,7 +270,6 @@ export default function VendorTable({ vendors }) {
               ))
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
       <TablePagination
@@ -284,7 +281,9 @@ export default function VendorTable({ vendors }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          count === 0
+            ? "No records"
+            : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
         }
       />
     </Paper>

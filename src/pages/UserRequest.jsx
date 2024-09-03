@@ -8,6 +8,7 @@ import Select from "react-select";
 import requestImage from "../assets/requestImg.svg";
 import addImage from "../assets/addItem.svg";
 import subtract from "../assets/subtract.svg";
+import { useSelector } from "react-redux";
 
 const UserRequest = () => {
   const [request, setRequest] = useState({
@@ -19,9 +20,11 @@ const UserRequest = () => {
   const [allItems, setAllItems] = useState([]);
   const [departmentMembers, setDepartmentMembers] = useState([]);
   const [members, setMembers] = useState([]);
-  const token = localStorage.getItem("token");
-  const userDepartment = localStorage.getItem("department");
 
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
+  const userDepartment = userInfo.department;
   console.log(request);
 
   useEffect(() => {
@@ -281,7 +284,7 @@ const UserRequest = () => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}
@@ -328,8 +331,7 @@ const UserRequest = () => {
                   styles={{
                     control: (provided) => ({
                       ...provided,
-                      minHeight:"46px",
-
+                      minHeight: "46px",
                     }),
                     menuPortal: (provided) => ({
                       ...provided,
@@ -337,9 +339,9 @@ const UserRequest = () => {
                     }),
                     menuList: (provided) => ({
                       ...provided,
-                      width:"100%",
+                      width: "100%",
                       maxHeight: 150, // Adjust this as needed
-                      overflowY: 'auto', // This ensures only the menu list scrolls
+                      overflowY: "auto", // This ensures only the menu list scrolls
                     }),
                   }}
                   menuPortalTarget={document.body}

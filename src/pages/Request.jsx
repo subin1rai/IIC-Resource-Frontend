@@ -9,6 +9,7 @@ import Chat from "../components/Chat";
 import req from "../assets/request.svg";
 import close from "../assets/close.svg";
 import Select from "react-select";
+import { useSelector } from "react-redux";
 
 const Request = () => {
   const [requests, setRequests] = useState([]);
@@ -20,9 +21,8 @@ const Request = () => {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
-  const token = localStorage.getItem("token");
-
-  console.log(departments);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const customStyles = {
     control: (provided, state) => ({
@@ -118,7 +118,6 @@ const Request = () => {
     setFilterFormVisibility(false);
   };
 
-  console.log(selectedDepartment);
   const handleFilter = () => {
     let filtered = requests;
 

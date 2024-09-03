@@ -16,7 +16,6 @@ import UserHome from "./pages/UserHome";
 import UserRequest from "./pages/UserRequest";
 import RequestHistory from "./pages/RequestHistory";
 import Reset from "./pages/Reset";
-import Otp from "./pages/Otp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Request from "./pages/Request";
 import SettingRole from "./pages/SettingRole";
@@ -26,11 +25,13 @@ import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
 import SpecificRequest from "./pages/SpecificRequest";
+import { useSelector } from "react-redux";
 import ChangePassword from "./pages/changePassword";
 
 function App() {
-  const userType = localStorage.getItem("role");
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const userType = userInfo?.role || null;
 
   return (
     <div className="App">
@@ -43,8 +44,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset" element={<Reset />} />
-          <Route path="/otp" element={<Otp />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
@@ -59,7 +60,7 @@ function App() {
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
                 <Route path="/editProfile" element={<EditProfile />} />
-                <Route path="/changePassword" element={<ChangePassword/>} />
+                
                 <Route
                   path="/specificRequest/:id"
                   element={<SpecificRequest />}

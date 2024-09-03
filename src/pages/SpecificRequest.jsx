@@ -13,6 +13,7 @@ import remove from "../assets/removeIcon.svg";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Chat from "../components/Chat";
+import { useSelector } from "react-redux";
 
 const SpecificRequest = () => {
   const [request, setRequest] = useState({
@@ -44,7 +45,8 @@ const SpecificRequest = () => {
   const [itemOptions, setItemOptions] = useState([]);
   const [remarks, setRemarks] = useState();
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const formatDate = (dateString) => {
     if (!dateString) return "";

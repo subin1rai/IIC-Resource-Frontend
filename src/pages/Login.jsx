@@ -4,13 +4,15 @@ import Logo from "../assets/logo.png";
 import Logo1 from "../assets/logo1.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../features/user/userSlice";
 
 const Login = () => {
   const [user, setUser] = useState({
     user_email: "",
     password: "",
   });
-
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -27,14 +29,20 @@ const Login = () => {
         user,
         { withCredentials: true }
       );
-
       console.log("Login response:", response);
-      localStorage.setItem("token", response.data.token);
+
+      const userInfo = {
+        user_name: response.data.user_name,
+        department: response.data.department_name,
+        role: response.data.role,
+        token: response.data.token,
+      };
+
+      dispatch(setUserInfo(userInfo));
+
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("user_name", response.data.user_name);
-      localStorage.setItem("department", response.data.department_name);
-      localStorage.setItem("role", response.data.role);
-      console.log("Role from response:", response.data.role);
 
       if (
         response.data.role === "admin" ||
