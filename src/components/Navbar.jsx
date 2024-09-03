@@ -13,8 +13,8 @@ const Navbar = () => {
       <div className="flex gap-14 text-lg px-10 font-medium">
         <NavLink to="/userHome">Home</NavLink>
         <NavLink to="/userRequest">Request</NavLink>
-        <NavLink to="/userHistory">History</NavLink>
-        <NavLink to="/userHowto" >How to?</NavLink>
+        <NavLink to="/requestHistory">History</NavLink>
+       
 
       </div>
       <div className="flex gap-5">
