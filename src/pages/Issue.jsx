@@ -257,7 +257,7 @@ const Issue = () => {
             <div className="flex font-bold text-lg">Issue</div>
 
             <div className="flex gap-6">
-            <input
+              <input
                 type="text"
                 placeholder="Search Issues"
                 value={searchTerm}
@@ -368,7 +368,7 @@ const Issue = () => {
                   autoFocus
                 >
                   <option value="">Select a department</option>
-                  <option value="">BIT</option> 
+                  <option value="">BIT</option>
                   <option value="">SSD</option>
                   <option value="">BBA</option>
                   <option value="">Resource</option>
@@ -480,7 +480,7 @@ const Issue = () => {
                             menuList: (provided) => ({
                               ...provided,
                               maxHeight: 150, // Adjust this as needed
-                              overflowY: 'auto', // This ensures only the menu list scrolls
+                              overflowY: "auto", // This ensures only the menu list scrolls
                             }),
                           }}
                           menuPortalTarget={document.body}
