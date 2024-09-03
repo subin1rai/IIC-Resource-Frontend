@@ -115,8 +115,9 @@ const Topbar = () => {
             },
           }
         );
-        setNotification(response.data.notification || []);
-        const unreadCount = response.data.notification.filter(
+        console.log(response);
+        setNotification(response.data.notifications || []);
+        const unreadCount = response.data.notifications.filter(
           (req) => !req.state
         ).length;
         setNotReadCount(unreadCount);
@@ -128,6 +129,7 @@ const Topbar = () => {
       }
     };
     fetchNotification();
+
   }, [token]);
 
   const fullName = userInfo.user_name;
