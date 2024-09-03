@@ -25,12 +25,15 @@ import SingleItem from "./pages/SingleItem";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Chat from "./components/Chat";
 import SpecificRequest from "./pages/SpecificRequest";
+import { useSelector } from "react-redux";
 import ChangePassword from "./pages/changePassword";
 
 function App() {
-  const userType = localStorage.getItem("role");
-  console.log(userType);
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+
+  const userType = userInfo?.role || null;
 
   return (
     <div className="App">
