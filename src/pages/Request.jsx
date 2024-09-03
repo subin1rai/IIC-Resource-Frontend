@@ -118,7 +118,6 @@ const Request = () => {
     setFilterFormVisibility(false);
   };
 
-  console.log(selectedDepartment);
   const handleFilter = () => {
     let filtered = requests;
 

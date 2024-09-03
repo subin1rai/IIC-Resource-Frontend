@@ -44,6 +44,10 @@
       &:hover {
         background-color: blue;
       }
+
+      &:focus {
+        outline: 1px solid #60a5fa;
+      }
     }
   }
 
@@ -69,11 +73,19 @@
     margin-bottom: 5px;
   }
 
-  .input-group input {
-    width: 300px;
-    padding: 10px;
-    border: 1px solid #dddddd;
-    border-radius: 5px;
+  .input-group {
+    input {
+      width: 300px;
+      padding: 10px;
+      border: 2px solid #e5e7eb;
+      border-radius: 5px;
+
+
+      &:focus {
+        border: 2px solid #94a3b8;
+        outline: none;
+      }
+    }
   }
 
   .forgot-password {
@@ -90,16 +102,23 @@
   .forgot-password a:hover {
     text-decoration: underline;
   }
+
+  .forgot-password a:focus {
+    outline: 2px none;
+    text-decoration: underline;
+  }
 }
 
 @media (max-width: 392px) {
   .left-side {
     display: none;
     flex: 0;
+
     img {
       display: none;
     }
   }
+
   .login {
     display: flex;
     justify-content: center;
@@ -129,6 +148,7 @@
 
     .input-group input {
       width: 200px;
+
     }
   }
 }
@@ -137,10 +157,12 @@
   .left-side {
     display: none;
     flex: 0;
+
     img {
       display: none;
     }
   }
+
   .login {
     display: flex;
     justify-content: center;
@@ -165,6 +187,7 @@
     justify-content: center;
     align-items: center;
   }
+
   .left-side {
     display: none;
 
