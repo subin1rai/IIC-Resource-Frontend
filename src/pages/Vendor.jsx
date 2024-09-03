@@ -69,7 +69,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={() => removeCategory(index)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
+              className="bg-red-500 text-white px-2 py-1 rounded focus: outline-red-800"
             >
               -
             </button>
@@ -78,7 +78,7 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
             <button
               type="button"
               onClick={addCategory}
-              className="bg-blue-500 text-white px-2 py-1 rounded"
+              className="bg-blue-500 text-white px-2 py-1 rounded focus:outline-blue-800"
             >
               +
             </button>
@@ -627,7 +627,8 @@ const Vendor = () => {
                   name="vendor_contact"
                   id="vendor_contact"
                   onChange={handleChange}
-                  maxLength={0}
+                  maxLength={10} // Limit input to 10 characters
+                  pattern="[0-9]*"
                 />
               </div>
               <div className="flex items-center gap-6">
@@ -644,7 +645,7 @@ const Vendor = () => {
                 />
               </div>
               {error && <span className="text-red-500">{error}</span>}
-              <button className="bg-blue-600 text-white py-2 px-6 w-fit h-fit rounded-md flex self-end">
+              <button className="bg-blue-600 text-white py-3 px-4 w-full justify-center rounded-md focus: outline-blue-600">
                 Add vendor
               </button>
             </div>
