@@ -33,10 +33,10 @@ const Records = () => {
 
   const [filterOptions, setFilterOptions] = useState({
     vendor_name: "",
-    dateFrom: "",
+    item_name : "",
     dateTo: "",
     priceSort: "",
-    billStatus: "",
+    bill_status: "",
   });
 
   const [date, setDate] = useState("");
@@ -372,41 +372,44 @@ const Records = () => {
   }, [searchBill, bills]);
 
   const handleFilter =() => {
-    let filtered = bills;
+    let filtered = [...bills];
 
-    if (selectedVendor) {
+    if (filterOptions.vendor_name) {
       filtered = filtered.filter(
-        (bill) => bill.vendors.vendor_name === selectedVendor.value
+        (bill) => bill.vendors.vendor_name === filterOptions.vendor_name
       );
     }
 
-    if (selectedItem) {
+    if (filterOptions.item_name) {
       filtered = filtered.filter(
-        (bill) => bill.items.item_name === selectedItem.value
+        (bill) => bill.BillItems.item_name === filterOptions.item_name
       );
     }
 
-    if (dateFrom) {
-      filtered = filtered.filter(
-        (bill) => new Date(bill.bill_date) >= new Date(dateFrom)
-      );
-    }
-
-    if (dateTo) {
-      filtered = filtered.filter(
-        (bill) => new Date(bill.bill_date) <= new Date(dateTo)
-      );
+    if (filterOptions.dateFrom && filterOptions.dateTo ) {
+      filtered = filtered.filter((bill) =>{
+        const billDate = bill.recent_billDate;
+        return (
+          billDate >= new Date(filterOptions.dateFrom) &&
+          billDate <= new Date(filterOptions.dateTo)
+        )
+      });
     }
     
-    if (price) {
-      filtered = filtered.filter(
-        (bill) => bill.BillItems.actualAmt <= price
-      );
+    if (filterOptions.priceSort) {
+      filtered.sort((a, b) => {
+        if (filterOptions.priceSort === "low-to-high") {
+          return b.actual_Amount - a.actual_Amount;
+        } else if (filterOptions.priceSort === "high-to-low") {
+          return a.actual_Amount - b.actual_Amount;
+        }
+        return 0;
+      });
     }
 
-    if (billStatus) {
+    if (filterOptions.bill_status) {
       filtered = filtered.filter(
-        (bill) => bill.bill_status === billStatus.value
+        (bill) => bill.bill_status === filterOptions.bill_status
       );
     }
 
@@ -796,8 +799,8 @@ const Records = () => {
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
-                  value={dateFrom}
-                  onChange={(e) => setDateFrom(e.target.value)}
+                  value={filterOptions.dateFrom}
+                  onChange={handleDateChange("dateFrom")}
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -808,8 +811,8 @@ const Records = () => {
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
-                  value={dateTo}
-                  onChange={(e) => setDateTo(e.target.value)}
+                  value={filterOptions.dateTo}
+                  onChange={handleDateChange("dateTo")}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
@@ -823,7 +826,7 @@ const Records = () => {
 
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.unit_price}
+                  value={filterOptions.actual_Amount}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
                       ...prev,

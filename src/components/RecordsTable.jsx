@@ -130,11 +130,12 @@ export default function RecordsTable({ bills }) {
     return 0;
   };
 
+  if (!bills || !Array.isArray(bills)) return null;
+
   const stableSort = (array, comparator) => {
     // Filter out any undefined or null items
-    const validArray = array.filter((item) => item != null);
-
-    const stabilizedThis = validArray.map((el, index) => [el, index]);
+    // const validArray = array.filter((item) => item != null);
+    const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
@@ -143,14 +144,13 @@ export default function RecordsTable({ bills }) {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  // const visibleRows = React.useMemo(
-  //   () =>
-  //     stableSort(
-  //       bills.filter((bill) => bill != null),
-  //       getComparator(order, orderBy)
-  //     ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-  //   [bills, order, orderBy, page, rowsPerPage]
-  // );
+  const visibleRows = React.useMemo(
+    () =>
+      stableSort(bills,
+        getComparator(order, orderBy)
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [bills, order, orderBy, page, rowsPerPage]
+  );
 
   const handleRowClick = (bill_id) => {
     navigate(`/specificbill/${bill_id}`);
@@ -215,16 +215,13 @@ export default function RecordsTable({ bills }) {
                 </TableCell>
               </TableRow>
             ) : (
-              visibleRows
-                .slice()
-                .reverse()
-                .map((bill, index) =>
+              visibleRows.map((bill, index) =>
                   bill ? (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={bill.bill_ID || `unknown-${index}`}
+                      key={bill.bill_id || `unknown-${index}`}
                       onClick={() => handleRowClick(bill.bill_id)}
                       style={{ cursor: "pointer" }}
                     >
@@ -289,7 +286,7 @@ export default function RecordsTable({ bills }) {
       <TablePagination
         rowsPerPageOptions={[10]}
         component="div"
-        count={bills.filter((bill) => bill != null).length}
+        count={bills && Array.isArray(bills) ? bills.length : 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

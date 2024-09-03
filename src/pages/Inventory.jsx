@@ -57,7 +57,6 @@ const Inventory = () => {
   const [category, setCategory] = useState([]);
   const [itemCategory, setItemCategory] = useState([]);
   const [feature, setFeature] = useState([]);
-
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
   const [featureOptions, setFeatureOptions] = useState([]);
