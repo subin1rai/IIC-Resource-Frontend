@@ -121,8 +121,12 @@ const Vendor = () => {
 
 
   const [filterOptions, setFilterOptions] = useState({
-    totalAmount: "",
-    
+    amountOption: "",
+    durationOption: "",
+    purchaseFrom: "",
+    purchaseTo: "",
+    TDS: "",
+    payment_status: "",
   })
 
   const openAddVendorForm = () => {
@@ -202,7 +206,6 @@ const Vendor = () => {
             },
           }
         );
-        console.log("Item Category Data:", response.data);
         setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
@@ -320,26 +323,50 @@ const Vendor = () => {
   }, [token]);
 
   useEffect(() => {
-    let results = vendors;
-
-    if (searchTerm) {
-      results = results.filter((vendor) =>
-        vendor.vendor_name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filterVendors = () => {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const newFilteredVendors = vendors.filter((vendor) =>
+        vendor.vendor_name.toLowerCase().includes(lowercasedTerm)
       );
+      setFilteredVendors(newFilteredVendors);
+    };
+    filterVendors();
+  }, [searchTerm, vendors]);
+
+  // filter functionality
+  const applyFilters = () => {
+    let filteredResults = [...vendors];
+
+    if (filterOptions.amountOption) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.amountOption === "low-to-high") {
+          return a.total_amount - b.total_amount;
+        } else if (filterOptions.amountOption === "high-to-low") {
+          return b.total_amount - a.total_amount;
+        }
+        return 0;
+      });
     }
 
+    if (filterOptions.durationOption) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.durationOption === "low-to-high") {
 
-    // if (){
+          return a.payment_duration - b.payment_duration;
+        } else if (filterOptions.durationOption === "high-to-low") {
+          return b.payment_duration - a.payment_duration;
+        }
+        return 0;
+      });
+    }
 
-    // }
-    // if (selectedCategory) {
-    //   results = results.filter(
-    //     (vendor) => vendor.category === selectedCategory.value
-    //   );
-    // }
+    setFilteredVendors(filteredResults)
+    setFilterFormVisibility(false);
 
-    setFilteredVendors(results);
-  }, [searchTerm, vendors]);
+
+  }
+
+  console.log(filteredVendors)
 
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
@@ -431,8 +458,11 @@ const Vendor = () => {
 
       {/* filter form */}
       {filterFormVisibility && (
+
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -446,19 +476,25 @@ const Vendor = () => {
                 {/* div for department */}
                 <div className="flex flex-col gap-3">
                   <label htmlFor="" className="font-medium">
-                    {" "}
-                    Total Amount:{" "}
+                    Total Amount:
                   </label>
                   <select
                     name=""
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    value={filterOptions.amountOption}
+                    onChange={(e) =>
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        amountOption: e.target.value,
+                      }))
+                    }
                   >
                     <option value="" >
                       Select an option
                     </option>
-                    <option value="">High to low</option>
-                    <option value="">Low to high</option>
+                    <option value="high-to-low">High to low</option>
+                    <option value="low-to-high">Low to high</option>
                   </select>
                 </div>
 
@@ -472,12 +508,19 @@ const Vendor = () => {
                     name=""
                     id=""
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                    value={filterOptions.durationOption}
+                    onChange={(e) =>
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        durationOption: e.target.value,
+                      }))
+                    }
                   >
                     <option value="" >
                       Select an option
                     </option>
-                    <option value="">High to low</option>
-                    <option value="">Low to high</option>
+                    <option value="high-to-low">High to low</option>
+                    <option value="low-to-high">Low to high</option>
                   </select>
                 </div>
               </div>
@@ -586,7 +629,7 @@ const Vendor = () => {
                     ...customStyles,
                     menuPortal: (provided) => ({
                       ...provided,
-                      zIndex:99,
+                      zIndex: 99,
                     }),
                     menuList: (provided) => ({
                       ...provided,
@@ -600,7 +643,8 @@ const Vendor = () => {
                 />
               </div>
             </div>
-            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
+            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+              onClick={applyFilters}>
               Filter
             </button>
           </form>

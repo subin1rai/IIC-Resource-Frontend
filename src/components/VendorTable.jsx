@@ -58,13 +58,7 @@ const columns = [
     format: (value) => value || "N/A",
     numeric: true,
   },
-  {
-    id: "TDS",
-    label: "TDS",
-    maxWidth: 120,
-    align: "center",
-    format: (value) => value || 0,
-  },
+
   {
     id: "payment_status",
     label: "Payment Status",
@@ -85,6 +79,8 @@ export default function VendorTable({ vendors }) {
     setPage(newPage);
   };
 
+
+  console.log(vendors)
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -196,7 +192,9 @@ export default function VendorTable({ vendors }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {!vendors || vendors.length === 0 ? (
+
+            {(!visibleRows || visibleRows.length === 0) ? (
+
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
