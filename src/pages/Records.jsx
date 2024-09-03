@@ -45,8 +45,14 @@ const Records = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState("");
+  const [selectedItem, setSelectedItem] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState([]);
+  const [price, setPrice] = useState("");
+  const [billStatus, setBillStatus] = useState([]);
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [exports, setExport] = useState("");
@@ -96,7 +102,7 @@ const Records = () => {
   };
 
   const handleExport = async () => {
-    try {
+    try { 
       const response = await axios.get(
         "http://localhost:8898/api/bill/exportBill",
         {
@@ -175,6 +181,7 @@ const Records = () => {
       });
 
       setBills(response.data.bill || []);
+      setFilteredBills(response.data.bills);
     } catch (error) {
       console.error("Error fetching bills:", error);
       setBills([]);
@@ -195,7 +202,7 @@ const Records = () => {
           }
         );
         console.log(vendorsResponse);
-        setVendors(vendorsResponse.data.vendor);
+        setVendors(vendorsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -210,6 +217,33 @@ const Records = () => {
       [name]: option.value,
     }));
   };
+
+  const handleItemChange = (index, field, value) => {
+    const newFields = [...itemFields];
+    newFields[index][field] = value;
+    setItemFields(newFields);
+  };
+
+  
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setItems(itemsResponse.data || []);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItems();
+  }, [token]);
 
   const customStyles = {
     control: (provided, state) => ({
@@ -336,6 +370,49 @@ const Records = () => {
     };
     filterBills();
   }, [searchBill, bills]);
+
+  const handleFilter =() => {
+    let filtered = bills;
+
+    if (selectedVendor) {
+      filtered = filtered.filter(
+        (bill) => bill.vendors.vendor_name === selectedVendor.value
+      );
+    }
+
+    if (selectedItem) {
+      filtered = filtered.filter(
+        (bill) => bill.items.item_name === selectedItem.value
+      );
+    }
+
+    if (dateFrom) {
+      filtered = filtered.filter(
+        (bill) => new Date(bill.bill_date) >= new Date(dateFrom)
+      );
+    }
+
+    if (dateTo) {
+      filtered = filtered.filter(
+        (bill) => new Date(bill.bill_date) <= new Date(dateTo)
+      );
+    }
+    
+    if (price) {
+      filtered = filtered.filter(
+        (bill) => bill.BillItems.actualAmt <= price
+      );
+    }
+
+    if (billStatus) {
+      filtered = filtered.filter(
+        (bill) => bill.bill_status === billStatus.value
+      );
+    }
+
+    setFilteredBills(filtered);
+    setFilterFormVisibility(false); // Close filter form after applying filters
+  };
 
   return (
     <div className="records">
@@ -633,22 +710,36 @@ const Records = () => {
                     value: vendor.vendor_name,
                     label: vendor.vendor_name,
                   }))}
-                  onChange={(option) => {
-                    handleSelectChange(option, { name: "vendor_name" });
-                    const selectedVendor = vendors.find(
-                      (v) => v.vendor_name === option.value
-                    );
-                  }}
-                  value={
-                    bill.vendor_name
-                      ? {
-                          value: bill?.vendors?.vendor_name,
-                          label: bill.vendor_name,
-                        }
-                      : null
-                  }
+                  // onChange={(option) => {
+                  //   handleSelectChange(option, { name: "vendor_name" });
+                  //   const selectedVendor = vendors.find(
+                  //     (v) => v.vendor_name === option.value
+                  //   );
+                  // }}
+                  // value={
+                  //   bill.vendor_name
+                  //     ? {
+                  //         value: bill?.vendors?.vendor_name,
+                  //         label: bill.vendor_name,
+                  //       }
+                  //     : null
+                  // }
+                  value={selectedVendor}
+                  onChange={(option) => setSelectedVendor(option)}
                   placeholder="Select Vendor"
-                  styles={customStyles}
+                  styles={{
+                    ...customStyles,
+                    menuPortal: (provided) => ({
+                      ...provided,
+                      zIndex: 9999,
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      maxHeight: 150, // Adjust this as needed
+                      overflowY: 'auto', // This ensures only the menu list scrolls
+                    }),
+                  }}
+                  menuPortalTarget={document.body}
                   autoFocus
                 />
               </div>
@@ -657,7 +748,41 @@ const Records = () => {
                 <label htmlFor="" className="font-medium">
                   By Item
                 </label>
-                <Select placeholder="Select an Item" styles={customStyles} />
+                <Select
+                      options={items.map((item) => ({
+                      value: item.item_name,
+                    label: item.item_name,
+                  }))}
+                  // onChange={(option) => {
+                  // handleSelectChange(option, { name: "item_name" });
+                  // const selectedItem = items.find(
+                  // (i) => i.item_name === option.value
+                  // );
+                  // }}
+                  // value={
+                  // bill.item_name
+                  // ? {
+                  // value: bill?.items?.item_name,
+                  // label: bill.item_name,
+                  // }
+                  //   : null
+                  // }
+                  value = {selectedItem}
+                  onChange={(option) => setSelectedItem(option)}
+                    placeholder="Select Item"
+                          styles={{
+                            ...customStyles,
+                            menuPortal: (provided) => ({
+                              ...provided,
+                              zIndex: 9999,
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              maxHeight: 150, // Adjust this as needed
+                              overflowY: 'auto', // This ensures only the menu list scrolls
+                            }),
+                          }}
+                          menuPortalTarget={document.body} />
               </div>
             </div>
             <div className="flex gap-8">
@@ -671,6 +796,8 @@ const Records = () => {
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -681,6 +808,8 @@ const Records = () => {
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
@@ -728,8 +857,11 @@ const Records = () => {
               </div>
             </div>
           </div>
-          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+          onClick = {handleFilter}
+          >
             Filter
+            
           </button>
         </form>
       )}

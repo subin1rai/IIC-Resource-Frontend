@@ -143,14 +143,14 @@ export default function RecordsTable({ bills }) {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(
-        bills.filter((bill) => bill != null),
-        getComparator(order, orderBy)
-      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [bills, order, orderBy, page, rowsPerPage]
-  );
+  // const visibleRows = React.useMemo(
+  //   () =>
+  //     stableSort(
+  //       bills.filter((bill) => bill != null),
+  //       getComparator(order, orderBy)
+  //     ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+  //   [bills, order, orderBy, page, rowsPerPage]
+  // );
 
   const handleRowClick = (bill_id) => {
     navigate(`/specificbill/${bill_id}`);
