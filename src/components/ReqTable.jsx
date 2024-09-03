@@ -89,9 +89,9 @@ export default function ReqTable({ requests }) {
     () =>
       requests && Array.isArray(requests)
         ? stableSort(
-          requests.filter((request) => request != null),
-          getComparator(order, orderBy)
-        ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            requests.filter((request) => request != null),
+            getComparator(order, orderBy)
+          ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : [],
     [requests, order, orderBy, page, rowsPerPage]
   );
@@ -116,7 +116,10 @@ export default function ReqTable({ requests }) {
     align: "center",
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - (requests?.length || 0)) : 0;
+  const emptyRows =
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - (requests?.length || 0))
+      : 0;
 
   return (
     <Paper
@@ -154,7 +157,7 @@ export default function ReqTable({ requests }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!requests || requests.length === 0) ? (
+            {!requests || requests.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
@@ -173,7 +176,6 @@ export default function ReqTable({ requests }) {
                       className="h-72 w-72"
                       style={{ maxWidth: "300px", marginBottom: "20px" }}
                     />
-                    
                   </Box>
                 </TableCell>
               </TableRow>
@@ -214,18 +216,18 @@ export default function ReqTable({ requests }) {
                                     value === "Pending"
                                       ? "#fff3cd"
                                       : value === "Delivered"
-                                        ? "#d4edda"
-                                        : value === "Holding"
-                                          ? "#d1ecf1"
-                                          : "#f8d7da",
+                                      ? "#d4edda"
+                                      : value === "Holding"
+                                      ? "#d1ecf1"
+                                      : "#f8d7da",
                                   color:
                                     value === "Pending"
                                       ? "#856404"
                                       : value === "Delivered"
-                                        ? "#155724"
-                                        : value === "Holding"
-                                          ? "#0c5460"
-                                          : "#721c24",
+                                      ? "#155724"
+                                      : value === "Holding"
+                                      ? "#0c5460"
+                                      : "#721c24",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}
@@ -261,7 +263,9 @@ export default function ReqTable({ requests }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          count === 0
+            ? "No records"
+            : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
         }
       />
     </Paper>

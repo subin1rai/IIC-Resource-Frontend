@@ -10,6 +10,7 @@ import phone from "../assets/phone.png";
 import profile from "../assets/profile.png";
 import empty from "../assets/Emptynoti.svg"; // Import the new image
 import { format } from "date-fns";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const getRandomColor = () => {
@@ -46,7 +47,9 @@ const Topbar = () => {
     };
   }, []);
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
   const morningStart = 5;
   const afternoonStart = 12;
   const eveningStart = 17;
@@ -112,8 +115,9 @@ const Topbar = () => {
             },
           }
         );
-        setNotification(response.data.notification || []);
-        const unreadCount = response.data.notification.filter(
+        console.log(response);
+        setNotification(response.data.notifications || []);
+        const unreadCount = response.data.notifications.filter(
           (req) => !req.state
         ).length;
         setNotReadCount(unreadCount);
@@ -125,9 +129,11 @@ const Topbar = () => {
       }
     };
     fetchNotification();
+
   }, [token]);
 
-  const fullName = localStorage.getItem("user_name");
+  const fullName = userInfo.user_name;
+  console.log(userInfo);
   useEffect(() => {
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
@@ -301,10 +307,11 @@ const Topbar = () => {
                   .map((notification) => (
                     <div
                       key={notification.notification_id}
-                      className={`border-b border-neutral-300 px-6 py-3  ${notification.state
-                        ? "bg-white"
-                        : "bg-purple-100 cursor-default"
-                        }`}
+                      className={`border-b border-neutral-300 px-6 py-3  ${
+                        notification.state
+                          ? "bg-white"
+                          : "bg-purple-100 cursor-default"
+                      }`}
                     >
                       <div
                         onClick={() =>

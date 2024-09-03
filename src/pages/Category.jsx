@@ -5,7 +5,6 @@ import axios from "axios";
 import Ctable from "../components/Categorytable";
 import Itable from "../components/ItemCategoryTable";
 import Ftable from "../components/Featurestable";
-
 import { useNavigate } from "react-router-dom";
 import close from "../assets/close.svg";
 import itemcat from "../assets/itemcat.png";
@@ -15,6 +14,7 @@ import Chat from "../components/Chat";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import add from "../assets/addCategory.svg";
+import { useSelector } from "react-redux";
 
 // Main Category component
 const Category = () => {
@@ -34,8 +34,8 @@ const Category = () => {
   const [visibleForm, setVisibleForm] = useState("");
   const [error, setError] = useState("");
 
-  // Get the token from local storage
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   // Fetch categories from the API on component mount
   useEffect(() => {

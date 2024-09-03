@@ -10,6 +10,7 @@ import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import filter from "../assets/filter.svg";
+import { useSelector } from "react-redux";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
@@ -115,8 +116,9 @@ const SpecificVendor = () => {
     bills: [],
   });
 
-  const role = localStorage.getItem("role");
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+  const role = userInfo.role;
 
   const [loading, setLoading] = useState(false);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
@@ -201,7 +203,7 @@ const SpecificVendor = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedVendor({ ...editedVendor, [e.target.name]: e.target.value });
-    if (name === 'contact') {
+    if (name === "contact") {
       validateContact(value);
     }
   };
@@ -304,13 +306,19 @@ const SpecificVendor = () => {
 
   const validateContact = (vendor_contact) => {
     const contactNumber = parseInt(vendor_contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Please enter a valid 10-digit contact number starting with 97 or 98.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Please enter a valid 10-digit contact number starting with 97 or 98."
+      );
       return false;
     }
     setContactError("");
     return true;
-  }
+  };
 
   return (
     <div className="flex bg-background justify-center h-screen w-screen relative">
@@ -367,12 +375,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.bills && vendor.bills.length > 0
                       ? vendor.bills
-                        .reduce(
-                          (sum, bill) =>
-                            sum + (Number(bill.paid_amount) || 0),
-                          0
-                        )
-                        .toFixed(2)
+                          .reduce(
+                            (sum, bill) =>
+                              sum + (Number(bill.paid_amount) || 0),
+                            0
+                          )
+                          .toFixed(2)
                       : "--"}
                   </span>
                 </p>
@@ -466,7 +474,6 @@ const SpecificVendor = () => {
           <VendorHistory history={vendor} />
         </div>
       </div>
-
 
       {editFormVisibility && (
         <>

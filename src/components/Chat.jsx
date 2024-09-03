@@ -5,6 +5,7 @@ import backIcon from "../assets/whiteBack.svg";
 import Messages from "./Messages";
 import Conversations from "./Conversations";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
   const [chatBoxVisibility, setChatBoxVisibility] = useState(false);
@@ -13,8 +14,9 @@ const Chat = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [initials, setInitials] = useState("");
 
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+  const role = userInfo.role;
 
   const handleChatBoxVisibility = () => {
     setChatBoxVisibility(!chatBoxVisibility);

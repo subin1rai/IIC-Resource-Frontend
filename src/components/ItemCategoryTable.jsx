@@ -1,7 +1,6 @@
 import React from "react";
 import edit from "../assets/editIcon.png";
-import empty from "../assets/Emptycate.svg"
-
+import empty from "../assets/Emptycate.svg";
 
 const ItemCategoryTable = ({
   itemCategory,
@@ -39,8 +38,7 @@ const ItemCategoryTable = ({
           <img src={empty} alt="No categories" className="h-32 w-32 mb-4" />
           <p className="text-gray-500">No categories added yet !</p>
         </div>
-      )
-      }
+      )}
     </div>
   );
 };

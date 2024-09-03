@@ -13,6 +13,7 @@ import exportIcon from "../assets/export.svg";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
+import { useSelector } from "react-redux";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
@@ -115,7 +116,9 @@ const Vendor = () => {
   const [blackListCount, setBlackListCount] = useState(0);
 
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
 
   const [filterOptions, setFilterOptions] = useState({
     amountOption: "",
@@ -153,13 +156,20 @@ const Vendor = () => {
 
   const validateContact = (vendor_contact) => {
     const contactNumber = parseInt(vendor_contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Contact number must be between 9700000000 and 9899999999.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Contact number must be between 9700000000 and 9899999999."
+      );
       return false;
     }
     setContactError("");
     return true;
   };
+
 
   const customStyles = {
     control: (provided, state) => ({
@@ -539,7 +549,6 @@ const Vendor = () => {
                     // onChange={handleDateChange}
                     options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
-
                 </div>
               </div>
             </div>

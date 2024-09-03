@@ -30,9 +30,7 @@ import ChangePassword from "./pages/changePassword";
 
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
   const userInfo = useSelector((state) => state.user.userInfo);
-
   const userType = userInfo?.role || null;
 
   return (
@@ -47,6 +45,7 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn} />}>
@@ -61,7 +60,7 @@ function App() {
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
                 <Route path="/editProfile" element={<EditProfile />} />
-                <Route path="/changePassword" element={<ChangePassword />} />
+                
                 <Route
                   path="/specificRequest/:id"
                   element={<SpecificRequest />}

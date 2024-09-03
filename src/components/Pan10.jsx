@@ -2,11 +2,13 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = useState([]);
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -268,7 +270,7 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
                       menuList: (provided) => ({
                         ...provided,
                         maxHeight: 150, // Adjust this as needed
-                        overflowY: 'auto', // This ensures only the menu list scrolls
+                        overflowY: "auto", // This ensures only the menu list scrolls
                       }),
                     }}
                     menuPortalTarget={document.body}

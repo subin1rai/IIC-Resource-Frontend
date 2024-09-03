@@ -9,9 +9,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useNavigate } from "react-router-dom";
-import empty from "../assets/Emptyitem.svg"
+import empty from "../assets/Emptyitem.svg";
 import Box from "@mui/material/Box";
-
 
 // all the columns of inventpry table
 const columns = [
@@ -61,13 +60,10 @@ export default function InventoryTable({ items }) {
 
   const navigate = useNavigate();
 
-  console.log(items);
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  console.log(items);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -238,7 +234,9 @@ export default function InventoryTable({ items }) {
                             item.itemsOnFeatures &&
                             Object.keys(item.itemsOnFeatures).length > 0
                           ) {
-                            const sortedKeys = Object.keys(item.itemsOnFeatures).sort();
+                            const sortedKeys = Object.keys(
+                              item.itemsOnFeatures
+                            ).sort();
                             const features = sortedKeys
                               .map((key) => ` ${item.itemsOnFeatures[key]}`)
                               .join(" - ");
@@ -262,14 +260,14 @@ export default function InventoryTable({ items }) {
                                     value === "In Stock"
                                       ? "#d4edda"
                                       : value === "in stock"
-                                        ? "#155724"
-                                        : "#f8d7da",
+                                      ? "#155724"
+                                      : "#f8d7da",
                                   color:
                                     value === "Low Stock"
                                       ? "#856404"
                                       : value === "low stock"
-                                        ? "#155724"
-                                        : "#721c24",
+                                      ? "#155724"
+                                      : "#721c24",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}
@@ -289,7 +287,6 @@ export default function InventoryTable({ items }) {
               </>
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
       <TablePagination
@@ -301,7 +298,9 @@ export default function InventoryTable({ items }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          count === 0
+            ? "No records"
+            : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
         }
       />
     </Paper>

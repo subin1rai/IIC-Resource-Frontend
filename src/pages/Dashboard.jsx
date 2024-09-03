@@ -18,7 +18,8 @@ import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [dashboard, setDashboard] = useState("");
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   useEffect(() => {
     const getdashDetails = async () => {

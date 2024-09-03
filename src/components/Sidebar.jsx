@@ -13,6 +13,7 @@ import category from "../assets/category.svg";
 import vendor from "../assets/vendor.svg";
 import roles from "../assets/roles.png";
 import Logo1 from "../assets/logo1.png";
+import { useSelector } from "react-redux";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -21,7 +22,9 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const role = localStorage.getItem("role");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+  const role = userInfo.role;
 
   const checkSpecificRoute = (pathname, parentPath) => {
     const specificRoutes = ["/specificItem", "/specificVendor"];
