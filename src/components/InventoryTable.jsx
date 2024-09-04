@@ -54,7 +54,7 @@ const columns = [
 
 export default function InventoryTable({ items }) {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("recentPurchase");
+  const [orderBy, setOrderBy] = React.useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
