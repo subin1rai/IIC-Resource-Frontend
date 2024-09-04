@@ -20,6 +20,7 @@ const UserRequest = () => {
   const [allItems, setAllItems] = useState([]);
   const [departmentMembers, setDepartmentMembers] = useState([]);
   const [members, setMembers] = useState([]);
+  const [error, setError] = useState("");
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -34,8 +35,6 @@ const UserRequest = () => {
           "http://localhost:8898/api/role/allUsers"
         );
 
-        console.log(response);
-
         const filteredUsers = response.data.users.filter(
           (user) => user.department_name === userDepartment
         );
@@ -49,15 +48,13 @@ const UserRequest = () => {
       }
     };
 
-    console.log(departmentMembers);
-
     getDepartmentUsers();
   }, [userDepartment]);
 
   useEffect(() => {
     setMembers(
       departmentMembers.map((member) => ({
-        value: member.user_id, // Set user_id as value
+        value: member.user_id,
         label: member.user_name,
       }))
     );
@@ -96,10 +93,12 @@ const UserRequest = () => {
   }, []);
 
   const handleChange = (e) => {
+    setError("");
     setRequest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSelectChange = (selectedOption) => {
+    setError("");
     setRequest((prev) => ({
       ...prev,
       for_UserId: selectedOption ? selectedOption.value : "",
@@ -133,14 +132,6 @@ const UserRequest = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (
-      items.some((item) => !item.item_id || !item.quantity) ||
-      !request.purpose ||
-      !request.for_UserId
-    ) {
-      toast.error("Please fill in all fields");
-      return;
-    }
 
     const requestData = {
       items: items.map((item) => ({
@@ -168,11 +159,7 @@ const UserRequest = () => {
       });
       toast.success("Request submitted successfully!");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to submit request. Please try again."
-      );
-      console.error(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -358,6 +345,11 @@ const UserRequest = () => {
                   onChange={handleChange}
                 />
               </div>
+              {error ? (
+                <span className="text-red-500 ml-4 m-3">{error}</span>
+              ) : (
+                <></>
+              )}
               <button
                 type="submit"
                 className="bg-button py-3 rounded-lg m-3 font-medium text-white text-lg"

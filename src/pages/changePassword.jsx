@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { Icon } from "react-icons-kit";
-import { eyeOff } from 'react-icons-kit/feather/eyeOff';
-import { eye } from 'react-icons-kit/feather/eye'
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState({
@@ -22,12 +22,15 @@ const ChangePassword = () => {
     confirm_password: false,
   });
 
-  const token = localStorage.getItem("token");
+  const [error, setError] = useState("");
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo?.token || null;
 
   const navigate = useNavigate();
 
-  const goBack = () =>{
-    navigate("/dashboard")
+  const goBack = () => {
+    navigate("/dashboard");
   };
 
   const handleSubmit = async (e) => {
@@ -42,18 +45,17 @@ const ChangePassword = () => {
           },
         }
       );
+      console.log(response);
       toast.success("Password changed successfully!");
       goBack();
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || error.message || "An unexpected error occurred.";
-      toast.error(errorMessage);
+      console.log(error.response.data.error);
+      setError(error.response.data.error);
     }
   };
 
-  
-
   const handleChange = (e) => {
+    setError("");
     setPassword((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -91,8 +93,8 @@ const ChangePassword = () => {
             Change Password
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="">
+            <div className=" flex flex-col gap-3 ">
               <div className="flex flex-col relative">
                 <label
                   htmlFor="current-password"
@@ -115,11 +117,7 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("current_password")}
                 >
                   <Icon
-                    icon={
-                      showPassword.current_password
-                        ? eye
-                        : eyeOff
-                    }
+                    icon={showPassword.current_password ? eye : eyeOff}
                     size={20}
                     style={{ color: "#9CA3AF" }}
                   />
@@ -147,16 +145,14 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("password")}
                 >
                   <Icon
-                    icon={
-                      showPassword.password ? eye : eyeOff
-                    }
+                    icon={showPassword.password ? eye : eyeOff}
                     size={20}
                     style={{ color: "#9CA3AF" }}
                   />
                 </span>
               </div>
 
-              <div className="flex flex-col relative">
+              <div className="flex flex-col relative ">
                 <label
                   htmlFor="confirm-password"
                   className="text-gray-600 font-semibold mb-2"
@@ -177,17 +173,17 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("confirm_password")}
                 >
                   <Icon
-                    icon={
-                      showPassword.confirm_password
-                        ? eye
-                        : eyeOff
-                    }
+                    icon={showPassword.confirm_password ? eye : eyeOff}
                     size={20}
                     style={{ color: "#9CA3AF" }}
                   />
                 </span>
               </div>
-
+              {error ? (
+                <span className="text-red-500 mt-2">{error}</span>
+              ) : (
+                <></>
+              )}
               <button
                 type="submit"
                 className="w-full mt-4 bg-blue-600 text-white rounded py-3 px-6 hover:bg-blue-700 transition-colors"
