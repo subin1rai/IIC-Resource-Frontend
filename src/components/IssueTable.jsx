@@ -7,7 +7,7 @@ import Select from "react-select";
 import TableCell from "@mui/material/TableCell";
 import add from "../assets/addIcon.svg";
 import close from "../assets/close.svg";
-import remove from "../assets/removeIcon.svg";
+
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -160,7 +160,6 @@ export default function InventoryTable({ issues }) {
         }));
         setItemOptions(options);
         
-        
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
@@ -175,38 +174,39 @@ export default function InventoryTable({ issues }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
+
+    console.log(editedIssue)
   };
-  
   
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`,
+        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`, 
         editedIssue, 
+        
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        
-     
+        }
+      );
       
-      if (response.status === 200) {
-        // Update the issues state with the edited issue
-        setIssue({ ...issue, ...response.data })
-        toast.success("Issue updated successfully");
-        setEditIssueVisibility(false);
-      } else {
-        toast.error("Failed to update issue");
-      }
+      console.log(response);
+      // if (response.status === 200) {
+      //   setIssue({ ...issue, ...response.data });
+      //   toast.success("Issue updated successfully");
+      //   setEditIssueVisibility(false);
+      // } else {
+      //   toast.error("Failed to update issue");
+      // }
     } catch (error) {
-  
-      toast.error("Failed to edit issue!");
+  console.log(error)
     }
   };
+  
 
-  const handleItemChange = (selectedOption) => {
+ const handleItemChange = (selectedOption) => {
     setEditedIssue((prev) => ({
         ...prev,
         issue_name: selectedOption.value,
@@ -221,12 +221,7 @@ export default function InventoryTable({ issues }) {
     }
   };
 
-  const removeItemField = (index) => {
-    if (itemFields.length > 1) {
-      const newFields = itemFields.filter((_, i) => i !== index);
-      setItemFields(newFields);
-    }
-  };
+ 
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -395,35 +390,14 @@ export default function InventoryTable({ issues }) {
                       className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                       type="number"
                       placeholder="Enter a quantity"
-                      name={`quantity-${index}`}
-                      id={`quantity-${index}`}
+                      name={`quantity`}
+                      id={`quantity`}
                       value={editedIssue.quantity}
                       onChange={(e) =>
                         handleItemChange(index, "quantity", e.target.value)
                       }
                     />
-                    {itemFields.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeItemField(index)}
-                        className="flex items-center"
-                      >
-                        <img
-                          src={remove}
-                          alt="Remove"
-                          className="h-7 w-7"
-                        />
-                      </button>
-                    )}
-                    {index === itemFields.length - 1 && (
-                      <button
-                        type="button"
-                        onClick={addItemField}
-                        className="flex items-center"
-                      >
-                        <img src={add} alt="Add" className="h-7 w-7" />
-                      </button>
-                    )}
+                   
                   </div>
                 ))}
               </div>
@@ -438,6 +412,10 @@ export default function InventoryTable({ issues }) {
               onChange={handleChange}
             />
           </div>
+          <div class="flex items-center">
+          <input id="checkbox" type="checkbox" class="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
+          <label for="checkbox" className="ml-2 text-lg font-medium ">Returned</label>
+        </div>
         </div>
         <div className="flex justify-end gap-4">
           <button  type="submit" className="bg-blue-600 text-white py-2 px-6 rounded">
