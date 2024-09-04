@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issue_date",
+    id: "issueDate",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
@@ -44,8 +44,8 @@ const columns = [
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
   {
-    id: "issued_status",
-    label: "Issued Item Status",
+    id: "isReturned",
+    label: "Return",
     minWidth: 70,
     align: "center",
   },
@@ -491,29 +491,21 @@ export default function InventoryTable({ issues }) {
                             align={column.align}
                             style={cellStyle}
                           >
-                            {column.id === "issued_status" ? (
+                            {column.id === "isReturned" ? (
                               <div
                                 style={{
                                   display: "inline-block",
                                   padding: "4px 8px",
                                   borderRadius: "4px",
-                                  backgroundColor:
-                                    value === "Pending"
-                                      ? "#fff3cd"
-                                      : value === "Approved"
-                                      ? "#d4edda"
-                                      : "#f8d7da",
-                                  color:
-                                    value === "Pending"
-                                      ? "#856404"
-                                      : value === "Approved"
-                                      ? "#155724"
-                                      : "#721c24",
+                                  backgroundColor: value
+                                    ? "#d4edda"
+                                    : "#f8d7da",
+                                  color: value ? "#155724" : "#721c24",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}
                               >
-                                {value ?? "Not Returned"}
+                                {value ? "Returned" : "Not Returned"}
                               </div>
                             ) : column.id === "edit" ? (
                               <IconButton
