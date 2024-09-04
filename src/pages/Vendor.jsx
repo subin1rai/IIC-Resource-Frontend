@@ -14,6 +14,7 @@ import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 import { useSelector } from "react-redux";
+import { Troubleshoot } from "@mui/icons-material";
 
 const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
   const addCategory = () => {
@@ -122,11 +123,11 @@ const Vendor = () => {
     durationOption: "",
     purchaseFrom: "",
     purchaseTo: "",
-    TDS: "",
-    payment_status: "",
+    tdsOption: "",
+    paymentStatus: "",
+    vendorStatus: "",
   });
 
-  console.log(vendors);
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -361,21 +362,60 @@ const Vendor = () => {
     }
 
     if (filterOptions.purchaseFrom && filterOptions.purchaseTo) {
-      filteredResults = filteredResults.filter((item) => {
-        const itemDate = vendor.last_purchase_date;
+      filteredResults = filteredResults.filter((vendor) => {
+        const vendorDate = vendor.last_purchase_date;
         return (
-          itemDate >= new Date(filterOptions.purchaseFrom) &&
-          itemDate <= new Date(filterOptions.purchaseTo)
+          vendorDate >= new Date(filterOptions.purchaseFrom) &&
+          vendorDate <= new Date(filterOptions.purchaseTo)
         );
       });
     }
+
+    // TDS filter
+    if (filterOptions.tdsOption) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.tdsOption === "low-to-high") {
+          return a.TDS - b.TDS;
+        } else if (filterOptions.tdsOption === "high-to-low") {
+          return b.TDS - a.TDS;
+        }
+        return 0;
+      });
+    }
+
+    if (filterOptions.paymentStatus !== undefined) {
+      filteredResults = filteredResults.filter(
+        (vendor) => (vendor.pending_payment > 0) === (parseInt(filterOptions.paymentStatus) === 0)
+      );
+    }
+
+    if (filterOptions.vendorStatus !== undefined && filterOptions.vendorStatus !== "") {
+      filteredResults = filteredResults.filter((vendor) => {
+        console.log(vendor.vendor_name, vendor.black_list);
+
+        if (vendor.black_list === null || vendor.black_list === false) {
+          // Show whitelisted vendors when `vendor.black_list` is null or false
+          return parseInt(filterOptions.vendorStatus) === 0;
+        }
+
+        // Show blacklisted vendors when `vendor.black_list` is true
+        return vendor.black_list === true && parseInt(filterOptions.vendorStatus) === 1;
+      });
+    }
+
+
+
+
+
+
 
 
     setFilteredVendors(filteredResults);
     setFilterFormVisibility(false);
   };
 
-  console.log(filteredVendors);
+  console.log(vendors)
+
 
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
@@ -570,11 +610,18 @@ const Vendor = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.tdsOption}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      tdsOption: e.target.value,
+                    }))
+                  }
                 >
                   <option value="">Select an option</option>
 
-                  <option value="">High to low</option>
-                  <option value="">Low to high</option>
+                  <option value="high-to-low">High to low</option>
+                  <option value="low-to-high">Low to high</option>
                 </select>
               </div>
 
@@ -586,10 +633,17 @@ const Vendor = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.paymentStatus}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      paymentStatus: e.target.value,
+                    }))
+                  }
                 >
                   <option value="">Select an option</option>
-                  <option value="">Pending</option>
-                  <option value="">Paid</option>
+                  <option value="0">Pending</option>
+                  <option value="1">Completed</option>
                 </select>
               </div>
 
@@ -607,10 +661,17 @@ const Vendor = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.vendorStatus}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      vendorStatus: e.target.value,
+                    }))
+                  }
                 >
                   <option value="">Select status</option>
-                  <option value="">Blacklisted</option>
-                  <option value="">Whitelisted</option>
+                  <option value="1">Blacklisted</option>
+                  <option value="0">Whitelisted</option>
                 </select>
               </div>
               <div className="flex flex-col gap-3">

@@ -79,7 +79,6 @@ export default function VendorTable({ vendors }) {
     setPage(newPage);
   };
 
-  console.log(vendors);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
