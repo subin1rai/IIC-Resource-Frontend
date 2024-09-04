@@ -103,7 +103,7 @@ const Navbar = () => {
                 </div>
                 <h1 className="font-medium text-xl text-nowrap ">{fullName}</h1>
               </div>
-              <hr className="border-[1px] border-neutral-300 "></hr>
+              <hr className="border-[1px] border-neutral-300 mt-2 "></hr>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={email} alt="" />
                 <li className="py-2 text-blue-600">{userInfo.user_email}</li>

@@ -316,10 +316,16 @@ const UserRequest = () => {
                   placeholder="Select Member"
                   className="w-full"
                   styles={{
-                    control: (provided) => ({
+                    control: (provided, state) => ({
                       ...provided,
+                      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
                       minHeight: "46px",
+                      boxShadow: "none",
+                      "&:hover": {
+                        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+                      },
                     }),
+                    
                     menuPortal: (provided) => ({
                       ...provided,
                       zIndex: 9999,
@@ -340,7 +346,7 @@ const UserRequest = () => {
                   rows={5}
                   name="purpose"
                   placeholder="Enter your purpose"
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:border-[#057dcd]"
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
                   value={request.purpose}
                   onChange={handleChange}
                 />
