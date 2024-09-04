@@ -19,6 +19,8 @@ import records from "../assets/records.png";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
+import { useSelector } from "react-redux";
+
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -55,7 +57,8 @@ const Records = () => {
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
@@ -416,12 +419,11 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "vat 0" ||
-                        selectedOption === "vat 1.5"
+                      className={` w-36 ${selectedOption === "vat 0" ||
+                          selectedOption === "vat 1.5"
                           ? "bg-blue-200"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4 py-1`}
+                        } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -431,13 +433,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "pan 0" ||
-                        selectedOption === "pan 10" ||
-                        selectedOption === "pan 15"
+                      className={` w-36 ${selectedOption === "pan 0" ||
+                          selectedOption === "pan 10" ||
+                          selectedOption === "pan 15"
                           ? "bg-blue-200"
                           : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent py-1 px-4`}
+                        } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -449,11 +450,10 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "noBill"
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
                           ? "bg-blue-200 text-black"
                           : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
+                        } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -545,9 +545,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                                value: bill?.vendors?.vendor_name,
-                                label: bill.vendor_name,
-                              }
+                              value: bill?.vendors?.vendor_name,
+                              label: bill.vendor_name,
+                            }
                             : null
                         }
                         placeholder="Select Vendor"
@@ -642,9 +642,9 @@ const Records = () => {
                   value={
                     bill.vendor_name
                       ? {
-                          value: bill?.vendors?.vendor_name,
-                          label: bill.vendor_name,
-                        }
+                        value: bill?.vendors?.vendor_name,
+                        label: bill.vendor_name,
+                      }
                       : null
                   }
                   placeholder="Select Vendor"
