@@ -118,7 +118,7 @@ const SpecificVendor = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
-  const role = userInfo.role;
+  const role = userInfo.user_role;
 
   const [loading, setLoading] = useState(false);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
@@ -375,12 +375,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.bills && vendor.bills.length > 0
                       ? vendor.bills
-                          .reduce(
-                            (sum, bill) =>
-                              sum + (Number(bill.paid_amount) || 0),
-                            0
-                          )
-                          .toFixed(2)
+                        .reduce(
+                          (sum, bill) =>
+                            sum + (Number(bill.paid_amount) || 0),
+                          0
+                        )
+                        .toFixed(2)
                       : "--"}
                   </span>
                 </p>
