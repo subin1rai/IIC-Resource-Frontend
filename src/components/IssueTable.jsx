@@ -25,7 +25,7 @@ import axios from "axios";
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issue_date",
+    id: "issueDate",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),

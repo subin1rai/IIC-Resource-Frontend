@@ -30,7 +30,7 @@ const ItemCategoryTable = ({
                 />
               </div>
             </div>
-            <hr className="h-1 w-[85%] border-button" />
+            <hr className="h-1 w-[85%] border-neutral-300" />
           </div>
         ))
       ) : (

@@ -415,7 +415,9 @@ const SpecificVendor = () => {
                 <p className="font-medium">
                   Payment Status:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {vendor?.pending_payment > 0 ? "Pending" : "Clear"}
+                    {vendor?.pending_payment > 0 ? (<span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
+                    ) : (
+                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">CLear</span> || "--")}
                   </span>
                 </p>
               </div>

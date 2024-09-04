@@ -511,9 +511,9 @@ const SpecificBill = () => {
                   Approved Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.isApproved ? (
-                      <span className="text-green-500">Approved</span>
+                      <span className="text-green-600  bg-yellow-100 p-2 px-4 rounded-md">Approved</span>
                     ) : (
-                      <span className="text-yellow-500">Pending</span> || "--"
+                      <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">Pending</span> || "--"
                     )}
                   </span>
                 </p>
@@ -547,9 +547,9 @@ const SpecificBill = () => {
                   Payment Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.left_amount > 0 ? (
-                      <span className="text-yellow-500">Pending</span>
+                      <span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
                     ) : (
-                      <span className="text-green-500">Complete </span> || "--"
+                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">Complete </span> || "--"
                     )}
                   </span>
                 </p>

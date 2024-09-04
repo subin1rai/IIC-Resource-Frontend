@@ -16,6 +16,7 @@ const RequestHistory = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setApprovedHistory(response.data.requestApproved || []);
+        console.log(response.data.requestApproved)
         setPendingHistory(response.data.requestPending || []);
       } catch (error) {
         console.error("Error fetching history:", error);
