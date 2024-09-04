@@ -182,7 +182,6 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);

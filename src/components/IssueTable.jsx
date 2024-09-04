@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState,useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,7 +16,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import IconButton from "@mui/material/IconButton";
 import { ToastContainer, toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
-import empty from "../assets/EmptyIssue.svg"
+import empty from "../assets/EmptyIssue.svg";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import Box from "@mui/material/Box";
 import axios from "axios";
@@ -43,7 +43,12 @@ const columns = [
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
-  { id: "issued_status", label: "Issued Item Status", minWidth: 70, align: "center" },
+  {
+    id: "issued_status",
+    label: "Issued Item Status",
+    minWidth: 70,
+    align: "center",
+  },
   { id: "edit", label: "Edit", minWidth: 70, align: "center" },
 ];
 
@@ -58,7 +63,9 @@ export default function InventoryTable({ issues }) {
   const [purpose, setPurpose] = useState("");
   const [editIssueVisibility, setEditIssueVisibility] = useState(false);
   const [orderBy, setOrderBy] = useState("issue_id");
-  
+
+  console.log(issues);
+
   const [issue, setIssue] = useState({
     issue_date: "",
     issued_to: "",
@@ -68,11 +75,14 @@ export default function InventoryTable({ issues }) {
 
   const [editedIssue, setEditedIssue] = useState({
     issue_date: "",
-    issued_to: "",
+    requested_by: "",
     purpose: "",
-    items: [],
+    isReturned: "",
+    remarks: "",
+    status: "",
+    issue_name: "",
+    quantity: "",
   });
-  
 
   const handleChangePage = (event, newPage) => setPage(newPage);
 
@@ -118,19 +128,16 @@ export default function InventoryTable({ issues }) {
 
   const handleDateChange = (event) => {
     const date = event;
-    setIssue((prev) => ({ ...prev, issue_date: date }));
+    setEditedIssue((prev) => ({ ...prev, issue_date: date }));
   };
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
-
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/issue", {
-          
-        });
+        const response = await axios.get("http://localhost:8898/api/issue", {});
         console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
@@ -140,18 +147,16 @@ export default function InventoryTable({ issues }) {
     };
     fetchIssues();
   }, []);
-  
 
-  
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",{
+          "http://localhost:8898/api/items",
+          {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-
           }
         );
         const options = itemsResponse.data.map((item) => ({
@@ -159,39 +164,35 @@ export default function InventoryTable({ issues }) {
           label: item.item_name,
         }));
         setItemOptions(options);
-        
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
       }
     };
-    
+
     fetchItems();
   }, [token]);
-  
-  
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
-
-    console.log(editedIssue)
+    console.log(editedIssue);
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`, 
-        editedIssue, 
-        
+        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`,
+        editedIssue,
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      
+
       console.log(response);
       // if (response.status === 200) {
       //   setIssue({ ...issue, ...response.data });
@@ -201,27 +202,23 @@ export default function InventoryTable({ issues }) {
       //   toast.error("Failed to update issue");
       // }
     } catch (error) {
-  console.log(error)
+      console.log(error);
     }
   };
-  
 
- const handleItemChange = (selectedOption) => {
+  const handleItemChange = (selectedOption) => {
     setEditedIssue((prev) => ({
-        ...prev,
-        issue_name: selectedOption.value,
-        quantity: selectedOption.value, // Add this line to set quantity as well
+      ...prev,
+      issue_name: selectedOption.value,
+      quantity: selectedOption.value, // Add this line to set quantity as well
     }));
-};
-
+  };
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
       setItemFields([...itemFields, { item: "", quantity: "" }]);
     }
   };
-
- 
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -284,88 +281,73 @@ export default function InventoryTable({ issues }) {
   };
   const headerStyle = { fontWeight: 600, backgroundColor: "#f5f5f5" };
 
-
   return (
     <>
-    {editIssueVisibility && (
-      <div
-        className="absolute bg-overlay z-30 w-screen h-screen top-0 left-0 "
-        onClick={closeEditIssueForm}
-      >
-         {" "}
-        </div>
-  
-  
-    )}
-  {editIssueVisibility && (
-    <form
-      onSubmit={handleSubmit}
-      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2"
-    >
-      <div className="flex justify-between">
-        <h2 className="font-semibold text-lg m-2"> Edit Issue Details</h2>
-        <button
-          type="button"
-          className="discard-btn"
+      {editIssueVisibility && (
+        <div
+          className="absolute bg-overlay z-30 w-screen h-screen top-0 left-0 "
           onClick={closeEditIssueForm}
         >
-          <img src={close} alt="" />
-        </button>
-      </div>
-      <div className="flex flex-col gap-3 p-2">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-6">
-              <div className="flex flex-col gap-4">
-                <label className="font-medium text-md" htmlFor="issue_date">
-                  Issue Date:
-                </label>
-                <NepaliDatePicker
-                  inputClassName="form-control focus:outline-none"
-                  className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
-                  value={editedIssue.date}
-                  onChange={handleDateChange}
-                  options={{ calenderLocale: "en", valueLocale: "en" }}
-                />
-              </div>
+          {" "}
+        </div>
+      )}
+      {editIssueVisibility && (
+        <form
+          onSubmit={handleSubmit}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2"
+        >
+          <div className="flex justify-between">
+            <h2 className="font-semibold text-lg m-2"> Edit Issue Details</h2>
+            <button
+              type="button"
+              className="discard-btn"
+              onClick={closeEditIssueForm}
+            >
+              <img src={close} alt="" />
+            </button>
+          </div>
+          <div className="flex flex-col gap-3 p-2">
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-6">
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md" htmlFor="issue_date">
+                      Issue Date:
+                    </label>
+                    <NepaliDatePicker
+                      inputClassName="form-control focus:outline-none"
+                      className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
+                      value={editedIssue.date}
+                      onChange={handleDateChange}
+                      options={{ calenderLocale: "en", valueLocale: "en" }}
+                    />
+                  </div>
 
-              <div className="flex flex-col gap-4">
-                <label className="font-medium text-md"> Issued To: </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Student Name"
-                  autoFocus="autofocus"
-                  name="requested_by"
-                  id="issued_to"
-                  value={editedIssue.requested_by}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex py-3 gap-3">
-                <div className="flex font-medium text-md w-64">
-                  <label>Item Name:</label>
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md"> Issued To: </label>
+                    <input
+                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
+                      type="text"
+                      placeholder="Enter Student Name"
+                      autoFocus="autofocus"
+                      name="requested_by"
+                      id="issued_to"
+                      value={editedIssue.requested_by}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
-                <div className="flex font-medium text-md w-64">
-                  <label>Quantity:</label>
-                </div>
-              </div>
-              <div className="flex flex-col gap-6">
-                {itemFields.map((items, index) => (
-                  <div key={index} className="flex gap-5  items-center">
+                <div className="flex gap-6">
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md">Item Name:</label>
                     <Select
                       options={itemOptions}
-                      
                       onChange={(selectedOption) =>
-                        handleItemChange(
-                          index,
-                          "item",
-                          selectedOption.value
-                        )
+                        setEditedIssue((prevState) => ({
+                          ...prevState,
+                          issue_name: selectedOption.value,
+                        }))
                       }
-                      
                       value={itemOptions.find(
                         (option) => option.value === editedIssue.issue_name
                       )}
@@ -378,181 +360,198 @@ export default function InventoryTable({ issues }) {
                         }),
                         menuList: (provided) => ({
                           ...provided,
-                          maxHeight: 150, // Adjust this as needed
-                          overflowY: 'auto', // This ensures only the menu list scrolls
+                          maxHeight: 150,
+                          overflowY: "auto",
                         }),
                       }}
                       menuPortalTarget={document.body}
                       className="w-[190px]"
                       classNamePrefix="react-select"
                     />
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <label className="font-medium text-md">Quantity:</label>
                     <input
-                      className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
+                      className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw] focus:outline-slate-400"
                       type="number"
                       placeholder="Enter a quantity"
-                      name={`quantity`}
-                      id={`quantity`}
+                      name="quantity"
+                      id="quantity"
                       value={editedIssue.quantity}
-                      onChange={(e) =>
-                        handleItemChange(index, "quantity", e.target.value)
-                      }
+                      onChange={handleChange}
                     />
-                   
                   </div>
-                ))}
+                </div>
+                <label className="font-medium text-md">Purpose:</label>
+                <textarea
+                  rows={5}
+                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh] focus:outline-slate-400 resize-none"
+                  placeholder="Enter your purpose here.."
+                  value={editedIssue.remarks}
+                  name="remarks"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="checkbox"
+                  type="checkbox"
+                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                  name="isReturned"
+                />
+                <label htmlFor="checkbox" className="ml-2 text-lg font-medium">
+                  Returned
+                </label>
               </div>
             </div>
-            <label className="font-medium text-md">Purpose:</label>
-            <textarea
-              rows={5}
-              className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
-              placeholder="Enter your purpose here.."
-              value={editedIssue.remarks}
-              name="remarks"
-              onChange={handleChange}
-            />
+            <div className="flex justify-end gap-4">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-6 rounded"
+              >
+                Edit Issue
+              </button>
+            </div>
           </div>
-          <div class="flex items-center">
-          <input id="checkbox" type="checkbox" class="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
-          <label for="checkbox" className="ml-2 text-lg font-medium ">Returned</label>
-        </div>
-        </div>
-        <div className="flex justify-end gap-4">
-          <button  type="submit" className="bg-blue-600 text-white py-2 px-6 rounded">
-            Edit Issue
-          </button>
-        </div>
-      </div>
-    </form>
-  )}
+        </form>
+      )}
 
-
-    <Paper sx={{ width: "100%", overflow: "hidden", cursor: "pointer", fontSize: "18px" }}>
-      <TableContainer sx={{ maxHeight: 510 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{
-                    minWidth: column.minWidth,
-                    ...headerStyle,
-                    ...cellStyle,
-                  }}
-                  sortDirection={orderBy === column.id ? order : false}
-                >
-                  <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={orderBy === column.id ? order : "asc"}
-                    onClick={(event) => handleRequestSort(event, column.id)}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {!issues || issues.length === 0 ? (
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          cursor: "pointer",
+          fontSize: "18px",
+        }}
+      >
+        <TableContainer sx={{ maxHeight: 510 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
               <TableRow>
-                <TableCell colSpan={columns.length}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "350px",
-                      width: "100%",
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{
+                      minWidth: column.minWidth,
+                      ...headerStyle,
+                      ...cellStyle,
                     }}
+                    sortDirection={orderBy === column.id ? order : false}
                   >
-                    <img
-                      src={empty}
-                      alt="No issues"
-                      className="h-80 w-80"
-                      style={{ maxWidth: "300px", marginBottom: "20px" }}
-                    />
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ) : (
-              <>
-                {visibleRows.map((issue) => (
-                 <TableRow
-                 hover
-                 role="checkbox"
-                 tabIndex={-1}
-                 key={issue.issue_id}
-               >
-                 {columns.map((column) => {
-                   const value = issue[column.id];
-                   return (
-                     <TableCell key={column.id} align={column.align} style={cellStyle}>
-                       {column.id === "issued_status" ? (
-                         <div
-                           style={{
-                             display: "inline-block",
-                             padding: "4px 8px",
-                             borderRadius: "4px",
-                             backgroundColor:
-                               value === "Pending"
-                                 ? "#fff3cd"
-                                 : value === "Approved"
-                                   ? "#d4edda"
-                                   : "#f8d7da",
-                             color:
-                               value === "Pending"
-                                 ? "#856404"
-                                 : value === "Approved"
-                                   ? "#155724"
-                                   : "#721c24",
-                             fontWeight: "normal",
-                             textAlign: "center",
-                           }}
-                         >
-                           {value ?? "Not Returned"}
-                         </div>
-                       ) : column.id === "edit" ? (
-                        <IconButton
-                        color="primary"
-                        onClick={() => openEditIssueForm(issue)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-
-
-                       ) : column.format && value != null ? (
-                         column.format(value)
-                       ) : (
-                         value ?? ""
-                       )}
-                     </TableCell>
-                   );
-                 })}
-               </TableRow>
-               
+                    <TableSortLabel
+                      active={orderBy === column.id}
+                      direction={orderBy === column.id ? order : "asc"}
+                      onClick={(event) => handleRequestSort(event, column.id)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  </TableCell>
                 ))}
-              </>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[7]}
-        component="div"
-        count={issues && Array.isArray(issues) ? issues.length : 0}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
-        }
-      />
-    </Paper>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {!issues || issues.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={columns.length}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "350px",
+                        width: "100%",
+                      }}
+                    >
+                      <img
+                        src={empty}
+                        alt="No issues"
+                        className="h-80 w-80"
+                        style={{ maxWidth: "300px", marginBottom: "20px" }}
+                      />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                <>
+                  {visibleRows.map((issue) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={issue.issue_id}
+                    >
+                      {columns.map((column) => {
+                        const value = issue[column.id];
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={cellStyle}
+                          >
+                            {column.id === "issued_status" ? (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  backgroundColor:
+                                    value === "Pending"
+                                      ? "#fff3cd"
+                                      : value === "Approved"
+                                      ? "#d4edda"
+                                      : "#f8d7da",
+                                  color:
+                                    value === "Pending"
+                                      ? "#856404"
+                                      : value === "Approved"
+                                      ? "#155724"
+                                      : "#721c24",
+                                  fontWeight: "normal",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {value ?? "Not Returned"}
+                              </div>
+                            ) : column.id === "edit" ? (
+                              <IconButton
+                                color="primary"
+                                onClick={() => openEditIssueForm(issue)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                            ) : column.format && value != null ? (
+                              column.format(value)
+                            ) : (
+                              value ?? ""
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[7]}
+          component="div"
+          count={issues && Array.isArray(issues) ? issues.length : 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelDisplayedRows={({ from, to, count }) =>
+            count === 0
+              ? "No records"
+              : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          }
+        />
+      </Paper>
     </>
   );
 }
