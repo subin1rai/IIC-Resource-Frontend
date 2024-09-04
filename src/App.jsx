@@ -31,7 +31,7 @@ import ChangePassword from "./pages/changePassword";
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userType = userInfo?.role || null;
+  const userType = userInfo?.user_role || null;
 
   return (
     <div className="App">
@@ -60,7 +60,7 @@ function App() {
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/roles" element={<SettingRole />} />
                 <Route path="/editProfile" element={<EditProfile />} />
-                
+
                 <Route
                   path="/specificRequest/:id"
                   element={<SpecificRequest />}

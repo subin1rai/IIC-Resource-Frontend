@@ -31,25 +31,20 @@ const Login = () => {
       );
       console.log("Login response:", response);
 
-      const userInfo = {
-        user_name: response.data.user_name,
-        department: response.data.department_name,
-        role: response.data.role,
-        token: response.data.token,
-      };
+      console.log(response.data);
 
-      dispatch(setUserInfo(userInfo));
+      dispatch(setUserInfo(response.data.userData));
 
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      localStorage.setItem("userInfo", JSON.stringify(response.data.userData));
 
       localStorage.setItem("isLoggedIn", "true");
 
       if (
-        response.data.role === "admin" ||
-        response.data.role === "superadmin"
+        response.data.userData.user_role === "admin" ||
+        response.data.userData.user_role === "superadmin"
       ) {
         navigate("/dashboard");
-      } else if (response.data.role === "departmenthead") {
+      } else if (response.data.userData.user_role === "departmenthead") {
         navigate("/userHome");
       } else {
         navigate("/login");

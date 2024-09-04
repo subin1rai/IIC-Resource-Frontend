@@ -100,7 +100,6 @@ const Vendor = () => {
     categories: [""],
   });
 
-
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -115,10 +114,8 @@ const Vendor = () => {
   const [itemCategory, setItemCategory] = useState([]);
   const [blackListCount, setBlackListCount] = useState(0);
 
-
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
-
 
   const [filterOptions, setFilterOptions] = useState({
     amountOption: "",
@@ -127,7 +124,9 @@ const Vendor = () => {
     purchaseTo: "",
     TDS: "",
     payment_status: "",
-  })
+  });
+
+  console.log(vendors);
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -170,7 +169,6 @@ const Vendor = () => {
     return true;
   };
 
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -191,8 +189,6 @@ const Vendor = () => {
       width: "250px",
     }),
   };
-
-
 
   useEffect(() => {
     const controller = new AbortController();
@@ -351,7 +347,6 @@ const Vendor = () => {
     if (filterOptions.durationOption) {
       filteredResults.sort((a, b) => {
         if (filterOptions.durationOption === "low-to-high") {
-
           return a.payment_duration - b.payment_duration;
         } else if (filterOptions.durationOption === "high-to-low") {
           return b.payment_duration - a.payment_duration;
@@ -360,13 +355,11 @@ const Vendor = () => {
       });
     }
 
-    setFilteredVendors(filteredResults)
+    setFilteredVendors(filteredResults);
     setFilterFormVisibility(false);
+  };
 
-
-  }
-
-  console.log(filteredVendors)
+  console.log(filteredVendors);
 
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
@@ -458,9 +451,9 @@ const Vendor = () => {
 
       {/* filter form */}
       {filterFormVisibility && (
-
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+          <form
+            className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
             onSubmit={(e) => e.preventDefault()}
           >
             <div className="flex justify-between">
@@ -490,9 +483,7 @@ const Vendor = () => {
                       }))
                     }
                   >
-                    <option value="" >
-                      Select an option
-                    </option>
+                    <option value="">Select an option</option>
                     <option value="high-to-low">High to low</option>
                     <option value="low-to-high">Low to high</option>
                   </select>
@@ -516,9 +507,7 @@ const Vendor = () => {
                       }))
                     }
                   >
-                    <option value="" >
-                      Select an option
-                    </option>
+                    <option value="">Select an option</option>
                     <option value="high-to-low">High to low</option>
                     <option value="low-to-high">Low to high</option>
                   </select>
@@ -564,9 +553,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" >
-                    Select an option
-                  </option>
+                  <option value="">Select an option</option>
 
                   <option value="">High to low</option>
                   <option value="">Low to high</option>
@@ -582,9 +569,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" >
-                    Select an option
-                  </option>
+                  <option value="">Select an option</option>
                   <option value="">Pending</option>
                   <option value="">Paid</option>
                 </select>
@@ -605,9 +590,7 @@ const Vendor = () => {
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                 >
-                  <option value="" >
-                    Select status
-                  </option>
+                  <option value="">Select status</option>
                   <option value="">Blacklisted</option>
                   <option value="">Whitelisted</option>
                 </select>
@@ -643,8 +626,10 @@ const Vendor = () => {
                 />
               </div>
             </div>
-            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-              onClick={applyFilters}>
+            <button
+              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+              onClick={applyFilters}
+            >
               Filter
             </button>
           </form>

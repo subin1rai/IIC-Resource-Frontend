@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/Top.png";
 import userprofile from "../assets/userProfile.svg";
 import { NavLink } from "react-router-dom";
@@ -9,7 +9,7 @@ import axios from "axios";
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const getRandomColor = () => {
@@ -43,8 +43,9 @@ const Navbar = () => {
       console.error("Logout error:", error);
     }
   };
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const fullName = userInfo?.user_name || null;
 
-  const fullName = localStorage.getItem("user_name");
   useEffect(() => {
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
@@ -83,44 +84,49 @@ const Navbar = () => {
         <img src={notificationIcon} alt="" />
         <details className="relative">
           <summary className="list-none cursor-pointer ">
-          <img src={userProfile} alt="" />
-            </summary>
-            <ul className="absolute right-[50%] bg-white w-[12vw] border-2 border-neutral-300 rounded p-4 top-11 ">
+            {/* <img src={userProfile} alt="" /> */}
+            <div
+              className="h-10 w-10 rounded-full flex justify-center items-center select-none font-semibold text-white"
+              style={{ backgroundColor: bgColor }}
+            >
+              {initials}
+            </div>
+          </summary>
+          <ul className="absolute right-[50%] bg-white w-[16vw] border-2 border-neutral-300 rounded p-4 top-11 ">
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-4">
-            <div
-                className="h-12 w-12 rounded-full flex justify-center items-center select-none font-semibold text-white"
-                style={{ backgroundColor: bgColor }}
-              >
-                {initials}
+                <div
+                  className="h-10 w-10 rounded-full flex justify-center items-center select-none font-semibold text-white"
+                  style={{ backgroundColor: bgColor }}
+                >
+                  {initials}
+                </div>
+                <h1 className="font-medium text-xl text-nowrap ">{fullName}</h1>
               </div>
-            <h1 className="font-medium text-xl text-nowrap ">{fullName}</h1>
-            </div>
-            <hr className="border-[1px] border-neutral-300 mt-2 "></hr>
-            <div className="flex items-center gap-2">
+              <hr className="border-[1px] border-neutral-300 mt-2 "></hr>
+              <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={email} alt="" />
-                <li className="py-2 text-blue-600">sample@iic.edu.np</li>
+                <li className="py-2 text-blue-600">{userInfo.user_email}</li>
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
-                <li className="py-2 text-blue-600">9800000000</li>
+                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
               </div>
               <NavLink to="/" onClick={handleLogout}>
                 <div className="flex gap-6">
-              <img src={logout} className="text-black" alt=""/>
-              <p> Log out</p>
-              </div>
-            </NavLink>
-            <button
-                  className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white "
-                  onClick={openChangePassword}
-                >
-                  Change Password
-                </button>
-              </div>
-            </ul>
-            </details>
-        
+                  <img src={logout} className="text-black" alt="" />
+                  <p> Log out</p>
+                </div>
+              </NavLink>
+              <button
+                className="w-[100%] bg-blue-600 rounded p-2 mt-2 text-white "
+                onClick={openChangePassword}
+              >
+                Change Password
+              </button>
+            </div>
+          </ul>
+        </details>
       </div>
     </nav>
   );
