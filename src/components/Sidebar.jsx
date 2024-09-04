@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
-  const role = userInfo.role;
+  const role = userInfo.user_role;
 
   const checkSpecificRoute = (pathname, parentPath) => {
     const specificRoutes = ["/specificItem", "/specificVendor"];

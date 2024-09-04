@@ -253,11 +253,11 @@ const Topbar = () => {
             <div className="flex flex-col px-4">
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={email} alt="" />
-                <li className="py-2 text-blue-600">sample@iic.edu.np</li>
+                <li className="py-2 text-blue-600">{userInfo?.user_email}</li>
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
-                <li className="py-2 text-blue-600">9800000000</li>
+                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
               </div>
               <div className="flex justify-center">
                 <button
