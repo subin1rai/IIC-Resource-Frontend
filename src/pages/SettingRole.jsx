@@ -9,7 +9,9 @@ import socket from "../socket";
 import { ToastContainer, toast } from "react-toastify";
 import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
-import close from "../assets/close.svg";
+import add from "../assets/addCategory.svg";
+import edit from "../assets/editIcon.png";
+import  Close from "../assets/Close.png";
 import { useSelector } from "react-redux";
 
 const SettingRole = () => {
@@ -20,14 +22,18 @@ const SettingRole = () => {
   const [addUserFormVisibility, setAddUserFormVisibility] = useState(false);
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [numberOfActiveUsers, setNumberOfActiveUsers] = useState(0);
-  const [visibleForm, setVisibleForm] = useState("");
+  const [isDepartmentListVisible, setIsDepartmentListVisible] = useState(true);
+  const [isAddDepartmentVisible, setIsAddDepartmentVisible] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  
   const [newDepartment, setNewDepartment] = useState({ department_name: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
+  const [editFormVisibility, setEditFormVisibility] = useState(false);
   const [contactError, setContactError] = useState("");
+
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
@@ -47,6 +53,10 @@ const SettingRole = () => {
   };
 
   const [departments, setDepartments] = useState([]);
+  const [editedDepartment, setEditedDepartment] = useState({
+    department_id: null,
+    department_name: "",
+  });
   const [activeUser, setActiveUser] = useState([]);
 
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -58,6 +68,17 @@ const SettingRole = () => {
 
   const closeFilterForm = () => {
     setFilterFormVisibility(false);
+  };
+  const closeDepartmentForms = () => {
+    setIsDepartmentListVisible(true);
+    setIsAddDepartmentVisible(false);
+    setError(null); // Clear error when closing the forms
+  };
+
+  
+  const displayAddPopup = (formName) => {
+    setIsDepartmentListVisible(false);
+    setIsAddDepartmentVisible(true);
   };
 
   // Fetch users and departments data
@@ -176,8 +197,11 @@ const SettingRole = () => {
   };
 
   const handleDepartmentChange = (e) => {
+    setEditedDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setNewDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+ 
 
   const handleAddUser = async (event) => {
     event.preventDefault();
@@ -256,7 +280,7 @@ const SettingRole = () => {
         }
       );
       toast.success(`${newDepartment.department_name} added successfully!`);
-      setVisibleForm("");
+      closeDepartmentForms();
       setError(null); // Clear error when form is closed
       setDepartments((prev) => [...prev, response.data.department]);
     } catch (error) {
@@ -270,6 +294,36 @@ const SettingRole = () => {
       }
     }
   };
+
+  const handleEditDepartment = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.put(
+        // Ensure this route matches your backend route definition
+        `http://localhost:8898/api/editDepartment/${editedDepartment.department_id}`,
+        editedDepartment,
+       
+      );
+      
+      
+     // Clear error when form is closed
+     if (response.status === 200) {
+      // Update the departments list with the edited department
+      setDepartments((prev) =>
+        prev.map((department) =>
+          department.id === editedDepartment.id ? response.data.department : department
+        )
+      );
+      closeDepartmentForms();
+      setError(null); 
+    } else {
+      console.error("Failed to update the user:", response.data.message);
+    }
+  } catch (error) {
+    console.error("An error occurred while updating the user:", error);
+      }
+    };
+  
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -326,7 +380,7 @@ const SettingRole = () => {
               <button
                 className="bg-button text-white rounded items-center px-6 py-2"
                 onClick={() => {
-                  setVisibleForm("department");
+                  setIsDepartmentListVisible(true);
                   setError(null); // Clear error when opening the form
                 }}
               >
@@ -522,8 +576,63 @@ const SettingRole = () => {
         </div>
       )}
 
-      {visibleForm === "department" && (
+
+{isDepartmentListVisible && (
+
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
+          <form
+            onSubmit={handleAddDepartment}
+          className="w-[86.5vw] flex  justify-center  p-3 h-[65vh]">
+          <div className="flex flex-col w-[32%] rounded-lg ">
+            <div className="flex bg-blue-500 rounded-t-md justify-between px-10 py-3">
+              <h1 className="text-lg font-medium text-white justify-evenly ">Department</h1>
+              <div className="flex space-x-4"> 
+              <img
+                src={add}
+                alt="add"
+                onClick={() => displayAddPopup("department")}
+                className="w-8 h-8 cursor-pointer"
+              />
+              <img
+                src={Close}
+                alt=""
+                onClick={() => setIsDepartmentListVisible(false)}
+                className="w-5 h-5 mt-2 cursor-pointer"
+              />
+              </div>
+            </div>
+            <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
+              {departments.map((department) => (
+                <div className="w-full flex flex-col items-center">
+                <div className="w-[80%] py-4">
+                <div className="flex w-full justify-between items-center">
+                <p>{department.department_name}</p>
+                <img
+                  src={edit}
+                  alt="Edit"
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={() => {
+                    setEditFormVisibility(true);
+                    setEditedDepartment(department); // Load the department data into the form
+                  }}
+                />
+              </div>
+                </div>
+                <hr className="h-1 w-[80%] border-neutral-300" />
+                </div>
+              ))}
+            </div>
+          
+          </div>
+          
+           
+          </form>
+        </div>
+      )}
+
+     
+{isAddDepartmentVisible && (
+        <div className="w-screen h-screen  bg-overlay absolute z-10 flex justify-center items-center">
           <form
             onSubmit={handleAddDepartment}
             className="bg-white  px-10 py-5 rounded flex flex-col gap-8"
@@ -534,10 +643,7 @@ const SettingRole = () => {
                 src={closeIcon}
                 alt="Close"
                 className="w-4 h-4 cursor-pointer"
-                onClick={() => {
-                  setVisibleForm("");
-                  setError(null);
-                }}
+                onClick={closeDepartmentForms}
               />
             </div>
             <div className="flex flex-col gap-6">
@@ -572,6 +678,51 @@ const SettingRole = () => {
           </form>
         </div>
       )}
+
+
+{editFormVisibility && (
+  <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
+    <form
+      onSubmit={handleEditDepartment}
+      className="bg-white px-10 py-5 rounded flex flex-col gap-8"
+    >
+      <div className="flex justify-between items-center">
+        <h3 className="text-xl font-semibold">Edit Department</h3>
+        <img
+          src={closeIcon}
+          alt="Close"
+          className="w-4 h-4 cursor-pointer"
+          onClick={() => setEditFormVisibility(false)} // Close the form
+        />
+      </div>
+      <div className="flex flex-col gap-6">
+        <div className="flex justify-between items-center gap-10">
+          <label htmlFor="department_name" className="w-[100px] font-medium">
+            Name
+          </label>
+          <input
+            placeholder="Enter Department name"
+            id="department_name"
+            name="department_name"
+            value={editedDepartment.department_name}
+            onChange={handleDepartmentChange}
+            type="text"
+            className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
+            autoFocus
+          />
+        </div>
+        {error && <div className="text-red-500 self-start">{error}</div>}
+        <div className="flex justify-end">
+          <button type="submit" className="bg-button text-white px-4 py-2 rounded">
+            Edit Department
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+)}
+
+      
       <ToastContainer />
     </div>
   );
