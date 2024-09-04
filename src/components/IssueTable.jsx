@@ -156,6 +156,7 @@ export default function InventoryTable({ issues }) {
         }));
         setItemOptions(options);
        
+       
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
@@ -164,69 +165,46 @@ export default function InventoryTable({ issues }) {
 
     fetchItems();
   }, []);
+  
 
 
   const handleChange = (e) => {
-    setIssue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setEditedIssue((prev) => ({ ...prev, [name]: value }));
   };
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
-        quantity: field.quantity,
-      }));
- 
-     
-      const issueData = {
-        issue_date: issue.issue_date,
-
-        issued_to: issue.issued_to,
-        purpose: purpose, // Purpose is set separately
-        items: formattedItems, // Add the formatted items array
-      };
-
       const response = await axios.put(
-        `http://localhost:8898/api/editIssue/${issue_id}`,
-        issueData,
-        
+        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`,
+        editedIssue
       );
-      console.log("Sending data:", issueData);
-      console.log(issues);
-      const newIssue = response.data.issues;
-      const formattedNewIssue = {
-        issue_id: newIssue.id,
-        issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
-        item_quantity: formattedItems.reduce(
-          (sum, item) => sum + Number(item.quantity),
-          0
-        ),
-        requested_by: newIssue.issued_to,
-        department: newIssue.department || "N/A",
-        issued_by: newIssue.approved_by || "N/A",
-        status: newIssue.status || "Dispatched",
-        remarks: newIssue.purpose || "N/A",
-      };
-
-      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
-      closeEditIssueForm();
-      toast.success(`Items issued to ${issue.issued_to} successfully `);
-      setItemFields([{ item: "", quantity: "" }]);
+      
+      if (response.status === 200) {
+        // Update the issues state with the edited issue
+        setIssues((prevIssues) =>
+          prevIssues.map((issue) =>
+            issue.issue_id === editedIssue.issue_id ? editedIssue : issue
+          )
+        );
+        
+        toast.success("Issue updated successfully");
+        setEditIssueVisibility(false);
+      } else {
+        toast.error("Failed to update issue");
+      }
     } catch (error) {
       console.error("Error editing issue:", error);
       toast.error("Failed to edit issue!");
     }
   };
 
-
-  const handleItemChange = (index, field, value) => {
-    const newFields = [...itemFields];
-    newFields[index][field] = value;
-    setItemFields(newFields);
+  const handleItemChange = (selectedOption) => {
+    setEditedIssue((prev) => ({ ...prev, issue_name: selectedOption.value }));
   };
+ 
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
@@ -335,13 +313,13 @@ export default function InventoryTable({ issues }) {
           <div className="flex flex-col gap-3">
             <div className="flex gap-6">
               <div className="flex flex-col gap-4">
-                <label className="font-medium text-md" htmlFor="bill_no">
+                <label className="font-medium text-md" htmlFor="issue_date">
                   Issue Date:
                 </label>
                 <NepaliDatePicker
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
-                  value={date}
+                  value={editedIssue.date}
                   onChange={handleDateChange}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
@@ -354,8 +332,9 @@ export default function InventoryTable({ issues }) {
                   type="text"
                   placeholder="Enter Student Name"
                   autoFocus="autofocus"
-                  name="issued_to"
+                  name="requested_by"
                   id="issued_to"
+                  value={editedIssue.requested_by}
                   onChange={handleChange}
                 />
               </div>
@@ -374,15 +353,11 @@ export default function InventoryTable({ issues }) {
                   <div key={index} className="flex gap-5  items-center">
                     <Select
                       options={itemOptions}
-                      onChange={(selectedOption) =>
-                        handleItemChange(
-                          index,
-                          "item",
-                          selectedOption.value
-                        )
-                      }
+                      
+                      onChange={handleItemChange}
+                      
                       value={itemOptions.find(
-                        (option) => option.value === items.item
+                        (option) => option.value === editedIssue.issue_name
                       )}
                       placeholder="Select Item"
                       styles={{
@@ -405,12 +380,10 @@ export default function InventoryTable({ issues }) {
                       className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                       type="number"
                       placeholder="Enter a quantity"
-                      name={`quantity-${index}`}
-                      id={`quantity-${index}`}
-                      value={items.quantity}
-                      onChange={(e) =>
-                        handleItemChange(index, "quantity", e.target.value)
-                      }
+                      name={`quantity`}
+                      id={`quantity`}
+                      value={editedIssue.quantity}
+                      onChange={handleChange}
                     />
                     {itemFields.length > 1 && (
                       <button
@@ -443,8 +416,9 @@ export default function InventoryTable({ issues }) {
               rows={5}
               className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
               placeholder="Enter your purpose here.."
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
+              value={editedIssue.remarks}
+              name="remarks"
+              onChange={handleChange}
             />
           </div>
         </div>
