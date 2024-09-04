@@ -220,8 +220,9 @@ const UserRequest = () => {
                   <label>Quantity:</label>
                 </div>
               </div>
+              <div className="overflow-auto max-h-52">
               {items.map((item, index) => (
-                <div key={index} className="flex p-3 gap-3">
+                <div key={index} className="flex p-3 gap-3  ">
                   <Select
                     options={allItems.map((item) => {
                       const features = Object.entries(
@@ -305,6 +306,7 @@ const UserRequest = () => {
                   )}
                 </div>
               ))}
+              </div>
               <div className="flex flex-col p-3 gap-3">
                 <label className="font-semibold text-md">Requesting for:</label>
                 <Select
