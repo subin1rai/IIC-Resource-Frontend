@@ -20,6 +20,7 @@ import empty from "../assets/EmptyIssue.svg"
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 // Column definitions
 const columns = [
@@ -120,16 +121,15 @@ export default function InventoryTable({ issues }) {
     setIssue((prev) => ({ ...prev, issue_date: date }));
   };
 
-
-  
-  console.log(issues);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
 
   useEffect(() => {
     const fetchIssues = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/issue", {
-         
+          
         });
         console.log(response);
         setIssues(response.data.issue || []);
@@ -140,71 +140,80 @@ export default function InventoryTable({ issues }) {
     };
     fetchIssues();
   }, []);
+  
 
-  console.log(issues);
-
+  
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-         
+          "http://localhost:8898/api/items",{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+
+          }
         );
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,
         }));
         setItemOptions(options);
-       
-       
+        
+        
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
       }
     };
-
+    
     fetchItems();
-  }, []);
+  }, [token]);
   
-
-
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedIssue((prev) => ({ ...prev, [name]: value }));
+    setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
   };
-
-
+  
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.put(
         `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`,
-        editedIssue
-      );
+        editedIssue, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+     
       
       if (response.status === 200) {
         // Update the issues state with the edited issue
-        setIssues((prevIssues) =>
-          prevIssues.map((issue) =>
-            issue.issue_id === editedIssue.issue_id ? editedIssue : issue
-          )
-        );
-        
+        setIssue({ ...issue, ...response.data })
         toast.success("Issue updated successfully");
         setEditIssueVisibility(false);
       } else {
         toast.error("Failed to update issue");
       }
     } catch (error) {
-      console.error("Error editing issue:", error);
+  
       toast.error("Failed to edit issue!");
     }
   };
 
   const handleItemChange = (selectedOption) => {
-    setEditedIssue((prev) => ({ ...prev, issue_name: selectedOption.value }));
-  };
- 
+    setEditedIssue((prev) => ({
+        ...prev,
+        issue_name: selectedOption.value,
+        quantity: selectedOption.value, // Add this line to set quantity as well
+    }));
+};
+
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
@@ -354,7 +363,13 @@ export default function InventoryTable({ issues }) {
                     <Select
                       options={itemOptions}
                       
-                      onChange={handleItemChange}
+                      onChange={(selectedOption) =>
+                        handleItemChange(
+                          index,
+                          "item",
+                          selectedOption.value
+                        )
+                      }
                       
                       value={itemOptions.find(
                         (option) => option.value === editedIssue.issue_name
@@ -380,10 +395,12 @@ export default function InventoryTable({ issues }) {
                       className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                       type="number"
                       placeholder="Enter a quantity"
-                      name={`quantity`}
-                      id={`quantity`}
+                      name={`quantity-${index}`}
+                      id={`quantity-${index}`}
                       value={editedIssue.quantity}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        handleItemChange(index, "quantity", e.target.value)
+                      }
                     />
                     {itemFields.length > 1 && (
                       <button
