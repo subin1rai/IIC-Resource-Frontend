@@ -70,7 +70,7 @@ const columns = [
 
 export default function VendorTable({ vendors }) {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("vendor_name");
+  const [orderBy, setOrderBy] = React.useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const navigate = useNavigate();
@@ -79,8 +79,7 @@ export default function VendorTable({ vendors }) {
     setPage(newPage);
   };
 
-
-  console.log(vendors)
+  console.log(vendors);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -192,9 +191,7 @@ export default function VendorTable({ vendors }) {
             </TableRow>
           </TableHead>
           <TableBody>
-
-            {(!visibleRows || visibleRows.length === 0) ? (
-
+            {!visibleRows || visibleRows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
