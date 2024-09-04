@@ -85,9 +85,11 @@ const SpecificBill = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+
+  console.log(token)
   // please dont remove this
 
-  const role = userInfo.role;
+  const role = userInfo.user_role;
 
   const handleShowModal = (bill_id) => {
     Swal.fire({
@@ -239,8 +241,8 @@ const SpecificBill = () => {
 
         setSelectedOption(
           singleBillResponse.data?.bill.bill_type.toLowerCase() +
-            " " +
-            singleBillResponse.data.bill.BillItems[0].TDS
+          " " +
+          singleBillResponse.data.bill.BillItems[0].TDS
         );
 
         setItems(itemsResponse.data);
@@ -408,7 +410,7 @@ const SpecificBill = () => {
 
   // nepali date ends here
 
-  const handleDecline = () => {};
+  const handleDecline = () => { };
   return (
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
@@ -585,8 +587,8 @@ const SpecificBill = () => {
             </thead>
             <tbody>
               {!loading &&
-              billDetails?.bill?.BillItems &&
-              billDetails?.bill?.BillItems.length > 0 ? (
+                billDetails?.bill?.BillItems &&
+                billDetails?.bill?.BillItems.length > 0 ? (
                 billDetails?.bill?.BillItems.map((billItem, index) => (
                   <tr key={index}>
                     <td className="p-2 text-center border-b border-neutral-200">
@@ -644,12 +646,11 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "vat 0" ||
+                      className={` w-36 ${selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4 py-1`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -659,13 +660,12 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "pan 0" ||
+                      className={` w-36 ${selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent py-1 px-4`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -677,11 +677,10 @@ const SpecificBill = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "NOBILL" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "NOBILL"
-                          ? "bg-blue-200 text-black"
-                          : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "NOBILL"
+                        ? "bg-blue-200 text-black"
+                        : "border-neutral-300"
+                        } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -776,9 +775,9 @@ const SpecificBill = () => {
                         value={
                           editedBill.vendor_name
                             ? {
-                                value: editedBill.vendor_name,
-                                label: editedBill.vendor_name,
-                              }
+                              value: editedBill.vendor_name,
+                              label: editedBill.vendor_name,
+                            }
                             : null
                         }
                         placeholder="Select Vendor"

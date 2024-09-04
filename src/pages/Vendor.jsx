@@ -318,6 +318,11 @@ const Vendor = () => {
     getAllVendors();
   }, [token]);
 
+
+  const handleDateChange = (name) => (date) => {
+    setFilterOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
   useEffect(() => {
     const filterVendors = () => {
       const lowercasedTerm = searchTerm.toLowerCase();
@@ -354,6 +359,17 @@ const Vendor = () => {
         return 0;
       });
     }
+
+    if (filterOptions.purchaseFrom && filterOptions.purchaseTo) {
+      filteredResults = filteredResults.filter((item) => {
+        const itemDate = vendor.last_purchase_date;
+        return (
+          itemDate >= new Date(filterOptions.purchaseFrom) &&
+          itemDate <= new Date(filterOptions.purchaseTo)
+        );
+      });
+    }
+
 
     setFilteredVendors(filteredResults);
     setFilterFormVisibility(false);
@@ -524,7 +540,8 @@ const Vendor = () => {
                   <NepaliDatePicker
                     inputClassName="form-control focus:outline-none"
                     className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                    // onChange={handleDateChange}
+                    value={filterOptions.purchaseFrom}
+                    onChange={handleDateChange("purchaseFrom")}
                     options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
                 </div>
@@ -535,7 +552,8 @@ const Vendor = () => {
                   <NepaliDatePicker
                     inputClassName="form-control focus:outline-none"
                     className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                    // onChange={handleDateChange}
+                    value={filterOptions.purchaseTo}
+                    onChange={handleDateChange("purchaseTo")}
                     options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
                 </div>
@@ -719,7 +737,7 @@ const Vendor = () => {
                 </label>
                 <input
                   className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
-                  type="number"
+                  type="text"
                   placeholder="Enter Contact Number"
                   name="vendor_contact"
                   id="vendor_contact"
