@@ -19,7 +19,6 @@ import records from "../assets/records.png";
 import Vat from "../components/Vat";
 import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
-import { useSelector } from "react-redux";
 
 const Records = () => {
   const [bill, setBill] = useState({
@@ -34,10 +33,10 @@ const Records = () => {
 
   const [filterOptions, setFilterOptions] = useState({
     vendor_name: "",
-    item_name : "",
+    dateFrom: "",
     dateTo: "",
     priceSort: "",
-    bill_status: "",
+    billStatus: "",
   });
 
   const [date, setDate] = useState("");
@@ -46,14 +45,8 @@ const Records = () => {
   const [error, setError] = useState("");
   const [addFormVisibility, setAddFormVisibility] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
-  const [selectedVendor, setSelectedVendor] = useState("");
-  const [selectedItem, setSelectedItem] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
   const [bills, setBills] = useState([]);
   const [vendors, setVendors] = useState([]);
-  const [price, setPrice] = useState("");
-  const [billStatus, setBillStatus] = useState([]);
   const [items, setItems] = useState("");
   // const [exports, setExport] = useState("");
   const [exports, setExport] = useState("");
@@ -62,8 +55,7 @@ const Records = () => {
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const token = userInfo.token;
+  const token = localStorage.getItem("token");
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
@@ -104,7 +96,7 @@ const Records = () => {
   };
 
   const handleExport = async () => {
-    try { 
+    try {
       const response = await axios.get(
         "http://localhost:8898/api/bill/exportBill",
         {
@@ -183,7 +175,6 @@ const Records = () => {
       });
 
       setBills(response.data.bill || []);
-      setFilteredBills(response.data.bills);
     } catch (error) {
       console.error("Error fetching bills:", error);
       setBills([]);
@@ -204,7 +195,7 @@ const Records = () => {
           }
         );
         console.log(vendorsResponse);
-        setVendors(vendorsResponse.data);
+        setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -219,33 +210,6 @@ const Records = () => {
       [name]: option.value,
     }));
   };
-
-  const handleItemChange = (index, field, value) => {
-    const newFields = [...itemFields];
-    newFields[index][field] = value;
-    setItemFields(newFields);
-  };
-
-  
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setItems(itemsResponse.data || []);
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      }
-    };
-
-    fetchItems();
-  }, [token]);
 
   const customStyles = {
     control: (provided, state) => ({
@@ -372,52 +336,6 @@ const Records = () => {
     };
     filterBills();
   }, [searchBill, bills]);
-
-  const handleFilter =() => {
-    let filtered = [...bills];
-
-    if (filterOptions.vendor_name) {
-      filtered = filtered.filter(
-        (bill) => bill.vendors.vendor_name === filterOptions.vendor_name
-      );
-    }
-
-    if (filterOptions.item_name) {
-      filtered = filtered.filter(
-        (bill) => bill.BillItems.item_name === filterOptions.item_name
-      );
-    }
-
-    if (filterOptions.dateFrom && filterOptions.dateTo ) {
-      filtered = filtered.filter((bill) =>{
-        const billDate = bill.recent_billDate;
-        return (
-          billDate >= new Date(filterOptions.dateFrom) &&
-          billDate <= new Date(filterOptions.dateTo)
-        )
-      });
-    }
-    
-    if (filterOptions.priceSort) {
-      filtered.sort((a, b) => {
-        if (filterOptions.priceSort === "low-to-high") {
-          return b.actual_Amount - a.actual_Amount;
-        } else if (filterOptions.priceSort === "high-to-low") {
-          return a.actual_Amount - b.actual_Amount;
-        }
-        return 0;
-      });
-    }
-
-    if (filterOptions.bill_status) {
-      filtered = filtered.filter(
-        (bill) => bill.bill_status === filterOptions.bill_status
-      );
-    }
-
-    setFilteredBills(filtered);
-    setFilterFormVisibility(false); // Close filter form after applying filters
-  };
 
   return (
     <div className="records">
@@ -715,36 +633,22 @@ const Records = () => {
                     value: vendor.vendor_name,
                     label: vendor.vendor_name,
                   }))}
-                  // onChange={(option) => {
-                  //   handleSelectChange(option, { name: "vendor_name" });
-                  //   const selectedVendor = vendors.find(
-                  //     (v) => v.vendor_name === option.value
-                  //   );
-                  // }}
-                  // value={
-                  //   bill.vendor_name
-                  //     ? {
-                  //         value: bill?.vendors?.vendor_name,
-                  //         label: bill.vendor_name,
-                  //       }
-                  //     : null
-                  // }
-                  value={selectedVendor}
-                  onChange={(option) => setSelectedVendor(option)}
-                  placeholder="Select Vendor"
-                  styles={{
-                    ...customStyles,
-                    menuPortal: (provided) => ({
-                      ...provided,
-                      zIndex: 9999,
-                    }),
-                    menuList: (provided) => ({
-                      ...provided,
-                      maxHeight: 150, // Adjust this as needed
-                      overflowY: 'auto', // This ensures only the menu list scrolls
-                    }),
+                  onChange={(option) => {
+                    handleSelectChange(option, { name: "vendor_name" });
+                    const selectedVendor = vendors.find(
+                      (v) => v.vendor_name === option.value
+                    );
                   }}
-                  menuPortalTarget={document.body}
+                  value={
+                    bill.vendor_name
+                      ? {
+                          value: bill?.vendors?.vendor_name,
+                          label: bill.vendor_name,
+                        }
+                      : null
+                  }
+                  placeholder="Select Vendor"
+                  styles={customStyles}
                   autoFocus
                 />
               </div>
@@ -753,41 +657,7 @@ const Records = () => {
                 <label htmlFor="" className="font-medium">
                   By Item
                 </label>
-                <Select
-                      options={items.map((item) => ({
-                      value: item.item_name,
-                    label: item.item_name,
-                  }))}
-                  // onChange={(option) => {
-                  // handleSelectChange(option, { name: "item_name" });
-                  // const selectedItem = items.find(
-                  // (i) => i.item_name === option.value
-                  // );
-                  // }}
-                  // value={
-                  // bill.item_name
-                  // ? {
-                  // value: bill?.items?.item_name,
-                  // label: bill.item_name,
-                  // }
-                  //   : null
-                  // }
-                  value = {selectedItem}
-                  onChange={(option) => setSelectedItem(option)}
-                    placeholder="Select Item"
-                          styles={{
-                            ...customStyles,
-                            menuPortal: (provided) => ({
-                              ...provided,
-                              zIndex: 9999,
-                            }),
-                            menuList: (provided) => ({
-                              ...provided,
-                              maxHeight: 150, // Adjust this as needed
-                              overflowY: 'auto', // This ensures only the menu list scrolls
-                            }),
-                          }}
-                          menuPortalTarget={document.body} />
+                <Select placeholder="Select an Item" styles={customStyles} />
               </div>
             </div>
             <div className="flex gap-8">
@@ -801,8 +671,6 @@ const Records = () => {
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
-                  value={filterOptions.dateFrom}
-                  onChange={handleDateChange("dateFrom")}
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -813,8 +681,6 @@ const Records = () => {
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
                   // onChange={handleDateChange}
-                  value={filterOptions.dateTo}
-                  onChange={handleDateChange("dateTo")}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
@@ -828,7 +694,7 @@ const Records = () => {
 
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.actual_Amount}
+                  value={filterOptions.unit_price}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
                       ...prev,
@@ -862,11 +728,8 @@ const Records = () => {
               </div>
             </div>
           </div>
-          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-          onClick = {handleFilter}
-          >
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
             Filter
-            
           </button>
         </form>
       )}
