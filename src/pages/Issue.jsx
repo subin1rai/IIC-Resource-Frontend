@@ -14,6 +14,7 @@ import { ADToBS } from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -53,9 +54,10 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item,
+        item_id: field.item_id,
         quantity: field.quantity,
       }));
 
@@ -81,7 +83,7 @@ const Issue = () => {
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_id: formattedItems.map((item) => item.item_id).join(", "),
         item_quantity: formattedItems.reduce(
           (sum, item) => sum + Number(item.quantity),
           0

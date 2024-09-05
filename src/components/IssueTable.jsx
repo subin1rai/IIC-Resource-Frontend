@@ -7,7 +7,6 @@ import Select from "react-select";
 import TableCell from "@mui/material/TableCell";
 import add from "../assets/addIcon.svg";
 import close from "../assets/close.svg";
-
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -24,25 +23,26 @@ import { useSelector } from "react-redux";
 
 // Column definitions
 const columns = [
-  { id: "issue_id", label: "Issue ID", minWidth: 70 },
+  { id: "id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issueDate",
+    id: "issue_Date",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "issue_name", label: "Issued Item", minWidth: 70 },
+  { id: "issue_item", label: "Issued Item", minWidth: 70 },
   {
-    id: "quantity",
+    id: "Quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
     // format: (value) => value.toFixed(2),
   },
-  { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
+
+  { id: "request_Id", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
-  { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+  { id: "purpose", label: "Remarks", minWidth: 70, align: "center" },
   {
     id: "isReturned",
     label: "Return",
@@ -136,6 +136,7 @@ export default function InventoryTable({ issues }) {
     const fetchIssues = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/issue", {});
+        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
@@ -160,21 +161,7 @@ export default function InventoryTable({ issues }) {
           value: item.item_name,
           label: item.item_name,
         }));
-        setItemOptions(
-          (itemsResponse.data || []).map((item) => {
-            const features = Object.entries(item.itemsOnFeatures || {})
-              .filter(([key, value]) => value)
-              .map(([key, value]) => ` - ${value}`)
-              .join("");
-
-            const label = `${item.item_name}${features}`;
-
-            return {
-              value: item.item_id,
-              label: label,
-            };
-          })
-        );
+        setItemOptions(options);
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
@@ -187,6 +174,7 @@ export default function InventoryTable({ issues }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
+    console.log(editedIssue);
   };
 
   const handleSubmit = async (event) => {
@@ -405,7 +393,7 @@ export default function InventoryTable({ issues }) {
                 <input
                   id="checkbox"
                   type="checkbox"
-                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                   name="isReturned"
                 />
                 <label htmlFor="checkbox" className="ml-2 text-lg font-medium">

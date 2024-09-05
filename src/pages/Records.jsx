@@ -318,6 +318,8 @@ const Records = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    
     try {
       const billData = {
         ...bill,
