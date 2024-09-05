@@ -45,11 +45,11 @@ const ChangePassword = () => {
           },
         }
       );
-      console.log(response);
+
       toast.success("Password changed successfully!");
       goBack();
     } catch (error) {
-      console.log(error.response.data.error);
+    
       setError(error.response.data.error);
     }
   };

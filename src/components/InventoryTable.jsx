@@ -267,7 +267,7 @@ export default function InventoryTable({ items }) {
                                       ? "#856404"
                                       : value === "low stock"
                                       ? "#155724"
-                                      : "#721c24",
+                                      : "#00712D",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}

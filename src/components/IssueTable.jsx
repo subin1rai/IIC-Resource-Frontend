@@ -138,7 +138,6 @@ export default function InventoryTable({ issues }) {
     const fetchIssues = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/issue", {});
-        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
@@ -176,7 +175,6 @@ export default function InventoryTable({ issues }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
-    console.log(editedIssue);
   };
 
   const handleSubmit = async (event) => {
@@ -192,8 +190,6 @@ export default function InventoryTable({ issues }) {
           },
         }
       );
-
-      console.log(response);
       // if (response.status === 200) {
       //   setIssue({ ...issue, ...response.data });
       //   toast.success("Issue updated successfully");
@@ -396,7 +392,7 @@ export default function InventoryTable({ issues }) {
                 <input
                   id="checkbox"
                   type="checkbox"
-                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
                   name="isReturned"
                 />
                 <label htmlFor="checkbox" className="ml-2 text-lg font-medium">

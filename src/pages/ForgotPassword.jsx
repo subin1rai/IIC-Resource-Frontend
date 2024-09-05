@@ -74,8 +74,6 @@ const ForgotPassword = () => {
       if (response.status === 200) {
         navigate("/reset", { state: { email } });
       }
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

@@ -13,7 +13,6 @@ const Featurestable = ({
   const handleformVisiblity = (feat) => {
     setEditFormVIsiblity(true);
     setEditId(feat.feature_id);
-    console.log(feat.feature_id);
     setEditedValue({ type: "Feature", name: feat.feature_name });
   };
   return (

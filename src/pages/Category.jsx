@@ -150,7 +150,7 @@ const Category = () => {
           },
         }
       );
-      console.log(response.data);
+
       setCategory((prevCategory) =>
         prevCategory.filter((cat) => cat.category_id !== categoryId)
       );
@@ -171,12 +171,12 @@ const Category = () => {
           },
         }
       );
-      console.log(response);
+
       setCategory((prev) => [...prev, response.data.addData]);
       toast.success(`${newCategory.category_name} added successfully!`);
       setVisibleForm(false);
     } catch (error) {
-      console.log(error);
+
       setError(error.response.data.error);
     }
   };
@@ -194,7 +194,7 @@ const Category = () => {
         }
       );
 
-      console.log(response);
+
 
       setItemCategory((prev) => [...prev, response.data.addData]);
 
@@ -203,7 +203,7 @@ const Category = () => {
       );
       setVisibleForm(false);
     } catch (error) {
-      console.log(error);
+
       setError(error.response.data.error);
     }
   };
@@ -229,7 +229,7 @@ const Category = () => {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
       } else {
-        console.log(error);
+     
         setError("Failed to add the new feature!");
       }
     }
@@ -252,13 +252,12 @@ const Category = () => {
   const [editId, setEditId] = useState();
 
   const handleEditSubmit = async (e) => {
-    console.log(editId);
     try {
       const response = await axios.put(
         `http://localhost:8898/api/editCategory/${editId}`,
         editedValue
       );
-      console.log(response);
+
     } catch (error) {
       console.log(error);
     }

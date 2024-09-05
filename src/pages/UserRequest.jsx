@@ -26,7 +26,7 @@ const UserRequest = () => {
   const token = userInfo.token;
 
   const userDepartment = userInfo.department;
-  console.log(request);
+
 
   useEffect(() => {
     const getDepartmentUsers = async () => {
@@ -40,10 +40,6 @@ const UserRequest = () => {
         );
         setDepartmentMembers(filteredUsers || []);
       } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to fetch department users. Please try again."
-        );
         console.error(error);
       }
     };
@@ -70,10 +66,6 @@ const UserRequest = () => {
         });
         setAllItems(response.data || []);
       } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to fetch items. Please try again."
-        );
         console.error(error);
         setAllItems([]);
       }

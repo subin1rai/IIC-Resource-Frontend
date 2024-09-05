@@ -116,8 +116,6 @@ const SpecificBill = () => {
         `http://localhost:8898/api/approveBill/${bill_id}`
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -341,8 +339,6 @@ const SpecificBill = () => {
           },
         }
       );
-
-      console.log(response.data.result);
 
       if (response.status === 200) {
         // Update the bill state with the response data

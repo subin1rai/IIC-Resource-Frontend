@@ -37,7 +37,6 @@ const Navbar = () => {
         }
       );
       localStorage.clear();
-      console.log("Logout response:", response);
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);

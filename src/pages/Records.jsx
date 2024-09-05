@@ -124,7 +124,6 @@ const Records = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
 
-      console.log("File saved successfully!");
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -197,7 +196,7 @@ const Records = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(vendorsResponse);
+
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -302,8 +301,6 @@ const Records = () => {
         selectedOptions: selectedOption,
       };
 
-      console.log(billData);
-
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
         billData,
@@ -313,7 +310,6 @@ const Records = () => {
           },
         }
       );
-      console.log(response.data.result);
       setBills((prevBills) => [...prevBills, response.data.result.resultData]);
       toast.success(`${bill.bill_no} added successfully!`);
       closeAddBillForm();

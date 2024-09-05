@@ -206,7 +206,6 @@ const Vendor = () => {
         setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("Request Canceled", error.message);
           return;
         }
         console.error("Error fetching item categories:", error);
@@ -251,14 +250,12 @@ const Vendor = () => {
         categories: [""],
       });
     } catch (error) {
-      console.log(error);
       setError(error.response?.data?.error || "An error occurred");
     }
   };
 
   const handleBillChange = (event) => {
     const value = event.target.value;
-    console.log("Selected option:", value);
     setSelectedOption(value);
   };
 
@@ -287,8 +284,6 @@ const Vendor = () => {
 
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
-
-      console.log("File saved successfully!");
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -310,7 +305,7 @@ const Vendor = () => {
         setBlackListCount(count);
         setFilteredVendors(response.data.vendors || []);
       } catch (error) {
-        console.log("Error fetching vendors:", error);
+        console.error("Error fetching vendors:", error);
         setVendors([]);
         setFilteredVendors([]);
       }
@@ -402,14 +397,6 @@ const Vendor = () => {
         return vendor.black_list === true && parseInt(filterOptions.vendorStatus) === 1;
       });
     }
-
-
-
-
-
-
-
-
     setFilteredVendors(filteredResults);
     setFilterFormVisibility(false);
   };

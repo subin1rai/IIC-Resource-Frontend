@@ -94,7 +94,7 @@ const SettingRole = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(activeResponse);
+
         const activeUser = activeResponse.data.activeUser || [];
         setActiveUser(activeUser);
       } catch (error) {
