@@ -126,6 +126,7 @@ const Vendor = () => {
     tdsOption: "",
     paymentStatus: "",
     vendorStatus: "",
+    vendorCategory: "",
   });
 
 
@@ -350,6 +351,7 @@ const Vendor = () => {
       });
     }
 
+
     if (filterOptions.durationOption) {
       filteredResults.sort((a, b) => {
         if (filterOptions.durationOption === "low-to-high") {
@@ -362,14 +364,15 @@ const Vendor = () => {
     }
 
     if (filterOptions.purchaseFrom && filterOptions.purchaseTo) {
-      filteredResults = filteredResults.filter((vendor) => {
-        const vendorDate = vendor.last_purchase_date;
+      filteredResults = filteredResults.filter((vendors) => {
+        const vendorDate = new Date(vendors.last_purchase_date);
         return (
           vendorDate >= new Date(filterOptions.purchaseFrom) &&
           vendorDate <= new Date(filterOptions.purchaseTo)
         );
       });
     }
+
 
     // TDS filter
     if (filterOptions.tdsOption) {
@@ -383,15 +386,15 @@ const Vendor = () => {
       });
     }
 
-    if (filterOptions.paymentStatus !== undefined) {
+    if (filterOptions.paymentStatus) {
       filteredResults = filteredResults.filter(
         (vendor) => (vendor.pending_payment > 0) === (parseInt(filterOptions.paymentStatus) === 0)
       );
     }
 
+
     if (filterOptions.vendorStatus !== undefined && filterOptions.vendorStatus !== "") {
       filteredResults = filteredResults.filter((vendor) => {
-        console.log(vendor.vendor_name, vendor.black_list);
 
         if (vendor.black_list === null || vendor.black_list === false) {
           // Show whitelisted vendors when `vendor.black_list` is null or false
@@ -403,438 +406,437 @@ const Vendor = () => {
       });
     }
 
+  //   if (filterOptions.selectedCategory) {
+  //     filteredResults = filteredResults.filter((vendor) => {
+  //       if (filterOptions.selectedCategory === vendor.categories.map(category) => (category.vend))
+  //   })
+  // }
+
+
+  setFilteredVendors(filteredResults);
+  setFilterFormVisibility(false);
+};
 
 
 
+const itemCategoryOptions = itemCategory.map((cat) => ({
+  value: cat._id || cat.item_category_id,
+  label: cat.name || cat.item_category_name,
+}));
 
+const handleCategoryChange = (selectedOption) => {
+  setSelectedCategory(selectedOption);
+};
 
-
-
-    setFilteredVendors(filteredResults);
-    setFilterFormVisibility(false);
-  };
-
-  console.log(vendors)
-
-
-  const itemCategoryOptions = itemCategory.map((cat) => ({
-    value: cat._id || cat.item_category_id,
-    label: cat.name || cat.item_category_name,
-  }));
-
-  const handleCategoryChange = (selectedOption) => {
-    setSelectedCategory(selectedOption);
-  };
-
-  return (
-    <div className="bg-background flex justify-between h-screen w-screen relative">
-      <Sidebar />
-      <div className="mx-auto flex flex-col gap-4 items-center relative">
-        <Topbar />
-        <div className="flex flex-wrap w-[87vw] gap-4 justify-center">
-          <div className="flex flex-col w-[85.5vw] bg-white rounded-lg p-3 gap-3">
-            <h1 className="flex text-lg font-bold m-3">Vendor Summary</h1>
-            <div className="flex justify-around">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <img
-                  src={vendorno}
-                  alt="number of vendors"
-                  className="h-8 w-8"
-                />
-                <h4>{vendors.length}</h4>
-                <p className="font-medium">Number of Vendors</p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-1">
-                <img
-                  src={blacklist}
-                  alt="number of vendors"
-                  className="h-8 w-8"
-                />
-                <h4>{blackListCount}</h4>
-                <p className="font-medium">Number of Blacklisted Vendors</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
-          <div className="flex w-[85.8vw] justify-between">
-            <div className="text-lg m-4">
-              <p className="flex text-lg font-bold m-3">Vendors</p>
-            </div>
-            <div className="flex justify-between gap-5 m-4 mr-10">
-              <input
-                type="text"
-                placeholder="Search Vendors"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="border-2 px-3 w-80 border-border rounded h-fit py-2 focus:outline-slate-400"
+return (
+  <div className="bg-background flex justify-between h-screen w-screen relative">
+    <Sidebar />
+    <div className="mx-auto flex flex-col gap-4 items-center relative">
+      <Topbar />
+      <div className="flex flex-wrap w-[87vw] gap-4 justify-center">
+        <div className="flex flex-col w-[85.5vw] bg-white rounded-lg p-3 gap-3">
+          <h1 className="flex text-lg font-bold m-3">Vendor Summary</h1>
+          <div className="flex justify-around">
+            <div className="flex flex-col items-center justify-center gap-1">
+              <img
+                src={vendorno}
+                alt="number of vendors"
+                className="h-8 w-8"
               />
-              {/* Filter */}
-              <button
-                className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
-                aria-label="Menu"
-                onClick={displayFilterForm}
-              >
-                <img
-                  className="mt-1 justify-center align-center"
-                  src={filterIcon}
-                  alt=""
-                />
-                Filter
-              </button>
-
-              {/* Export button */}
-              <button
-                className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
-                aria-label="Menu"
-                onClick={handleExport}
-              >
-                <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
-                Export
-              </button>
-
-              <button
-                className="flex justify-center bg-button text-white rounded border items-center w-fit h-fit px-6 py-2"
-                onClick={openAddVendorForm}
-              >
-                Add Vendor
-              </button>
+              <h4>{vendors.length}</h4>
+              <p className="font-medium">Number of Vendors</p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-1">
+              <img
+                src={blacklist}
+                alt="number of vendors"
+                className="h-8 w-8"
+              />
+              <h4>{blackListCount}</h4>
+              <p className="font-medium">Number of Blacklisted Vendors</p>
             </div>
           </div>
-          <VendorTable vendors={filteredVendors} />
         </div>
       </div>
+      <div className="flex flex-col bg-white justify-center items-center w-[85.5vw] p-3 rounded-xl">
+        <div className="flex w-[85.8vw] justify-between">
+          <div className="text-lg m-4">
+            <p className="flex text-lg font-bold m-3">Vendors</p>
+          </div>
+          <div className="flex justify-between gap-5 m-4 mr-10">
+            <input
+              type="text"
+              placeholder="Search Vendors"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border-2 px-3 w-80 border-border rounded h-fit py-2 focus:outline-slate-400"
+            />
+            {/* Filter */}
+            <button
+              className="flex justify-center items-center w-fit h-fit px-5 py-2 gap-3 bg-white border-neutral-300 border-2 cursor-pointer rounded"
+              aria-label="Menu"
+              onClick={displayFilterForm}
+            >
+              <img
+                className="mt-1 justify-center align-center"
+                src={filterIcon}
+                alt=""
+              />
+              Filter
+            </button>
 
-      {/* filter form */}
-      {filterFormVisibility && (
-        <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form
-            className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-xl"> Filtering Option</h2>
-              <button type="button" className="" onClick={closeFilterForm}>
-                <img src={close} alt="" className="cursor-pointer w-4 h-4" />
-              </button>
-            </div>
+            {/* Export button */}
+            <button
+              className="flex border-2 h-fit py-2 border-green-300 px-6 font-regular text-green-500  w-fit justify-center items-center rounded gap-2"
+              aria-label="Menu"
+              onClick={handleExport}
+            >
+              <img src={exportIcon} alt="export icon" className="h-6 w-6 " />
+              Export
+            </button>
 
-            <div className="flex flex-col gap-6">
-              {/*div for department and status  */}
-              <div className="flex gap-8">
-                {/* div for department */}
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">
-                    Total Amount:
-                  </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    value={filterOptions.amountOption}
-                    onChange={(e) =>
-                      setFilterOptions((prev) => ({
-                        ...prev,
-                        amountOption: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select an option</option>
-                    <option value="high-to-low">High to low</option>
-                    <option value="low-to-high">Low to high</option>
-                  </select>
-                </div>
+            <button
+              className="flex justify-center bg-button text-white rounded border items-center w-fit h-fit px-6 py-2"
+              onClick={openAddVendorForm}
+            >
+              Add Vendor
+            </button>
+          </div>
+        </div>
+        <VendorTable vendors={filteredVendors} />
+      </div>
+    </div>
 
-                {/* div for request status */}
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">
-                    {" "}
-                    Payment Duration:{" "}
-                  </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    value={filterOptions.durationOption}
-                    onChange={(e) =>
-                      setFilterOptions((prev) => ({
-                        ...prev,
-                        durationOption: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select an option</option>
-                    <option value="high-to-low">High to low</option>
-                    <option value="low-to-high">Low to high</option>
-                  </select>
-                </div>
-              </div>
+    {/* filter form */}
+    {filterFormVisibility && (
+      <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
+        <form
+          className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="flex justify-between">
+            <h2 className="font-semibold text-xl"> Filtering Option</h2>
+            <button type="button" className="" onClick={closeFilterForm}>
+              <img src={close} alt="" className="cursor-pointer w-4 h-4" />
+            </button>
+          </div>
 
-              {/* filter by requested date */}
-              <div className="flex gap-8">
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">
-                    Purchase From:
-                  </label>
-
-                  <NepaliDatePicker
-                    inputClassName="form-control focus:outline-none"
-                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                    value={filterOptions.purchaseFrom}
-                    onChange={handleDateChange("purchaseFrom")}
-                    options={{ calenderLocale: "en", valueLocale: "en" }}
-                  />
-                </div>
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="" className="font-medium">
-                    Purchase To:
-                  </label>
-                  <NepaliDatePicker
-                    inputClassName="form-control focus:outline-none"
-                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                    value={filterOptions.purchaseTo}
-                    onChange={handleDateChange("purchaseTo")}
-                    options={{ calenderLocale: "en", valueLocale: "en" }}
-                  />
-                </div>
-              </div>
-            </div>
-
+          <div className="flex flex-col gap-6">
+            {/*div for department and status  */}
             <div className="flex gap-8">
               {/* div for department */}
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
-                  TDS:{" "}
+                  Total Amount:
                 </label>
                 <select
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.tdsOption}
+                  value={filterOptions.amountOption}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
                       ...prev,
-                      tdsOption: e.target.value,
+                      amountOption: e.target.value,
                     }))
                   }
                 >
                   <option value="">Select an option</option>
-
                   <option value="high-to-low">High to low</option>
                   <option value="low-to-high">Low to high</option>
                 </select>
               </div>
 
+              {/* div for request status */}
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
-                  Payment Status:{" "}
+                  {" "}
+                  Payment Duration:{" "}
                 </label>
                 <select
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.paymentStatus}
+                  value={filterOptions.durationOption}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
                       ...prev,
-                      paymentStatus: e.target.value,
+                      durationOption: e.target.value,
                     }))
                   }
                 >
                   <option value="">Select an option</option>
-                  <option value="0">Pending</option>
-                  <option value="1">Completed</option>
+                  <option value="high-to-low">High to low</option>
+                  <option value="low-to-high">Low to high</option>
                 </select>
               </div>
-
-              {/* div for request status */}
             </div>
 
+            {/* filter by requested date */}
             <div className="flex gap-8">
-              {/* div for department */}
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
-                  {" "}
-                  Status:{" "}
+                  Purchase From:
                 </label>
-                <select
-                  name=""
-                  id=""
-                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.vendorStatus}
-                  onChange={(e) =>
-                    setFilterOptions((prev) => ({
-                      ...prev,
-                      vendorStatus: e.target.value,
-                    }))
-                  }
-                >
-                  <option value="">Select status</option>
-                  <option value="1">Blacklisted</option>
-                  <option value="0">Whitelisted</option>
-                </select>
+
+                <NepaliDatePicker
+                  inputClassName="form-control focus:outline-none"
+                  className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                  value={filterOptions.purchaseFrom}
+                  onChange={handleDateChange("purchaseFrom")}
+                  options={{ calenderLocale: "en", valueLocale: "en" }}
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
-                  Category:
+                  Purchase To:
                 </label>
-                <Select
-                  options={itemCategoryOptions}
-                  onChange={(selectedOption) =>
-                    handleCategoryChange(selectedOption, { name: "category" })
-                  }
-                  value={itemCategoryOptions.find(
-                    (option) => option.value === vendor.category
-                  )}
-                  placeholder="Choose Category"
-                  styles={{
-                    ...customStyles,
-                    menuPortal: (provided) => ({
-                      ...provided,
-                      zIndex: 99,
-                    }),
-                    menuList: (provided) => ({
-                      ...provided,
-                      maxHeight: 170, // Adjust this as needed
-                      overflowY: "auto", // This ensures only the menu list scrolls
-                    }),
-                  }}
-                  menuPortalTarget={document.body}
-                  className="react-select-container"
-                  classNamePrefix="react-select"
+                <NepaliDatePicker
+                  inputClassName="form-control focus:outline-none"
+                  className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                  value={filterOptions.purchaseTo}
+                  onChange={handleDateChange("purchaseTo")}
+                  options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
             </div>
-            <button
-              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-              onClick={applyFilters}
-            >
-              Filter
-            </button>
-          </form>
-        </div>
-      )}
+          </div>
 
-      {addFormVisibility && (
-        <>
-          <div className="bg-overlay h-screen w-screen absolute z-10"></div>
-          <form
-            onSubmit={handleSubmit}
-            className="flex absolute z-20 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
-          >
-            <div className="flex justify-between">
-              <p className="font-semibold text-lg">Add Vendor</p>
-              <img
-                className="rounded-md cursor-pointer h-4 w-4 "
-                src={close}
-                alt="close"
-                onClick={closeAddVendorForm}
+          <div className="flex gap-8">
+            {/* div for department */}
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                TDS:{" "}
+              </label>
+              <select
+                name=""
+                id=""
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                value={filterOptions.tdsOption}
+                onChange={(e) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    tdsOption: e.target.value,
+                  }))
+                }
+              >
+                <option value="">Select an option</option>
+
+                <option value="high-to-low">High to low</option>
+                <option value="low-to-high">Low to high</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Payment Status:{" "}
+              </label>
+              <select
+                name=""
+                id=""
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                value={filterOptions.paymentStatus}
+                onChange={(e) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    paymentStatus: e.target.value,
+                  }))
+                }
+              >
+                <option value="">Select an option</option>
+                <option value="0">Pending</option>
+                <option value="1">Completed</option>
+              </select>
+            </div>
+
+            {/* div for request status */}
+          </div>
+
+          <div className="flex gap-8">
+            {/* div for department */}
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                {" "}
+                Status:{" "}
+              </label>
+              <select
+                name=""
+                id=""
+                className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                value={filterOptions.vendorStatus}
+                onChange={(e) =>
+                  setFilterOptions((prev) => ({
+                    ...prev,
+                    vendorStatus: e.target.value,
+                  }))
+                }
+              >
+                <option value="">Select status</option>
+                <option value="1">Blacklisted</option>
+                <option value="0">Whitelisted</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="" className="font-medium">
+                Category:
+              </label>
+              <Select
+                options={itemCategoryOptions}
+                onChange={(selectedOption) =>
+                  handleCategoryChange(selectedOption, { name: "category" })
+                }
+                value={itemCategoryOptions.find(
+                  (option) => option.value === vendor.category
+                )}
+                placeholder="Choose Category"
+                styles={{
+                  ...customStyles,
+                  menuPortal: (provided) => ({
+                    ...provided,
+                    zIndex: 99,
+                  }),
+                  menuList: (provided) => ({
+                    ...provided,
+                    maxHeight: 170, // Adjust this as needed
+                    overflowY: "auto", // This ensures only the menu list scrolls
+                  }),
+                }}
+                menuPortalTarget={document.body}
+                className="react-select-container"
+                classNamePrefix="react-select"
               />
             </div>
-            <div className="flex flex-col gap-10">
-              <div className="flex items-center gap-6">
-                <label htmlFor="vendor_name" className="w-40 font-medium">
-                  Name
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Vendor Name"
-                  autoFocus
-                  name="vendor_name"
-                  id="vendor_name"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label htmlFor="vat_number" className="w-40 font-medium">
-                  VAT
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400 "
-                  type="text"
-                  placeholder="Enter VAT Number"
-                  name="vat_number"
-                  id="vat_number"
-                  onChange={handleChange}
-                  maxLength={9}
-                  min="0"
-                  max="999999999"
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label htmlFor="vendor_profile" className="w-40 font-medium">
-                  Vendor Profile
-                </label>
-                <select
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
-                  name="vendor_profile"
-                  id="vendor_profile"
-                  onChange={handleChange}
-                >
-                  <option value="" disabled selected>
-                    Select Vendor Profile
-                  </option>
-                  <option value="big">Big</option>
-                  <option value="medium">Medium</option>
-                  <option value="small">Small</option>
-                </select>
-              </div>
-              <div className="flex items-center gap-6">
-                <label className="w-40 font-medium self-start">
-                  Categories
-                </label>
-                <CategoryFields
-                  categories={vendor.categories}
-                  setCategories={(newCategories) =>
-                    setVendor({ ...vendor, categories: newCategories })
-                  }
-                  itemCategoryOptions={itemCategoryOptions}
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label htmlFor="vendor_contact" className="w-40 font-medium">
-                  Contact
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Contact Number"
-                  name="vendor_contact"
-                  id="vendor_contact"
-                  onChange={handleChange}
-                  maxLength={10} // Limit input to 10 characters
-                  pattern="[0-9]*"
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label htmlFor="payment_duration" className="w-40 font-medium">
-                  Payment Duration
-                </label>
-                <input
-                  className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
-                  type="text"
-                  placeholder="Enter Payment Duration"
-                  name="payment_duration"
-                  id="payment_duration"
-                  onChange={handleChange}
-                />
-              </div>
-              {error && <span className="text-red-500">{error}</span>}
-              <button className="bg-blue-600 text-white py-3 px-4 w-full justify-center rounded-md focus: outline-blue-600">
-                Add vendor
-              </button>
-            </div>
-          </form>
-        </>
-      )}
+          </div>
+          <button
+            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
+            onClick={applyFilters}
+          >
+            Filter
+          </button>
+        </form>
+      </div>
+    )}
 
-      {(addFormVisibility || filterFormVisibility) && (
-        <div className="overlay-vendor"></div>
-      )}
-      <ToastContainer pauseOnHover theme="light" />
-    </div>
-  );
+    {addFormVisibility && (
+      <>
+        <div className="bg-overlay h-screen w-screen absolute z-10"></div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex absolute z-20 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-9 gap-7 rounded"
+        >
+          <div className="flex justify-between">
+            <p className="font-semibold text-lg">Add Vendor</p>
+            <img
+              className="rounded-md cursor-pointer h-4 w-4 "
+              src={close}
+              alt="close"
+              onClick={closeAddVendorForm}
+            />
+          </div>
+          <div className="flex flex-col gap-10">
+            <div className="flex items-center gap-6">
+              <label htmlFor="vendor_name" className="w-40 font-medium">
+                Name
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                type="text"
+                placeholder="Enter Vendor Name"
+                autoFocus
+                name="vendor_name"
+                id="vendor_name"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex items-center gap-6">
+              <label htmlFor="vat_number" className="w-40 font-medium">
+                VAT
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400 "
+                type="text"
+                placeholder="Enter VAT Number"
+                name="vat_number"
+                id="vat_number"
+                onChange={handleChange}
+                maxLength={9}
+                min="0"
+                max="999999999"
+              />
+            </div>
+            <div className="flex items-center gap-6">
+              <label htmlFor="vendor_profile" className="w-40 font-medium">
+                Vendor Profile
+              </label>
+              <select
+                className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                name="vendor_profile"
+                id="vendor_profile"
+                onChange={handleChange}
+              >
+                <option value="" disabled selected>
+                  Select Vendor Profile
+                </option>
+                <option value="big">Big</option>
+                <option value="medium">Medium</option>
+                <option value="small">Small</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-6">
+              <label className="w-40 font-medium self-start">
+                Categories
+              </label>
+              <CategoryFields
+                categories={vendor.categories}
+                setCategories={(newCategories) =>
+                  setVendor({ ...vendor, categories: newCategories })
+                }
+                itemCategoryOptions={itemCategoryOptions}
+              />
+            </div>
+            <div className="flex items-center gap-6">
+              <label htmlFor="vendor_contact" className="w-40 font-medium">
+                Contact
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                type="text"
+                placeholder="Enter Contact Number"
+                name="vendor_contact"
+                id="vendor_contact"
+                onChange={handleChange}
+                maxLength={10} // Limit input to 10 characters
+                pattern="[0-9]*"
+              />
+            </div>
+            <div className="flex items-center gap-6">
+              <label htmlFor="payment_duration" className="w-40 font-medium">
+                Payment Duration
+              </label>
+              <input
+                className="border-2 rounded border-neutral-200 w-[14vw] p-2 focus:outline-slate-400"
+                type="text"
+                placeholder="Enter Payment Duration"
+                name="payment_duration"
+                id="payment_duration"
+                onChange={handleChange}
+              />
+            </div>
+            {error && <span className="text-red-500">{error}</span>}
+            <button className="bg-blue-600 text-white py-3 px-4 w-full justify-center rounded-md focus: outline-blue-600">
+              Add vendor
+            </button>
+          </div>
+        </form>
+      </>
+    )}
+
+    {(addFormVisibility || filterFormVisibility) && (
+      <div className="overlay-vendor"></div>
+    )}
+    <ToastContainer pauseOnHover theme="light" />
+  </div>
+);
 };
 
 export default Vendor;
