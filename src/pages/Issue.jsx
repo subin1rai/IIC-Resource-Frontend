@@ -80,23 +80,6 @@ const Issue = () => {
         }
       );
 
-      const newIssue = response.data.issues;
-      const formattedNewIssue = {
-        issue_id: newIssue.id,
-        issue_date: newIssue.issue_Date,
-        item_id: formattedItems.map((item) => item.item_id).join(", "),
-        item_quantity: formattedItems.reduce(
-          (sum, item) => sum + Number(item.quantity),
-          0
-        ),
-        requested_by: newIssue.issued_to,
-        department: newIssue.department || "N/A",
-        issued_by: newIssue.approved_by || "N/A",
-        status: newIssue.status || "Dispatched",
-        remarks: newIssue.purpose || "N/A",
-      };
-
-      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
       toast.success(`Items issued to ${issue.issued_to} successfully `);
       setItemFields([{ item_id: "", quantity: "" }]);
