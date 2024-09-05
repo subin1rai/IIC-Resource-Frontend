@@ -35,6 +35,7 @@ const Issue = () => {
   const [addIssueVisibility, setAddIssueVisibility] = useState(false);
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
+  const [returned, setReturned] = useState(0);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -188,6 +189,10 @@ const Issue = () => {
           },
         });
         setIssues(response.data.issue || []);
+        const count = response.data.issue.filter(
+          (req) => req.is_returned
+        ).length;
+        setReturned(count);
       } catch (error) {
         console.error("Error fetching issues:", error);
         setIssues([]);
@@ -258,12 +263,12 @@ const Issue = () => {
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={issuesno} alt="" />
-                <h4>5</h4>
+                <h4>{issues.length}</h4>
                 <p className="font-medium">Number of Items issued</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={pendingreq} alt="" />
-                <h4>5</h4>
+                <h4>{returned}</h4>
                 <p className="font-medium">Number of Items to be returned</p>
               </div>
             </div>
