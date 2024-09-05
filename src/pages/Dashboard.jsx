@@ -13,8 +13,10 @@ import pendingreq from "../assets/pendingreq.png";
 import pendingpay from "../assets/pending.png";
 import records from "../assets/records.png";
 import totpay from "../assets/totalpay.png";
+import req from "../assets/request.svg";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import pend from "../assets/pendingrequest.png";
 
 const Dashboard = () => {
   const [dashboard, setDashboard] = useState("");
@@ -138,12 +140,12 @@ const Dashboard = () => {
               <h1 className="text-lg font-bold m-5">Request Summary</h1>
               <div className="flex justify-around mb-5">
                 <div className="flex flex-col items-center ">
-                  <img src={totpay} alt="items" className="w-8 h-8" />
+                  <img src={req} alt="items" className="w-8 h-8" />
                   <p>{dashboard?.requestCount}</p>
                   <p className="font-medium">Number of Requests</p>
                 </div>
                 <div className="flex flex-col items-center ">
-                  <img src={pendingpay} alt="items" className="w-8 h-8" />
+                  <img src={pend} alt="items" className="w-7 h-7" />
                   <p>{dashboard?.pendingRequestCount}</p>
                   <p className="font-medium">Number of pending requests</p>
                 </div>
