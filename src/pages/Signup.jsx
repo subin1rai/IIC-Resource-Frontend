@@ -18,7 +18,6 @@ const Signup = () => {
   const handleChange = (e) => {
     setUser((prev) => {
       const updatedUser = { ...prev, [e.target.name]: e.target.value };
-      console.log(updatedUser);
       return updatedUser;
     });
   };
@@ -28,7 +27,6 @@ const Signup = () => {
       await axios.post(`http://localhost:8898/api/signup`, user);
       navigate("/");
     } catch (error) {
-      console.log(error);
       setError(error.response.data.error);
     }
   };

@@ -19,6 +19,7 @@
     "@mui/material": "^5.16.1",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
+    "bikram-sambat-js": "^1.0.2",
     "date-fns": "^3.6.0",
     "js-cookie": "^3.0.5",
     "nepali-date-picker": "^2.0.2",

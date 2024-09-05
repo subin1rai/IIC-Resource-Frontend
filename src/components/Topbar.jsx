@@ -8,7 +8,7 @@ import notificationIcon from "../assets/notification.svg";
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import profile from "../assets/profile.png";
-import empty from "../assets/Emptynoti.svg"; // Import the new image
+import empty from "../assets/Emptynoti.svg";
 import { format } from "date-fns";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -115,7 +115,7 @@ const Topbar = () => {
             },
           }
         );
-        console.log(response);
+        console.log('notif:',response);
         setNotification(response.data.notifications || []);
         const unreadCount = response.data.notifications.filter(
           (req) => !req.state
@@ -129,9 +129,11 @@ const Topbar = () => {
       }
     };
     fetchNotification();
+
   }, [token]);
 
   const fullName = userInfo.user_name;
+  console.log(userInfo);
   useEffect(() => {
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
@@ -162,17 +164,20 @@ const Topbar = () => {
           },
         }
       );
+      setNotification((prev) => 
+        prev.map((notification) => ({
+          ...notification,
+          state: true, 
+        }))
+      );
+      setNotReadCount(0)
+      
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  socket.on("all_request", (data) => {
-    const newNotification = data["message"];
-    setNotification(newNotification);
-    setNotReadCount(0);
-  });
 
   const handleSingleState = async (notification_id) => {
     const notificationToUpdate = notification.find(
@@ -208,6 +213,7 @@ const Topbar = () => {
   };
 
   const formatDate = (dateString) => {
+    console.log(dateString);
     const date = new Date(dateString);
     return format(date, "MMMM dd, yyyy 'at' h:mmaaa");
   };
@@ -253,11 +259,11 @@ const Topbar = () => {
             <div className="flex flex-col px-4">
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={email} alt="" />
-                <li className="py-2 text-blue-600">{userInfo?.user_email}</li>
+                <li className="py-2 text-blue-600">sample@iic.edu.np</li>
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
-                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
+                <li className="py-2 text-blue-600">9800000000</li>
               </div>
               <div className="flex justify-center">
                 <button
@@ -321,7 +327,7 @@ const Topbar = () => {
                         </h3>
 
                         <p className="text-[0.8rem] py-1 text-neutral-500">
-                          {formatDate(notification.created_at)}
+                          {formatDate(notification?.created_at)}
                         </p>
                       </div>
                     </div>

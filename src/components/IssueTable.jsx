@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 const columns = [
   { id: "issue_id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issue_date",
+    id: "issueDate",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
@@ -44,8 +44,8 @@ const columns = [
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
   {
-    id: "issued_status",
-    label: "Issued Item Status",
+    id: "isReturned",
+    label: "Return",
     minWidth: 70,
     align: "center",
   },
@@ -138,7 +138,6 @@ export default function InventoryTable({ issues }) {
     const fetchIssues = async () => {
       try {
         const response = await axios.get("http://localhost:8898/api/issue", {});
-        console.log(response);
         setIssues(response.data.issue || []);
       } catch (error) {
         console.error("Error fetching issues:", error);
@@ -176,7 +175,6 @@ export default function InventoryTable({ issues }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
-    console.log(editedIssue);
   };
 
   const handleSubmit = async (event) => {
@@ -194,13 +192,13 @@ export default function InventoryTable({ issues }) {
       );
 
       console.log(response);
-      // if (response.status === 200) {
-      //   setIssue({ ...issue, ...response.data });
-      //   toast.success("Issue updated successfully");
-      //   setEditIssueVisibility(false);
-      // } else {
-      //   toast.error("Failed to update issue");
-      // }
+      if (response.status === 200) {
+        setIssue({ ...issue, ...response.data });
+        toast.success("Issue updated successfully");
+        setEditIssueVisibility(false);
+      } else {
+        toast.error("Failed to update issue");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -396,7 +394,7 @@ export default function InventoryTable({ issues }) {
                 <input
                   id="checkbox"
                   type="checkbox"
-                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
                   name="isReturned"
                 />
                 <label htmlFor="checkbox" className="ml-2 text-lg font-medium">
@@ -491,29 +489,21 @@ export default function InventoryTable({ issues }) {
                             align={column.align}
                             style={cellStyle}
                           >
-                            {column.id === "issued_status" ? (
+                            {column.id === "isReturned" ? (
                               <div
                                 style={{
                                   display: "inline-block",
                                   padding: "4px 8px",
                                   borderRadius: "4px",
-                                  backgroundColor:
-                                    value === "Pending"
-                                      ? "#fff3cd"
-                                      : value === "Approved"
-                                      ? "#d4edda"
-                                      : "#f8d7da",
-                                  color:
-                                    value === "Pending"
-                                      ? "#856404"
-                                      : value === "Approved"
-                                      ? "#155724"
-                                      : "#721c24",
+                                  backgroundColor: value
+                                    ? "#d4edda"
+                                    : "#f8d7da",
+                                  color: value ? "#155724" : "#721c24",
                                   fontWeight: "normal",
                                   textAlign: "center",
                                 }}
                               >
-                                {value ?? "Not Returned"}
+                                {value ? "Returned" : "Not Returned"}
                               </div>
                             ) : column.id === "edit" ? (
                               <IconButton

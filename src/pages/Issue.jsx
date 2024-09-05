@@ -10,6 +10,7 @@ import pendingreq from "../assets/pendingreq.png";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
+import {ADToBS}  from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -22,7 +23,7 @@ const Issue = () => {
     items: [],
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
   const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,8 +60,7 @@ const Issue = () => {
       }));
 
       const issueData = {
-        issue_date: issue.issue_date,
-
+        issue_date: issue.issue_date || date,
         issued_to: issue.issued_to,
         purpose: purpose, // Purpose is set separately
         items: formattedItems, // Add the formatted items array
@@ -69,14 +69,14 @@ const Issue = () => {
       const response = await axios.post(
         "http://localhost:8898/api/addIssue",
         issueData,
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log("Sending data:", issueData);
-      console.log(issues);
+  
       const newIssue = response.data.issues;
       const formattedNewIssue = {
         issue_id: newIssue.id,
@@ -99,7 +99,7 @@ const Issue = () => {
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
-      toast.error("Failed to add issue!");
+
     }
   };
 
