@@ -709,11 +709,11 @@ const Inventory = () => {
                 onChange={(selectedOption) =>
                   setFilterOptions((prev) => ({
                     ...prev,
-                    itemCategory: selectedOption.value,
+                    itemCategory: selectedOption.value, // Update `itemCategory` here
                   }))
                 }
                 value={itemCategoryOptions.find(
-                  (option) => option.value === filterOptions.itemCategory
+                  (option) => option.value === filterOptions.itemCategory // Ensure value matches the selected category
                 )}
                 placeholder="Choose Item Category"
                 styles={customStyles}

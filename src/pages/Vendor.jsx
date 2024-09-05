@@ -401,6 +401,7 @@ const Vendor = () => {
       });
     }
 
+
   //   if (filterOptions.selectedCategory) {
   //     filteredResults = filteredResults.filter((vendor) => {
   //       if (filterOptions.selectedCategory === vendor.categories.map(category) => (category.vend))
