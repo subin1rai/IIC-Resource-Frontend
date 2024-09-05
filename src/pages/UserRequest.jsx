@@ -25,8 +25,8 @@ const UserRequest = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
+  console.log(userInfo);
   const userDepartment = userInfo.department;
-  console.log(request);
 
   useEffect(() => {
     const getDepartmentUsers = async () => {
@@ -318,14 +318,18 @@ const UserRequest = () => {
                   styles={{
                     control: (provided, state) => ({
                       ...provided,
-                      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+                      border: state.isFocused
+                        ? "2px solid #94a3b8"
+                        : "2px solid #e5e5e5",
                       minHeight: "46px",
                       boxShadow: "none",
                       "&:hover": {
-                        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+                        border: state.isFocused
+                          ? "2px solid #94a3b8"
+                          : "2px solid #e5e5e5",
                       },
                     }),
-                    
+
                     menuPortal: (provided) => ({
                       ...provided,
                       zIndex: 9999,
