@@ -115,7 +115,6 @@ const Topbar = () => {
             },
           }
         );
-        console.log('notif:',response);
         setNotification(response.data.notifications || []);
         const unreadCount = response.data.notifications.filter(
           (req) => !req.state
@@ -129,11 +128,10 @@ const Topbar = () => {
       }
     };
     fetchNotification();
-
   }, [token]);
 
   const fullName = userInfo.user_name;
-  console.log(userInfo);
+
   useEffect(() => {
     if (fullName) {
       const nameParts = fullName.trim().split(" ");
@@ -164,20 +162,19 @@ const Topbar = () => {
           },
         }
       );
-      setNotification((prev) => 
+      setNotification((prev) =>
         prev.map((notification) => ({
           ...notification,
-          state: true, 
+          state: true,
         }))
       );
-      setNotReadCount(0)
-      
+      setNotReadCount(0);
+
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-
 
   const handleSingleState = async (notification_id) => {
     const notificationToUpdate = notification.find(

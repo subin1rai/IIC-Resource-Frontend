@@ -55,7 +55,7 @@ const Issue = () => {
     event.preventDefault();
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
+        item_name: field.item,
         quantity: field.quantity,
       }));
 
@@ -96,7 +96,7 @@ const Issue = () => {
       setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
       toast.success(`Items issued to ${issue.issued_to} successfully `);
-      setItemFields([{ item: "", quantity: "" }]);
+      setItemFields([{ item_id: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
     }
@@ -106,17 +106,19 @@ const Issue = () => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
     setItemFields(newFields);
-
-    console.log(itemFields);
+    console.log(newFields);
+    setIssue((prev) => ({ ...prev, items: newFields }));
+    console.log(issue);
   };
 
   const handleChange = (e) => {
     setIssue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(issue);
   };
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_id: "", quantity: "" }]);
     }
   };
 
@@ -191,8 +193,6 @@ const Issue = () => {
     };
     fetchIssues();
   }, [token]);
-
-  console.log(issues);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -479,7 +479,7 @@ const Issue = () => {
                           onChange={(selectedOption) =>
                             handleItemChange(
                               index,
-                              "item",
+                              "item_id",
                               selectedOption.value
                             )
                           }

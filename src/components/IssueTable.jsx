@@ -64,8 +64,6 @@ export default function InventoryTable({ issues }) {
   const [editIssueVisibility, setEditIssueVisibility] = useState(false);
   const [orderBy, setOrderBy] = useState("issue_id");
 
-  console.log(issues);
-
   const [issue, setIssue] = useState({
     issue_date: "",
     issued_to: "",
@@ -205,7 +203,6 @@ export default function InventoryTable({ issues }) {
         }
       );
 
-      console.log(response);
       if (response.status === 200) {
         setIssue({ ...issue, ...response.data });
         toast.success("Issue updated successfully");
