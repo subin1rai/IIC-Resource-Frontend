@@ -113,7 +113,7 @@ const SpecificBill = () => {
   const handleApprove = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/approveBill/${bill_id}, {}, `,{
+        `http://localhost:8898/api/approveBill/${bill_id} `,{},{
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -237,17 +237,25 @@ const SpecificBill = () => {
           ]);
 
         setBillDetails(singleBillResponse.data);
+        console.log(singleBillResponse.data.bill);
 
         console.log(
           "My billitem: ",
           singleBillResponse.data.bill.BillItems[0].TDS
         );
 
-        setSelectedOption(
-          singleBillResponse.data?.bill.bill_type.toLowerCase() +
-          " " +
-          singleBillResponse.data.bill.BillItems[0].TDS
-        );
+        if(singleBillResponse.data.bill.bill_type === "NOBILL"){
+          setSelectedOption("NOBILL")
+        } 
+        else{
+          setSelectedOption(
+            singleBillResponse.data?.bill.bill_type.toLowerCase() +
+            " " +
+            singleBillResponse.data.bill.BillItems[0].TDS
+          );
+        }
+       
+        console.log(selectedOption);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
@@ -474,7 +482,7 @@ const SpecificBill = () => {
               ) : (
                 <button
                   className="bg-green-500 px-6 rounded text-white font-medium py-3"
-                  onClick={handleApprove}
+                  onClick={handleShowModal}
                 >
                   Approve Bill
                 </button>
@@ -525,7 +533,7 @@ const SpecificBill = () => {
                   Approved Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.isApproved ? (
-                      <span className="text-green-600  bg-yellow-100 p-2 px-4 rounded-md">Approved</span>
+                      <span className="text-green-600  bg-green-100 p-2 px-4 rounded-md">Approved</span>
                     ) : (
                       <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">Pending</span> || "--"
                     )}
