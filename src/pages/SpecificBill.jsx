@@ -112,7 +112,11 @@ const SpecificBill = () => {
   const handleApprove = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/approveBill/${bill_id}`
+        `http://localhost:8898/api/approveBill/${bill_id}, {}, `,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
     } catch (error) {
