@@ -190,13 +190,15 @@ export default function InventoryTable({ issues }) {
           },
         }
       );
-      // if (response.status === 200) {
-      //   setIssue({ ...issue, ...response.data });
-      //   toast.success("Issue updated successfully");
-      //   setEditIssueVisibility(false);
-      // } else {
-      //   toast.error("Failed to update issue");
-      // }
+
+      console.log(response);
+      if (response.status === 200) {
+        setIssue({ ...issue, ...response.data });
+        toast.success("Issue updated successfully");
+        setEditIssueVisibility(false);
+      } else {
+        toast.error("Failed to update issue");
+      }
     } catch (error) {
       console.log(error);
     }
