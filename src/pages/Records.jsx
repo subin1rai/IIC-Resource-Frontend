@@ -21,7 +21,6 @@ import Pan from "../components/Pan10";
 import NoBill from "../components/NoBill";
 import { useSelector } from "react-redux";
 
-
 const Records = () => {
   const [bill, setBill] = useState({
     bill_no: "",
@@ -37,10 +36,12 @@ const Records = () => {
     vendor_name: "",
     dateFrom: "",
     dateTo: "",
+    item_id: "",
     priceSort: "",
     billStatus: "",
   });
 
+  console.log(filterOptions);
   const [date, setDate] = useState("");
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
@@ -59,6 +60,25 @@ const Records = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const itemsResponse = await axios.get(
+          "http://localhost:8898/api/items",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setItems(itemsResponse.data);
+        console.log("Fetched items:", itemsResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
 
   const handleDataUpdate = (data, type) => {
     switch (type) {
@@ -419,11 +439,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
-                          selectedOption === "vat 1.5"
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
+                        selectedOption === "vat 1.5"
                           ? "bg-blue-200"
                           : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -433,12 +454,13 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
-                          selectedOption === "pan 10" ||
-                          selectedOption === "pan 15"
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
+                        selectedOption === "pan 10" ||
+                        selectedOption === "pan 15"
                           ? "bg-blue-200"
                           : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -450,10 +472,11 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "noBill"
                           ? "bg-blue-200 text-black"
                           : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -545,9 +568,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                              value: bill?.vendors?.vendor_name,
-                              label: bill.vendor_name,
-                            }
+                                value: bill?.vendors?.vendor_name,
+                                label: bill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"
@@ -634,17 +657,24 @@ const Records = () => {
                     label: vendor.vendor_name,
                   }))}
                   onChange={(option) => {
-                    handleSelectChange(option, { name: "vendor_name" });
                     const selectedVendor = vendors.find(
                       (v) => v.vendor_name === option.value
                     );
+
+                    if (selectedVendor) {
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        vendor_name: option.value,
+                        vat_number: selectedVendor.vat_number,
+                      }));
+                    }
                   }}
                   value={
-                    bill.vendor_name
+                    filterOptions.vendor_name
                       ? {
-                        value: bill?.vendors?.vendor_name,
-                        label: bill.vendor_name,
-                      }
+                          value: filterOptions.vendor_name,
+                          label: filterOptions.vendor_name,
+                        }
                       : null
                   }
                   placeholder="Select Vendor"
@@ -657,7 +687,57 @@ const Records = () => {
                 <label htmlFor="" className="font-medium">
                   By Item
                 </label>
-                <Select placeholder="Select an Item" styles={customStyles} />
+                <Select
+                  options={items.map((item) => {
+                    const features = Object.entries(item.itemsOnFeatures || {})
+                      .filter(([key, value]) => value)
+                      .map(([key, value]) => ` - ${value}`)
+                      .join("");
+
+                    const label = `${item.item_name}${features}`;
+
+                    return {
+                      value: item.item_id,
+                      label: label,
+                    };
+                  })}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setFilterOptions((prev) => ({
+                        ...prev,
+                        item_id: selectedOption.value,
+                        item_name: selectedOption.label,
+                      }));
+                    }
+                  }}
+                  value={
+                    filterOptions.item_id
+                      ? {
+                          value: filterOptions.item_id,
+                          label: items.find(
+                            (item) => item.item_id === filterOptions.item_id
+                          )
+                            ? `${
+                                items.find(
+                                  (item) =>
+                                    item.item_id === filterOptions.item_id
+                                ).item_name
+                              }${Object.entries(
+                                items.find(
+                                  (item) =>
+                                    item.item_id === filterOptions.item_id
+                                ).itemsOnFeatures || {}
+                              )
+                                .filter(([key, value]) => value)
+                                .map(([key, value]) => ` - ${value}`)
+                                .join("")}`
+                            : "",
+                        }
+                      : null
+                  }
+                  placeholder="Select an Item"
+                  styles={customStyles}
+                />
               </div>
             </div>
             <div className="flex gap-8">
