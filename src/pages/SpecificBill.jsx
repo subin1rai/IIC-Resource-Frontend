@@ -9,6 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import {ADToBS}  from "bikram-sambat-js";
 import "nepali-datepicker-reactjs/dist/index.css";
 import Select from "react-select";
 import Vat from "../components/Vat";
@@ -40,7 +41,7 @@ const SpecificBill = () => {
     items: [],
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [declineFormVisibility, setDeclineFormVisibility] = useState(false);
@@ -324,6 +325,7 @@ const SpecificBill = () => {
       const dataToSubmit = {
         ...editedBill,
         selectedOption: selectedOption,
+        bill_date: bill.bill_date || date
       };
 
       // Handle NOBILL case specifically
