@@ -20,6 +20,7 @@ const Request = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [pending, setPending] = useState("");
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -72,6 +73,10 @@ const Request = () => {
           },
         });
         setRequests(response.data.request);
+        const count = response.data.request.filter(
+          (req) => req.status === "Pending"
+        ).length;
+        setPending(count);
         setFilteredRequests(response.data.request); // Initially, all requests are displayed
       } catch (error) {
         console.log(error);
@@ -160,12 +165,12 @@ const Request = () => {
             <div className="flex justify-around">
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={req} alt="" />
-                <h4>5</h4>
+                <h4>{requests.length}</h4>
                 <p className="font-medium">Number of Requests</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={req} alt="" />
-                <h4>5</h4>
+                <h4>{pending}</h4>
                 <p className="font-medium">Number of Pending Requests</p>
               </div>
             </div>
