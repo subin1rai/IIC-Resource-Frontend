@@ -6,8 +6,7 @@ import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
 import TableCell from "@mui/material/TableCell";
 import add from "../assets/addIcon.svg";
-import close from "../assets/close.svg";
-
+import close from "../assets/close.svg"
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -24,25 +23,26 @@ import { useSelector } from "react-redux";
 
 // Column definitions
 const columns = [
-  { id: "issue_id", label: "Issue ID", minWidth: 70 },
+  { id: "id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issueDate",
+    id: "issue_Date",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "issue_name", label: "Issued Item", minWidth: 70 },
+  { id: "issue_item", label: "Issued Item", minWidth: 70 },
   {
-    id: "quantity",
+    id: "Quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
     // format: (value) => value.toFixed(2),
   },
-  { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
+
+  { id: "request_Id", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
-  { id: "remarks", label: "Remarks", minWidth: 70, align: "center" },
+  { id: "purpose", label: "Remarks", minWidth: 70, align: "center" },
   {
     id: "isReturned",
     label: "Return",
@@ -194,13 +194,13 @@ export default function InventoryTable({ issues }) {
       );
 
       console.log(response);
-      if (response.status === 200) {
-        setIssue({ ...issue, ...response.data });
-        toast.success("Issue updated successfully");
-        setEditIssueVisibility(false);
-      } else {
-        toast.error("Failed to update issue");
-      }
+      // if (response.status === 200) {
+      //   setIssue({ ...issue, ...response.data });
+      //   toast.success("Issue updated successfully");
+      //   setEditIssueVisibility(false);
+      // } else {
+      //   toast.error("Failed to update issue");
+      // }
     } catch (error) {
       console.log(error);
     }

@@ -43,7 +43,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
     updatedRows[index].item_id = option.value;
     updatedRows[index].item_name = option.label;
     setRows(updatedRows);
-    console.log("Updated rows after item selection:", updatedRows);
     updateParentData(updatedRows);
   };
 
@@ -61,7 +60,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
     );
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
-    console.log("Added new row:", updatedRows);
     updateParentData(updatedRows);
   };
 
@@ -74,7 +72,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
     }
 
     setRows(newRows);
-    console.log("Updated row:", newRows);
     updateParentData(newRows);
   };
 
@@ -106,7 +103,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
 
       if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
         setRows(existingItems);
-        console.log("Initialized rows with existing items:", existingItems);
         updateParentData(existingItems);
       }
     } else if (rows.length === 0) {
@@ -122,7 +118,6 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
         selectedOption
       );
       setRows([initialRow]);
-      console.log("Initialized rows with default item:", [initialRow]);
       updateParentData([initialRow]);
     }
   }, [billDetails, selectedOption]);

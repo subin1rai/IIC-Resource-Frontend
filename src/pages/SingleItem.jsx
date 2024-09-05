@@ -87,8 +87,6 @@ const SingleItem = () => {
             },
           }
         );
-
-        console.log(response);
         setItem(response.data);
         setItemCategory(itemCategoryResponse.data.allData);
         setCategory(categoryResponse.data.category);

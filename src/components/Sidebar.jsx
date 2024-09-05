@@ -50,7 +50,6 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      console.log("Sending logout request");
       const response = await axios.post(
         "http://localhost:8898/api/logout",
         {},
@@ -59,7 +58,6 @@ const Sidebar = () => {
         }
       );
       localStorage.clear();
-      console.log("Logout response:", response);
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -115,14 +113,6 @@ const Sidebar = () => {
               <p> Issue</p>
             </NavLink>
           </div>
-          {/* Payment nav */}
-          {/* <div className="item">
-            <NavLink to="/payment" className={setActiveClass}>
-              <img src={payment} className="item-img" alt="" />
-              Payment
-            </NavLink>
-          </div> */}
-          {/* Request nav */}
           <div className="item">
             <NavLink to="/request" className={setActiveClass}>
               <img src={request} className="item-img" alt="" />
@@ -145,14 +135,6 @@ const Sidebar = () => {
 
       <div className="sidebar-bottom">
         <div className="sidebar-items">
-          {/* settings nav */}
-          {/* <div className="item">
-            <NavLink to="/settings" className={setActiveClass}>
-              <img src={settings} className="item-img" alt="" />
-              Settings
-            </NavLink>
-          </div> */}
-          {/* logout nav */}
           <div className="item">
             <NavLink to="/" onClick={handleLogout} className={setActiveClass}>
               <img src={logout} className="item-img" alt="" />

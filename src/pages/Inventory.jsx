@@ -200,7 +200,6 @@ const Inventory = () => {
         features: {},
       });
     } catch (error) {
-      console.log(error);
       setError(error.response.data.error);
       setLoading(false);
     }
@@ -232,7 +231,6 @@ const Inventory = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
 
-      console.log("File saved successfully!");
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -666,7 +664,7 @@ const Inventory = () => {
 
             <button
               type="submit"
-              className="flex justify-center bg-blue-600 text-white rounded items-center p-2 px-6 focus:outline-blue-700"
+              className="flex justify-center bg-blue-500 text-white rounded items-center p-2 px-6 "
               disabled={loading}
             >
               {loading ? "Adding..." : "ADD "}

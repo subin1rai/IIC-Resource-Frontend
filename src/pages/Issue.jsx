@@ -10,9 +10,11 @@ import pendingreq from "../assets/pendingreq.png";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
+import { ADToBS } from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -22,7 +24,7 @@ const Issue = () => {
     items: [],
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
   const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +33,7 @@ const Issue = () => {
   const [purpose, setPurpose] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [addIssueVisibility, setAddIssueVisibility] = useState(false);
-  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
 
   const displayFilterForm = () => {
@@ -52,15 +54,15 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
-        quantity: field.quantity,
+        item_id: field.item_id,
+        quantity: field.quantity
       }));
 
       const issueData = {
-        issue_date: issue.issue_date,
-
+        issue_date: issue.issue_date || date,
         issued_to: issue.issued_to,
         purpose: purpose, // Purpose is set separately
         items: formattedItems, // Add the formatted items array
@@ -69,19 +71,21 @@ const Issue = () => {
       const response = await axios.post(
         "http://localhost:8898/api/addIssue",
         issueData,
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
+        
       );
-      console.log("Sending data:", issueData);
-      console.log(issues);
+
+
       const newIssue = response.data.issues;
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_id: formattedItems.map((item) => item.item_id).join(", "),
         item_quantity: formattedItems.reduce(
           (sum, item) => sum + Number(item.quantity),
           0
@@ -99,7 +103,6 @@ const Issue = () => {
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
-      toast.error("Failed to add issue!");
     }
   };
 
@@ -107,6 +110,8 @@ const Issue = () => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
     setItemFields(newFields);
+
+    console.log(itemFields);
   };
 
   const handleChange = (e) => {
@@ -208,7 +213,21 @@ const Issue = () => {
           value: item.item_name,
           label: item.item_name,
         }));
-        setItemOptions(options);
+        setItemOptions(
+          (itemsResponse.data || []).map((item) => {
+            const features = Object.entries(item.itemsOnFeatures || {})
+              .filter(([key, value]) => value)
+              .map(([key, value]) => ` - ${value}`)
+              .join("");
+
+            const label = `${item.item_name}${features}`;
+
+            return {
+              value: item.item_id,
+              label: label,
+            };
+          })
+        );
         setItems(itemsResponse.data);
       } catch (error) {
         console.error("Error fetching items:", error);
@@ -457,6 +476,7 @@ const Issue = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
+
                     {itemFields.map((items, index) => (
                       <div key={index} className="flex gap-5  items-center">
                         <Select
@@ -480,14 +500,16 @@ const Issue = () => {
                             }),
                             menuList: (provided) => ({
                               ...provided,
-                              maxHeight: 150, // Adjust this as needed
-                              overflowY: "auto", // This ensures only the menu list scrolls
+                              maxHeight: 150,
+                              overflowY: "auto",
                             }),
                           }}
                           menuPortalTarget={document.body}
                           className="w-[190px]"
                           classNamePrefix="react-select"
                         />
+
+
                         <input
                           className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                           type="number"

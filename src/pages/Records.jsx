@@ -13,6 +13,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import {ADToBS}  from "bikram-sambat-js";
 import "nepali-datepicker-reactjs/dist/index.css";
 import pending from "../assets/pending.png";
 import records from "../assets/records.png";
@@ -42,7 +43,9 @@ const Records = () => {
     billType: "",
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
+
+
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
   const [error, setError] = useState("");
@@ -57,6 +60,8 @@ const Records = () => {
   // const [vatData, setVatData] = useState([]);
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
+
+  console.log("date: ",date)
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -144,7 +149,6 @@ const Records = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
 
-      console.log("File saved successfully!");
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -217,7 +221,7 @@ const Records = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(vendorsResponse);
+
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -304,13 +308,14 @@ const Records = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    
     try {
       const billData = {
         ...bill,
         selectedOptions: selectedOption,
+        bill_date: bill.bill_date || date
       };
-
-      console.log(billData);
 
       const response = await axios.post(
         "http://localhost:8898/api/addBill",
@@ -321,7 +326,6 @@ const Records = () => {
           },
         }
       );
-      console.log(response.data.result);
       setBills((prevBills) => [...prevBills, response.data.result.resultData]);
       toast.success(`${bill.bill_no} added successfully!`);
       closeAddBillForm();

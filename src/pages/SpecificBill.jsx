@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
-
 import "../styles/specificbill.css";
 import Topbar from "../components/Topbar";
 import Sidebar from "../components/Sidebar";
@@ -9,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import { ADToBS } from "bikram-sambat-js";
 import "nepali-datepicker-reactjs/dist/index.css";
 import Select from "react-select";
 import Vat from "../components/Vat";
@@ -40,7 +40,7 @@ const SpecificBill = () => {
     items: [],
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
   const [declineFormVisibility, setDeclineFormVisibility] = useState(false);
@@ -88,7 +88,7 @@ const SpecificBill = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
-  console.log(token)
+  console.log(token);
   // please dont remove this
 
   const role = userInfo.user_role;
@@ -113,8 +113,9 @@ const SpecificBill = () => {
   const handleApprove = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/approveBill/${bill_id}`,
-        {},{
+
+        `http://localhost:8898/api/approveBill/${bill_id}, {}, `,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -122,13 +123,10 @@ const SpecificBill = () => {
 
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(billDetails);
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
@@ -249,8 +247,8 @@ const SpecificBill = () => {
 
         setSelectedOption(
           singleBillResponse.data?.bill.bill_type.toLowerCase() +
-          " " +
-          singleBillResponse.data.bill.BillItems[0].TDS
+            " " +
+            singleBillResponse.data.bill.BillItems[0].TDS
         );
 
         setItems(itemsResponse.data);
@@ -295,11 +293,11 @@ const SpecificBill = () => {
 
   const openDeclineForm = () => {
     setDeclineFormVisibility(true);
-  }
+  };
 
   const closeDeclineForm = () => {
     setDeclineFormVisibility(false);
-  }
+  };
 
   const handleChange = (e) => {
     setEditedBill({ ...editedBill, [e.target.name]: e.target.value });
@@ -328,10 +326,12 @@ const SpecificBill = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const dataToSubmit = {
         ...editedBill,
         selectedOption: selectedOption,
+        bill_date: bill.bill_date || date,
       };
 
       // Handle NOBILL case specifically
@@ -347,8 +347,6 @@ const SpecificBill = () => {
           },
         }
       );
-
-      console.log(response.data.result);
 
       if (response.status === 200) {
         // Update the bill state with the response data
@@ -426,7 +424,7 @@ const SpecificBill = () => {
 
   // nepali date ends here
 
-  const handleDecline = () => { };
+  const handleDecline = () => {};
   return (
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
@@ -529,9 +527,15 @@ const SpecificBill = () => {
                   Approved Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.isApproved ? (
-                      <span className="text-green-600  bg-yellow-100 p-2 px-4 rounded-md">Approved</span>
+                      <span className="text-green-600  bg-yellow-100 p-2 px-4 rounded-md">
+                        Approved
+                      </span>
                     ) : (
-                      <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">Pending</span> || "--"
+                      (
+                        <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">
+                          Pending
+                        </span>
+                      ) || "--"
                     )}
                   </span>
                 </p>
@@ -565,9 +569,15 @@ const SpecificBill = () => {
                   Payment Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.left_amount > 0 ? (
-                      <span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
+                      <span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">
+                        Pending
+                      </span>
                     ) : (
-                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">Complete </span> || "--"
+                      (
+                        <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">
+                          Complete{" "}
+                        </span>
+                      ) || "--"
                     )}
                   </span>
                 </p>
@@ -603,8 +613,8 @@ const SpecificBill = () => {
             </thead>
             <tbody>
               {!loading &&
-                billDetails?.bill?.BillItems &&
-                billDetails?.bill?.BillItems.length > 0 ? (
+              billDetails?.bill?.BillItems &&
+              billDetails?.bill?.BillItems.length > 0 ? (
                 billDetails?.bill?.BillItems.map((billItem, index) => (
                   <tr key={index}>
                     <td className="p-2 text-center border-b border-neutral-200">
@@ -652,7 +662,9 @@ const SpecificBill = () => {
             className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded "
           >
             <div className="flex flex-col gap-4">
-              <p className="font-semibold flex justify-between items-center text-xl ">Send Remarks
+              <p className="font-semibold flex justify-between items-center text-xl ">
+                Send Remarks
+
                 <img
                   className="cursor-pointer h-4 w-4 "
                   src={close}
@@ -702,11 +714,12 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -716,12 +729,13 @@ const SpecificBill = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -733,10 +747,11 @@ const SpecificBill = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "NOBILL" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "NOBILL"
-                        ? "bg-blue-200 text-black"
-                        : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "NOBILL"
+                          ? "bg-blue-200 text-black"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -831,9 +846,9 @@ const SpecificBill = () => {
                         value={
                           editedBill.vendor_name
                             ? {
-                              value: editedBill.vendor_name,
-                              label: editedBill.vendor_name,
-                            }
+                                value: editedBill.vendor_name,
+                                label: editedBill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"

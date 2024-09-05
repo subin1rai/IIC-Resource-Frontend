@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import close from "../assets/close.svg";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
+import close from "../assets/close.svg";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import axios from "axios";
@@ -40,6 +40,7 @@ const SpecificRequest = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [requestDetails, setRequestDetails] = useState({});
+  const [declineFormVisibility, setDeclineFormVisibility] = useState(false);
   const [items, setItems] = useState([]);
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
@@ -54,7 +55,7 @@ const SpecificRequest = () => {
     return date.toISOString().split("T")[0];
   };
 
-  console.log(itemFields);
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -100,7 +101,7 @@ const SpecificRequest = () => {
     remarks: "",
   });
 
-  console.log(finalData);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -135,11 +136,10 @@ const SpecificRequest = () => {
           },
         }));
       } else {
-        toast.error("Failed to approve request");
+        console.error("error status 200")
       }
     } catch (error) {
       console.error("Error approving request:", error);
-      toast.error("An error occurred while approving the request");
     } finally {
       setLoading(false);
       setAcceptFormVisibility(false);
@@ -169,13 +169,21 @@ const SpecificRequest = () => {
     setRemarks(requestDetails?.request?.remarks || "");
   };
 
+  const openDeclineForm = () => {
+    setDeclineFormVisibility(true);
+  }
+
+  const closeDeclineForm = () => {
+    setDeclineFormVisibility(false);
+  }
+
+
   const closeAcceptForm = () => {
     setAcceptFormVisibility(false);
   };
 
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
-    console.log(value, field);
     newFields[index][field] = value;
 
     setItemFields(newFields);
@@ -190,8 +198,6 @@ const SpecificRequest = () => {
   const handleChange = (e) => {
     setFinalData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  console.log(remarks);
   const removeItemField = (index) => {
     if (itemFields.length > 1) {
       const newFields = itemFields.filter((_, i) => i !== index);
@@ -290,7 +296,6 @@ const SpecificRequest = () => {
           status: "Delivered",
         },
       }));
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -332,7 +337,8 @@ const SpecificRequest = () => {
                     </button>
                     <button
                       className="bg-red-500 px-5 rounded text-white font-medium py-2"
-                      onClick={() => handleDecline(requestDetails?.request?.id)}
+                      // onClick={() => handleDecline(requestDetails?.request?.id)}
+                      onClick={openDeclineForm}
                     >
                       Decline
                     </button>
@@ -457,6 +463,46 @@ const SpecificRequest = () => {
               )}
             </tbody>
           </table>
+          {!loading && declineFormVisibility && (
+        <>
+        <div className="h-screen w-screen bg-overlay absolute top-0 right-0 "></div>
+          <form
+            onSubmit={handleDecline}
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded "
+          >
+             <div className="flex flex-col gap-4">
+                <p className="font-semibold flex justify-between items-center text-xl ">Send Remarks
+                <img
+              className="cursor-pointer h-4 w-4 "
+              src={close}
+              alt="close button"
+              onClick={closeDeclineForm}
+            />
+            </p>
+                <div className="flex flex-col"></div>
+
+                <div className="flex gap-3">
+                <label className="font-medium text-md">Remarks:</label>
+                <textarea
+                  rows={5}
+                  cols={40}
+                  name="remarks"
+                  placeholder="Enter your remarks here..."
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
+                  value={requestDetails?.request?.remarks}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                  Done
+                </button>
+              </div>
+
+                </div>
+          </form>
+        </>
+      )}
           {!loading && acceptFormVisibility && (
             <form
               onSubmit={handleSubmit}
@@ -549,7 +595,7 @@ const SpecificRequest = () => {
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-2 rounded border-border px-3 py-2 w-[14vw]"
+                          className="border-2 rounded border-border px-3 py-2 w-[14vw] focus:outline-slate-400"
                           type="number"
                           placeholder="Enter a quantity"
                           name={`quantity-${index}`}
@@ -592,7 +638,7 @@ const SpecificRequest = () => {
                   <textarea
                     name="remarks"
                     placeholder="Enter remarks"
-                    className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
+                    className="border-stone-200 border-2 rounded py-2 px-5 w-[33vw] h-32 resize-none focus:outline-slate-400"
                     onChange={handleChange}
                   />
                 </div>

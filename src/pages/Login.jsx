@@ -29,10 +29,6 @@ const Login = () => {
         user,
         { withCredentials: true }
       );
-      console.log("Login response:", response);
-
-      console.log(response.data);
-
       dispatch(setUserInfo(response.data.userData));
 
       localStorage.setItem("userInfo", JSON.stringify(response.data.userData));
@@ -50,7 +46,7 @@ const Login = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.log("Login error:", error);
+
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
       } else {

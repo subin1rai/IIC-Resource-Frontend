@@ -225,12 +225,10 @@ const SpecificVendor = () => {
           },
         }
       );
-      console.log(response);
       setVendor({ ...vendor, ...response.data });
       closeVendorDetailsForm();
       Swal.fire("Success", "Vendor updated successfully", "success");
     } catch (error) {
-      console.log(error);
       setError("Failed to update vendor. Please try again.");
     }
   };
@@ -248,7 +246,6 @@ const SpecificVendor = () => {
         }
       );
     } catch (error) {
-      console.log(error);
       Swal.fire(
         "Error",
         "Failed to blacklist the vendor. Please try again.",

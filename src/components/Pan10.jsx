@@ -20,7 +20,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
           }
         );
         setItems(itemsResponse.data);
-        console.log("Fetched items:", itemsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -78,7 +77,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
 
       if (JSON.stringify(existingItems) !== JSON.stringify(rows)) {
         setRows(existingItems);
-        console.log("Initialized rows with existing items:", existingItems);
         updateParentData(existingItems);
       }
     } else if (rows.length === 0) {
@@ -98,7 +96,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
         selectedOption
       );
       setRows([initialRow]);
-      console.log("Initialized rows with default item:", [initialRow]);
       updateParentData([initialRow]);
     }
   }, [billDetails, selectedOption]);
@@ -108,7 +105,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
     updatedRows[index].item_id = option.value;
     updatedRows[index].item_name = option.label;
     setRows(updatedRows);
-    console.log("Updated rows after item selection:", updatedRows);
     updateParentData(updatedRows);
   };
 
@@ -130,7 +126,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
     );
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
-    console.log("Added new row:", updatedRows);
     updateParentData(updatedRows);
   };
 
@@ -143,7 +138,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
     }
 
     setRows(newRows);
-    console.log("Updated row:", newRows);
     updateParentData(newRows);
   };
 
@@ -161,8 +155,6 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
         amountWithPan: row.amountWithPan,
         actualAmt: row.actualAmt,
       }));
-
-    console.log("Sending to parent:", newItemsData);
     onDataUpdate(newItemsData);
   };
 
