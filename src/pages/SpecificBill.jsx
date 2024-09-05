@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
+
 import "../styles/specificbill.css";
 import Topbar from "../components/Topbar";
 import Sidebar from "../components/Sidebar";
@@ -43,6 +44,7 @@ const SpecificBill = () => {
   const [date, setDate] = useState(ADToBS(new Date().toDateString()));
 
   const [addFormVisibility, setEditBillDetailsFormVisibility] = useState(false);
+  const [declineFormVisibility, setDeclineFormVisibility] = useState(false);
   const [billDetails, setBillDetails] = useState({});
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
@@ -115,8 +117,6 @@ const SpecificBill = () => {
         `http://localhost:8898/api/approveBill/${bill_id}`
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -286,6 +286,14 @@ const SpecificBill = () => {
     setEditBillDetailsFormVisibility(false);
   };
 
+  const openDeclineForm = () => {
+    setDeclineFormVisibility(true);
+  }
+
+  const closeDeclineForm = () => {
+    setDeclineFormVisibility(false);
+  }
+
   const handleChange = (e) => {
     setEditedBill({ ...editedBill, [e.target.name]: e.target.value });
   };
@@ -333,8 +341,6 @@ const SpecificBill = () => {
           },
         }
       );
-
-      console.log(response.data.result);
 
       if (response.status === 200) {
         // Update the bill state with the response data
@@ -453,7 +459,7 @@ const SpecificBill = () => {
               ) : (
                 <button
                   className="bg-red-500 px-6 rounded text-white font-medium py-3"
-                  onClick={handleDecline}
+                  onClick={openDeclineForm}
                 >
                   Decline Bill
                 </button>
@@ -515,9 +521,9 @@ const SpecificBill = () => {
                   Approved Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.isApproved ? (
-                      <span className="text-green-500">Approved</span>
+                      <span className="text-green-600  bg-yellow-100 p-2 px-4 rounded-md">Approved</span>
                     ) : (
-                      <span className="text-yellow-500">Pending</span> || "--"
+                      <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">Pending</span> || "--"
                     )}
                   </span>
                 </p>
@@ -551,9 +557,9 @@ const SpecificBill = () => {
                   Payment Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.left_amount > 0 ? (
-                      <span className="text-yellow-500">Pending</span>
+                      <span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
                     ) : (
-                      <span className="text-green-500">Complete </span> || "--"
+                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">Complete </span> || "--"
                     )}
                   </span>
                 </p>
@@ -630,6 +636,46 @@ const SpecificBill = () => {
           </table>
         </div>
       </div>
+      {!loading && declineFormVisibility && (
+        <>
+        <div className="h-screen w-screen bg-overlay absolute "></div>
+          <form
+            onSubmit={handleDecline}
+            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded "
+          >
+             <div className="flex flex-col gap-4">
+                <p className="font-semibold flex justify-between items-center text-xl ">Send Remarks
+                <img
+              className="cursor-pointer h-4 w-4 "
+              src={close}
+              alt="close button"
+              onClick={closeDeclineForm}
+            />
+            </p>
+                <div className="flex flex-col"></div>
+
+                <div className="flex gap-3">
+                <label className="font-medium text-md">Remarks:</label>
+                <textarea
+                  rows={5}
+                  cols={40}
+                  name="remarks"
+                  placeholder="Enter your remarks here..."
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
+                  value={billDetails?.bill?.remark}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                  Done
+                </button>
+              </div>
+
+                </div>
+          </form>
+        </>
+      )}
 
       {!loading && addFormVisibility && (
         <>

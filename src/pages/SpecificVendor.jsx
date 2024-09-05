@@ -118,7 +118,7 @@ const SpecificVendor = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
-  const role = userInfo.role;
+  const role = userInfo.user_role;
 
   const [loading, setLoading] = useState(false);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
@@ -225,12 +225,10 @@ const SpecificVendor = () => {
           },
         }
       );
-      console.log(response);
       setVendor({ ...vendor, ...response.data });
       closeVendorDetailsForm();
       Swal.fire("Success", "Vendor updated successfully", "success");
     } catch (error) {
-      console.log(error);
       setError("Failed to update vendor. Please try again.");
     }
   };
@@ -248,7 +246,6 @@ const SpecificVendor = () => {
         }
       );
     } catch (error) {
-      console.log(error);
       Swal.fire(
         "Error",
         "Failed to blacklist the vendor. Please try again.",
@@ -375,12 +372,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.bills && vendor.bills.length > 0
                       ? vendor.bills
-                          .reduce(
-                            (sum, bill) =>
-                              sum + (Number(bill.paid_amount) || 0),
-                            0
-                          )
-                          .toFixed(2)
+                        .reduce(
+                          (sum, bill) =>
+                            sum + (Number(bill.paid_amount) || 0),
+                          0
+                        )
+                        .toFixed(2)
                       : "--"}
                   </span>
                 </p>
@@ -415,7 +412,9 @@ const SpecificVendor = () => {
                 <p className="font-medium">
                   Payment Status:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {vendor?.pending_payment > 0 ? "Pending" : "Clear"}
+                    {vendor?.pending_payment > 0 ? (<span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
+                    ) : (
+                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">CLear</span> || "--")}
                   </span>
                 </p>
               </div>

@@ -76,8 +76,7 @@ const Issue = () => {
           },
         }
       );
-      console.log("Sending data:", issueData);
-      console.log(issues);
+  
       const newIssue = response.data.issues;
       const formattedNewIssue = {
         issue_id: newIssue.id,
@@ -100,7 +99,7 @@ const Issue = () => {
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
-      toast.error("Failed to add issue!");
+
     }
   };
 

@@ -150,7 +150,7 @@ const Category = () => {
           },
         }
       );
-      console.log(response.data);
+
       setCategory((prevCategory) =>
         prevCategory.filter((cat) => cat.category_id !== categoryId)
       );
@@ -171,12 +171,12 @@ const Category = () => {
           },
         }
       );
-      console.log(response);
+
       setCategory((prev) => [...prev, response.data.addData]);
       toast.success(`${newCategory.category_name} added successfully!`);
       setVisibleForm(false);
     } catch (error) {
-      console.log(error);
+
       setError(error.response.data.error);
     }
   };
@@ -194,7 +194,7 @@ const Category = () => {
         }
       );
 
-      console.log(response);
+
 
       setItemCategory((prev) => [...prev, response.data.addData]);
 
@@ -203,7 +203,7 @@ const Category = () => {
       );
       setVisibleForm(false);
     } catch (error) {
-      console.log(error);
+
       setError(error.response.data.error);
     }
   };
@@ -229,7 +229,7 @@ const Category = () => {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
       } else {
-        console.log(error);
+     
         setError("Failed to add the new feature!");
       }
     }
@@ -252,13 +252,12 @@ const Category = () => {
   const [editId, setEditId] = useState();
 
   const handleEditSubmit = async (e) => {
-    console.log(editId);
     try {
       const response = await axios.put(
         `http://localhost:8898/api/editCategory/${editId}`,
         editedValue
       );
-      console.log(response);
+
     } catch (error) {
       console.log(error);
     }
@@ -365,14 +364,17 @@ const Category = () => {
         >
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold text-lg">Add Category</p>
-            <img
-              className="rounded-md cursor-pointer h-4 w-4"
-              src={close}
-              alt=""
-              onClick={closeCategoryForm}
-            />
+            <button className="p-3">
+
+              <img
+                className="rounded-md cursor-pointer h-4 w-4"
+                src={close}
+                alt=""
+                onClick={closeCategoryForm}
+              />
+            </button>
           </div>
-          <div className="flex gap-10 justify-between items-center">
+          <div className="flex gap-5 justify-between items-center">
             <label className="w-44 p-4 font-medium" htmlFor="category_name">
               Name
             </label>
@@ -405,14 +407,16 @@ const Category = () => {
         >
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold text-lg">Item Category</p>
-            <img
-              className="rounded-md cursor-pointer h-4 w-4"
-              src={close}
-              alt=""
-              onClick={closeCategoryForm}
-            />
+            <button className="p-3">
+              <img
+                className="rounded-md cursor-pointer h-4 w-4"
+                src={close}
+                alt=""
+                onClick={closeCategoryForm}
+              />
+            </button>
           </div>
-          <div className="flex gap-10 justify-between items-center">
+          <div className="flex gap-5 justify-between items-center">
             <label
               className="w-44 p-4 font-medium"
               htmlFor="item_category_name"
@@ -448,12 +452,14 @@ const Category = () => {
         >
           <div className="flex justify-between items-center px-4 py-3">
             <p className=" font-semibold text-lg">Feature</p>
-            <img
-              className="rounded-md cursor-pointer h-4 w-4"
-              src={close}
-              alt=""
-              onClick={closeCategoryForm}
-            />
+            <button className="p-3">
+              <img
+                className="rounded-md cursor-pointer h-4 w-4"
+                src={close}
+                alt=""
+                onClick={closeCategoryForm}
+              />
+            </button>
           </div>
           <div className="flex gap-16 justify-between items-center px-5">
             <label className="font-medium" htmlFor="feature_name">
@@ -481,6 +487,8 @@ const Category = () => {
         </form>
       )}
 
+
+      {/* edit form  */}
       {editFormVisiblity && (
         <div className="w-screen h-screen bg-overlay absolute left-0 top-0 flex justify-center items-center">
           <form
@@ -490,12 +498,14 @@ const Category = () => {
           >
             <div className="flex justify-between items-center px-4 py-2">
               <p className="font-semibold text-lg">Edit Category</p>
-              <img
-                src={close}
-                alt=""
-                onClick={() => setEditFormVIsiblity(false)}
-                className="w-4 h-4 cursor-pointer"
-              />
+              <button className="p-3">
+                <img
+                  src={close}
+                  alt=""
+                  onClick={() => setEditFormVIsiblity(false)}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              </button>
             </div>
             <div className="flex justify-between items-center gap-12">
               <label className=" p-4 font-medium" htmlFor="name">

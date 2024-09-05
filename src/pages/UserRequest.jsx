@@ -26,7 +26,7 @@ const UserRequest = () => {
   const token = userInfo.token;
 
   const userDepartment = userInfo.department;
-  console.log(request);
+
 
   useEffect(() => {
     const getDepartmentUsers = async () => {
@@ -40,10 +40,6 @@ const UserRequest = () => {
         );
         setDepartmentMembers(filteredUsers || []);
       } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to fetch department users. Please try again."
-        );
         console.error(error);
       }
     };
@@ -70,10 +66,6 @@ const UserRequest = () => {
         });
         setAllItems(response.data || []);
       } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to fetch items. Please try again."
-        );
         console.error(error);
         setAllItems([]);
       }
@@ -220,8 +212,9 @@ const UserRequest = () => {
                   <label>Quantity:</label>
                 </div>
               </div>
+              <div className="overflow-auto max-h-52">
               {items.map((item, index) => (
-                <div key={index} className="flex p-3 gap-3">
+                <div key={index} className="flex p-3 gap-3  ">
                   <Select
                     options={allItems.map((item) => {
                       const features = Object.entries(
@@ -305,6 +298,7 @@ const UserRequest = () => {
                   )}
                 </div>
               ))}
+              </div>
               <div className="flex flex-col p-3 gap-3">
                 <label className="font-semibold text-md">Requesting for:</label>
                 <Select

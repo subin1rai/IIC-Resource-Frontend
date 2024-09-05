@@ -217,7 +217,7 @@ export default function ReqTable({ requests }) {
                                       ? "#fff3cd"
                                       : value === "Delivered"
                                       ? "#d4edda"
-                                      : value === "Holding"
+                                      : value === "Approved"
                                       ? "#d1ecf1"
                                       : "#f8d7da",
                                   color:
@@ -225,7 +225,7 @@ export default function ReqTable({ requests }) {
                                       ? "#856404"
                                       : value === "Delivered"
                                       ? "#155724"
-                                      : value === "Holding"
+                                      : value === "Approved"
                                       ? "#0c5460"
                                       : "#721c24",
                                   fontWeight: "normal",

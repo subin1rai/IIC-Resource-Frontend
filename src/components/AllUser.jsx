@@ -187,10 +187,8 @@ const DropdownMenu = ({
       ref={dropdownRef}
       className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black text-sm"
       style={{
-        top: `${buttonRef.current?.getBoundingClientRect().bottom + window.scrollY
-          }px`,
-        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
-          }px`,
+        bottom: `${window.innerHeight - (buttonRef.current?.getBoundingClientRect().top + window.scrollY)}px`,
+        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120}px`,
       }}
     >
       {user.isActive ? (
