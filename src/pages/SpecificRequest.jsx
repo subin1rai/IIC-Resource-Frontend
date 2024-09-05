@@ -595,7 +595,7 @@ const SpecificRequest = () => {
                           classNamePrefix="react-select"
                         />
                         <input
-                          className="border-2 rounded border-border px-3 py-2 w-[14vw]"
+                          className="border-2 rounded border-border px-3 py-2 w-[14vw] focus:outline-slate-400"
                           type="number"
                           placeholder="Enter a quantity"
                           name={`quantity-${index}`}
@@ -638,7 +638,7 @@ const SpecificRequest = () => {
                   <textarea
                     name="remarks"
                     placeholder="Enter remarks"
-                    className="border-stone-200 border-2 rounded py-2 px-5 w-[28.2vw] h-32 resize-none"
+                    className="border-stone-200 border-2 rounded py-2 px-5 w-[33vw] h-32 resize-none focus:outline-slate-400"
                     onChange={handleChange}
                   />
                 </div>

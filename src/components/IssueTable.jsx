@@ -162,7 +162,21 @@ export default function InventoryTable({ issues }) {
           value: item.item_name,
           label: item.item_name,
         }));
-        setItemOptions(options);
+        setItemOptions(
+          (itemsResponse.data || []).map((item) => {
+            const features = Object.entries(item.itemsOnFeatures || {})
+              .filter(([key, value]) => value)
+              .map(([key, value]) => ` - ${value}`)
+              .join("");
+
+            const label = `${item.item_name}${features}`;
+
+            return {
+              value: item.item_id,
+              label: label,
+            };
+          })
+        );
       } catch (error) {
         console.error("Error fetching items:", error);
         setItemOptions([]);
