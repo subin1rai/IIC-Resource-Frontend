@@ -57,8 +57,8 @@ const Issue = () => {
     
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
-        quantity: field.quantity,
+        item_id: field.item_id,
+        quantity: field.quantity
       }));
 
       const issueData = {
@@ -85,7 +85,7 @@ const Issue = () => {
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_id: formattedItems.map((item) => item.item_id).join(", "),
         item_quantity: formattedItems.reduce(
           (sum, item) => sum + Number(item.quantity),
           0
@@ -475,37 +475,35 @@ const Issue = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
-                    {itemFields.map((items, index) => (
-                      <div key={index} className="flex gap-5  items-center">
-                        <Select
-                          options={itemOptions}
-                          onChange={(selectedOption) =>
-                            handleItemChange(
-                              index,
-                              "item",
-                              selectedOption.value
-                            )
-                          }
-                          value={itemOptions.find(
-                            (option) => option.value === items.item
-                          )}
-                          placeholder="Select Item"
-                          styles={{
-                            ...customStyles,
-                            menuPortal: (provided) => ({
-                              ...provided,
-                              zIndex: 9999,
-                            }),
-                            menuList: (provided) => ({
-                              ...provided,
-                              maxHeight: 150, // Adjust this as needed
-                              overflowY: "auto", // This ensures only the menu list scrolls
-                            }),
-                          }}
-                          menuPortalTarget={document.body}
-                          className="w-[190px]"
-                          classNamePrefix="react-select"
-                        />
+                  {itemFields.map((items, index) => (
+    <div key={index} className="flex gap-5 items-center">
+      <Select
+        options={itemOptions}
+        onChange={(selectedOption) =>
+          handleItemChange(
+            index,
+            "item", // Keep track of item_id in state
+            selectedOption.value
+          )
+        }
+        value={itemOptions.find((option) => option.value === items.item)}
+        placeholder="Select Item"
+        styles={{
+          ...customStyles,
+          menuPortal: (provided) => ({
+            ...provided,
+            zIndex: 9999,
+          }),
+          menuList: (provided) => ({
+            ...provided,
+            maxHeight: 150, // Adjust this as needed
+            overflowY: "auto", // This ensures only the menu list scrolls
+          }),
+        }}
+        menuPortalTarget={document.body}
+        className="w-[190px]"
+        classNamePrefix="react-select"
+      />
                         <input
                           className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                           type="number"
