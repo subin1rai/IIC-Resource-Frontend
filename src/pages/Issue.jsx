@@ -54,11 +54,11 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
       const formattedItems = itemFields.map((field) => ({
         item_id: field.item_id,
-        quantity: field.quantity
+        quantity: field.quantity,
       }));
 
       const issueData = {
@@ -77,9 +77,7 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-        
       );
-
 
       const newIssue = response.data.issues;
       const formattedNewIssue = {
@@ -100,7 +98,7 @@ const Issue = () => {
       setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
       toast.success(`Items issued to ${issue.issued_to} successfully `);
-      setItemFields([{ item: "", quantity: "" }]);
+      setItemFields([{ item_id: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
     }
@@ -110,17 +108,19 @@ const Issue = () => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
     setItemFields(newFields);
-
-    console.log(itemFields);
+    console.log(newFields);
+    setIssue((prev) => ({ ...prev, items: newFields }));
+    console.log(issue);
   };
 
   const handleChange = (e) => {
     setIssue((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(issue);
   };
 
   const addItemField = () => {
     if (itemFields.length < itemOptions.length) {
-      setItemFields([...itemFields, { item: "", quantity: "" }]);
+      setItemFields([...itemFields, { item_id: "", quantity: "" }]);
     }
   };
 
@@ -195,8 +195,6 @@ const Issue = () => {
     };
     fetchIssues();
   }, [token]);
-
-  console.log(issues);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -476,7 +474,6 @@ const Issue = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
-
                     {itemFields.map((items, index) => (
                       <div key={index} className="flex gap-5  items-center">
                         <Select
@@ -484,7 +481,7 @@ const Issue = () => {
                           onChange={(selectedOption) =>
                             handleItemChange(
                               index,
-                              "item",
+                              "item_id",
                               selectedOption.value
                             )
                           }
@@ -508,7 +505,6 @@ const Issue = () => {
                           className="w-[190px]"
                           classNamePrefix="react-select"
                         />
-
 
                         <input
                           className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"

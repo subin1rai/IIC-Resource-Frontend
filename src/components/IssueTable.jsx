@@ -6,7 +6,7 @@ import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
 import TableCell from "@mui/material/TableCell";
 import add from "../assets/addIcon.svg";
-import close from "../assets/close.svg"
+import close from "../assets/close.svg";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -63,8 +63,6 @@ export default function InventoryTable({ issues }) {
   const [purpose, setPurpose] = useState("");
   const [editIssueVisibility, setEditIssueVisibility] = useState(false);
   const [orderBy, setOrderBy] = useState("issue_id");
-
-  console.log(issues);
 
   const [issue, setIssue] = useState({
     issue_date: "",
@@ -193,14 +191,13 @@ export default function InventoryTable({ issues }) {
         }
       );
 
-      console.log(response);
-      // if (response.status === 200) {
-      //   setIssue({ ...issue, ...response.data });
-      //   toast.success("Issue updated successfully");
-      //   setEditIssueVisibility(false);
-      // } else {
-      //   toast.error("Failed to update issue");
-      // }
+      if (response.status === 200) {
+        setIssue({ ...issue, ...response.data });
+        toast.success("Issue updated successfully");
+        setEditIssueVisibility(false);
+      } else {
+        toast.error("Failed to update issue");
+      }
     } catch (error) {
       console.log(error);
     }
