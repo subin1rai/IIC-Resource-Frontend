@@ -113,12 +113,14 @@ const SpecificBill = () => {
   const handleApprove = async () => {
     try {
       const response = await axios.put(
+
         `http://localhost:8898/api/approveBill/${bill_id}, {}, `,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
+
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
     } catch (error) {
@@ -662,6 +664,7 @@ const SpecificBill = () => {
             <div className="flex flex-col gap-4">
               <p className="font-semibold flex justify-between items-center text-xl ">
                 Send Remarks
+
                 <img
                   className="cursor-pointer h-4 w-4 "
                   src={close}
@@ -688,6 +691,7 @@ const SpecificBill = () => {
                   Done
                 </button>
               </div>
+
             </div>
           </form>
         </>

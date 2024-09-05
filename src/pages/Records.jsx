@@ -34,15 +34,17 @@ const Records = () => {
   });
 
   const [filterOptions, setFilterOptions] = useState({
-    vendor_name: "",
+    vendor_id: "",
     dateFrom: "",
     dateTo: "",
     item_id: "",
     priceSort: "",
     billStatus: "",
+    billType: "",
   });
 
   const [date, setDate] = useState(ADToBS(new Date().toDateString()));
+
 
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
@@ -239,42 +241,31 @@ const Records = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      width: "250px",
-      borderRadius: "4px",
-      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
-      borderColor: "#d1d5db",
-      boxShadow: "none",
-      minHeight: "41px",
-      color: "black",
+      border: state.isFocused ? "2px solid #94a3b8" : "2px solid #D1D5DB", // Matches border-neutral-300
+      borderRadius: "0.375rem", 
+      padding: "0.25rem 0.5rem", 
+      width: "100%", 
+      boxShadow: "none", 
       "&:hover": {
-        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #e5e5e5",
+        border: state.isFocused ? "2px solid #94a3b8" : "2px solid #D1D5DB",
       },
     }),
     menu: (provided) => ({
       ...provided,
-      borderRadius: "4px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-    }),
-    input: (provided) => ({
-      ...provided,
-      width: "45px",
-      margin: "0px",
-      color: "black",
-      outline: "slate",
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "#757575",
+      width: "100%", 
     }),
     container: (provided) => ({
       ...provided,
-      width: "100%",
-      color: "black",
+      width: "250px",
     }),
-    valueContainer: (provided) => ({
+    menuPortal: (provided) => ({
       ...provided,
-      padding: "2px 8px",
-      color: "black",
+      zIndex: 9999,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      maxHeight: 150, // Adjust this as needed
+      overflowY: "auto", // Ensures only the menu list scrolls
     }),
   };
 
@@ -305,7 +296,6 @@ const Records = () => {
     });
   };
 
-  console.log(bill);
 
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -346,6 +336,7 @@ const Records = () => {
       );
     }
   };
+  console.log(bills)
 
   useEffect(() => {
     const filterBills = () => {
@@ -361,6 +352,63 @@ const Records = () => {
     };
     filterBills();
   }, [searchBill, bills]);
+
+  const handleFilterDateChange = (name) => (date) => {
+    setFilterOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
+
+  const applyFilters = () => {
+    let filteredResults = [...bills];
+
+    if (filterOptions.vendor_id) {
+      filteredResults = filteredResults.filter(bill => bill.vendor_ID === filterOptions.vendor_id);
+    }
+
+    console.log(filterOptions.item_id)
+
+    if (filterOptions.item_id) {
+      filteredResults = filteredResults.filter(bill =>
+        bill.BillItems.some(item => item.item_id === filterOptions.item_id)
+      );
+    }
+
+
+    if (filterOptions.dateFrom && filterOptions.dateTo) {
+      filteredResults = filteredResults.filter((bill) => {
+        const billDate = new Date(bill.bill_date);
+        return (
+          billDate >= new Date(filterOptions.dateFrom) &&
+          billDate <= new Date(filterOptions.dateTo)
+        );
+      });
+    }
+
+    if (filterOptions.priceSort) {
+      filteredResults.sort((a, b) => {
+        if (filterOptions.priceSort === "low-to-high") {
+          return b.actual_Amount - a.actual_Amount;
+        } else if (filterOptions.priceSort === "high-to-low") {
+          return a.actual_Amount - b.actual_Amount;
+        }
+        return 0;
+      });
+    }
+
+    if (filterOptions.billStatus) {
+      filteredResults = filteredResults.filter(
+        (bill) => (bill.isApproved > 0) === (parseInt(filterOptions.billStatus) === 0)
+      );
+    }
+
+    if (filterOptions.billType) {
+      filteredResults = filteredResults.filter(bill => bill.bill_type === filterOptions.billType);
+    }
+
+    setFilteredBills(filteredResults);
+    setFilterFormVisibility(false);
+
+  }
 
   return (
     <div className="records">
@@ -441,12 +489,11 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "vat 0" ||
+                      className={` w-36 ${selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent px-4 py-1`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -456,13 +503,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${
-                        selectedOption === "pan 0" ||
+                      className={` w-36 ${selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                          ? "bg-blue-200"
-                          : "border-neutral-300"
-                      } focus:outline-none focus:border-transparent py-1 px-4`}
+                        ? "bg-blue-200"
+                        : "border-neutral-300"
+                        } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -474,11 +520,10 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
-                        selectedOption === "noBill"
-                          ? "bg-blue-200 text-black"
-                          : "border-neutral-300"
-                      } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
+                        ? "bg-blue-200 text-black"
+                        : "border-neutral-300"
+                        } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -570,24 +615,13 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                                value: bill?.vendors?.vendor_name,
-                                label: bill.vendor_name,
-                              }
+                              value: bill?.vendors?.vendor_name,
+                              label: bill.vendor_name,
+                            }
                             : null
                         }
                         placeholder="Select Vendor"
-                        styles={{
-                          ...customStyles,
-                          menuPortal: (provided) => ({
-                            ...provided,
-                            zIndex: 9999,
-                          }),
-                          menuList: (provided) => ({
-                            ...provided,
-                            maxHeight: 150, // Adjust this as needed
-                            overflowY: "auto", // This ensures only the menu list scrolls
-                          }),
-                        }}
+                        styles={customStyles}
                         menuPortalTarget={document.body}
                       />
                     </div>
@@ -642,7 +676,9 @@ const Records = () => {
 
       {/* filter form */}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4">
+        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="flex justify-between">
             <h2 className="font-semibold text-xl"> Filtering Option</h2>
             <button type="button" className="p-2" onClick={closeFilterForm}>
@@ -667,16 +703,16 @@ const Records = () => {
                       setFilterOptions((prev) => ({
                         ...prev,
                         vendor_name: option.value,
-                        vat_number: selectedVendor.vat_number,
+                        vendor_id: selectedVendor.vendor_id,
                       }));
                     }
                   }}
                   value={
                     filterOptions.vendor_name
                       ? {
-                          value: filterOptions.vendor_name,
-                          label: filterOptions.vendor_name,
-                        }
+                        value: filterOptions.vendor_name,
+                        label: filterOptions.vendor_name,
+                      }
                       : null
                   }
                   placeholder="Select Vendor"
@@ -715,26 +751,25 @@ const Records = () => {
                   value={
                     filterOptions.item_id
                       ? {
-                          value: filterOptions.item_id,
-                          label: items.find(
-                            (item) => item.item_id === filterOptions.item_id
+                        value: filterOptions.item_id,
+                        label: items.find(
+                          (item) => item.item_id === filterOptions.item_id
+                        )
+                          ? `${items.find(
+                            (item) =>
+                              item.item_id === filterOptions.item_id
+                          ).item_name
+                          }${Object.entries(
+                            items.find(
+                              (item) =>
+                                item.item_id === filterOptions.item_id
+                            ).itemsOnFeatures || {}
                           )
-                            ? `${
-                                items.find(
-                                  (item) =>
-                                    item.item_id === filterOptions.item_id
-                                ).item_name
-                              }${Object.entries(
-                                items.find(
-                                  (item) =>
-                                    item.item_id === filterOptions.item_id
-                                ).itemsOnFeatures || {}
-                              )
-                                .filter(([key, value]) => value)
-                                .map(([key, value]) => ` - ${value}`)
-                                .join("")}`
-                            : "",
-                        }
+                            .filter(([key, value]) => value)
+                            .map(([key, value]) => ` - ${value}`)
+                            .join("")}`
+                          : "",
+                      }
                       : null
                   }
                   placeholder="Select an Item"
@@ -751,7 +786,8 @@ const Records = () => {
                 <NepaliDatePicker
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                  // onChange={handleDateChange}
+                  onChange={handleFilterDateChange("dateFrom")}
+                  value={filterOptions.dateFrom}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
@@ -762,7 +798,8 @@ const Records = () => {
                 <NepaliDatePicker
                   inputClassName="form-control focus:outline-none"
                   className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
-                  // onChange={handleDateChange}
+                  onChange={handleFilterDateChange("dateTo")}
+                  value={filterOptions.dateTo}
                   options={{ calenderLocale: "en", valueLocale: "en" }}
                 />
               </div>
@@ -776,7 +813,7 @@ const Records = () => {
 
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  value={filterOptions.unit_price}
+                  value={filterOptions.priceSort}
                   onChange={(e) =>
                     setFilterOptions((prev) => ({
                       ...prev,
@@ -791,7 +828,7 @@ const Records = () => {
               </div>
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
-                  Bill Status
+                  Bill Status:
                 </label>
                 <select
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -804,13 +841,37 @@ const Records = () => {
                   }
                 >
                   <option value="">Stock Status</option>
-                  <option value="Approved">Approved</option>
-                  <option value="Pending">Pending</option>
+                  <option value="0">Approved</option>
+                  <option value="1  ">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="" className="font-medium">
+                  Bill Type:
+                </label>
+                <select
+                  className="border-2 rounded border-neutral-300 p-2 w-[530px] focus:outline-slate-400"
+                  value={filterOptions.billType}
+                  onChange={(e) =>
+                    setFilterOptions((prev) => ({
+                      ...prev,
+                      billType: e.target.value,
+                    }))
+                  }
+                >
+                  <option value="">Select Type </option>
+                  <option value="VAT">VAT</option>
+                  <option value="PAN">PAN</option>
+                  <option value="NOBILL">No bill</option>
                 </select>
               </div>
             </div>
           </div>
-          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
+          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium focus:outline-blue-700"
+            onClick={applyFilters}>
             Filter
           </button>
         </form>
