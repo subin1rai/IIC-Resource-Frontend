@@ -10,7 +10,7 @@ import pendingreq from "../assets/pendingreq.png";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
-import {ADToBS}  from "bikram-sambat-js";
+import { ADToBS } from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -33,7 +33,7 @@ const Issue = () => {
   const [purpose, setPurpose] = useState("");
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   const [addIssueVisibility, setAddIssueVisibility] = useState(false);
-  const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
+  const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
 
   const displayFilterForm = () => {
@@ -57,8 +57,8 @@ const Issue = () => {
     
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
-        quantity: field.quantity,
+        item_id: field.item_id,
+        quantity: field.quantity
       }));
 
       const issueData = {
@@ -80,12 +80,12 @@ const Issue = () => {
         
       );
 
-  
+
       const newIssue = response.data.issues;
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_id: formattedItems.map((item) => item.item_id).join(", "),
         item_quantity: formattedItems.reduce(
           (sum, item) => sum + Number(item.quantity),
           0
@@ -103,7 +103,6 @@ const Issue = () => {
       setItemFields([{ item: "", quantity: "" }]);
     } catch (error) {
       console.error("Error adding issue:", error);
-
     }
   };
 
@@ -111,6 +110,8 @@ const Issue = () => {
     const newFields = [...itemFields];
     newFields[index][field] = value;
     setItemFields(newFields);
+
+    console.log(itemFields);
   };
 
   const handleChange = (e) => {
@@ -475,6 +476,7 @@ const Issue = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
+
                     {itemFields.map((items, index) => (
                       <div key={index} className="flex gap-5  items-center">
                         <Select
@@ -498,14 +500,16 @@ const Issue = () => {
                             }),
                             menuList: (provided) => ({
                               ...provided,
-                              maxHeight: 150, // Adjust this as needed
-                              overflowY: "auto", // This ensures only the menu list scrolls
+                              maxHeight: 150,
+                              overflowY: "auto",
                             }),
                           }}
                           menuPortalTarget={document.body}
                           className="w-[190px]"
                           classNamePrefix="react-select"
                         />
+
+
                         <input
                           className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
                           type="number"
