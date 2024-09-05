@@ -121,8 +121,6 @@ const Request = () => {
   const handleFilter = () => {
     let filtered = requests;
 
-    console.log(selectedDepartment);
-
     if (selectedDepartment) {
       filtered = filtered.filter(
         (request) => request.department_name === selectedDepartment.value

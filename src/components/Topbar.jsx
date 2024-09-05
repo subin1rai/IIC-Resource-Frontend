@@ -115,7 +115,6 @@ const Topbar = () => {
             },
           }
         );
-        console.log(response);
         setNotification(response.data.notifications || []);
         const unreadCount = response.data.notifications.filter(
           (req) => !req.state
@@ -123,7 +122,7 @@ const Topbar = () => {
         setNotReadCount(unreadCount);
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("Request Canceled", error.message);
+          console.error("Request Canceled", error.message);
           setNotification([]);
         }
       }
@@ -162,7 +161,6 @@ const Topbar = () => {
           },
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

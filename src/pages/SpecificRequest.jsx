@@ -54,7 +54,7 @@ const SpecificRequest = () => {
     return date.toISOString().split("T")[0];
   };
 
-  console.log(itemFields);
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -100,7 +100,7 @@ const SpecificRequest = () => {
     remarks: "",
   });
 
-  console.log(finalData);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -135,11 +135,10 @@ const SpecificRequest = () => {
           },
         }));
       } else {
-        toast.error("Failed to approve request");
+        console.error("error status 200")
       }
     } catch (error) {
       console.error("Error approving request:", error);
-      toast.error("An error occurred while approving the request");
     } finally {
       setLoading(false);
       setAcceptFormVisibility(false);
@@ -175,7 +174,6 @@ const SpecificRequest = () => {
 
   const handleItemChange = (index, field, value) => {
     const newFields = [...itemFields];
-    console.log(value, field);
     newFields[index][field] = value;
 
     setItemFields(newFields);
@@ -190,8 +188,6 @@ const SpecificRequest = () => {
   const handleChange = (e) => {
     setFinalData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  console.log(remarks);
   const removeItemField = (index) => {
     if (itemFields.length > 1) {
       const newFields = itemFields.filter((_, i) => i !== index);
@@ -290,7 +286,6 @@ const SpecificRequest = () => {
           status: "Delivered",
         },
       }));
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

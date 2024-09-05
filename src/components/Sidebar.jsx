@@ -50,7 +50,6 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      console.log("Sending logout request");
       const response = await axios.post(
         "http://localhost:8898/api/logout",
         {},
@@ -59,7 +58,6 @@ const Sidebar = () => {
         }
       );
       localStorage.clear();
-      console.log("Logout response:", response);
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
