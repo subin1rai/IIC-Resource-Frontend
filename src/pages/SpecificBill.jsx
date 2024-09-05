@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import front from "../assets/arrow-right.svg";
 import close from "../assets/close.svg";
-
 import "../styles/specificbill.css";
 import Topbar from "../components/Topbar";
 import Sidebar from "../components/Sidebar";
