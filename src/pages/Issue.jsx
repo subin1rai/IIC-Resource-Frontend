@@ -14,6 +14,7 @@ import { ADToBS } from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -53,10 +54,11 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const formattedItems = itemFields.map((field) => ({
-        item_name: field.item, // Mapping 'item' to 'item_name'
-        quantity: field.quantity,
+        item_id: field.item_id,
+        quantity: field.quantity
       }));
 
       const issueData = {
@@ -75,13 +77,15 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         }
+        
       );
+
 
       const newIssue = response.data.issues;
       const formattedNewIssue = {
         issue_id: newIssue.id,
         issue_date: newIssue.issue_Date,
-        issue_item: formattedItems.map((item) => item.item_name).join(", "),
+        item_id: formattedItems.map((item) => item.item_id).join(", "),
         item_quantity: formattedItems.reduce(
           (sum, item) => sum + Number(item.quantity),
           0
@@ -472,6 +476,7 @@ const Issue = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
+
                     {itemFields.map((items, index) => (
                       <div key={index} className="flex gap-5  items-center">
                         <Select
@@ -503,6 +508,7 @@ const Issue = () => {
                           className="w-[190px]"
                           classNamePrefix="react-select"
                         />
+
 
                         <input
                           className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
