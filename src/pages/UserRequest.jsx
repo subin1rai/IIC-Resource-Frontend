@@ -205,12 +205,12 @@ const UserRequest = () => {
               <hr className="mt-4 border-2 border-blue-600 " />
             </div>
             <div className="flex flex-col">
-              <div className="flex p-3 gap-3">
+              <div className="flex px-3 mt-3 gap-3">
                 <div className="flex w-64">
-                  <label>Item Name:</label>
+                  <label className="font-medium text-md">Item Name:</label>
                 </div>
                 <div className="flex w-64">
-                  <label>Quantity:</label>
+                  <label className="font-medium text-md">Quantity:</label>
                 </div>
               </div>
               <div className="overflow-auto max-h-52">
@@ -301,7 +301,7 @@ const UserRequest = () => {
               ))}
               </div>
               <div className="flex flex-col p-3 gap-3">
-                <label className="font-semibold text-md">Requesting for:</label>
+                <label className="font-medium text-md">Requesting for:</label>
                 <Select
                   options={members}
                   value={members.find(
@@ -340,7 +340,7 @@ const UserRequest = () => {
                 />
               </div>
               <div className="flex flex-col p-3 gap-3">
-                <label className="font-semibold text-md">Purpose:</label>
+                <label className="font-medium text-md">Purpose:</label>
                 <textarea
                   rows={5}
                   name="purpose"

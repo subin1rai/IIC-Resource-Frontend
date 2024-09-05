@@ -45,7 +45,6 @@ const columns = [
     maxWidth: 70,
     align: "center",
   },
-
   {
     id: "actual_Amount",
     label: "Total Amount",

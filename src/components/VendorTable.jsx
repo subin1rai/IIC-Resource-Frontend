@@ -231,7 +231,7 @@ export default function VendorTable({ vendors }) {
                               display: "inline-block",
                               padding: "4px 8px",
                               borderRadius: "4px",
-                              backgroundColor: "#fff3cd",
+                              backgroundColor: "#f8d7da",
                               fontWeight: "normal",
                               textAlign: "center",
                             }}
