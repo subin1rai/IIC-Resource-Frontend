@@ -320,6 +320,7 @@ const SpecificBill = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const dataToSubmit = {
         ...editedBill,

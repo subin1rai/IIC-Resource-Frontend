@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -52,6 +53,7 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const formattedItems = itemFields.map((field) => ({
         item_name: field.item, // Mapping 'item' to 'item_name'
@@ -74,7 +76,9 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         }
+        
       );
+
   
       const newIssue = response.data.issues;
       const formattedNewIssue = {
