@@ -69,6 +69,7 @@ const columns = [
 ];
 
 export default function VendorTable({ vendors }) {
+  console.log(vendors)
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("");
   const [page, setPage] = React.useState(0);
