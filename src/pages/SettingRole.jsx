@@ -22,7 +22,7 @@ const SettingRole = () => {
   const [addUserFormVisibility, setAddUserFormVisibility] = useState(false);
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [numberOfActiveUsers, setNumberOfActiveUsers] = useState(0);
-  const [isDepartmentListVisible, setIsDepartmentListVisible] = useState(true);
+  const [isDepartmentListVisible, setIsDepartmentListVisible] = useState(false);
   const [isAddDepartmentVisible, setIsAddDepartmentVisible] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
   
@@ -74,13 +74,19 @@ const SettingRole = () => {
     setIsAddDepartmentVisible(false);
     setError(null); // Clear error when closing the forms
   };
-
+  const closeDepartment = () => {
+    setIsDepartmentListVisible(true);
+    setEditFormVisibility(false);
+    setError(null); // Clear error when closing the forms
+  };
   
   const displayAddPopup = (formName) => {
     setIsDepartmentListVisible(false);
     setIsAddDepartmentVisible(true);
   };
 
+
+  
   // Fetch users and departments data
   useEffect(() => {
     const fetchData = async () => {
@@ -91,7 +97,7 @@ const SettingRole = () => {
           }),
           axios.get("http://localhost:8898/api/getDepartment"),
         ]);
-
+  
         const users = userResponse.data.users || [];
         setUsers(users);
         setNumberOfUsers(users.length);
@@ -104,7 +110,7 @@ const SettingRole = () => {
       }
     };
     fetchData();
-  }, [token]);
+  }, [token, departments]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -299,30 +305,38 @@ const SettingRole = () => {
     event.preventDefault();
     try {
       const response = await axios.put(
-        // Ensure this route matches your backend route definition
+        
         `http://localhost:8898/api/editDepartment/${editedDepartment.department_id}`,
         editedDepartment,
        
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
+  
       
-      
-     // Clear error when form is closed
+     
      if (response.status === 200) {
       // Update the departments list with the edited department
-      setDepartments((prev) =>
-        prev.map((department) =>
-          department.id === editedDepartment.id ? response.data.department : department
+      setDepartments((prevDepartments) =>
+        prevDepartments.map((department) =>
+          department.id === editedDepartment.department_id
+            ? { ...department, department_name: editedDepartment.department_name }
+            : department
         )
       );
-      closeDepartmentForms();
-      setError(null); 
+      setEditFormVisibility(false);
+      setIsDepartmentListVisible(true);
+      setError(null);
+      toast.success('Department updated successfully');
     } else {
-      console.error("Failed to update the user:", response.data.message);
+      setError("Failed to update the department");
     }
   } catch (error) {
-    console.error("An error occurred while updating the user:", error);
-      }
-    };
+    console.error("An error occurred while updating the department:", error);
+    setError(error.response?.data?.message || "An error occurred while updating the department");
+  }
+};
   
 
   return (
@@ -593,13 +607,16 @@ const SettingRole = () => {
                 onClick={() => displayAddPopup("department")}
                 className="w-8 h-8 cursor-pointer"
               />
-              <img
+             <img
                 src={Close}
-                alt=""
-                onClick={() => setIsDepartmentListVisible(false)}
-                className="w-5 h-5 mt-2 cursor-pointer"
+                alt="Close"
+                className="w-5 h-5 mt-2 ml-1 cursor-pointer"
+                onClick={() => {
+                  setEditFormVisibility(false); // Hide the edit form
+                  setIsDepartmentListVisible(false); // Show the department list
+                }}
               />
-              </div>
+                            </div>
             </div>
             <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
               {departments.map((department) => (
@@ -607,12 +624,14 @@ const SettingRole = () => {
                 <div className="w-[80%] py-4">
                 <div className="flex w-full justify-between items-center">
                 <p>{department.department_name}</p>
+                
                 <img
                   src={edit}
                   alt="Edit"
                   className="h-5 w-5 cursor-pointer"
                   onClick={() => {
-                    setEditFormVisibility(true);
+                    setEditFormVisibility(true); // Show the edit form
+                    setIsDepartmentListVisible(false); // Hide the department list
                     setEditedDepartment(department); // Load the department data into the form
                   }}
                 />
@@ -692,7 +711,8 @@ const SettingRole = () => {
           src={closeIcon}
           alt="Close"
           className="w-4 h-4 cursor-pointer"
-          onClick={() => setEditFormVisibility(false)} // Close the form
+          onClick={closeDepartment}
+          // Close the form
         />
       </div>
       <div className="flex flex-col gap-6">
@@ -729,3 +749,4 @@ const SettingRole = () => {
 };
 
 export default SettingRole;
+
