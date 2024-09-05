@@ -82,7 +82,16 @@ export default function InventoryTable({ issues }) {
     status: "",
     issue_name: "",
     quantity: "",
+    isReturned: "",
   });
+
+  const handleCheckboxChange = (e) => {
+    setEditedIssue({
+      ...editedIssue,  // Spread the current state to keep other properties unchanged
+      isReturned: e.target.checked,  // Update only the isIssued property
+    });
+  };
+  console.log(editedIssue)
 
   const handleChangePage = (event, newPage) => setPage(newPage);
 
@@ -187,8 +196,8 @@ export default function InventoryTable({ issues }) {
   }, [token]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
+    console.log(editedIssue)
   };
 
   const handleSubmit = async (event) => {
@@ -410,6 +419,8 @@ export default function InventoryTable({ issues }) {
                   type="checkbox"
                   className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
                   name="isReturned"
+                  checked={editedIssue.isReturned}  // Access the isIssued from the editedIssue object
+                  onChange={handleCheckboxChange}
                 />
                 <label htmlFor="checkbox" className="ml-2 text-lg font-medium">
                   Returned

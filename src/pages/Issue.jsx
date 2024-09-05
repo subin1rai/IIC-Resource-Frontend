@@ -10,9 +10,11 @@ import pendingreq from "../assets/pendingreq.png";
 import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
+import {ADToBS}  from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
   const [issue, setIssue] = useState({
@@ -22,7 +24,7 @@ const Issue = () => {
     items: [],
   });
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(ADToBS(new Date().toDateString()));
   const [issues, setIssues] = useState([]);
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,6 +54,7 @@ const Issue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const formattedItems = itemFields.map((field) => ({
         item_name: field.item, // Mapping 'item' to 'item_name'
@@ -59,8 +62,7 @@ const Issue = () => {
       }));
 
       const issueData = {
-        issue_date: issue.issue_date,
-
+        issue_date: issue.issue_date || date,
         issued_to: issue.issued_to,
         purpose: purpose, // Purpose is set separately
         items: formattedItems, // Add the formatted items array
@@ -69,12 +71,15 @@ const Issue = () => {
       const response = await axios.post(
         "http://localhost:8898/api/addIssue",
         issueData,
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
+        
       );
+
   
       const newIssue = response.data.issues;
       const formattedNewIssue = {
