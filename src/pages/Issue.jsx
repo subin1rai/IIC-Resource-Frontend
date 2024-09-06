@@ -39,6 +39,28 @@ const Issue = () => {
   const [itemOptions, setItemOptions] = useState([]);
   const [returned, setReturned] = useState(0);
 
+  const [departments, setDepartments] = useState([]);
+
+
+  // // fet
+  // useEffect(() => {
+  //   const fetchDepartment = async () => {
+  //     try {
+  //       const departmentResponse = await axios.get(
+  //         `${apiBaseUrl}/api/getDepartment`,
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
+  //       setDepartments(departmentResponse.data.department);
+  //     } catch (error) {
+  //       console.error("Error fetching department:", error);
+  //     }
+  //   };
+
+  //   fetchDepartment();
+  // }, [token]);
+
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
   };
@@ -290,6 +312,8 @@ const Issue = () => {
         </div>
       </div>
 
+
+      {/* Filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
@@ -308,14 +332,35 @@ const Issue = () => {
                   <label htmlFor="" className="font-medium">
                     Issued Item:{" "}
                   </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
-                  >
-                    <option value="">Select an item</option>
-                  </select>
+                  <Select
+                    options={itemOptions}
+                    onChange={(selectedOption) =>
+                      handleItemChange(
+                        index,
+                        "item_id",
+                        selectedOption.value
+                      )
+                    }
+                    value={itemOptions.find(
+                      (option) => option.value === items.item
+                    )}
+                    placeholder="Select Item"
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150,
+                        overflowY: "auto",
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
+                    className="w-[190px]"
+                    classNamePrefix="react-select"
+                  />
                 </div>
 
                 {/* div for request status */}
@@ -406,6 +451,9 @@ const Issue = () => {
           </form>
         </div>
       )}
+
+
+      {/* Add issue */}
       {addIssueVisibility && (
         <form
           onSubmit={handleSubmit}
