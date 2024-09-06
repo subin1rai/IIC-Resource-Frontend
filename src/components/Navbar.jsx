@@ -26,11 +26,13 @@ const Navbar = () => {
   });
   const [initials, setInitials] = useState("");
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handleLogout = async () => {
     try {
       console.log("Sending logout request");
       const response = await axios.post(
-        "http://localhost:8898/api/logout",
+        `${apiBaseUrl}/api/logout`,
         {},
         {
           withCredentials: true,

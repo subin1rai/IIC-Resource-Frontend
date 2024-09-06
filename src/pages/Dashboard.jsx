@@ -17,6 +17,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [dashboard, setDashboard] = useState("");
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -24,14 +26,11 @@ const Dashboard = () => {
   useEffect(() => {
     const getdashDetails = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/dashboard",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/dashboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setDashboard(response.data);
       } catch (error) {

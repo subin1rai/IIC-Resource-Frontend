@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import Swal from "sweetalert2";
 import close from "../assets/close.svg";
-import empty from "../assets/Emptyuser.svg"
+import empty from "../assets/Emptyuser.svg";
 import Box from "@mui/material/Box";
 
 const columns = [
@@ -63,6 +63,8 @@ const DropdownMenu = ({
     };
   }, []);
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handleSetActive = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -77,7 +79,7 @@ const DropdownMenu = ({
         setLoading(true);
         try {
           const response = await axios.put(
-            `http://localhost:8898/api/role/activateUser/${user_id}`
+            `${apiBaseUrl}/api/role/activateUser/${user_id}`
           );
           if (response.status === 200) {
             Swal.fire("User Activated", "", "success");
@@ -114,7 +116,7 @@ const DropdownMenu = ({
       if (result.isConfirmed) {
         setLoading(true);
         axios
-          .put(`http://localhost:8898/api/role/deactivateUser/${user_id}`)
+          .put(`${apiBaseUrl}/api/role/deactivateUser/${user_id}`)
           .then((response) => {
             if (response.status === 200) {
               Swal.fire({
@@ -158,7 +160,7 @@ const DropdownMenu = ({
         setLoading(true);
         try {
           const response = await axios.put(
-            `http://localhost:8898/api/role/updateRole/${user_id}`,
+            `${apiBaseUrl}/api/role/updateRole/${user_id}`,
             { role }
           );
           if (response.status === 200) {
@@ -181,42 +183,50 @@ const DropdownMenu = ({
     });
   };
 
-
   const dropdownContent = (
     <div
       ref={dropdownRef}
       className="bg-white border-border border-2 rounded absolute z-50 flex flex-col w-[190px] text-black text-sm"
       style={{
-        bottom: `${window.innerHeight - (buttonRef.current?.getBoundingClientRect().top + window.scrollY)}px`,
-        left: `${buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120}px`,
+        bottom: `${
+          window.innerHeight -
+          (buttonRef.current?.getBoundingClientRect().top + window.scrollY)
+        }px`,
+        left: `${
+          buttonRef.current?.getBoundingClientRect().left + window.scrollX - 120
+        }px`,
       }}
     >
       {user.isActive ? (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={handleSetInActive}
           >
             Set Inactive
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("superadmin")}
           >
             Set Super Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("admin")}
           >
             Set Admin
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => handleRoleUpdate("departmenthead")}
           >
             Set Department Head
@@ -225,25 +235,27 @@ const DropdownMenu = ({
       ) : (
         <>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={handleSetActive}
           >
             Set Active
           </span>
           <span
-            className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`hover:bg-background w-full p-3 cursor-pointer ${
+              loading ? "pointer-events-none opacity-50" : ""
+            }`}
             onClick={() => setIsOpen(false)}
           >
             Remove user
           </span>
-
         </>
       )}{" "}
       <span
-        className={`hover:bg-background w-full p-3 cursor-pointer ${loading ? "pointer-events-none opacity-50" : ""
-          }`}
+        className={`hover:bg-background w-full p-3 cursor-pointer ${
+          loading ? "pointer-events-none opacity-50" : ""
+        }`}
         onClick={() => {
           setIsOpen(false);
           handlePopupForm();
@@ -271,6 +283,7 @@ const DropdownMenu = ({
 
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const [contactError, setContactError] = useState("");
   const [error, setError] = useState(null);
@@ -293,9 +306,7 @@ const AllUser = ({ users: initialUsers }) => {
   useEffect(() => {
     try {
       const getDepartment = async () => {
-        const response = await axios.get(
-          "http://localhost:8898/api/getDepartment"
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/getDepartment`);
         setDepartments(response.data.department);
       };
       getDepartment();
@@ -304,8 +315,6 @@ const AllUser = ({ users: initialUsers }) => {
     }
   }, []);
 
-
-
   const roles = {
     user: "User",
     superadmin: "Super Admin",
@@ -313,16 +322,21 @@ const AllUser = ({ users: initialUsers }) => {
     admin: "Admin",
   };
 
-
   const validateContact = (contact) => {
     const contactNumber = parseInt(contact);
-    if (isNaN(contactNumber) || contactNumber < 9700000000 || contactNumber > 9899999999) {
-      setContactError("Please enter a valid 10-digit contact number starting with 97, 98, or 99.");
+    if (
+      isNaN(contactNumber) ||
+      contactNumber < 9700000000 ||
+      contactNumber > 9899999999
+    ) {
+      setContactError(
+        "Please enter a valid 10-digit contact number starting with 97, 98, or 99."
+      );
       return false;
     }
     setContactError("");
     return true;
-  }
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -355,11 +369,10 @@ const AllUser = ({ users: initialUsers }) => {
     const { name, value } = e.target;
     setEditedUser({ ...editedUser, [name]: value });
 
-    if (name === 'contact') {
+    if (name === "contact") {
       validateContact(value);
     }
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -371,7 +384,7 @@ const AllUser = ({ users: initialUsers }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/role/editUser/${editedUser.user_id}`,
+        `${apiBaseUrl}/api/role/editUser/${editedUser.user_id}`,
         {
           user_name: editedUser.user_name,
           user_email: editedUser.user_email,
@@ -390,7 +403,6 @@ const AllUser = ({ users: initialUsers }) => {
         setEditFormVisibility(false);
         setError(null);
         setContactError("");
-
       } else {
         console.error("Failed to update the user:", response.data.message);
       }
@@ -398,8 +410,6 @@ const AllUser = ({ users: initialUsers }) => {
       console.error("An error occurred while updating the user:", error);
     }
   };
-
-
 
   const visibleRows = React.useMemo(
     () => allUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -435,7 +445,7 @@ const AllUser = ({ users: initialUsers }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!visibleRows || visibleRows.length === 0) ? (
+            {!visibleRows || visibleRows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
@@ -459,7 +469,12 @@ const AllUser = ({ users: initialUsers }) => {
               </TableRow>
             ) : (
               visibleRows.map((user) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={user.user_id}>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={user.user_id}
+                >
                   <TableCell>{user.user_name}</TableCell>
                   <TableCell>{user.user_email}</TableCell>
                   <TableCell>{user.contact}</TableCell>
@@ -508,7 +523,6 @@ const AllUser = ({ users: initialUsers }) => {
               ))
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
 
@@ -524,7 +538,6 @@ const AllUser = ({ users: initialUsers }) => {
               <img
                 src={close}
                 alt="Close"
-
                 className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   setEditFormVisibility(false);
@@ -562,7 +575,6 @@ const AllUser = ({ users: initialUsers }) => {
                   maxLength={10} // Limit input to 10 characters
                   pattern="[0-9]*"
                   className="border-border border-2 rounded px-2 py-2 w-[250px] focus:outline-slate-400"
-
                 />
               </div>
 
@@ -605,17 +617,22 @@ const AllUser = ({ users: initialUsers }) => {
                 </select>
               </div>
               {error && <div className="text-red-500  self-start">{error}</div>}
-              <button type="submit" className="bg-button text-white py-2 w-full px-4 rounded self-end mt-4 mb-3 focus: outline-blue-600">
+              <button
+                type="submit"
+                className="bg-button text-white py-2 w-full px-4 rounded self-end mt-4 mb-3 focus: outline-blue-600"
+              >
                 Save Changes
               </button>
             </div>
-
           </form>
-          <div className="" onClick={() => {
-            setEditFormVisibility(false);
-            setError(null);
-            setContactError("");
-          }}></div>
+          <div
+            className=""
+            onClick={() => {
+              setEditFormVisibility(false);
+              setError(null);
+              setContactError("");
+            }}
+          ></div>
         </div>
       )}
       <TablePagination
@@ -627,7 +644,9 @@ const AllUser = ({ users: initialUsers }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelDisplayedRows={({ from, to, count }) =>
-          count === 0 ? 'No records' : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+          count === 0
+            ? "No records"
+            : `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
         }
       />
     </Paper>

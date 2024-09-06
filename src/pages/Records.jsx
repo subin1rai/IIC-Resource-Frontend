@@ -13,7 +13,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
-import {ADToBS}  from "bikram-sambat-js";
+import { ADToBS } from "bikram-sambat-js";
 import "nepali-datepicker-reactjs/dist/index.css";
 import pending from "../assets/pending.png";
 import records from "../assets/records.png";
@@ -23,6 +23,8 @@ import NoBill from "../components/NoBill";
 import { useSelector } from "react-redux";
 
 const Records = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
@@ -45,7 +47,6 @@ const Records = () => {
 
   const [date, setDate] = useState(ADToBS(new Date().toDateString()));
 
-
   const [filteredBills, setFilteredBills] = useState([]);
   const [searchBill, setSearchBill] = useState("");
   const [error, setError] = useState("");
@@ -61,7 +62,7 @@ const Records = () => {
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
 
-  console.log("date: ",date)
+  console.log("date: ", date);
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -69,12 +70,9 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setItems(itemsResponse.data);
         console.log("Fetched items:", itemsResponse.data);
       } catch (error) {
@@ -125,15 +123,12 @@ const Records = () => {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8898/api/bill/exportBill",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/api/bill/exportBill`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: `blob`,
+      });
 
       const file = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -148,7 +143,6 @@ const Records = () => {
 
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
-
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -195,7 +189,7 @@ const Records = () => {
 
   const fetchBills = async () => {
     try {
-      const response = await axios.get("http://localhost:8898/api/bill", {
+      const response = await axios.get(`${apiBaseUrl}/api/bill`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -215,12 +209,9 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const vendorsResponse = await axios.get(
-          "http://localhost:8898/api/vendor",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const vendorsResponse = await axios.get(`${apiBaseUrl}/api/vendor`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setVendors(vendorsResponse.data.vendor);
       } catch (error) {
@@ -242,17 +233,17 @@ const Records = () => {
     control: (provided, state) => ({
       ...provided,
       border: state.isFocused ? "2px solid #94a3b8" : "2px solid #D1D5DB", // Matches border-neutral-300
-      borderRadius: "0.375rem", 
-      padding: "0.25rem 0.5rem", 
-      width: "100%", 
-      boxShadow: "none", 
+      borderRadius: "0.375rem",
+      padding: "0.25rem 0.5rem",
+      width: "100%",
+      boxShadow: "none",
       "&:hover": {
         border: state.isFocused ? "2px solid #94a3b8" : "2px solid #D1D5DB",
       },
     }),
     menu: (provided) => ({
       ...provided,
-      width: "100%", 
+      width: "100%",
     }),
     container: (provided) => ({
       ...provided,
@@ -296,7 +287,6 @@ const Records = () => {
     });
   };
 
-
   const handleChange = (e) => {
     setBill((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -309,23 +299,18 @@ const Records = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    
     try {
       const billData = {
         ...bill,
         selectedOptions: selectedOption,
-        bill_date: bill.bill_date || date
+        bill_date: bill.bill_date || date,
       };
 
-      const response = await axios.post(
-        "http://localhost:8898/api/addBill",
-        billData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${apiBaseUrl}/api/addBill`, billData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBills((prevBills) => [...prevBills, response.data.result.resultData]);
       toast.success(`${bill.bill_no} added successfully!`);
       closeAddBillForm();
@@ -336,7 +321,7 @@ const Records = () => {
       );
     }
   };
-  console.log(bills)
+  console.log(bills);
 
   useEffect(() => {
     const filterBills = () => {
@@ -357,22 +342,22 @@ const Records = () => {
     setFilterOptions((prev) => ({ ...prev, [name]: date }));
   };
 
-
   const applyFilters = () => {
     let filteredResults = [...bills];
 
     if (filterOptions.vendor_id) {
-      filteredResults = filteredResults.filter(bill => bill.vendor_ID === filterOptions.vendor_id);
-    }
-
-    console.log(filterOptions.item_id)
-
-    if (filterOptions.item_id) {
-      filteredResults = filteredResults.filter(bill =>
-        bill.BillItems.some(item => item.item_id === filterOptions.item_id)
+      filteredResults = filteredResults.filter(
+        (bill) => bill.vendor_ID === filterOptions.vendor_id
       );
     }
 
+    console.log(filterOptions.item_id);
+
+    if (filterOptions.item_id) {
+      filteredResults = filteredResults.filter((bill) =>
+        bill.BillItems.some((item) => item.item_id === filterOptions.item_id)
+      );
+    }
 
     if (filterOptions.dateFrom && filterOptions.dateTo) {
       filteredResults = filteredResults.filter((bill) => {
@@ -397,18 +382,20 @@ const Records = () => {
 
     if (filterOptions.billStatus) {
       filteredResults = filteredResults.filter(
-        (bill) => (bill.isApproved > 0) === (parseInt(filterOptions.billStatus) === 0)
+        (bill) =>
+          bill.isApproved > 0 === (parseInt(filterOptions.billStatus) === 0)
       );
     }
 
     if (filterOptions.billType) {
-      filteredResults = filteredResults.filter(bill => bill.bill_type === filterOptions.billType);
+      filteredResults = filteredResults.filter(
+        (bill) => bill.bill_type === filterOptions.billType
+      );
     }
 
     setFilteredBills(filteredResults);
     setFilterFormVisibility(false);
-
-  }
+  };
 
   return (
     <div className="records">
@@ -489,11 +476,12 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "vat 0" ||
+                      className={` w-36 ${
+                        selectedOption === "vat 0" ||
                         selectedOption === "vat 1.5"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent px-4 py-1`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent px-4 py-1`}
                     >
                       <option value="">Select VAT</option>
                       <option value="vat 0">VAT 0</option>
@@ -503,12 +491,13 @@ const Records = () => {
                     <select
                       value={selectedOption}
                       onChange={handleBillChange}
-                      className={` w-36 ${selectedOption === "pan 0" ||
+                      className={` w-36 ${
+                        selectedOption === "pan 0" ||
                         selectedOption === "pan 10" ||
                         selectedOption === "pan 15"
-                        ? "bg-blue-200"
-                        : "border-neutral-300"
-                        } focus:outline-none focus:border-transparent py-1 px-4`}
+                          ? "bg-blue-200"
+                          : "border-neutral-300"
+                      } focus:outline-none focus:border-transparent py-1 px-4`}
                     >
                       <option value="">Select PAN</option>
                       <option value="pan 0">Pan 0</option>
@@ -520,10 +509,11 @@ const Records = () => {
                       onClick={() =>
                         handleBillChange({ target: { value: "noBill" } })
                       }
-                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${selectedOption === "noBill"
-                        ? "bg-blue-200 text-black"
-                        : "border-neutral-300"
-                        } px-4 whitespace-nowrap`}
+                      className={` border-neutral-300 w-80 py-1 cursor-pointer h-full ${
+                        selectedOption === "noBill"
+                          ? "bg-blue-200 text-black"
+                          : "border-neutral-300"
+                      } px-4 whitespace-nowrap`}
                     >
                       No Bill
                     </span>
@@ -615,9 +605,9 @@ const Records = () => {
                         value={
                           bill.vendor_name
                             ? {
-                              value: bill?.vendors?.vendor_name,
-                              label: bill.vendor_name,
-                            }
+                                value: bill?.vendors?.vendor_name,
+                                label: bill.vendor_name,
+                              }
                             : null
                         }
                         placeholder="Select Vendor"
@@ -676,7 +666,8 @@ const Records = () => {
 
       {/* filter form */}
       {filterFormVisibility && (
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4"
+        <form
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-4"
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="flex justify-between">
@@ -710,9 +701,9 @@ const Records = () => {
                   value={
                     filterOptions.vendor_name
                       ? {
-                        value: filterOptions.vendor_name,
-                        label: filterOptions.vendor_name,
-                      }
+                          value: filterOptions.vendor_name,
+                          label: filterOptions.vendor_name,
+                        }
                       : null
                   }
                   placeholder="Select Vendor"
@@ -751,25 +742,26 @@ const Records = () => {
                   value={
                     filterOptions.item_id
                       ? {
-                        value: filterOptions.item_id,
-                        label: items.find(
-                          (item) => item.item_id === filterOptions.item_id
-                        )
-                          ? `${items.find(
-                            (item) =>
-                              item.item_id === filterOptions.item_id
-                          ).item_name
-                          }${Object.entries(
-                            items.find(
-                              (item) =>
-                                item.item_id === filterOptions.item_id
-                            ).itemsOnFeatures || {}
+                          value: filterOptions.item_id,
+                          label: items.find(
+                            (item) => item.item_id === filterOptions.item_id
                           )
-                            .filter(([key, value]) => value)
-                            .map(([key, value]) => ` - ${value}`)
-                            .join("")}`
-                          : "",
-                      }
+                            ? `${
+                                items.find(
+                                  (item) =>
+                                    item.item_id === filterOptions.item_id
+                                ).item_name
+                              }${Object.entries(
+                                items.find(
+                                  (item) =>
+                                    item.item_id === filterOptions.item_id
+                                ).itemsOnFeatures || {}
+                              )
+                                .filter(([key, value]) => value)
+                                .map(([key, value]) => ` - ${value}`)
+                                .join("")}`
+                            : "",
+                        }
                       : null
                   }
                   placeholder="Select an Item"
@@ -870,8 +862,10 @@ const Records = () => {
               </div>
             </div>
           </div>
-          <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium focus:outline-blue-700"
-            onClick={applyFilters}>
+          <button
+            className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium focus:outline-blue-700"
+            onClick={applyFilters}
+          >
             Filter
           </button>
         </form>
