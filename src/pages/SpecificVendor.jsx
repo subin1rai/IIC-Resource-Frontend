@@ -208,6 +208,8 @@ const SpecificVendor = () => {
     }
   };
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateContact(editedVendor.vendor_contact)) {
@@ -217,7 +219,7 @@ const SpecificVendor = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/updateVendor/${vendor_id}`,
+        `${apiBaseUrl}/api/updateVendor/${vendor_id}`,
         editedVendor,
         {
           headers: {
@@ -236,15 +238,11 @@ const SpecificVendor = () => {
   console.log(vendor);
   const handleBlackList = async () => {
     try {
-      await axios.put(
-        `http://localhost:8898/api/blacklist/${vendor_id}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.put(`${apiBaseUrl}/api/blacklist/${vendor_id}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (error) {
       Swal.fire(
         "Error",
@@ -259,7 +257,7 @@ const SpecificVendor = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:8898/api/vendor/${vendor_id}`,
+          `${apiBaseUrl}/api/vendor/${vendor_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -280,14 +278,11 @@ const SpecificVendor = () => {
   useEffect(() => {
     const fetchItemCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/itemCategory",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/itemCategory`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const options = response.data.allData.map((category) => ({
           value: category.item_category_id,
           label: category.item_category_name,
@@ -372,12 +367,12 @@ const SpecificVendor = () => {
                   <span className="font-medium pl-3 text-[#6D6E70]">
                     {vendor.bills && vendor.bills.length > 0
                       ? vendor.bills
-                        .reduce(
-                          (sum, bill) =>
-                            sum + (Number(bill.paid_amount) || 0),
-                          0
-                        )
-                        .toFixed(2)
+                          .reduce(
+                            (sum, bill) =>
+                              sum + (Number(bill.paid_amount) || 0),
+                            0
+                          )
+                          .toFixed(2)
                       : "--"}
                   </span>
                 </p>
@@ -412,9 +407,17 @@ const SpecificVendor = () => {
                 <p className="font-medium">
                   Payment Status:{" "}
                   <span className="font-medium pl-3 text-[#6D6E70]">
-                    {vendor?.pending_payment > 0 ? (<span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">Pending</span>
+                    {vendor?.pending_payment > 0 ? (
+                      <span className="text-yellow-600 bg-yellow-100 p-2 px-4 rounded-md">
+                        Pending
+                      </span>
                     ) : (
-                      <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">CLear</span> || "--")}
+                      (
+                        <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">
+                          CLear
+                        </span>
+                      ) || "--"
+                    )}
                   </span>
                 </p>
               </div>

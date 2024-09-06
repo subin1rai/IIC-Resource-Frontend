@@ -8,6 +8,8 @@ import changePassword from "./changePassword";
 import { useSelector } from "react-redux";
 
 const EditProfile = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [image, setImage] = useState(profile);
   const fileInputRef = useRef(null);
 

@@ -146,18 +146,16 @@ export default function InventoryTable({ issues }) {
   //   };
   //   fetchIssues();
   // }, []);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,

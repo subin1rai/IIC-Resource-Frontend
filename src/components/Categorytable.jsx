@@ -1,7 +1,6 @@
 import React from "react";
 import edit from "../assets/editIcon.png";
-import empty from "../assets/Emptycate.svg"
-
+import empty from "../assets/Emptycate.svg";
 
 const Categorytable = ({
   category,

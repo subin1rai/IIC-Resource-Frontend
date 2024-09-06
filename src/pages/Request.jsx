@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 
 
 const Request = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -68,7 +70,7 @@ const Request = () => {
   useEffect(() => {
     const getRequest = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/request", {
+        const response = await axios.get(`${apiBaseUrl}/api/request`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -102,7 +104,7 @@ const Request = () => {
     const fetchDepartment = async () => {
       try {
         const departmentResponse = await axios.get(
-          "http://localhost:8898/api/getDepartment",
+          `${apiBaseUrl}/api/getDepartment`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

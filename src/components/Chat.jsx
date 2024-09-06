@@ -29,18 +29,16 @@ const Chat = () => {
   const handleBackToConversations = () => {
     setSelectedConversation(null);
   };
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/message/allUser",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/message/allUser`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (role === "departmenthead") {
           setUserConversations(

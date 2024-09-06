@@ -22,13 +22,14 @@ function Messages({ conversation }) {
       [e.target.name]: e.target.value,
     }));
   };
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(
-        `http://localhost:8898/api/messages/send/${user_id}`,
+        `${apiBaseUrl}/api/messages/send/${user_id}`,
         newMessage,
         {
           headers: {

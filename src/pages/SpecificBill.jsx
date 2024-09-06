@@ -18,6 +18,8 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 
 const SpecificBill = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [bill, setBill] = useState({
     bill_no: "",
     bill_date: "",
@@ -113,14 +115,13 @@ const SpecificBill = () => {
   const handleApprove = async () => {
     try {
       const response = await axios.put(
-
-        `http://localhost:8898/api/approveBill/${bill_id} `,{},{
-
+        `${apiBaseUrl}/api/approveBill/${bill_id} `,
+        {},
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       // setBillDetails((prev) => ({ ...prev,  response.data }))
     } catch (error) {
@@ -221,17 +222,17 @@ const SpecificBill = () => {
       try {
         const [singleBillResponse, itemsResponse, vendorsResponse] =
           await Promise.all([
-            axios.get(`http://localhost:8898/api/singleBill/${bill_id}`, {
+            axios.get(`${apiBaseUrl}/api/singleBill/${bill_id}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }),
-            axios.get("http://localhost:8898/api/items", {
+            axios.get(`${apiBaseUrl}/api/items`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }),
-            axios.get("http://localhost:8898/api/vendor", {
+            axios.get(`${apiBaseUrl}/api/vendor`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -246,19 +247,17 @@ const SpecificBill = () => {
           singleBillResponse.data.bill.BillItems[0].TDS
         );
 
-        if(singleBillResponse.data.bill.bill_type === "NOBILL"){
-          setSelectedOption("NOBILL")
-        } 
-        else{
+        if (singleBillResponse.data.bill.bill_type === "NOBILL") {
+          setSelectedOption("NOBILL");
+        } else {
           setSelectedOption(
             singleBillResponse.data?.bill.bill_type.toLowerCase() +
-            " " +
-            singleBillResponse.data.bill.BillItems[0].TDS
+              " " +
+              singleBillResponse.data.bill.BillItems[0].TDS
           );
         }
-       
-        console.log(selectedOption);
 
+        console.log(selectedOption);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
@@ -335,7 +334,7 @@ const SpecificBill = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
       const dataToSubmit = {
         ...editedBill,
@@ -348,7 +347,7 @@ const SpecificBill = () => {
       //   dataToSubmit.items = [];
       // }
       const response = await axios.put(
-        `http://localhost:8898/api/updateBill/${bill_id}`,
+        `${apiBaseUrl}/api/updateBill/${bill_id}`,
         dataToSubmit,
         {
           headers: {
@@ -374,7 +373,7 @@ const SpecificBill = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:8898/api/singleBill/${bill_id}`,
+          `${apiBaseUrl}/api/singleBill/${bill_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -536,9 +535,10 @@ const SpecificBill = () => {
                   Approved Status:
                   <span className="font-normal  pl-4">
                     {billDetails?.bill?.isApproved ? (
-
-                      <span className="text-green-600  bg-green-100 p-2 px-4 rounded-md">Approved</span>
-    ) : (
+                      <span className="text-green-600  bg-green-100 p-2 px-4 rounded-md">
+                        Approved
+                      </span>
+                    ) : (
                       (
                         <span className="text-yellow-600  bg-yellow-100 p-2 px-4 rounded-md">
                           Pending
@@ -672,7 +672,6 @@ const SpecificBill = () => {
             <div className="flex flex-col gap-4">
               <p className="font-semibold flex justify-between items-center text-xl ">
                 Send Remarks
-
                 <img
                   className="cursor-pointer h-4 w-4 "
                   src={close}
@@ -699,7 +698,6 @@ const SpecificBill = () => {
                   Done
                 </button>
               </div>
-
             </div>
           </form>
         </>

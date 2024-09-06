@@ -9,16 +9,14 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [rows, setRows] = useState([]);
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setItems(itemsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);

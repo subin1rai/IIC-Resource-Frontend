@@ -74,13 +74,12 @@ function PurchaseHistory() {
     console.log(id);
     navigate(`/specificbill/${id}`);
   };
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchPurchaseHistory = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8898/api/items/${id}`
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/items/${id}`);
         setPurchaseHistory(response.data.BillItems || []);
         setLoading(false);
       } catch (err) {

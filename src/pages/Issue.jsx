@@ -17,6 +17,8 @@ import { useSelector } from "react-redux";
 import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [issue, setIssue] = useState({
     issue_date: "",
     issued_to: "",
@@ -70,7 +72,7 @@ const Issue = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8898/api/addIssue",
+        `${apiBaseUrl}/api/addIssue`,
         issueData,
 
         {
@@ -166,7 +168,7 @@ const Issue = () => {
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/issue", {
+        const response = await axios.get(`${apiBaseUrl}/api/issue`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -187,14 +189,11 @@ const Issue = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,

@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 
 // Main Category component
 const Category = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   // State to store the categories, item categories, and features
   const [category, setCategory] = useState([]);
   const [newCategory, setNewCategory] = useState({ category_name: "" });
@@ -41,7 +43,7 @@ const Category = () => {
   useEffect(() => {
     const controller = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/category", {
+        const response = await axios.get(`${apiBaseUrl}/api/category`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,14 +64,11 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/itemCategory",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/itemCategory`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response.data);
         setItemCategory(response.data.allData || []);
       } catch (error) {
@@ -88,7 +87,7 @@ const Category = () => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/feature", {
+        const response = await axios.get(`${apiBaseUrl}/api/feature`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -143,7 +142,7 @@ const Category = () => {
     }
     try {
       const response = await axios.delete(
-        `http://localhost:8898/api/deleteCategory/${categoryId}`,
+        `${apiBaseUrl}/api/deleteCategory/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -163,7 +162,7 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addCategory",
+        "${apiBaseUrl}/api/addCategory",
         newCategory,
         {
           headers: {
@@ -176,7 +175,6 @@ const Category = () => {
       toast.success(`${newCategory.category_name} added successfully!`);
       setVisibleForm(false);
     } catch (error) {
-
       setError(error.response.data.error);
     }
   };
@@ -185,7 +183,7 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addItemCategory",
+        `${apiBaseUrl}/api/addItemCategory`,
         newItemCategory,
         {
           headers: {
@@ -194,8 +192,6 @@ const Category = () => {
         }
       );
 
-
-
       setItemCategory((prev) => [...prev, response.data.addData]);
 
       toast.success(
@@ -203,7 +199,6 @@ const Category = () => {
       );
       setVisibleForm(false);
     } catch (error) {
-
       setError(error.response.data.error);
     }
   };
@@ -212,7 +207,7 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addFeature",
+        `${apiBaseUrl}/api/addFeature`,
         newFeature,
         {
           headers: {
@@ -229,7 +224,6 @@ const Category = () => {
       if (error.response && error.response.status === 409) {
         setError("Feature name already exists!");
       } else {
-     
         setError("Failed to add the new feature!");
       }
     }
@@ -254,10 +248,9 @@ const Category = () => {
   const handleEditSubmit = async (e) => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/editCategory/${editId}`,
+        `${apiBaseUrl}/api/editCategory/${editId}`,
         editedValue
       );
-
     } catch (error) {
       console.log(error);
     }
@@ -365,7 +358,6 @@ const Category = () => {
           <div className="flex justify-between items-center">
             <p className=" ml-4 font-semibold text-lg">Add Category</p>
             <button className="p-3">
-
               <img
                 className="rounded-md cursor-pointer h-4 w-4"
                 src={close}
@@ -486,7 +478,6 @@ const Category = () => {
           </div>
         </form>
       )}
-
 
       {/* edit form  */}
       {editFormVisiblity && (

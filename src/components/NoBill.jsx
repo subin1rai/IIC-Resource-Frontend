@@ -13,12 +13,14 @@ const NoBill = ({ onDataUpdate, selectedOption, billDetails }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   // Fetch data (items) on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [itemsResponse, vendorsResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/items", {
+          axios.get(`${apiBaseUrl}/api/items`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           // axios.get("http://localhost:8898/api/vendor", {

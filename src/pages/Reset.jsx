@@ -6,6 +6,8 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 
 const Reset = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const location = useLocation();
   const { email } = location.state || {};
 
@@ -25,7 +27,7 @@ const Reset = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/changePassword",
+        `${apiBaseUrl}/api/changePassword`,
         { email, newPassword },
         { withCredentials: true }
       );

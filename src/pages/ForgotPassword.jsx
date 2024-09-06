@@ -5,6 +5,8 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import axios from "axios";
 
 const ForgotPassword = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [email, setEmail] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [otp, setOtp] = useState("");
@@ -37,7 +39,7 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:8898/api/requestOTP`,
+        `${apiBaseUrl}/api/requestOTP`,
         { email },
         { withCredentials: true }
       );
@@ -66,7 +68,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8898/api/submitOTP`,
+        `${apiBaseUrl}/api/submitOTP`,
         { otp, email },
         { withCredentials: true }
       );

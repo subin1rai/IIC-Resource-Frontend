@@ -11,10 +11,12 @@ import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
 import add from "../assets/addCategory.svg";
 import edit from "../assets/editIcon.png";
-import  Close from "../assets/Close.png";
+import Close from "../assets/Close.png";
 import { useSelector } from "react-redux";
 
 const SettingRole = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [users, setUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ const SettingRole = () => {
   const [isDepartmentListVisible, setIsDepartmentListVisible] = useState(false);
   const [isAddDepartmentVisible, setIsAddDepartmentVisible] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
-  
+
   const [newDepartment, setNewDepartment] = useState({ department_name: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -33,7 +35,6 @@ const SettingRole = () => {
   const [allFilteredUsers, setAllFilteredUsers] = useState([]);
   const [editFormVisibility, setEditFormVisibility] = useState(false);
   const [contactError, setContactError] = useState("");
-
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
@@ -79,25 +80,23 @@ const SettingRole = () => {
     setEditFormVisibility(false);
     setError(null); // Clear error when closing the forms
   };
-  
+
   const displayAddPopup = (formName) => {
     setIsDepartmentListVisible(false);
     setIsAddDepartmentVisible(true);
   };
 
-
-  
   // Fetch users and departments data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [userResponse, departmentResponse] = await Promise.all([
-          axios.get("http://localhost:8898/api/role/allUsers", {
+          axios.get(`${apiBaseUrl}/api/role/allUsers`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:8898/api/getDepartment"),
+          axios.get(`${apiBaseUrl}/api/getDepartment`),
         ]);
-  
+
         const users = userResponse.data.users || [];
         setUsers(users);
         setNumberOfUsers(users.length);
@@ -116,7 +115,7 @@ const SettingRole = () => {
     const fetchData = async () => {
       try {
         const activeResponse = await axios.get(
-          "http://localhost:8898/api/role/activeUser",
+          `${apiBaseUrl}/api/role/activeUser`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -203,11 +202,12 @@ const SettingRole = () => {
   };
 
   const handleDepartmentChange = (e) => {
-    setEditedDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setEditedDepartment((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
     setNewDepartment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
- 
 
   const handleAddUser = async (event) => {
     event.preventDefault();
@@ -219,7 +219,7 @@ const SettingRole = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/role/addUser",
+        `${apiBaseUrl}/api/role/addUser`,
         user,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -279,7 +279,7 @@ const SettingRole = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addDepartment",
+        `${apiBaseUrl}/api/addDepartment`,
         newDepartment,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -305,39 +305,41 @@ const SettingRole = () => {
     event.preventDefault();
     try {
       const response = await axios.put(
-        
-        `http://localhost:8898/api/editDepartment/${editedDepartment.department_id}`,
+        `${apiBaseUrl}/api/editDepartment/${editedDepartment.department_id}`,
         editedDepartment,
-       
+
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
-      
-     
-     if (response.status === 200) {
-      // Update the departments list with the edited department
-      setDepartments((prevDepartments) =>
-        prevDepartments.map((department) =>
-          department.id === editedDepartment.department_id
-            ? { ...department, department_name: editedDepartment.department_name }
-            : department
-        )
+
+      if (response.status === 200) {
+        // Update the departments list with the edited department
+        setDepartments((prevDepartments) =>
+          prevDepartments.map((department) =>
+            department.id === editedDepartment.department_id
+              ? {
+                  ...department,
+                  department_name: editedDepartment.department_name,
+                }
+              : department
+          )
+        );
+        setEditFormVisibility(false);
+        setIsDepartmentListVisible(true);
+        setError(null);
+        toast.success("Department updated successfully");
+      } else {
+        setError("Failed to update the department");
+      }
+    } catch (error) {
+      console.error("An error occurred while updating the department:", error);
+      setError(
+        error.response?.data?.message ||
+          "An error occurred while updating the department"
       );
-      setEditFormVisibility(false);
-      setIsDepartmentListVisible(true);
-      setError(null);
-      toast.success('Department updated successfully');
-    } else {
-      setError("Failed to update the department");
     }
-  } catch (error) {
-    console.error("An error occurred while updating the department:", error);
-    setError(error.response?.data?.message || "An error occurred while updating the department");
-  }
-};
-  
+  };
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background relative">
@@ -590,67 +592,64 @@ const SettingRole = () => {
         </div>
       )}
 
-
-{isDepartmentListVisible && (
-
+      {isDepartmentListVisible && (
         <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
           <form
             onSubmit={handleAddDepartment}
-          className="w-[86.5vw] flex  justify-center  p-3 h-[65vh]">
-          <div className="flex flex-col w-[32%] rounded-lg ">
-            <div className="flex bg-blue-500 rounded-t-md justify-between px-10 py-3">
-              <h1 className="text-lg font-medium text-white justify-evenly ">Department</h1>
-              <div className="flex space-x-4"> 
-              <img
-                src={add}
-                alt="add"
-                onClick={() => displayAddPopup("department")}
-                className="w-8 h-8 cursor-pointer"
-              />
-             <img
-                src={Close}
-                alt="Close"
-                className="w-5 h-5 mt-2 ml-1 cursor-pointer"
-                onClick={() => {
-                  setEditFormVisibility(false); // Hide the edit form
-                  setIsDepartmentListVisible(false); // Show the department list
-                }}
-              />
-                            </div>
-            </div>
-            <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
-              {departments.map((department) => (
-                <div className="w-full flex flex-col items-center">
-                <div className="w-[80%] py-4">
-                <div className="flex w-full justify-between items-center">
-                <p>{department.department_name}</p>
-                
-                <img
-                  src={edit}
-                  alt="Edit"
-                  className="h-5 w-5 cursor-pointer"
-                  onClick={() => {
-                    setEditFormVisibility(true); // Show the edit form
-                    setIsDepartmentListVisible(false); // Hide the department list
-                    setEditedDepartment(department); // Load the department data into the form
-                  }}
-                />
+            className="w-[86.5vw] flex  justify-center  p-3 h-[65vh]"
+          >
+            <div className="flex flex-col w-[32%] rounded-lg ">
+              <div className="flex bg-blue-500 rounded-t-md justify-between px-10 py-3">
+                <h1 className="text-lg font-medium text-white justify-evenly ">
+                  Department
+                </h1>
+                <div className="flex space-x-4">
+                  <img
+                    src={add}
+                    alt="add"
+                    onClick={() => displayAddPopup("department")}
+                    className="w-8 h-8 cursor-pointer"
+                  />
+                  <img
+                    src={Close}
+                    alt="Close"
+                    className="w-5 h-5 mt-2 ml-1 cursor-pointer"
+                    onClick={() => {
+                      setEditFormVisibility(false); // Hide the edit form
+                      setIsDepartmentListVisible(false); // Show the department list
+                    }}
+                  />
+                </div>
               </div>
-                </div>
-                <hr className="h-1 w-[80%] border-neutral-300" />
-                </div>
-              ))}
+              <div className="flex flex-col bg-white items-center pb-4 rounded-b-md overflow-auto ">
+                {departments.map((department) => (
+                  <div className="w-full flex flex-col items-center">
+                    <div className="w-[80%] py-4">
+                      <div className="flex w-full justify-between items-center">
+                        <p>{department.department_name}</p>
+
+                        <img
+                          src={edit}
+                          alt="Edit"
+                          className="h-5 w-5 cursor-pointer"
+                          onClick={() => {
+                            setEditFormVisibility(true); // Show the edit form
+                            setIsDepartmentListVisible(false); // Hide the department list
+                            setEditedDepartment(department); // Load the department data into the form
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <hr className="h-1 w-[80%] border-neutral-300" />
+                  </div>
+                ))}
+              </div>
             </div>
-          
-          </div>
-          
-           
           </form>
         </div>
       )}
 
-     
-{isAddDepartmentVisible && (
+      {isAddDepartmentVisible && (
         <div className="w-screen h-screen  bg-overlay absolute z-10 flex justify-center items-center">
           <form
             onSubmit={handleAddDepartment}
@@ -698,55 +697,58 @@ const SettingRole = () => {
         </div>
       )}
 
-
-{editFormVisibility && (
-  <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
-    <form
-      onSubmit={handleEditDepartment}
-      className="bg-white px-10 py-5 rounded flex flex-col gap-8"
-    >
-      <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold">Edit Department</h3>
-        <img
-          src={closeIcon}
-          alt="Close"
-          className="w-4 h-4 cursor-pointer"
-          onClick={closeDepartment}
-          // Close the form
-        />
-      </div>
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-between items-center gap-10">
-          <label htmlFor="department_name" className="w-[100px] font-medium">
-            Name
-          </label>
-          <input
-            placeholder="Enter Department name"
-            id="department_name"
-            name="department_name"
-            value={editedDepartment.department_name}
-            onChange={handleDepartmentChange}
-            type="text"
-            className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
-            autoFocus
-          />
+      {editFormVisibility && (
+        <div className="w-screen h-screen bg-overlay absolute z-10 flex justify-center items-center">
+          <form
+            onSubmit={handleEditDepartment}
+            className="bg-white px-10 py-5 rounded flex flex-col gap-8"
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-semibold">Edit Department</h3>
+              <img
+                src={closeIcon}
+                alt="Close"
+                className="w-4 h-4 cursor-pointer"
+                onClick={closeDepartment}
+                // Close the form
+              />
+            </div>
+            <div className="flex flex-col gap-6">
+              <div className="flex justify-between items-center gap-10">
+                <label
+                  htmlFor="department_name"
+                  className="w-[100px] font-medium"
+                >
+                  Name
+                </label>
+                <input
+                  placeholder="Enter Department name"
+                  id="department_name"
+                  name="department_name"
+                  value={editedDepartment.department_name}
+                  onChange={handleDepartmentChange}
+                  type="text"
+                  className="border-border border-2 rounded px-2 py-2 w-[300px] focus:outline-slate-400"
+                  autoFocus
+                />
+              </div>
+              {error && <div className="text-red-500 self-start">{error}</div>}
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-button text-white px-4 py-2 rounded"
+                >
+                  Edit Department
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-        {error && <div className="text-red-500 self-start">{error}</div>}
-        <div className="flex justify-end">
-          <button type="submit" className="bg-button text-white px-4 py-2 rounded">
-            Edit Department
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
-)}
+      )}
 
-      
       <ToastContainer />
     </div>
   );
 };
 
 export default SettingRole;
-

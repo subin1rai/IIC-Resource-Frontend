@@ -55,12 +55,13 @@ const VendorHistory = () => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchPurchaseHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8898/api/vendor/${vendor_id}`
+          `${apiBaseUrl}/api/vendor/${vendor_id}`
         );
 
         setVendors(response.data.bills);

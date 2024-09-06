@@ -92,6 +92,8 @@ const CategoryFields = ({ categories, setCategories, itemCategoryOptions }) => {
 };
 
 const Vendor = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [vendor, setVendor] = useState({
     vendor_name: "",
     vat_number: "",
@@ -128,7 +130,6 @@ const Vendor = () => {
     vendorStatus: "",
     vendorCategory: "",
   });
-
 
   const openAddVendorForm = () => {
     setAddFormVisibility(true);
@@ -202,19 +203,15 @@ const Vendor = () => {
     }),
   };
 
-
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/itemCategory",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/itemCategory`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setItemCategory(response.data.allData || []);
       } catch (error) {
         if (axios.isCancel(error)) {
@@ -241,7 +238,7 @@ const Vendor = () => {
         categories: JSON.stringify(vendor.categories),
       };
       const response = await axios.post(
-        "http://localhost:8898/api/addVendor",
+        `${apiBaseUrl}/api/addVendor`,
         vendorData,
         {
           headers: {
@@ -273,15 +270,12 @@ const Vendor = () => {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8898/api/bill/exportVendor",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/api/bill/exportVendor`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      });
 
       const file = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -304,7 +298,7 @@ const Vendor = () => {
   useEffect(() => {
     const getAllVendors = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/vendor", {
+        const response = await axios.get(`${apiBaseUrl}/api/vendor`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -325,7 +319,6 @@ const Vendor = () => {
 
     getAllVendors();
   }, [token]);
-
 
   const handleDateChange = (name) => (date) => {
     setFilterOptions((prev) => ({ ...prev, [name]: date }));
@@ -357,7 +350,6 @@ const Vendor = () => {
       });
     }
 
-
     if (filterOptions.durationOption) {
       filteredResults.sort((a, b) => {
         if (filterOptions.durationOption === "low-to-high") {
@@ -379,7 +371,6 @@ const Vendor = () => {
       });
     }
 
-
     // TDS filter
     if (filterOptions.tdsOption) {
       filteredResults.sort((a, b) => {
@@ -394,48 +385,53 @@ const Vendor = () => {
 
     if (filterOptions.paymentStatus) {
       filteredResults = filteredResults.filter(
-        (vendor) => (vendor.pending_payment > 0) === (parseInt(filterOptions.paymentStatus) === 0)
+        (vendor) =>
+          vendor.pending_payment > 0 ===
+          (parseInt(filterOptions.paymentStatus) === 0)
       );
     }
 
-
-    if (filterOptions.vendorStatus !== undefined && filterOptions.vendorStatus !== "") {
+    if (
+      filterOptions.vendorStatus !== undefined &&
+      filterOptions.vendorStatus !== ""
+    ) {
       filteredResults = filteredResults.filter((vendor) => {
-
         if (vendor.black_list === null || vendor.black_list === false) {
           // Show whitelisted vendors when `vendor.black_list` is null or false
           return parseInt(filterOptions.vendorStatus) === 0;
         }
 
         // Show blacklisted vendors when `vendor.black_list` is true
-        return vendor.black_list === true && parseInt(filterOptions.vendorStatus) === 1;
+        return (
+          vendor.black_list === true &&
+          parseInt(filterOptions.vendorStatus) === 1
+        );
       });
     }
 
-  //   if (filterOptions.selectedCategory) {
-  //     filteredResults = filteredResults.filter((vendor) => {
-  //       if (filterOptions.selectedCategory === vendor.categories.map(category) => (category.vend))
-  //   })
-  // }
+    //   if (filterOptions.selectedCategory) {
+    //     filteredResults = filteredResults.filter((vendor) => {
+    //       if (filterOptions.selectedCategory === vendor.categories.map(category) => (category.vend))
+    //   })
+    // }
 
     if (filterOptions.vendorCategory) {
-      filteredResults = filteredResults.filter(vendor =>
-        vendor.vendorCategory.some(vendor => vendor.category.item_category_id === filterOptions.vendorCategory)
+      filteredResults = filteredResults.filter((vendor) =>
+        vendor.vendorCategory.some(
+          (vendor) =>
+            vendor.category.item_category_id === filterOptions.vendorCategory
+        )
       );
     }
-
 
     setFilteredVendors(filteredResults);
     setFilterFormVisibility(false);
   };
 
-
-
   const itemCategoryOptions = itemCategory.map((cat) => ({
     value: cat._id || cat.item_category_id,
     label: cat.name || cat.item_category_name,
   }));
-
 
   const itemFilterCategoryOptions = [
     { value: null, label: "All Category" }, // Add this option for "no category"
@@ -444,9 +440,6 @@ const Vendor = () => {
       label: cat.name || cat.item_category_name,
     })),
   ];
-
-
-
 
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategory(selectedOption);
@@ -710,7 +703,9 @@ const Vendor = () => {
                   onChange={(selectedOption) =>
                     setFilterOptions((prev) => ({
                       ...prev,
-                      vendorCategory: selectedOption ? selectedOption.value : null, // Handle the selected option
+                      vendorCategory: selectedOption
+                        ? selectedOption.value
+                        : null, // Handle the selected option
                     }))
                   }
                   placeholder="Choose Category"
@@ -719,7 +714,6 @@ const Vendor = () => {
                   className="react-select-container"
                   classNamePrefix="react-select"
                 />
-
               </div>
             </div>
             <button
