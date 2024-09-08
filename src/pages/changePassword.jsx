@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const ChangePassword = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [password, setPassword] = useState({
     current_password: "",
     password: "",
@@ -37,7 +39,7 @@ const ChangePassword = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:8898/api/changePassword",
+        `${apiBaseUrl}/api/changePassword`,
         password,
         {
           headers: {
@@ -49,7 +51,6 @@ const ChangePassword = () => {
       toast.success("Password changed successfully!");
       goBack();
     } catch (error) {
-    
       setError(error.response.data.error);
     }
   };

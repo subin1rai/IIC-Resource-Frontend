@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUserInfo } from "../features/user/userSlice";
 
 const Login = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [user, setUser] = useState({
     user_email: "",
     password: "",
@@ -24,11 +26,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:8898/api/login`,
-        user,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${apiBaseUrl}/api/login`, user, {
+        withCredentials: true,
+      });
       dispatch(setUserInfo(response.data.userData));
 
       localStorage.setItem("userInfo", JSON.stringify(response.data.userData));
@@ -46,7 +46,6 @@ const Login = () => {
         navigate("/login");
       }
     } catch (error) {
-
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
       } else {

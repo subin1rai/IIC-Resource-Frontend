@@ -19,6 +19,8 @@ import "nepali-datepicker-reactjs/dist/index.css";
 import { useSelector } from "react-redux";
 
 const Inventory = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -173,15 +175,11 @@ const Inventory = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:8898/api/addItem",
-        itemData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${apiBaseUrl}/api/addItem`, itemData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       toast.success(`${itemData.item_name} added successfully!`);
       setAddFormVisibility(false);
@@ -207,15 +205,12 @@ const Inventory = () => {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8898/api/bill/exportItem",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/api/bill/exportItem`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      });
 
       const file = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -230,7 +225,6 @@ const Inventory = () => {
 
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
-
     } catch (error) {
       console.error("Error downloading the file:", error.message);
     }
@@ -239,7 +233,7 @@ const Inventory = () => {
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items", {
+        const response = await axios.get(`${apiBaseUrl}/api/items`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -248,17 +242,14 @@ const Inventory = () => {
         setItems(response.data);
         setFilteredItems(response.data);
 
-        const categoryResponse = await axios.get(
-          "http://localhost:8898/api/category",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const categoryResponse = await axios.get(`${apiBaseUrl}/api/category`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const itemCategoryResponse = await axios.get(
-          "http://localhost:8898/api/itemCategory",
+          `${apiBaseUrl}/api/itemCategory`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -266,23 +257,17 @@ const Inventory = () => {
           }
         );
 
-        const featureResponse = await axios.get(
-          "http://localhost:8898/api/feature",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const featureResponse = await axios.get(`${apiBaseUrl}/api/feature`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const unitResponse = await axios.get(
-          "http://localhost:8898/api/units",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const unitResponse = await axios.get(`${apiBaseUrl}/api/units`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setMeasuringUnit(unitResponse.data.measuring_unit);
         setItemCategory(itemCategoryResponse.data.allData);

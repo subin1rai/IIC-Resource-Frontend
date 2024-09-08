@@ -47,11 +47,12 @@ const Sidebar = () => {
 
     return "item-text";
   };
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/logout",
+        `${apiBaseUrl}/api/logout`,
         {},
         {
           withCredentials: true,

@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 
 
 const Request = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
@@ -45,7 +47,7 @@ const Request = () => {
     }),
     input: (provided) => ({
       ...provided,
-      width: "45px",
+      width: "200px",
       margin: "0px",
       color: "black",
     }),
@@ -68,7 +70,7 @@ const Request = () => {
   useEffect(() => {
     const getRequest = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/request", {
+        const response = await axios.get(`${apiBaseUrl}/api/request`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -98,11 +100,13 @@ const Request = () => {
     };
   }, []);
 
+
+  // fetching department 
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
         const departmentResponse = await axios.get(
-          "http://localhost:8898/api/getDepartment",
+          `${apiBaseUrl}/api/getDepartment`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -206,6 +210,8 @@ const Request = () => {
         </div>
       </div>
 
+
+      {/* filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">

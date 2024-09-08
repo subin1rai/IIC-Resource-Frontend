@@ -17,6 +17,8 @@ import { useSelector } from "react-redux";
 import { CleanHands } from "@mui/icons-material";
 
 const Issue = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [issue, setIssue] = useState({
     issue_date: "",
     issued_to: "",
@@ -36,6 +38,28 @@ const Issue = () => {
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
   const [returned, setReturned] = useState(0);
+
+  const [departments, setDepartments] = useState([]);
+
+
+  // // fet
+  // useEffect(() => {
+  //   const fetchDepartment = async () => {
+  //     try {
+  //       const departmentResponse = await axios.get(
+  //         `${apiBaseUrl}/api/getDepartment`,
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
+  //       setDepartments(departmentResponse.data.department);
+  //     } catch (error) {
+  //       console.error("Error fetching department:", error);
+  //     }
+  //   };
+
+  //   fetchDepartment();
+  // }, [token]);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -70,7 +94,7 @@ const Issue = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8898/api/addIssue",
+        `${apiBaseUrl}/api/addIssue`,
         issueData,
 
         {
@@ -80,23 +104,6 @@ const Issue = () => {
         }
       );
 
-      const newIssue = response.data.issues;
-      const formattedNewIssue = {
-        issue_id: newIssue.id,
-        issue_date: newIssue.issue_Date,
-        item_id: formattedItems.map((item) => item.item_id).join(", "),
-        item_quantity: formattedItems.reduce(
-          (sum, item) => sum + Number(item.quantity),
-          0
-        ),
-        requested_by: newIssue.issued_to,
-        department: newIssue.department || "N/A",
-        issued_by: newIssue.approved_by || "N/A",
-        status: newIssue.status || "Dispatched",
-        remarks: newIssue.purpose || "N/A",
-      };
-
-      setIssues((prevIssues) => [...prevIssues, formattedNewIssue]);
       closeAddIssueForm();
       toast.success(`Items issued to ${issue.issued_to} successfully `);
       setItemFields([{ item_id: "", quantity: "" }]);
@@ -183,7 +190,7 @@ const Issue = () => {
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/issue", {
+        const response = await axios.get(`${apiBaseUrl}/api/issue`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -204,14 +211,11 @@ const Issue = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,
@@ -308,6 +312,8 @@ const Issue = () => {
         </div>
       </div>
 
+
+      {/* Filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
           <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
@@ -326,14 +332,35 @@ const Issue = () => {
                   <label htmlFor="" className="font-medium">
                     Issued Item:{" "}
                   </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    autoFocus
-                  >
-                    <option value="">Select an item</option>
-                  </select>
+                  <Select
+                    options={itemOptions}
+                    onChange={(selectedOption) =>
+                      handleItemChange(
+                        index,
+                        "item_id",
+                        selectedOption.value
+                      )
+                    }
+                    value={itemOptions.find(
+                      (option) => option.value === items.item
+                    )}
+                    placeholder="Select Item"
+                    styles={{
+                      ...customStyles,
+                      menuPortal: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        maxHeight: 150,
+                        overflowY: "auto",
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
+                    className="w-[190px]"
+                    classNamePrefix="react-select"
+                  />
                 </div>
 
                 {/* div for request status */}
@@ -424,6 +451,9 @@ const Issue = () => {
           </form>
         </div>
       )}
+
+
+      {/* Add issue */}
       {addIssueVisibility && (
         <form
           onSubmit={handleSubmit}

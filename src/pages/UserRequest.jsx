@@ -11,6 +11,8 @@ import subtract from "../assets/subtract.svg";
 import { useSelector } from "react-redux";
 
 const UserRequest = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [request, setRequest] = useState({
     items: [],
     purpose: "",
@@ -25,16 +27,12 @@ const UserRequest = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
-  console.log(userInfo);
   const userDepartment = userInfo.department;
-
 
   useEffect(() => {
     const getDepartmentUsers = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/role/allUsers"
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/role/allUsers`);
 
         const filteredUsers = response.data.users.filter(
           (user) => user.department_name === userDepartment
@@ -60,7 +58,7 @@ const UserRequest = () => {
   useEffect(() => {
     const getAllItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8898/api/items", {
+        const response = await axios.get(`${apiBaseUrl}/api/items`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -137,7 +135,7 @@ const UserRequest = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8898/api/addRequest",
+        `${apiBaseUrl}/api/addRequest`,
         requestData,
         {
           headers: {
@@ -214,91 +212,93 @@ const UserRequest = () => {
                 </div>
               </div>
               <div className="overflow-auto max-h-52">
-              {items.map((item, index) => (
-                <div key={index} className="flex p-3 gap-3  ">
-                  <Select
-                    options={allItems.map((item) => {
-                      const features = Object.entries(
-                        item.itemsOnFeatures || {}
-                      )
-                        .filter(([key, value]) => value)
-                        .map(([key, value]) => ` - ${value}`)
-                        .join("");
+                {items.map((item, index) => (
+                  <div key={index} className="flex p-3 gap-3  ">
+                    <Select
+                      options={allItems.map((item) => {
+                        const features = Object.entries(
+                          item.itemsOnFeatures || {}
+                        )
+                          .filter(([key, value]) => value)
+                          .map(([key, value]) => ` - ${value}`)
+                          .join("");
 
-                      const label = `${item.item_name}${features}`;
+                        const label = `${item.item_name}${features}`;
 
-                      return {
-                        value: item.item_id,
-                        label: label,
-                      };
-                    })}
-                    onChange={(option) => handleItemSelectChange(option, index)}
-                    value={
-                      item.item_id
-                        ? {
-                            value: item.item_id,
-                            label: allItems
-                              .map((i) => {
-                                const features = Object.entries(
-                                  i.itemsOnFeatures || {}
-                                )
-                                  .filter(([key, value]) => value)
-                                  .map(([key, value]) => ` - ${value}`)
-                                  .join("");
+                        return {
+                          value: item.item_id,
+                          label: label,
+                        };
+                      })}
+                      onChange={(option) =>
+                        handleItemSelectChange(option, index)
+                      }
+                      value={
+                        item.item_id
+                          ? {
+                              value: item.item_id,
+                              label: allItems
+                                .map((i) => {
+                                  const features = Object.entries(
+                                    i.itemsOnFeatures || {}
+                                  )
+                                    .filter(([key, value]) => value)
+                                    .map(([key, value]) => ` - ${value}`)
+                                    .join("");
 
-                                return `${i.item_name}${features}`;
-                              })
-                              .find(
-                                (label, idx) =>
-                                  allItems[idx].item_id === item.item_id
-                              ),
-                          }
-                        : null
-                    }
-                    placeholder="Select Item"
-                    styles={{
-                      ...customStyles,
-                      menuPortal: (provided) => ({
-                        ...provided,
-                        zIndex: 9999,
-                      }),
-                      menuList: (provided) => ({
-                        ...provided,
-                        maxHeight: 150, // Adjust this as needed
-                        overflowY: "auto", // This ensures only the menu list scrolls
-                      }),
-                    }}
-                    menuPortalTarget={document.body}
-                    className="w-[170px] whitespace-nowrap"
-                  />
-
-                  <input
-                    name={`quantity_${index}`}
-                    placeholder="Enter quantity"
-                    className="border-stone-200 border-2 rounded py-2 px-4 w-64 focus:outline-slate-400"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      handleItemChange(index, "quantity", e.target.value)
-                    }
-                  />
-                  {items.length > 1 && (
-                    <img
-                      src={subtract}
-                      alt="delete"
-                      onClick={() => removeItem(index)}
-                      className="mt-2 cursor-pointer"
+                                  return `${i.item_name}${features}`;
+                                })
+                                .find(
+                                  (label, idx) =>
+                                    allItems[idx].item_id === item.item_id
+                                ),
+                            }
+                          : null
+                      }
+                      placeholder="Select Item"
+                      styles={{
+                        ...customStyles,
+                        menuPortal: (provided) => ({
+                          ...provided,
+                          zIndex: 9999,
+                        }),
+                        menuList: (provided) => ({
+                          ...provided,
+                          maxHeight: 150, // Adjust this as needed
+                          overflowY: "auto", // This ensures only the menu list scrolls
+                        }),
+                      }}
+                      menuPortalTarget={document.body}
+                      className="w-[170px] whitespace-nowrap"
                     />
-                  )}
-                  {index === items.length - 1 && (
-                    <img
-                      src={addImage}
-                      alt="add"
-                      onClick={addItem}
-                      className="mt-2 cursor-pointer"
+
+                    <input
+                      name={`quantity_${index}`}
+                      placeholder="Enter quantity"
+                      className="border-stone-200 border-2 rounded py-2 px-4 w-64 focus:outline-slate-400"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleItemChange(index, "quantity", e.target.value)
+                      }
                     />
-                  )}
-                </div>
-              ))}
+                    {items.length > 1 && (
+                      <img
+                        src={subtract}
+                        alt="delete"
+                        onClick={() => removeItem(index)}
+                        className="mt-2 cursor-pointer"
+                      />
+                    )}
+                    {index === items.length - 1 && (
+                      <img
+                        src={addImage}
+                        alt="add"
+                        onClick={addItem}
+                        className="mt-2 cursor-pointer"
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
               <div className="flex flex-col p-3 gap-3">
                 <label className="font-medium text-md">Requesting for:</label>

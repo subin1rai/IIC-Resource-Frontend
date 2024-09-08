@@ -13,6 +13,8 @@ import removeIcon from "../assets/removeIcon.svg";
 import { useSelector } from "react-redux";
 
 const SingleItem = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [item, setItem] = useState({
     item_name: "",
     category: "",

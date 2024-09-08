@@ -23,6 +23,8 @@ const getRandomColor = () => {
 };
 
 const Topbar = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const [notificationPopUp, setNotificationPopUp] = useState(false);
@@ -107,14 +109,11 @@ const Topbar = () => {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8898/api/notificaiton",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/notificaiton`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setNotification(response.data.notifications || []);
         const unreadCount = response.data.notifications.filter(
           (req) => !req.state
@@ -154,7 +153,7 @@ const Topbar = () => {
   const handleState = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/updateNotification`,
+        `${apiBaseUrl}/api/updateNotification`,
         {},
         {
           headers: {
@@ -184,7 +183,7 @@ const Topbar = () => {
     if (notificationToUpdate) {
       try {
         const response = await axios.put(
-          `http://localhost:8898/api/singleNotification/${notification_id}`,
+          `${apiBaseUrl}/api/singleNotification/${notification_id}`,
           {},
           {
             headers: {

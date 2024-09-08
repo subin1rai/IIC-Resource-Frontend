@@ -10,6 +10,8 @@ import axios from "axios";
 import pending from "../assets/pending.png";
 
 const Payment = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [payment, setPayment] = "";
 
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);

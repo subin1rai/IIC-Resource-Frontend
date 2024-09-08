@@ -16,6 +16,8 @@ import Chat from "../components/Chat";
 import { useSelector } from "react-redux";
 
 const SpecificRequest = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [request, setRequest] = useState({
     userId: "",
     for_userId: "",
@@ -54,7 +56,6 @@ const SpecificRequest = () => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
-
 
   const customStyles = {
     control: (provided, state) => ({
@@ -101,14 +102,12 @@ const SpecificRequest = () => {
     remarks: "",
   });
 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       setLoading(true);
       const response = await axios.put(
-        `http://localhost:8898/api/approveRequest/${id}`,
+        `${apiBaseUrl}/api/approveRequest/${id}`,
         {
           replaceItems: itemFields,
           remarks,
@@ -136,7 +135,7 @@ const SpecificRequest = () => {
           },
         }));
       } else {
-        console.error("error status 200")
+        console.error("error status 200");
       }
     } catch (error) {
       console.error("Error approving request:", error);
@@ -171,12 +170,11 @@ const SpecificRequest = () => {
 
   const openDeclineForm = () => {
     setDeclineFormVisibility(true);
-  }
+  };
 
   const closeDeclineForm = () => {
     setDeclineFormVisibility(false);
-  }
-
+  };
 
   const closeAcceptForm = () => {
     setAcceptFormVisibility(false);
@@ -217,12 +215,12 @@ const SpecificRequest = () => {
       setLoading(true);
       try {
         const [singleRequestResponse, itemsResponse] = await Promise.all([
-          axios.get(`http://localhost:8898/api/singleRequest/${id}`, {
+          axios.get(`${apiBaseUrl}/api/singleRequest/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          axios.get("http://localhost:8898/api/items", {
+          axios.get("${apiBaseUrl}/api/items", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -280,7 +278,7 @@ const SpecificRequest = () => {
   const handleDelivered = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/deliverRequest/${id}`,
+        `${apiBaseUrl}/api/deliverRequest/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -464,45 +462,45 @@ const SpecificRequest = () => {
             </tbody>
           </table>
           {!loading && declineFormVisibility && (
-        <>
-        <div className="h-screen w-screen bg-overlay absolute top-0 right-0 "></div>
-          <form
-            onSubmit={handleDecline}
-            className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded "
-          >
-             <div className="flex flex-col gap-4">
-                <p className="font-semibold flex justify-between items-center text-xl ">Send Remarks
-                <img
-              className="cursor-pointer h-4 w-4 "
-              src={close}
-              alt="close button"
-              onClick={closeDeclineForm}
-            />
-            </p>
-                <div className="flex flex-col"></div>
+            <>
+              <div className="h-screen w-screen bg-overlay absolute top-0 right-0 "></div>
+              <form
+                onSubmit={handleDecline}
+                className="flex absolute z-30 bg-white flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded "
+              >
+                <div className="flex flex-col gap-4">
+                  <p className="font-semibold flex justify-between items-center text-xl ">
+                    Send Remarks
+                    <img
+                      className="cursor-pointer h-4 w-4 "
+                      src={close}
+                      alt="close button"
+                      onClick={closeDeclineForm}
+                    />
+                  </p>
+                  <div className="flex flex-col"></div>
 
-                <div className="flex gap-3">
-                <label className="font-medium text-md">Remarks:</label>
-                <textarea
-                  rows={5}
-                  cols={40}
-                  name="remarks"
-                  placeholder="Enter your remarks here..."
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
-                  value={requestDetails?.request?.remarks}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex justify-end">
-                <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
-                  Done
-                </button>
-              </div>
-
+                  <div className="flex gap-3">
+                    <label className="font-medium text-md">Remarks:</label>
+                    <textarea
+                      rows={5}
+                      cols={40}
+                      name="remarks"
+                      placeholder="Enter your remarks here..."
+                      className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
+                      value={requestDetails?.request?.remarks}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="flex justify-end">
+                    <button className="self-end bg-blue-600 text-white h-fit py-3 px-8 rounded-md">
+                      Done
+                    </button>
+                  </div>
                 </div>
-          </form>
-        </>
-      )}
+              </form>
+            </>
+          )}
           {!loading && acceptFormVisibility && (
             <form
               onSubmit={handleSubmit}

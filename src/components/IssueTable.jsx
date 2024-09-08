@@ -25,21 +25,21 @@ import { useSelector } from "react-redux";
 const columns = [
   { id: "id", label: "Issue ID", minWidth: 70 },
   {
-    id: "issue_Date",
+    id: "issue_date",
     label: "Issue Date",
     minWidth: 70,
     format: (value) => new Date(value).toLocaleDateString("en-US"),
   },
-  { id: "issue_item", label: "Issued Item", minWidth: 70 },
+  { id: "issue_name", label: "Issued Item", minWidth: 70 },
   {
-    id: "Quantity",
+    id: "quantity",
     label: "Quantity",
     minWidth: 70,
     align: "center",
     // format: (value) => value.toFixed(2),
   },
 
-  { id: "request_Id", label: "Requested By", minWidth: 70, align: "center" },
+  { id: "requested_by", label: "Requested By", minWidth: 70, align: "center" },
   { id: "department", label: "Department", minWidth: 70, align: "center" },
   { id: "approved_by", label: "Issued By", minWidth: 70, align: "center" },
   { id: "purpose", label: "Remarks", minWidth: 70, align: "center" },
@@ -72,6 +72,7 @@ export default function InventoryTable({ issues }) {
   });
 
   const [editedIssue, setEditedIssue] = useState({
+    id: "",
     issue_date: "",
     requested_by: "",
     purpose: "",
@@ -127,36 +128,34 @@ export default function InventoryTable({ issues }) {
   const handleDateChange = (event) => {
     const date = event;
     setEditedIssue((prev) => ({ ...prev, issue_date: date }));
+    console.log(editedIssue);
   };
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
 
-  useEffect(() => {
-    const fetchIssues = async () => {
-      try {
-        const response = await axios.get("http://localhost:8898/api/issue", {});
-        console.log(response);
-        setIssues(response.data.issue || []);
-      } catch (error) {
-        console.error("Error fetching issues:", error);
-        setIssues([]);
-      }
-    };
-    fetchIssues();
-  }, []);
+  // useEffect(() => {
+  //   const fetchIssues = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:8898/api/issue", {});
+  //       setEditedIssue(response.data.issue);
+  //     } catch (error) {
+  //       console.error("Error fetching issues:", error);
+  //       setIssues([]);
+  //     }
+  //   };
+  //   fetchIssues();
+  // }, []);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsResponse = await axios.get(
-          "http://localhost:8898/api/items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const itemsResponse = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const options = itemsResponse.data.map((item) => ({
           value: item.item_name,
           label: item.item_name,
@@ -172,7 +171,7 @@ export default function InventoryTable({ issues }) {
   }, [token]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    e.preventDefault();
     setEditedIssue({ ...editedIssue, [e.target.name]: e.target.value });
     console.log(editedIssue);
   };
@@ -181,9 +180,8 @@ export default function InventoryTable({ issues }) {
     event.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8898/api/editIssue/${editedIssue.issue_id}`,
+        `http://localhost:8898/api/editIssue/${editedIssue.id}`,
         editedIssue,
-
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -217,6 +215,12 @@ export default function InventoryTable({ issues }) {
     }
   };
 
+  const handleSelectChange = (event) => {
+    event.preventDefault();
+    setEditedIssue({ ...editedIssue, isReturned: event.target.value });
+    console.log(editedIssue);
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -227,6 +231,7 @@ export default function InventoryTable({ issues }) {
 
   const openEditIssueForm = (issue) => {
     setEditedIssue(issue);
+    console.log(issue);
     setEditIssueVisibility(true);
   };
 
@@ -317,6 +322,7 @@ export default function InventoryTable({ issues }) {
                       value={editedIssue.date}
                       onChange={handleDateChange}
                       options={{ calenderLocale: "en", valueLocale: "en" }}
+                      name="issue_date"
                     />
                   </div>
 
@@ -384,21 +390,25 @@ export default function InventoryTable({ issues }) {
                   rows={5}
                   className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh] focus:outline-slate-400 resize-none"
                   placeholder="Enter your purpose here.."
-                  value={editedIssue.remarks}
-                  name="remarks"
+                  value={editedIssue.purpose}
+                  name="purpose"
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex items-center">
-                <input
-                  id="checkbox"
-                  type="checkbox"
-                  className="h-5 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                  name="isReturned"
-                />
+              <div className="flex items-center gap-3">
                 <label htmlFor="checkbox" className="ml-2 text-lg font-medium">
                   Returned
                 </label>
+                <select
+                  name="isReturned"
+                  id="isReturned"
+                  onChange={handleSelectChange}
+                  value={editedIssue.isReturned}
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
               </div>
             </div>
             <div className="flex justify-end gap-4">
@@ -507,7 +517,10 @@ export default function InventoryTable({ issues }) {
                             ) : column.id === "edit" ? (
                               <IconButton
                                 color="primary"
-                                onClick={() => openEditIssueForm(issue)}
+                                onClick={() => {
+                                  setEditIssueVisibility(true);
+                                  setEditedIssue({ ...issue });
+                                }}
                               >
                                 <EditIcon />
                               </IconButton>

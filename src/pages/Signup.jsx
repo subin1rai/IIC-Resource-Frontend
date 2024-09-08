@@ -6,6 +6,8 @@ import logo from "../assets/logo.png";
 import Logo1 from "../assets/logo1.png";
 
 const Signup = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [user, setUser] = useState({
     user_name: "",
     user_email: "",
@@ -24,7 +26,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8898/api/signup`, user);
+      await axios.post(`${apiBaseUrl}/api/signup`, user);
       navigate("/");
     } catch (error) {
       setError(error.response.data.error);

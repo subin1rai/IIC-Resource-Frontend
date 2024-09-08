@@ -8,6 +8,8 @@ import Chat from "../components/Chat";
 import { NavLink, Link } from "react-router-dom";
 
 const UserHome = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   return (
     <div className="absolute">
       <Navbar />
