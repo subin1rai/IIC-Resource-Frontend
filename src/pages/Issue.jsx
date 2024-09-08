@@ -11,10 +11,10 @@ import add from "../assets/addIcon.svg";
 import remove from "../assets/removeIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import { ADToBS } from "bikram-sambat-js";
-import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { CleanHands } from "@mui/icons-material";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const Issue = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -39,27 +39,42 @@ const Issue = () => {
   const [itemOptions, setItemOptions] = useState([]);
   const [returned, setReturned] = useState(0);
 
+
   const [departments, setDepartments] = useState([]);
 
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
 
-  // // fet
-  // useEffect(() => {
-  //   const fetchDepartment = async () => {
-  //     try {
-  //       const departmentResponse = await axios.get(
-  //         `${apiBaseUrl}/api/getDepartment`,
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-  //       setDepartments(departmentResponse.data.department);
-  //     } catch (error) {
-  //       console.error("Error fetching department:", error);
-  //     }
-  //   };
 
-  //   fetchDepartment();
-  // }, [token]);
+  const [filterOptions, setFilteredOptions] = useState({
+    department_name: "",
+    item_name: "",
+    issueFrom: "",
+    issueTo: "",
+    issuedBy: "",
+    status: "",
+  })
+
+
+  // fetching department
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      try {
+        const departmentResponse = await axios.get(
+          `${apiBaseUrl}/api/getissueDepartment`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log(departmentResponse)
+        setDepartments(departmentResponse.data.department);
+      } catch (error) {
+        console.error("Error fetching department:", error);
+      }
+    };
+
+    fetchDepartment();
+  }, [token]);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -138,6 +153,8 @@ const Issue = () => {
       setItemFields(newFields);
     }
   };
+
+
   const handleDateChange = (event) => {
     const date = event;
     setIssue((prev) => ({ ...prev, issue_date: date }));
@@ -183,8 +200,7 @@ const Issue = () => {
     }),
   };
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const token = userInfo.token;
+
 
   // get issue from backend
   useEffect(() => {
@@ -197,6 +213,8 @@ const Issue = () => {
         });
         console.log(response);
         setIssues(response.data.issue || []);
+
+        setFilteredIssues(response.data.issue || []);
 
         const count = response.data.issue.filter(
           (req) => req.isReturned
@@ -247,6 +265,9 @@ const Issue = () => {
     fetchItems();
   }, [token]);
 
+
+
+
   useEffect(() => {
     let results = issues;
     if (searchTerm) {
@@ -256,6 +277,59 @@ const Issue = () => {
     }
     setFilteredIssues(results);
   }, [searchTerm, issues]);
+
+
+  const handleFilterDateChange = (name) => (date) => {
+    setFilteredOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
+  const applyFilter = (e) => {
+    e.preventDefault();
+    let filteredResults = [...issues];
+
+
+    if (filterOptions.department_name) {
+      filteredResults = filteredResults.filter(
+        (department) => department.department === filterOptions.department_name
+      )
+    }
+
+
+    if (filterOptions.issueFrom && filterOptions.issueTo) {
+      filteredResults = filteredResults.filter((issues) => {
+        const issueDate = new Date(issues.issue_date);
+        return (
+          issueDate >= new Date(filterOptions.issueFrom) &&
+          issueDate <= new Date(filterOptions.issueTo)
+        );
+      });
+    }
+
+    // returned and non returned status
+    if (
+      filterOptions.issue_status !== undefined &&
+      filterOptions.issue_status !== ""
+    ) {
+      filteredResults = filteredResults.filter((issue) => {
+        if (issue.isReturned === null || issue.isReturned === false) {
+          return parseInt(filterOptions.issue_status) === 0;
+        }
+
+        return (
+          issue.isReturned === true &&
+          parseInt(filterOptions.issue_status) === 1
+        );
+      });
+    }
+
+
+
+
+    setFilteredIssues(filteredResults)
+    setFilterFormVisibility(false)
+  }
+
+  console.log(issues)
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -309,7 +383,7 @@ const Issue = () => {
             </div>
           </div>
           <div className="mt-3">
-            {issues ? <IssueTable issues={issues} /> : <p>Loading issues...</p>}
+            {issues ? <IssueTable issues={filteredIssues} /> : <p>Loading issues...</p>}
           </div>
         </div>
       </div>
@@ -318,7 +392,8 @@ const Issue = () => {
       {/* Filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={applyFilter}>
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -362,6 +437,8 @@ const Issue = () => {
                     menuPortalTarget={document.body}
                     className="w-[190px]"
                     classNamePrefix="react-select"
+                    autoFocus
+
                   />
                 </div>
 
@@ -371,37 +448,46 @@ const Issue = () => {
                     {" "}
                     Department:{" "}
                   </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  >
-                    <option value="" disabled>
-                      Select department
-                    </option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
-                  </select>
+                  <Select
+                    options={departments.map((department) => ({
+                      value: department.department_name,
+                      label: department.department_name,
+                    }))}
+                    onChange={(selectedOption) => setFilteredOptions((prev) => ({
+                      ...prev,
+                      department_name: selectedOption.value,
+                    }))}
+                    placeholder="Select Department"
+                    styles={customStyles}
+                  />
                 </div>
               </div>
 
               {/* filter by requested date */}
-              <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium">
-                  Issue Date:
-                </label>
-                <div className="flex gap-8 ">
-                  <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    type="date"
-                    placeholder=" from"
+              <div className="flex gap-8">
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Issue From:
+                  </label>
+
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.issueFrom}
+                    onChange={handleFilterDateChange("issueFrom")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
-                  <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    type="date"
-                    placeholder="to"
+                </div>
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Issue To:
+                  </label>
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.issueTo}
+                    onChange={handleFilterDateChange("issueTo")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
                 </div>
               </div>
@@ -417,13 +503,10 @@ const Issue = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  autoFocus
                 >
-                  <option value="">Select a department</option>
-                  <option value="">BIT</option>
-                  <option value="">SSD</option>
-                  <option value="">BBA</option>
-                  <option value="">Resource</option>
+                  <option value="">Select a role</option>
+                  <option value="superadmin">Super Admin</option>
+                  <option value="admin">Admin</option>
                 </select>
               </div>
 
@@ -437,13 +520,19 @@ const Issue = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.issue_status}
+                  onChange={(e) =>
+                    setFilteredOptions((prev) => ({
+                      ...prev,
+                      issue_status: e.target.value,
+                    }))
+                  }
                 >
-                  <option value="" disabled>
+                  <option value="">
                     Select status
                   </option>
-                  <option value="">Pending</option>
-                  <option value="">Dispatched</option>
-                  <option value="">Denied</option>
+                  <option value="1">Returned</option>
+                  <option value="0">Not Returned</option>
                 </select>
               </div>
             </div>
