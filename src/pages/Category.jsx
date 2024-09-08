@@ -162,7 +162,7 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "${apiBaseUrl}/api/addCategory",
+        `${apiBaseUrl}/api/addCategory`,
         newCategory,
         {
           headers: {
