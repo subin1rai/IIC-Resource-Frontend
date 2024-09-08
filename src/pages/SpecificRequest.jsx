@@ -46,7 +46,7 @@ const SpecificRequest = () => {
   const [items, setItems] = useState([]);
   const [itemFields, setItemFields] = useState([{ item_id: "", quantity: "" }]);
   const [itemOptions, setItemOptions] = useState([]);
-  const [remarks, setRemarks] = useState();
+  const [remarks, setRemarks] = useState("");
   const [acceptFormVisibility, setAcceptFormVisibility] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -119,6 +119,7 @@ const SpecificRequest = () => {
         }
       );
       setRequest({ ...request, ...acceptRequest });
+      console.log(request);
       if (response.status === 200) {
         if (response.data.message === "Item changed") {
           toast.success("Request approved with item changes");
@@ -132,6 +133,7 @@ const SpecificRequest = () => {
             isApproved: true,
             status: "Holding",
             requestItems: itemFields,
+            remarks : remarks,
           },
         }));
       } else {
@@ -194,6 +196,9 @@ const SpecificRequest = () => {
   };
 
   const handleChange = (e) => {
+    if (e.target.name === "remarks") {
+      setRemarks(e.target.value);
+    }
     setFinalData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const removeItemField = (index) => {
@@ -220,16 +225,16 @@ const SpecificRequest = () => {
               Authorization: `Bearer ${token}`,
             },
           }),
-          axios.get("${apiBaseUrl}/api/items", {
+          axios.get(`${apiBaseUrl}/api/items`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
         ]);
-
+        console.log(singleRequestResponse);
         setRequestDetails(singleRequestResponse.data);
         setItemFields(singleRequestResponse.data.request.requestItems);
-
+        setRemarks(singleRequestResponse.data.request.remarks || "");
         setItemOptions(
           (itemsResponse.data || []).map((item) => {
             const features = Object.entries(item.itemsOnFeatures || {})
@@ -402,6 +407,12 @@ const SpecificRequest = () => {
                     {requestDetails?.request?.status}
                   </span>
                 </p>
+                <p className="font-semibold">
+                  Purpose:
+                  <span className="font-medium pl-4 text-[#6D6E70]">
+                    {requestDetails?.request?.purpose}
+                  </span>
+                </p>
               </div>
             </div>
           ) : (
@@ -488,7 +499,7 @@ const SpecificRequest = () => {
                       name="remarks"
                       placeholder="Enter your remarks here..."
                       className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
-                      value={requestDetails?.request?.remarks}
+                      // value={requestDetails?.request?.declineremarks}
                       onChange={handleChange}
                     />
                   </div>
@@ -634,9 +645,11 @@ const SpecificRequest = () => {
                     Remarks
                   </label>
                   <textarea
+                    id = "remarks"
                     name="remarks"
                     placeholder="Enter remarks"
                     className="border-stone-200 border-2 rounded py-2 px-5 w-[33vw] h-32 resize-none focus:outline-slate-400"
+                    value = {remarks}
                     onChange={handleChange}
                   />
                 </div>

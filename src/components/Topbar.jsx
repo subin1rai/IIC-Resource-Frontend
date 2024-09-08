@@ -51,6 +51,7 @@ const Topbar = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+  console.log(userInfo);
 
   const morningStart = 5;
   const afternoonStart = 12;
@@ -262,7 +263,7 @@ const Topbar = () => {
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
 
-                <li className="py-2 text-blue-600">{userInfo.contact}</li>
+                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
 
               </div>
               <div className="flex justify-center">
