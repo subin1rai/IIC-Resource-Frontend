@@ -63,8 +63,6 @@ const DropdownMenu = ({
     };
   }, []);
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
   const handleSetActive = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -79,7 +77,7 @@ const DropdownMenu = ({
         setLoading(true);
         try {
           const response = await axios.put(
-            `${apiBaseUrl}/api/role/activateUser/${user_id}`
+            `http://localhost:8898/api/role/activateUser/${user_id}`
           );
           if (response.status === 200) {
             Swal.fire("User Activated", "", "success");
@@ -116,7 +114,7 @@ const DropdownMenu = ({
       if (result.isConfirmed) {
         setLoading(true);
         axios
-          .put(`${apiBaseUrl}/api/role/deactivateUser/${user_id}`)
+          .put(`http://localhost:8898/api/role/deactivateUser/${user_id}`)
           .then((response) => {
             if (response.status === 200) {
               Swal.fire({
@@ -160,7 +158,7 @@ const DropdownMenu = ({
         setLoading(true);
         try {
           const response = await axios.put(
-            `${apiBaseUrl}/api/role/updateRole/${user_id}`,
+            `http://localhost:8898/api/role/updateRole/${user_id}`,
             { role }
           );
           if (response.status === 200) {
@@ -283,7 +281,6 @@ const DropdownMenu = ({
 
 const AllUser = ({ users: initialUsers }) => {
   const [allUsers, setAllUsers] = useState(initialUsers);
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const [contactError, setContactError] = useState("");
   const [error, setError] = useState(null);
@@ -306,7 +303,9 @@ const AllUser = ({ users: initialUsers }) => {
   useEffect(() => {
     try {
       const getDepartment = async () => {
-        const response = await axios.get(`${apiBaseUrl}/api/getDepartment`);
+        const response = await axios.get(
+          "http://localhost:8898/api/getDepartment"
+        );
         setDepartments(response.data.department);
       };
       getDepartment();
@@ -384,7 +383,7 @@ const AllUser = ({ users: initialUsers }) => {
 
     try {
       const response = await axios.put(
-        `${apiBaseUrl}/api/role/editUser/${editedUser.user_id}`,
+        `http://localhost:8898/api/role/editUser/${editedUser.user_id}`,
         {
           user_name: editedUser.user_name,
           user_email: editedUser.user_email,
