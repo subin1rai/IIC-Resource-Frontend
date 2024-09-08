@@ -17,6 +17,9 @@ const RequestHistory = () => {
         const response = await axios.get(`${apiBaseUrl}/api/requestHistory`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("Pending History:", response.data.requestPending);
+        console.log("Approved History:", response.data.requestApproved);
+        console.log("Approved Requests Length:", response.data.requestApproved.length);
         setApprovedHistory(response.data.requestApproved || []);
         setPendingHistory(response.data.requestPending || []);
       } catch (error) {
@@ -27,7 +30,7 @@ const RequestHistory = () => {
     };
     getHistory();
   }, [token]);
-
+  
   const RequestTable = ({ items }) => (
     <table className="min-w-full table-fixed border-collapse">
       <thead>
@@ -61,29 +64,37 @@ const RequestHistory = () => {
     </table>
   );
 
-  const RequestCard = ({ item }) => (
-    <div className="flex flex-col bg-neutral-50 w-full md:w-[48%] p-5 rounded-lg gap-4 mb-4">
-      <h1 className="text-lg font-bold">{item.requestItems?.item_name}</h1>
-      <div className="flex justify-between">
-        <p className="font-medium">
-          Requested for:{" "}
-          <span className="font-normal ">{item.requested_for || "N/A"}</span>
-        </p>
-        <p className="font-medium">
-          Purpose: <span className="font-normal">{item.purpose || "N/A"}</span>
-        </p>
-        <div
-          className={`flex justify-center items-center ${
-            item.status === "approved" ? "text-green-500" : "text-yellow-500"
-          }`}
-        >
-          {item.status}
+  const RequestCard = ({ item }) => {
+    console.log("Request Items for this card:", item.requestItems);
+    
+    return (
+      <div className="flex flex-col bg-neutral-50 w-full md:w-[48%] p-5 rounded-lg gap-4 mb-4">
+        <h1 className="text-lg font-bold">Request ID: {item.request_id}</h1>
+        <div className="flex justify-between">
+          <p className="font-medium">
+            Requested for: <span className="font-normal">{item.requested_for || "N/A"}</span>
+          </p>
+          <p className="font-medium">
+            Purpose: <span className="font-normal">{item.purpose || "N/A"}</span>
+          </p>
+          <div
+            className={`flex justify-center items-center ${
+              item.status === "Delivered" ? "text-green-500" : "text-yellow-500"
+            }`}
+          >
+            {item.status}
+          </div>
         </div>
+        {item.requestItems.length > 0 ? (
+          <RequestTable items={item.requestItems} />
+        ) : (
+          <p className="text-center text-gray-500">No items found.</p>
+        )}
       </div>
-      <RequestTable items={item.requestItems} />
-    </div>
-  );
-
+    );
+  };
+  
+  
   const TabButton = ({ label, isActive, onClick }) => (
     <button
       className={`px-4 py-2 font-medium rounded-t-lg ${
