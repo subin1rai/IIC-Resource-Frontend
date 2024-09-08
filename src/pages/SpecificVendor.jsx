@@ -419,7 +419,7 @@ const SpecificVendor = () => {
                     ) : (
                       (
                         <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">
-                          CLear
+                          Clear
                         </span>
                       ) || "--"
                     )}

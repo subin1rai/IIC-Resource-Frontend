@@ -250,11 +250,6 @@ const SpecificBill = () => {
         setBillDetails(singleBillResponse.data);
         console.log(singleBillResponse.data.bill);
 
-        console.log(
-          "My billitem: ",
-          singleBillResponse.data.bill.BillItems[0].TDS
-        );
-
         if (singleBillResponse.data.bill.bill_type === "NOBILL") {
           setSelectedOption("NOBILL");
         } else {
@@ -264,8 +259,6 @@ const SpecificBill = () => {
               singleBillResponse.data.bill.BillItems[0].TDS
           );
         }
-
-        console.log(selectedOption);
 
         setItems(itemsResponse.data);
         setVendors(vendorsResponse.data.vendor);
@@ -278,13 +271,6 @@ const SpecificBill = () => {
     };
     fetchData();
   }, [bill_id, token]);
-
-  // const checkPermissions = () => {
-  //   const role = localStorage.getItem("role");
-  //   if (role != "superadmin" || role !="admin") {
-  //     console.error("Unauthorized cfgdgg");
-  //   }
-  // };
 
   const openEditBillDetailsForm = () => {
     // setEditedBill({
