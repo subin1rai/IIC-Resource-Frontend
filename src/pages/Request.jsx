@@ -10,7 +10,8 @@ import req from "../assets/request.svg";
 import close from "../assets/close.svg";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 
 const Request = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -25,8 +26,15 @@ const Request = () => {
   const [dateTo, setDateTo] = useState("");
   const [pending, setPending] = useState("");
 
+
+
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
+
+  const handleFilterDateChange = (name) => (date) => {
+    setFilteredOptions((prev) => ({ ...prev, [name]: date }));
+
+  };
 
   const customStyles = {
     control: (provided, state) => ({
@@ -128,36 +136,44 @@ const Request = () => {
     setFilterFormVisibility(false);
   };
 
-  const handleFilter = () => {
-    let filtered = requests;
+  const [filterOptions, setFilteredOptions] = useState({
+    department_name: "",
+    dateFrom: "",
+    dateTo: "",
+    requestStatus: "",
+  })
 
-    if (selectedDepartment) {
+  const applyFilter = (e) => {
+    e.preventDefault();
+    let filteredResults = [...requests];
+
+    if (filterOptions.department_name) {
+      filteredResults = filteredResults.filter(
+        (request) => request.department_name === filterOptions.department_name
+      )
+    }
+
+    if (filterOptions.requestStatus) {
       filtered = filtered.filter(
-        (request) => request.department_name === selectedDepartment.value
+        (request) => request.status === filterOptions.requestStatus
       );
     }
 
-    if (selectedStatus) {
-      filtered = filtered.filter(
-        (request) => request.status === selectedStatus
-      );
+    if (filterOptions.dateFrom && filterOptions.dateTo) {
+      filteredResults = filteredResults.filter((requests) => {
+        const requestDate = new Date(requests.request_date);
+        return (
+          requestDate >= new Date(filterOptions.dateFrom) &&
+          requestDate <= new Date(filterOptions.dateTo)
+        );
+      });
     }
 
-    if (dateFrom) {
-      filtered = filtered.filter(
-        (request) => new Date(request.request_date) >= new Date(dateFrom)
-      );
-    }
 
-    if (dateTo) {
-      filtered = filtered.filter(
-        (request) => new Date(request.request_date) <= new Date(dateTo)
-      );
-    }
-
-    setFilteredRequests(filtered);
+    setFilteredRequests(filteredResults);
     setFilterFormVisibility(false); // Close filter form after applying filters
   };
+
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background reltive">
@@ -214,7 +230,8 @@ const Request = () => {
       {/* filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={applyFilter}>
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl">Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -232,8 +249,10 @@ const Request = () => {
                       value: department.department_name,
                       label: department.department_name,
                     }))}
-                    value={selectedDepartment}
-                    onChange={(option) => setSelectedDepartment(option)}
+                    onChange={(selectedOption) => setFilteredOptions((prev) => ({
+                      ...prev,
+                      department_name: selectedOption.value,
+                    }))}
                     placeholder="Select Department"
                     styles={customStyles}
                   />
@@ -244,8 +263,13 @@ const Request = () => {
                     Filter by Status:{" "}
                   </label>
                   <select
-                    value={selectedStatus}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    value={filterOptions.requestStatus}
+                    onChange={(e) =>
+                      setFilteredOptions((prev) => ({
+                        ...prev,
+                        requestStatus: e.target.value,
+                      }))
+                    }
                     className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
                   >
                     <option value="">Select status</option>
@@ -256,29 +280,37 @@ const Request = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium">
-                  By Date:
-                </label>
-                <div className="flex gap-8 ">
-                  <input
-                    type="date"
-                    value={dateFrom}
-                    onChange={(e) => setDateFrom(e.target.value)}
-                    className="border-2 border-neutral-300 p-2 rounded w-full focus:outline-slate-400"
+              <div className="flex gap-8">
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Request From:
+                  </label>
+
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.dateFrom}
+                    onChange={handleFilterDateChange("dateFrom")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
-                  <input
-                    type="date"
-                    value={dateTo}
-                    onChange={(e) => setDateTo(e.target.value)}
-                    className="border-2 border-neutral-300 p-2 rounded w-full focus:outline-slate-400"
+                </div>
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Request To:
+                  </label>
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.dateTo}
+                    onChange={handleFilterDateChange("dateTo")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
                 </div>
               </div>
             </div>
             <button
               className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium"
-              onClick={handleFilter}
+
             >
               Filter
             </button>

@@ -89,7 +89,7 @@ const Issue = () => {
       const issueData = {
         issue_date: issue.issue_date || date,
         issued_to: issue.issued_to,
-        purpose: issue.purpose, // Purpose is set separately
+        purpose: purpose, // Purpose is set separately
         items: formattedItems, // Add the formatted items array
       };
 
@@ -195,7 +195,6 @@ const Issue = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response);
         setIssues(response.data.issue || []);
         const count = response.data.issue.filter(
           (req) => req.isReturned
@@ -584,9 +583,7 @@ const Issue = () => {
                   rows={5}
                   className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
                   placeholder="Enter your purpose here.."
-                  id = "purpose"
-                  name="purpose"
-                  // value={purpose}
+                  value={purpose}
                   onChange={(e) => setPurpose(e.target.value)}
                 />
               </div>

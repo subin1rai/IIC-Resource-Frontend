@@ -316,9 +316,9 @@ const SettingRole = () => {
           prevDepartments.map((department) =>
             department.id === editedDepartment.department_id
               ? {
-                  ...department,
-                  department_name: editedDepartment.department_name,
-                }
+                ...department,
+                department_name: editedDepartment.department_name,
+              }
               : department
           )
         );
@@ -333,7 +333,7 @@ const SettingRole = () => {
       console.error("An error occurred while updating the department:", error);
       setError(
         error.response?.data?.message ||
-          "An error occurred while updating the department"
+        "An error occurred while updating the department"
       );
     }
   };
@@ -707,7 +707,7 @@ const SettingRole = () => {
                 alt="Close"
                 className="w-4 h-4 cursor-pointer"
                 onClick={closeDepartment}
-                // Close the form
+              // Close the form
               />
             </div>
             <div className="flex flex-col gap-6">
