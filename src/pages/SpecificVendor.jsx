@@ -235,7 +235,6 @@ const SpecificVendor = () => {
     }
   };
 
-  console.log(vendor);
   const handleBlackList = async () => {
     try {
       await axios.put(`${apiBaseUrl}/api/blacklist/${vendor_id}`, null, {
@@ -243,6 +242,11 @@ const SpecificVendor = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      setVendor((prevVendor) => ({
+        ...prevVendor,
+        black_list: true,
+      }));
     } catch (error) {
       Swal.fire(
         "Error",
@@ -336,14 +340,15 @@ const SpecificVendor = () => {
               >
                 Edit Details
               </button>
-              {role === "superadmin" && (
+              {role === "superadmin" &&
+              (vendor.black_list === null || vendor.black_list === false) ? (
                 <button
                   className="bg-red-500 h-fit w-fit p-2 px-4 text-white rounded"
                   onClick={() => handleShowModal(vendor_id)}
                 >
                   Add to Blacklist
                 </button>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="h-1 bg-blue-700 w-[82vw] mt-5 mx-auto"></div>
@@ -414,7 +419,7 @@ const SpecificVendor = () => {
                     ) : (
                       (
                         <span className="text-green-600 bg-green-100 p-2 px-4 rounded-md">
-                          CLear
+                          Clear
                         </span>
                       ) || "--"
                     )}

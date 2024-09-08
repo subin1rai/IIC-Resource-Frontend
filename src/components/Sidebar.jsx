@@ -90,7 +90,7 @@ const Sidebar = () => {
             <NavLink to="/records" className={setActiveClass}>
               <img src={billRecord} className="item-img" alt="" />
 
-              <p> Bill Records</p>
+              <p className = "whitespace-nowrap"> Bill Records</p>
             </NavLink>
           </div>
           {/* vendors nav */}

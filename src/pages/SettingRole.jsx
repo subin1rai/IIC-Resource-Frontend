@@ -129,10 +129,9 @@ const SettingRole = () => {
   }, [userSearchTerm, users]);
 
   // filter handle
-  const handleFilter = () => {
+  const handleFilter = (e) => {
+    e.preventDefault();
     let filtered = users;
-    console.log(filtered);
-    console.log(selectedDepartment.value);
 
     let filteredByDepartment = filtered;
     if (selectedDepartment) {
@@ -149,12 +148,14 @@ const SettingRole = () => {
     filtered = filteredByRole;
 
     let filteredByStatus = filtered;
+    console.log(selectedStatus);
     if (selectedStatus) {
       filteredByStatus = filtered.filter((user) => {
         const userStatus = user.isActive ? "active" : "inactive";
         return userStatus === selectedStatus;
       });
     }
+
     filtered = filteredByStatus;
     setAllFilteredUsers(filtered);
     setFilterFormVisibility(false); // Close filter form after applying filters
@@ -512,7 +513,10 @@ const SettingRole = () => {
       {/* filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form
+            className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={handleFilter}
+          >
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -520,12 +524,14 @@ const SettingRole = () => {
               </button>
             </div>
 
-            <div className="flex flex-col gap-8 ">
-              <div className="flex gap-6   items-center">
-                <label htmlFor="" className="font-medium">
+            <div className="flex flex-col gap-8">
+              {/* Filter by Role */}
+              <div className="flex gap-6 items-center">
+                <label htmlFor="role" className="font-medium">
                   Filter by Role:{" "}
                 </label>
                 <select
+                  id="role"
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value)}
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
@@ -538,6 +544,8 @@ const SettingRole = () => {
                   <option value="departmenthead">Department Head</option>
                 </select>
               </div>
+
+              {/* Department Selection */}
               <div className="flex gap-7 items-center">
                 <label htmlFor="department" className="font-medium">
                   Department:
@@ -548,45 +556,33 @@ const SettingRole = () => {
                     label: department.department_name,
                   }))}
                   value={selectedDepartment}
-                  onChange={(option) => setSelectedDepartment(option)}
+                  onChange={(option) =>
+                    setSelectedDepartment(option ? option.value : "")
+                  }
                   placeholder="Select Department"
                   styles={customStyles}
                 />
               </div>
+
+              {/* Status Selection */}
               <div className="flex gap-20">
-                <label htmlFor="" className="font-medium">
+                <label htmlFor="status" className="font-medium">
                   Status:
                 </label>
-                <div className="flex gap-8">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="status"
-                      value="active"
-                      className="mr-2"
-                      checked={selectedStatus === "active"}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                    />
-                    Active
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="status"
-                      value="inactive"
-                      className="mr-2"
-                      checked={selectedStatus === "inactive"}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                    />
-                    Inactive
-                  </label>
-                </div>
+                <select
+                  id="status"
+                  name="status"
+                  className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
               </div>
             </div>
-            <button
-              className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium"
-              onClick={handleFilter}
-            >
+
+            <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center text-lg font-medium">
               Filter
             </button>
           </form>

@@ -162,7 +162,7 @@ const Category = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "${apiBaseUrl}/api/addCategory",
+        `${apiBaseUrl}/api/addCategory`,
         newCategory,
         {
           headers: {
@@ -273,7 +273,7 @@ const Category = () => {
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={itemcat} alt="" />
                 <h4>{itemCategory.length}</h4>
-                <p className="font-medium">Number of item Category</p>
+                <p className="font-medium">Number of item Categories</p>
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={featureicon} alt="" />

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Trash2 } from "lucide-react";
 
 const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
   const [items, setItems] = useState([]);
@@ -182,6 +183,12 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
     }),
   };
 
+  const removeRow = (index) => {
+    const updatedRows = rows.filter((_, i) => i !== index);
+    setRows(updatedRows);
+    updateParentData(updatedRows);
+  };
+
   return (
     <>
       <div className="container mx-auto overflow-auto">
@@ -215,7 +222,10 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
               <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
                 Actual Amount
               </th>
-            </tr>
+              <th className="border border-neutral-500 px-4 py-2 font-medium text-medium">
+              Actions
+            </th>
+                        </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
@@ -273,7 +283,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "quantity", e.target.value)
                     }
                     placeholder="Quantity"
-                    className="w-full text-center"
+                    className="w-full text-center focus:outline-none"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2">
@@ -283,7 +293,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "unit_price", e.target.value)
                     }
                     placeholder="Unit Price"
-                    className="w-full text-center"
+                    className="w-full text-center focus:outline-none"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
@@ -301,6 +311,17 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                 <td className="border border-neutral-500 px-4 py-2 text-center">
                   {row.actualAmt.toFixed(2)}
                 </td>
+                            <td className="border border-neutral-500 px-4 py-2 text-center">
+              {index > 0 && (
+                <button
+                  onClick={() => removeRow(index)}
+                  className="text-red-600 hover:text-red-800"
+                  title="Remove row"
+                >
+                  <Trash2 size={18} />
+                </button>
+              )}
+            </td>
               </tr>
             ))}{" "}
             <tr className="bg-white">
