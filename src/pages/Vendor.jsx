@@ -409,11 +409,6 @@ const Vendor = () => {
       });
     }
 
-    //   if (filterOptions.selectedCategory) {
-    //     filteredResults = filteredResults.filter((vendor) => {
-    //       if (filterOptions.selectedCategory === vendor.categories.map(category) => (category.vend))
-    //   })
-    // }
 
     if (filterOptions.vendorCategory) {
       filteredResults = filteredResults.filter((vendor) =>
