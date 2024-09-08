@@ -111,7 +111,7 @@ const Navbar = () => {
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
-                <li className="py-2 text-blue-600">{userInfo.contact}</li>
+                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
               </div>
               <NavLink to="/" onClick={handleLogout}>
                 <div className="flex gap-6">
