@@ -217,7 +217,9 @@ const Topbar = () => {
   return (
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center cursor-default">
       <div className="flex pl-5">
-        <p className="font-semibold text-xl">{greeting}, Admin</p>
+        <p className="font-semibold text-xl">
+          {greeting}, {userInfo.department}
+        </p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
         <button className="p-5 relative" onClick={popUpNotification}>
@@ -259,7 +261,9 @@ const Topbar = () => {
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
+
                 <li className="py-2 text-blue-600">{userInfo.contact}</li>
+
               </div>
               <div className="flex justify-center">
                 <button
