@@ -53,6 +53,7 @@ const SpecificBill = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedOption, setSelectedOption] = useState();
   // billDetails.bill_type + " " + billDetails.TDS
+  const [remark, setRemark] = useState("");
 
   console.log(selectedOption);
 
@@ -123,12 +124,19 @@ const SpecificBill = () => {
           },
         }
       );
-      // setBillDetails((prev) => ({ ...prev,  response.data }))
+      setBillDetails((prev) => ({
+        ...prev,
+        bill: {
+          ...prev.bill,
+          isApproved: true,
+        },
+      }));
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(billDetails);
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case "vat 0":
@@ -432,7 +440,25 @@ const SpecificBill = () => {
 
   // nepali date ends here
 
-  const handleDecline = () => {};
+  const handleDecline = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `${apiBaseUrl}/api/declineBill/${bill_id}`,
+        { remark },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRemark("");
+      setDeclineFormVisibility(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex bg-background h-screen w-screen ">
       <Sidebar />
@@ -688,9 +714,9 @@ const SpecificBill = () => {
                   cols={40}
                   name="remarks"
                   placeholder="Enter your remarks here..."
-                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none "
-                  value={billDetails?.bill?.remark}
-                  onChange={handleChange}
+                  className="border-stone-200 border-2 rounded py-2 px-4 w-[100%] focus:outline-slate-400 resize-none"
+                  value={remark}
+                  onChange={(e) => setRemark(e.target.value)}
                 />
               </div>
               <div className="flex justify-end">
@@ -866,8 +892,8 @@ const SpecificBill = () => {
                           }),
                           menuList: (provided) => ({
                             ...provided,
-                            maxHeight: 150, // Adjust this as needed
-                            overflowY: "auto", // This ensures only the menu list scrolls
+                            maxHeight: 150,
+                            overflowY: "auto",
                           }),
                         }}
                         menuPortalTarget={document.body}
