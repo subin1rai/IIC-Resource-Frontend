@@ -79,7 +79,7 @@ const RequestHistory = () => {
           </p>
           <div
             className={`flex justify-center items-center ${
-              item.status === "Delivered" ? "text-green-500" : "text-yellow-500"
+              item.status === "Holding" ? "text-green-500" : "text-yellow-500"
             }`}
           >
             {item.status}
