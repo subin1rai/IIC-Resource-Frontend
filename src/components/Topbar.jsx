@@ -261,7 +261,9 @@ const Topbar = () => {
               </div>
               <div className="flex items-center gap-2">
                 <img className="w-6 h-6" src={phone} alt="" />
-                <li className="py-2 text-blue-600">{userInfo.user_contact}</li>
+
+                <li className="py-2 text-blue-600">{userInfo.contact}</li>
+
               </div>
               <div className="flex justify-center">
                 <button
