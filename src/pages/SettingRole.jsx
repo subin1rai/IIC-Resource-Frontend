@@ -27,6 +27,7 @@ const SettingRole = () => {
   const [isDepartmentListVisible, setIsDepartmentListVisible] = useState(false);
   const [isAddDepartmentVisible, setIsAddDepartmentVisible] = useState(false);
   const [filterFormVisibility, setFilterFormVisibility] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(false);
 
   const [newDepartment, setNewDepartment] = useState({ department_name: "" });
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,26 +110,6 @@ const SettingRole = () => {
       }
     };
     fetchData();
-  }, [token, departments]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const activeResponse = await axios.get(
-          `${apiBaseUrl}/api/role/activeUser`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        const activeUser = activeResponse.data.activeUser || [];
-        setActiveUser(activeUser);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
   }, [token]);
 
   // Filter all users by search term
@@ -150,16 +131,31 @@ const SettingRole = () => {
   // filter handle
   const handleFilter = () => {
     let filtered = users;
+    console.log(filtered);
+    console.log(selectedDepartment.value);
+
+    let filteredByDepartment = filtered;
     if (selectedDepartment) {
-      filtered = filtered.filter(
+      filteredByDepartment = filtered.filter(
         (user) => user.department_name === selectedDepartment.value
       );
     }
+    filtered = filteredByDepartment;
 
+    let filteredByRole = filtered;
     if (selectedRole) {
-      filtered = filtered.filter((user) => user.role === selectedRole);
+      filteredByRole = filtered.filter((user) => user.role === selectedRole);
     }
+    filtered = filteredByRole;
 
+    let filteredByStatus = filtered;
+    if (selectedStatus) {
+      filteredByStatus = filtered.filter((user) => {
+        const userStatus = user.isActive ? "active" : "inactive";
+        return userStatus === selectedStatus;
+      });
+    }
+    filtered = filteredByStatus;
     setAllFilteredUsers(filtered);
     setFilterFormVisibility(false); // Close filter form after applying filters
   };
@@ -319,9 +315,9 @@ const SettingRole = () => {
           prevDepartments.map((department) =>
             department.id === editedDepartment.department_id
               ? {
-                ...department,
-                department_name: editedDepartment.department_name,
-              }
+                  ...department,
+                  department_name: editedDepartment.department_name,
+                }
               : department
           )
         );
@@ -336,7 +332,7 @@ const SettingRole = () => {
       console.error("An error occurred while updating the department:", error);
       setError(
         error.response?.data?.message ||
-        "An error occurred while updating the department"
+          "An error occurred while updating the department"
       );
     }
   };
@@ -409,7 +405,6 @@ const SettingRole = () => {
           </div>
         </div>
       </div>
-
 
       {/* add form  */}
       {addUserFormVisibility && (
@@ -568,7 +563,9 @@ const SettingRole = () => {
                       type="radio"
                       name="status"
                       value="active"
-                      class="mr-2"
+                      className="mr-2"
+                      checked={selectedStatus === "active"}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
                     />
                     Active
                   </label>
@@ -577,7 +574,9 @@ const SettingRole = () => {
                       type="radio"
                       name="status"
                       value="inactive"
-                      class="mr-2"
+                      className="mr-2"
+                      checked={selectedStatus === "inactive"}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
                     />
                     Inactive
                   </label>
@@ -712,7 +711,7 @@ const SettingRole = () => {
                 alt="Close"
                 className="w-4 h-4 cursor-pointer"
                 onClick={closeDepartment}
-              // Close the form
+                // Close the form
               />
             </div>
             <div className="flex flex-col gap-6">

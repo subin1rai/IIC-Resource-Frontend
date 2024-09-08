@@ -10,7 +10,8 @@ const ItemCategoryTable = ({
 }) => {
   const handleformVisiblity = (iCat) => {
     setEditFormVIsiblity(true);
-    setEditId(iCat.category_id);
+    console.log(iCat);
+    setEditId(iCat.item_category_id);
     setEditedValue({ type: "ItemCategory", name: iCat.item_category_name });
   };
   return (
