@@ -72,18 +72,19 @@ const RequestHistory = () => {
         <h1 className="text-lg font-bold">Request ID: {item.request_id}</h1>
         <div className="flex justify-between">
           <p className="font-medium">
-            Requested for: <span className="font-normal">{item.requested_for || "N/A"}</span>
+            Requested for: <span className="font-normal ">{item.requested_for || "N/A"}</span>
           </p>
           <p className="font-medium">
             Purpose: <span className="font-normal">{item.purpose || "N/A"}</span>
           </p>
           <div
-            className={`flex justify-center items-center ${
-              item.status === "Holding" ? "text-green-500" : "text-yellow-500"
-            }`}
-          >
-            {item.status}
-          </div>
+              className={`flex justify-center items-center ${
+                item.status === "Holding" ? "text-green-500" : "text-yellow-500"
+              }`}
+            >
+              {item.status === "Holding" ? "Approved" : item.status}
+            </div>
+
         </div>
         {item.requestItems.length > 0 ? (
           <RequestTable items={item.requestItems} />
