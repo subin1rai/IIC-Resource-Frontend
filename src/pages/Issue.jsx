@@ -197,7 +197,6 @@ const Issue = () => {
         });
         console.log(response);
         setIssues(response.data.issue || []);
-
         const count = response.data.issue.filter(
           (req) => req.isReturned
         ).length;
