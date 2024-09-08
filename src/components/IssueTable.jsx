@@ -60,7 +60,7 @@ export default function InventoryTable({ issues }) {
   const [itemFields, setItemFields] = useState([{ item: "", quantity: "" }]);
   const [order, setOrder] = useState("asc");
   const [itemOptions, setItemOptions] = useState([]);
-  const [purpose, setPurpose] = useState("");
+  const [remarks, setRemarks] = useState("");
   const [editIssueVisibility, setEditIssueVisibility] = useState(false);
   const [orderBy, setOrderBy] = useState("issue_id");
 

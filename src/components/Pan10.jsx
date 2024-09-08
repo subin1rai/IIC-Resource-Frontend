@@ -285,7 +285,7 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "quantity", e.target.value)
                     }
                     placeholder="Quantity"
-                    className="w-full text-center"
+                    className="w-full text-center focus:outline-none "
                   />
                 </td>
                 <td className="border border-neutral-500 ">
@@ -295,7 +295,7 @@ const Pan = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "unit_price", e.target.value)
                     }
                     placeholder="Unit Price"
-                    className="w-full h-full  text-center"
+                    className="w-full h-full  text-center focus:outline-none"
                   />
                 </td>
                 <td className="text-center border border-neutral-500 px-4 py-2">

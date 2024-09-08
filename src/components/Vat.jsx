@@ -283,7 +283,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "quantity", e.target.value)
                     }
                     placeholder="Quantity"
-                    className="w-full text-center"
+                    className="w-full text-center focus:outline-none"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2">
@@ -293,7 +293,7 @@ const Vat = ({ selectedOption, onDataUpdate, billDetails }) => {
                       updateRow(index, "unit_price", e.target.value)
                     }
                     placeholder="Unit Price"
-                    className="w-full text-center"
+                    className="w-full text-center focus:outline-none"
                   />
                 </td>
                 <td className="border border-neutral-500 px-4 py-2 text-center">
