@@ -190,7 +190,7 @@ const Issue = () => {
         });
         setIssues(response.data.issue || []);
         const count = response.data.issue.filter(
-          (req) => req.is_returned
+          (req) => req.isReturned
         ).length;
         setReturned(count);
       } catch (error) {
@@ -269,7 +269,7 @@ const Issue = () => {
               <div className="flex flex-col items-center justify-center gap-2">
                 <img className="w-8 h-8" src={pendingreq} alt="" />
                 <h4>{returned}</h4>
-                <p className="font-medium">Number of Items to be returned</p>
+                <p className="font-medium">Number of Items returned</p>
               </div>
             </div>
           </div>
