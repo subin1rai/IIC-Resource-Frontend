@@ -11,7 +11,7 @@ import filterIcon from "../assets/filter.svg";
 import Select from "react-select";
 import add from "../assets/addCategory.svg";
 import edit from "../assets/editIcon.png";
-import Close from "../assets/Close.png";
+import close from "../assets/close.svg";
 import { useSelector } from "react-redux";
 
 const SettingRole = () => {
@@ -233,6 +233,7 @@ const SettingRole = () => {
       setError(error?.response?.data?.error || "Failed to add user");
     }
   };
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -519,14 +520,20 @@ const SettingRole = () => {
           >
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
-              <button type="button" className="" onClick={closeFilterForm}>
-                <img src={close} alt="" className="cursor-pointer w-4 h-4" />
-              </button>
+              <img
+                src={close}
+                alt="Close"
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => {
+                  setFilterFormVisibility(false);
+                  setError(null); // Clear error when closing the form
+                }}
+              />
             </div>
 
             <div className="flex flex-col gap-8">
               {/* Filter by Role */}
-              <div className="flex gap-6 items-center">
+              <div className="flex gap-7 items-center">
                 <label htmlFor="role" className="font-medium">
                   Filter by Role:{" "}
                 </label>
@@ -546,7 +553,7 @@ const SettingRole = () => {
               </div>
 
               {/* Department Selection */}
-              <div className="flex gap-7 items-center">
+              <div className="flex gap-8 items-center">
                 <label htmlFor="department" className="font-medium">
                   Department:
                 </label>
@@ -565,7 +572,7 @@ const SettingRole = () => {
               </div>
 
               {/* Status Selection */}
-              <div className="flex gap-20">
+              <div className="flex gap-20 items-center">
                 <label htmlFor="status" className="font-medium">
                   Status:
                 </label>

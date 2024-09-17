@@ -300,13 +300,15 @@ export default function InventoryTable({ issues }) {
         >
           <div className="flex justify-between">
             <h2 className="font-semibold text-lg m-2"> Edit Issue Details</h2>
-            <button
-              type="button"
-              className="discard-btn"
-              onClick={closeEditIssueForm}
-            >
-              <img src={close} alt="" />
-            </button>
+            <img
+              src={close}
+              alt="Close"
+              className="w-4 h-4 cursor-pointer"
+              onClick={() => {
+                setEditIssueVisibility(false);
+                setError(null); // Clear error when closing the form
+              }}
+            />
           </div>
           <div className="flex flex-col gap-3 p-2">
             <div className="flex flex-col gap-8">
