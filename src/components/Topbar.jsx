@@ -219,7 +219,7 @@ const Topbar = () => {
     <div className="flex w-[86.5vw] h-24 bg-white justify-between px-7 items-center cursor-default">
       <div className="flex pl-5">
         <p className="font-semibold text-xl">
-          {greeting}, {userInfo.department}
+          {greeting}, {userInfo.user_name}
         </p>
       </div>
       <div className="flex items-center h-full justify-between gap-3">
