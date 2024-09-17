@@ -19,6 +19,9 @@ import { CleanHands } from "@mui/icons-material";
 const Issue = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const token = userInfo.token;
+
   const [issue, setIssue] = useState({
     issue_date: "",
     issued_to: "",
@@ -42,24 +45,6 @@ const Issue = () => {
   const [departments, setDepartments] = useState([]);
 
 
-  // // fet
-  // useEffect(() => {
-  //   const fetchDepartment = async () => {
-  //     try {
-  //       const departmentResponse = await axios.get(
-  //         `${apiBaseUrl}/api/getDepartment`,
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-  //       setDepartments(departmentResponse.data.department);
-  //     } catch (error) {
-  //       console.error("Error fetching department:", error);
-  //     }
-  //   };
-
-  //   fetchDepartment();
-  // }, [token]);
 
   const displayFilterForm = () => {
     setFilterFormVisibility(true);
@@ -183,8 +168,6 @@ const Issue = () => {
     }),
   };
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const token = userInfo.token;
 
   // get issue from backend
   useEffect(() => {
@@ -245,6 +228,36 @@ const Issue = () => {
     fetchItems();
   }, [token]);
 
+  const [filterOptions, setFilteredOptions] = useState({
+    department_name: "",
+    item_name: "",
+    issueFrom: "",
+    issueTo: "",
+    issuedBy: "",
+    status: "",
+  })
+
+  // fetching department
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      try {
+        const departmentResponse = await axios.get(
+          `${apiBaseUrl}/api/getDepartment`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setDepartments(departmentResponse.data.department);
+      } catch (error) {
+        console.error("Error fetching department:", error);
+      }
+    };
+
+    fetchDepartment();
+  }, [token]);
+
+
+
   useEffect(() => {
     let results = issues;
     if (searchTerm) {
@@ -254,6 +267,54 @@ const Issue = () => {
     }
     setFilteredIssues(results);
   }, [searchTerm, issues]);
+
+
+  const handleFilterDateChange = (name) => (date) => {
+    setFilteredOptions((prev) => ({ ...prev, [name]: date }));
+  };
+
+  const applyFilter = (e) => {
+    e.preventDefault();
+    let filteredResults = [...issues];
+
+
+    if (filterOptions.department_name) {
+      filteredResults = filteredResults.filter(
+        (department) => department.department === filterOptions.department_name
+      )
+    }
+
+
+    if (filterOptions.issueFrom && filterOptions.issueTo) {
+      filteredResults = filteredResults.filter((issues) => {
+        const issueDate = new Date(issues.issue_date);
+        return (
+          issueDate >= new Date(filterOptions.issueFrom) &&
+          issueDate <= new Date(filterOptions.issueTo)
+        );
+      });
+    }
+
+    // returned and non returned status
+    if (
+      filterOptions.issue_status !== undefined &&
+      filterOptions.issue_status !== ""
+    ) {
+      filteredResults = filteredResults.filter((issue) => {
+        if (issue.isReturned === null || issue.isReturned === false) {
+          return parseInt(filterOptions.issue_status) === 0;
+        }
+
+        return (
+          issue.isReturned === true &&
+          parseInt(filterOptions.issue_status) === 1
+        );
+      });
+    }
+    setFilteredIssues(filteredResults)
+    setFilterFormVisibility(false)
+  }
+
 
   return (
     <div className="w-screen h-screen flex justify-between bg-background">
@@ -307,7 +368,7 @@ const Issue = () => {
             </div>
           </div>
           <div className="mt-3">
-            {issues ? <IssueTable issues={issues} /> : <p>Loading issues...</p>}
+            {issues ? <IssueTable issues={filteredIssues} /> : <p>Loading issues...</p>}
           </div>
         </div>
       </div>
@@ -316,7 +377,8 @@ const Issue = () => {
       {/* Filter form */}
       {filterFormVisibility && (
         <div className="bg-overlay absolute left-0 top-0 z-30 w-screen h-screen flex justify-center items-center">
-          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8">
+          <form className="rounded-md bg-white z-50 p-8  flex flex-col w-fit h-fit gap-8"
+            onSubmit={applyFilter}>
             <div className="flex justify-between">
               <h2 className="font-semibold text-xl"> Filtering Option</h2>
               <button type="button" className="" onClick={closeFilterForm}>
@@ -360,8 +422,12 @@ const Issue = () => {
                     menuPortalTarget={document.body}
                     className="w-[190px]"
                     classNamePrefix="react-select"
+                    autoFocus
+
                   />
                 </div>
+
+
 
                 {/* div for request status */}
                 <div className="flex flex-col gap-3">
@@ -369,40 +435,51 @@ const Issue = () => {
                     {" "}
                     Department:{" "}
                   </label>
-                  <select
-                    name=""
-                    id=""
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  >
-                    <option value="" disabled>
-                      Select department
-                    </option>
-                    <option value="">BIT</option>
-                    <option value="">SSD</option>
-                    <option value="">BBA</option>
-                    <option value="">Resource</option>
-                  </select>
+                  <Select
+                    options={departments.map((department) => ({
+                      value: department.department_name,
+                      label: department.department_name,
+                    }))}
+                    onChange={(selectedOption) => setFilteredOptions((prev) => ({
+                      ...prev,
+                      department_name: selectedOption.value,
+                    }))}
+                    placeholder="Select Department"
+                    styles={customStyles}
+                  />
+
                 </div>
               </div>
 
               {/* filter by requested date */}
-              <div className="flex flex-col gap-3">
-                <label htmlFor="" className="font-medium">
-                  Issue Date:
-                </label>
-                <div className="flex gap-8 ">
-                  <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    type="date"
-                    placeholder=" from"
+              <div className="flex gap-8">
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Issue From:
+                  </label>
+
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.issueFrom}
+                    onChange={handleFilterDateChange("issueFrom")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
-                  <input
-                    className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                    type="date"
-                    placeholder="to"
+                </div>
+                <div className="flex flex-col gap-3">
+                  <label htmlFor="" className="font-medium">
+                    Issue To:
+                  </label>
+                  <NepaliDatePicker
+                    inputClassName="form-control focus:outline-none"
+                    className="border-2 border-neutral-300 p-2 w-[250px] pl-3 rounded-md focus:outline-slate-400"
+                    value={filterOptions.issueTo}
+                    onChange={handleFilterDateChange("issueTo")}
+                    options={{ calenderLocale: "en", valueLocale: "en" }}
                   />
                 </div>
               </div>
+
             </div>
 
             <div className="flex gap-8">
@@ -415,16 +492,15 @@ const Issue = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
-                  autoFocus
                 >
-                  <option value="">Select a department</option>
-                  <option value="">BIT</option>
-                  <option value="">SSD</option>
-                  <option value="">BBA</option>
-                  <option value="">Resource</option>
+                  <option value="">Select a role</option>
+                  <option value="superadmin">Super Admin</option>
+                  <option value="admin">Admin</option>
                 </select>
               </div>
 
+
+              {/* div for request status */}
               {/* div for request status */}
               <div className="flex flex-col gap-3">
                 <label htmlFor="" className="font-medium">
@@ -435,177 +511,191 @@ const Issue = () => {
                   name=""
                   id=""
                   className="border-2 rounded border-neutral-300 p-2 w-[250px] focus:outline-slate-400"
+                  value={filterOptions.issue_status}
+                  onChange={(e) =>
+                    setFilteredOptions((prev) => ({
+                      ...prev,
+                      issue_status: e.target.value,
+                    }))
+                  }
                 >
-                  <option value="" disabled>
+                  <option value="">
                     Select status
                   </option>
-                  <option value="">Pending</option>
-                  <option value="">Dispatched</option>
-                  <option value="">Denied</option>
+                  <option value="1">Returned</option>
+                  <option value="0">Not Returned</option>
                 </select>
               </div>
+
             </div>
             <button className="flex bg-blue-600 text-white rounded p-3 items-center justify-center mt-3 text-lg font-medium">
               Filter
             </button>
           </form>
-        </div>
+        </div >
       )}
 
 
       {/* Add issue */}
-      {addIssueVisibility && (
-        <form
-          onSubmit={handleSubmit}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2"
-        >
-          <div className="flex justify-between">
-            <h2 className="font-semibold text-lg m-2"> Add Issue Details</h2>
-            <button
-              type="button"
-              className="discard-btn"
-              onClick={closeAddIssueForm}
-            >
-              <img src={close} alt="" />
-            </button>
-          </div>
-          <div className="flex flex-col gap-3 p-2">
-            <div className="flex flex-col gap-8">
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-6">
-                  <div className="flex flex-col gap-4">
-                    <label className="font-medium text-md" htmlFor="bill_no">
-                      Issue Date:
-                    </label>
-                    <NepaliDatePicker
-                      inputClassName="form-control focus:outline-none"
-                      className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
-                      value={date}
-                      onChange={handleDateChange}
-                      options={{ calenderLocale: "en", valueLocale: "en" }}
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    <label className="font-medium text-md"> Issued To: </label>
-                    <input
-                      className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
-                      type="text"
-                      placeholder="Enter Student Name"
-                      autoFocus="autofocus"
-                      name="issued_to"
-                      id="issued_to"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex py-3 gap-3">
-                    <div className="flex font-medium text-md w-64">
-                      <label>Item Name:</label>
+      {
+        addIssueVisibility && (
+          <form
+            onSubmit={handleSubmit}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-white z-50 p-8 flex flex-col w-fit h-fit gap-2"
+          >
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-lg m-2"> Add Issue Details</h2>
+              <img
+                src={close}
+                alt="Close"
+                className="w-4 h-4 cursor-pointer mt-2"
+                onClick={() => {
+                  setAddIssueVisibility(false);
+                  setError(null); // Clear error when closing the form
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-3 p-2">
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-3">
+                  <div className="flex gap-6">
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium text-md" htmlFor="bill_no">
+                        Issue Date:
+                      </label>
+                      <NepaliDatePicker
+                        inputClassName="form-control focus:outline-none"
+                        className="border-2 border-neutral-200 p-2 w-[250px] pl-3 rounded-md  focus:outline-slate-400"
+                        value={date}
+                        onChange={handleDateChange}
+                        options={{ calenderLocale: "en", valueLocale: "en" }}
+                        autoFocus="autofocus"
+                      />
                     </div>
-                    <div className="flex font-medium text-md w-64">
-                      <label>Quantity:</label>
+
+                    <div className="flex flex-col gap-4">
+                      <label className="font-medium text-md"> Issued To: </label>
+                      <input
+                        className="border-2 rounded border-neutral-200 w-[14vw] px-2 py-2 focus:outline-slate-400"
+                        type="text"
+                        placeholder="Enter Student Name"
+
+                        name="issued_to"
+                        id="issued_to"
+                        onChange={handleChange}
+                      />
                     </div>
                   </div>
-                  <div className="flex flex-col gap-6">
-                    {itemFields.map((items, index) => (
-                      <div key={index} className="flex gap-5  items-center">
-                        <Select
-                          options={itemOptions}
-                          onChange={(selectedOption) =>
-                            handleItemChange(
-                              index,
-                              "item_id",
-                              selectedOption.value
-                            )
-                          }
-                          value={itemOptions.find(
-                            (option) => option.value === items.item
-                          )}
-                          placeholder="Select Item"
-                          styles={{
-                            ...customStyles,
-                            menuPortal: (provided) => ({
-                              ...provided,
-                              zIndex: 9999,
-                            }),
-                            menuList: (provided) => ({
-                              ...provided,
-                              maxHeight: 150,
-                              overflowY: "auto",
-                            }),
-                          }}
-                          menuPortalTarget={document.body}
-                          className="w-[190px]"
-                          classNamePrefix="react-select"
-                        />
-
-                        <input
-                          className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
-                          type="number"
-                          placeholder="Enter a quantity"
-                          name={`quantity-${index}`}
-                          id={`quantity-${index}`}
-                          value={items.quantity}
-                          onChange={(e) =>
-                            handleItemChange(index, "quantity", e.target.value)
-                          }
-                        />
-                        {itemFields.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeItemField(index)}
-                            className="flex items-center"
-                          >
-                            <img
-                              src={remove}
-                              alt="Remove"
-                              className="h-7 w-7"
-                            />
-                          </button>
-                        )}
-                        {index === itemFields.length - 1 && (
-                          <button
-                            type="button"
-                            onClick={addItemField}
-                            className="flex items-center"
-                          >
-                            <img src={add} alt="Add" className="h-7 w-7" />
-                          </button>
-                        )}
+                  <div className="flex flex-col">
+                    <div className="flex py-3 gap-3">
+                      <div className="flex font-medium text-md w-64">
+                        <label>Item Name:</label>
                       </div>
-                    ))}
+                      <div className="flex font-medium text-md w-64">
+                        <label>Quantity:</label>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                      {itemFields.map((items, index) => (
+                        <div key={index} className="flex gap-5  items-center">
+                          <Select
+                            options={itemOptions}
+                            onChange={(selectedOption) =>
+                              handleItemChange(
+                                index,
+                                "item_id",
+                                selectedOption.value
+                              )
+                            }
+                            value={itemOptions.find(
+                              (option) => option.value === items.item
+                            )}
+                            placeholder="Select Item"
+                            styles={{
+                              ...customStyles,
+                              menuPortal: (provided) => ({
+                                ...provided,
+                                zIndex: 9999,
+                              }),
+                              menuList: (provided) => ({
+                                ...provided,
+                                maxHeight: 150,
+                                overflowY: "auto",
+                              }),
+                            }}
+                            menuPortalTarget={document.body}
+                            className="w-[190px]"
+                            classNamePrefix="react-select"
+                          />
+
+                          <input
+                            className="border-2 rounded border-neutral-200 px-3 py-2 w-[14vw]  focus:outline-slate-400"
+                            type="number"
+                            placeholder="Enter a quantity"
+                            name={`quantity-${index}`}
+                            id={`quantity-${index}`}
+                            value={items.quantity}
+                            onChange={(e) =>
+                              handleItemChange(index, "quantity", e.target.value)
+                            }
+                          />
+                          {itemFields.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeItemField(index)}
+                              className="flex items-center"
+                            >
+                              <img
+                                src={remove}
+                                alt="Remove"
+                                className="h-7 w-7"
+                              />
+                            </button>
+                          )}
+                          {index === itemFields.length - 1 && (
+                            <button
+                              type="button"
+                              onClick={addItemField}
+                              className="flex items-center"
+                            >
+                              <img src={add} alt="Add" className="h-7 w-7" />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                  <label className="font-medium text-md">Purpose:</label>
+                  <textarea
+                    rows={5}
+                    className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
+                    placeholder="Enter your purpose here.."
+                    value={purpose}
+                    onChange={(e) => setPurpose(e.target.value)}
+                  />
                 </div>
-                <label className="font-medium text-md">Purpose:</label>
-                <textarea
-                  rows={5}
-                  className="border-2 border-neutral-200 p-1.5 rounded-md w-[33vw] h-[15vh]  focus:outline-slate-400 resize-none"
-                  placeholder="Enter your purpose here.."
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button className="bg-blue-600 text-white py-2 px-6 rounded">
+                  Add Issue
+                </button>
               </div>
             </div>
-            <div className="flex justify-end gap-4">
-              <button className="bg-blue-600 text-white py-2 px-6 rounded">
-                Add Issue
-              </button>
-            </div>
+          </form>
+        )
+      }
+      {
+        addIssueVisibility && (
+          <div
+            className="absolute bg-overlay z-30 w-screen h-screen"
+            onClick={closeAddIssueForm}
+          >
+            {" "}
           </div>
-        </form>
-      )}
-      {addIssueVisibility && (
-        <div
-          className="absolute bg-overlay z-30 w-screen h-screen"
-          onClick={closeAddIssueForm}
-        >
-          {" "}
-        </div>
-      )}
+        )
+      }
       <ToastContainer pauseOnHover theme="light" />
-    </div>
+    </div >
   );
 };
 

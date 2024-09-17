@@ -280,10 +280,10 @@ const Request = () => {
                 </div>
               </div>
 
-              <div className="flex gap-8">
+              <div className="flex gap-10">
                 <div className="flex flex-col gap-3">
                   <label htmlFor="" className="font-medium">
-                    Request From:
+                    Requested From:
                   </label>
 
                   <NepaliDatePicker
@@ -296,7 +296,7 @@ const Request = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                   <label htmlFor="" className="font-medium">
-                    Request To:
+                    Requested To:
                   </label>
                   <NepaliDatePicker
                     inputClassName="form-control focus:outline-none"
