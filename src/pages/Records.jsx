@@ -62,7 +62,6 @@ const Records = () => {
   // const [panData, setPanData] = useState([]);
   // const [noBillData, setNoBillData] = useState([]);
 
-  console.log("date: ", date);
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const token = userInfo.token;
@@ -74,7 +73,7 @@ const Records = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setItems(itemsResponse.data);
-        console.log("Fetched items:", itemsResponse.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -93,7 +92,6 @@ const Records = () => {
         }));
         break;
       case "pan":
-        console.log(data);
         // setPanData(data);
         setBill((prevBill) => ({
           ...prevBill,
@@ -321,7 +319,6 @@ const Records = () => {
       );
     }
   };
-  console.log(bills);
 
   useEffect(() => {
     const filterBills = () => {
@@ -350,8 +347,6 @@ const Records = () => {
         (bill) => bill.vendor_ID === filterOptions.vendor_id
       );
     }
-
-    console.log(filterOptions.item_id);
 
     if (filterOptions.item_id) {
       filteredResults = filteredResults.filter((bill) =>
